@@ -45,11 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'created_at',
-                'value' => function ($data) { return date('j.m.Y h:i:s', $data->created_at); },
+                'value' => function ($data) { return date('j.m.Y H:i:s', $data->created_at); },
             ],
             [
                 'attribute' => 'updated_at',
-                'value' => function ($data) { return date('j.m.Y h:i:s', $data->updated_at); },
+                'value' => function ($data) { return date('j.m.Y H:i:s', $data->updated_at); },
             ],
 
         ],

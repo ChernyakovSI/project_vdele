@@ -29,6 +29,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $id_team;
+    public $id_user;
+
     public function __construct(array $config = [])
     {
         parent::__construct($config);
@@ -77,6 +80,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at' => 'Создан',
             'updated_at' => 'Изменен',
             'id_role' => 'Роль',
+            'userFIO' => 'Участник',
         );
     }
 
