@@ -91,7 +91,7 @@ class UserTeam extends \yii\db\ActiveRecord
             ];
 
             $query = User::find()->select($columns_array)->leftJoin('user_team as user_team', 'user.id = user_team.id_user AND user_team.id_team = '.$id_team);
-            $model = $query->where('user_team.id_user IS NULL')->all();
+            $model = $query->where('user_team.id_user IS NULL')->orderBy('user.surname, user.name, user.middlename')->all();
 
             $userModel = new User();
             $arrUsers = [];

@@ -6,7 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "Team".
+ * This is the model class for table "project".
  *
  * @property int $id
  * @property string $name
@@ -14,18 +14,17 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_at
  * @property int $updated_at
  */
-class Team extends \yii\db\ActiveRecord
+class Project extends \yii\db\ActiveRecord
 {
-
-    public $id_team;
     public $team;
-    public $id_user;
+    public $id_team;
+    public $id_project;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'Team';
+        return 'project';
     }
 
     /**
@@ -61,20 +60,11 @@ class Team extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Название',
             'description' => 'Описание',
-            'created_at' => 'Создана',
-            'updated_at' => 'Изменена',
-            'id_user' => 'Участник',
-            'id_team' => 'Команда',
+            'created_at' => 'Создан',
+            'updated_at' => 'Изменен',
             'team' => 'Команда',
+            'id_team' => 'Команда',
+            'id_project' => 'Проект',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return TeamQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new TeamQuery(get_called_class());
     }
 }
