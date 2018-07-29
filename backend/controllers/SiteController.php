@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\TaskSearch;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -60,7 +61,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $searchModelDone = new TaskSearch();
+        $dataProviderDone = $searchModelDone->search(Yii::$app->request->queryParams, 1);
+
+        $searchModelExpired = new TaskSearch();
+        $dataProviderExpired = $searchModelExpired->search(Yii::$app->request->queryParams, 2);
+
+        return $this->render('index', [
+            'searchModelDone' => $searchModelDone,
+            'dataProviderDone' => $dataProviderDone,
+            'searchModelExpired' => $searchModelExpired,
+            'dataProviderExpired' => $dataProviderExpired,
+        ]);
     }
 
     /**

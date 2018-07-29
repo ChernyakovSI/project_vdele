@@ -39,9 +39,21 @@ class TaskSearch extends Task
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $settings = 0)
     {
-        $query = Task::find();
+        if ($settings == 1) {
+            $now = idate('U');
+            $now = $now - 60*60*24*7;
+            $query = Task::find()->where('finish_date > '.$now.' AND id_status = 3');
+        }
+        else if ($settings == 2) {
+            $now = idate('U');
+            $query = Task::find()->where('deadline < '.$now.' AND id_status = 2');
+        }
+        else {
+            $query = Task::find();
+        }
+
 
         // add conditions that should always apply here
 
