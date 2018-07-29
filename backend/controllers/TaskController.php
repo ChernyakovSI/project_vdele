@@ -102,6 +102,12 @@ class TaskController extends Controller
             $model->finish_date = $date ? strtotime($date) : null;
         }
 
+        /*$model->load(Yii::$app->request->post());
+        echo '<pre>';
+        var_dump($model);
+        $model->save();
+        exit();*/
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }

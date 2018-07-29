@@ -36,7 +36,7 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Главная', 'url' => ['/site/index']],
+        ['label' => 'Главная', 'url' => ['/site']],
     ];
     $menuItems[] = ['label' => 'Пользователи', 'url' => ['/user']];
     $menuItems[] = ['label' => 'Команды', 'url' => ['/team']];

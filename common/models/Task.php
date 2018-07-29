@@ -53,6 +53,7 @@ class Task extends \yii\db\ActiveRecord
             [['deadline', 'finish_date'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'unique'],
+            [['description', 'result'], 'safe'],
         ];
     }
 
@@ -74,6 +75,8 @@ class Task extends \yii\db\ActiveRecord
             'updated_at' => 'Изменена',
             'strDeadline' => 'Срок выполенния',
             'strFinishDate' => 'Дата выполнения',
+            'description' => 'Описание',
+            'result' => 'Решение',
         ];
     }
 
@@ -186,6 +189,45 @@ class Task extends \yii\db\ActiveRecord
         var_dump(strtotime($date));
         exit();
         $this->deadline= $date ? strtotime($date) : null;
+    }
+
+    public static function getArrayOfTaskByUser($id_user)
+    {
+        $columns_array = [
+            'user.id as id_user',
+            'user.id as userFIO',
+        ];
+
+        $query = Task::find()->select($columns_array);
+        $model = $query->where('user.id_role = 3')->orderBy('user.surname, user.name, user.middlename')->all();
+
+        $arrUsers = [];
+        $modelUser = new User();
+
+        foreach($model as $key => $strUser) {
+            $arrUsers[$strUser['id_user']] = $modelUser::getUserFIO($strUser['id_user']);
+        }
+
+        return $arrUsers;
+    }
+
+    public static function getStyleRow($id_status, $finish_date){
+        if (($id_status == 2) && ($finish_date < idate('U')))
+        {
+            return array('style'=>'background-color:#FEDBCA;');
+        }
+        else if ($id_status == 3)
+        {
+            return array('style'=>'background-color:#00FF7F;');
+        }
+        else if ($id_status == 4)
+        {
+            return array('style'=>'background-color:#A9A9A9;');
+        }
+        else
+        {
+            return array('style'=>'background-color:#FFFFFF;');
+        }
     }
 
 

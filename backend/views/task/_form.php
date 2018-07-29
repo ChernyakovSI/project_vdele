@@ -33,6 +33,8 @@ use kartik\date\DatePicker;
     ],]) ?>
 
     <?= $form->field($model, 'id_status')->dropDownList(Task::getArrayOfStatuses()) ?>
+    <?= $form->field($model, 'description')->textarea() ?>
+    <?= $form->field($model, 'result')->textarea() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

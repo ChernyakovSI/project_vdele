@@ -64,6 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'updated_at',
                 'value' => function ($data) { return date('j.m.Y H:i:s', $data->updated_at); },
             ],
+            'description:ntext',
+            'result:ntext',
         ],
     ]) ?>
 
