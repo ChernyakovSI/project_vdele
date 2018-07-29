@@ -20,16 +20,16 @@ $this->title = 'Менеджер задач';
             <div class="col-lg-2">
             </div>
             <div class="col-lg-2">
-                <p><a class="btn btn-primary btn-block" href="admin/index.php?r=user">Пользователи</a></p>
+                <p><a class="btn btn-primary btn-block" href="index.php?r=user">Пользователи</a></p>
             </div>
             <div class="col-lg-2">
-                <p><a class="btn btn-primary btn-block" href="admin/index.php?r=team">Команды</a></p>
+                <p><a class="btn btn-primary btn-block" href="index.php?r=team">Команды</a></p>
             </div>
             <div class="col-lg-2">
-                <p><a class="btn btn-primary btn-block" href="admin/index.php?r=project">Проекты</a></p>
+                <p><a class="btn btn-primary btn-block" href="index.php?r=project">Проекты</a></p>
             </div>
             <div class="col-lg-2">
-                <p><a class="btn btn-primary btn-block" href="admin/index.php?r=task">Задачи</a></p>
+                <p><a class="btn btn-primary btn-block" href="index.php?r=task">Задачи</a></p>
             </div>
         </div>
 
