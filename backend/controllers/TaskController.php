@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Task;
 use backend\models\TaskSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,16 @@ class TaskController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -72,6 +83,9 @@ class TaskController extends Controller
 
             $date = Yii::$app->request->post()["Task"]["strFinishDate"];
             $model->finish_date = $date ? strtotime($date) : null;
+
+            $model->created_at = idate('U');
+            $model->updated_at = idate('U');
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -100,19 +114,13 @@ class TaskController extends Controller
 
             $date = Yii::$app->request->post()["Task"]["strFinishDate"];
             $model->finish_date = $date ? strtotime($date) : null;
-        }
 
-        /*$model->load(Yii::$app->request->post());
-        echo '<pre>';
-        var_dump($model);
-        $model->save();
-        exit();*/
+            $model->updated_at = idate('U');
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        $currentTask = Task::findOne($id);
 
         $model->strDeadline = $model->deadline? date('d.m.Y', $model->deadline) : '';
         $model->strFinishDate = $model->finish_date? date('d.m.Y', $model->finish_date) : '';

@@ -1,5 +1,11 @@
 <?php
 
+use \common\models\User;
+use \yii\widgets\Pjax;
+use \yii\grid\GridView;
+use \common\models\Project;
+use \common\models\Task;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -7,46 +13,68 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <h3><?php echo User::getUserIO(Yii::$app->user->identity->getId()); ?>, добро пожаловать в менеджер задач!</h3>
     </div>
 
     <div class="body-content">
-
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            <div class="col-lg-2">
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <div class="col-lg-2">
+                <p><a class="btn btn-primary btn-block" href="index.php?r=task">Задачи</a></p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <div class="col-lg-2">
+                <p><a class="btn btn-primary btn-block" href="index.php?r=team">Команды</a></p>
             </div>
+        </div>
+
+        <div class="team-index">
+
+            <h1>Задачи к выполнению</h1>
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+
+                    [
+                        'attribute' => 'created_at',
+                        'value' => function ($data) { return date('j.m.Y H:i:s', $data->created_at); },
+                    ],
+                    'name',
+                    [
+                        'attribute' => 'id_manager',
+                        'value' => function ($data) { return User::getUserFIO($data->id_manager); },
+                    ],
+                    [
+                        'attribute' => 'deadline',
+                        'value' => function ($data) { if ($data->deadline > 0) {return date('j.m.Y H:i:s', $data->deadline);} else {return 'не назначен';} },
+                    ],
+                    [
+                        'attribute' => 'id_project',
+                        'value' => function ($data) { return Project::findOne($data->id_project)->name;},
+                    ],
+
+
+                    ['class' => 'yii\grid\ActionColumn',
+                        'buttons'=>[
+                            'view'=>function ($url, $model) {
+                                $customurl=Yii::$app->getUrlManager()->createUrl(['task/view','id'=>$model['id']]); //$model->id для AR
+                                return \yii\helpers\Html::a( '<span class="glyphicon glyphicon-eye-open"></span>', $customurl,
+                                    ['title' => Yii::t('yii', 'View'), 'data-pjax' => '0']);
+                            },
+                        ],
+                        'template'=>'{view}',
+                    ],
+                ],
+            'rowOptions' => function ($model, $key, $index, $grid) {
+                return Task::getStyleRow($model->id_status, $model->deadline);
+            }
+            ]); ?>
+            <?php Pjax::end(); ?>
         </div>
 
     </div>

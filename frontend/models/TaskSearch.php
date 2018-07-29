@@ -39,9 +39,16 @@ class TaskSearch extends Task
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $id_user)
+    public function search($params, $id_user, $settings = 0)
     {
-        $query = Task::find()->where('id_doer = '.$id_user.' AND id_status <> 1');
+        if ($settings == 1) {
+            $now = idate('U');
+            $now = $now - 60*60*24*7;
+            $query = Task::find()->where('id_doer = '.$id_user.' AND id_status = 2');
+        }
+        else {
+            $query = Task::find()->where('id_doer = '.$id_user.' AND id_status <> 1');
+        }
 
         // add conditions that should always apply here
 

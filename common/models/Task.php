@@ -211,18 +211,18 @@ class Task extends \yii\db\ActiveRecord
         return $arrUsers;
     }
 
-    public static function getStyleRow($id_status, $finish_date){
-        if (($id_status == 2) && ($finish_date < idate('U')))
+    public static function getStyleRow($id_status, $deadline){
+        if (($id_status == 2) && ($deadline < idate('U')))
         {
-            return array('style'=>'background-color:#FEDBCA;');
+            return array('style'=>'background-color:#FEDBCA;'); //просроченные
         }
         else if ($id_status == 3)
         {
-            return array('style'=>'background-color:#00FF7F;');
+            return array('style'=>'background-color:#00FF7F;'); //выполненные
         }
         else if ($id_status == 4)
         {
-            return array('style'=>'background-color:#A9A9A9;');
+            return array('style'=>'background-color:#A9A9A9;'); //проверенные
         }
         else
         {

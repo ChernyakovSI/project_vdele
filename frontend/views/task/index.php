@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute' => 'created_at',
-                'value' => function ($data) { return date('j.m.Y H:i:s', $data->finish_date); },
+                'value' => function ($data) { return date('j.m.Y H:i:s', $data->created_at); },
             ],
             [
                 'attribute' => 'id_manager',
@@ -53,9 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template'=>'{view}',
             ],
         ],
-        //'rowHtmlOptionsExpression'=> function ($data) { return Task::getStyleRow($data->id_status, $data->finish_date);},
         'rowOptions' => function ($model, $key, $index, $grid) {
-            return Task::getStyleRow($model->id_status, $model->finish_date);
+            return Task::getStyleRow($model->id_status, $model->deadline);
         }
     ]); ?>
     <?php Pjax::end(); ?>

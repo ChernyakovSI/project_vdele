@@ -26,6 +26,10 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const ROLE_GUEST = 1;
+    const ROLE_USER = 2;
+    const ROLE_ADMIN = 3;
+
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
@@ -142,6 +146,30 @@ class User extends ActiveRecord implements IdentityInterface
 
 
             return trim($userFIO);
+
+        }
+    }
+
+    public static function getUserIO($id)
+    {
+        if ((isset($id)) && ($id > 0)) {
+            $columns_array = [
+                'user.name as name',
+                'user.middlename as middlename',
+            ];
+
+            $query = User::find()->select($columns_array);
+            $model = $query->where('user.id = '.$id)->one();
+
+            if (isset($model->middlename)) {
+                $userIO = $model->name." ".$model->middlename;
+            }
+            else {
+                $userIO = $model->name;
+            }
+
+
+            return trim($userIO);
 
         }
     }

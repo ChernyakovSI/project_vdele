@@ -29,6 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            [
+                'attribute' => 'created_at',
+                'value' => function ($data) { return date('j.m.Y H:i:s', $data->created_at); },
+            ],
             'name',
             [
                 'attribute' => 'id_doer',
@@ -54,14 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id_project',
                 'value' => function ($data) { return Project::findOne($data->id_project)->name;},
             ],
-            [
-                'attribute' => 'created_at',
-                'value' => function ($data) { return date('j.m.Y H:i:s', $data->created_at); },
-            ],
-            [
-                'attribute' => 'updated_at',
-                'value' => function ($data) { return date('j.m.Y H:i:s', $data->updated_at); },
-            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

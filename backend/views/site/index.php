@@ -12,7 +12,7 @@ $this->title = 'Менеджер задач';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h3>Добро пожаловать в административную часть менеджера задач!</h3>
+        <h3><?php echo User::getUserIO(Yii::$app->user->identity->getId()); ?>, добро пожаловать в административную часть менеджера задач!</h3>
     </div>
 
     <div class="body-content">
