@@ -45,14 +45,14 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'logout', 'signup'],
+                        'actions' => ['login', 'signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'requestPasswordReset', 'ResetPassword'],
+                        'actions' => ['logout', 'index', 'requestPasswordReset', 'ResetPassword'],
                         'allow' => true,
-                        'roles' => ['guest'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],

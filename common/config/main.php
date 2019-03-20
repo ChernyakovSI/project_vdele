@@ -11,6 +11,7 @@ return [
         ],
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
+            //'class' => 'yii\rbac\DbManager',
             'defaultRoles' => ['guest','user','admin'], //здесь прописываем роли
             //зададим куда будут сохраняться наши файлы конфигураций RBAC
             'itemFile' => '@common/components/rbac/items.php',
@@ -18,6 +19,6 @@ return [
             'ruleFile' => '@common/components/rbac/rules.php'
         ],
     ],
-    'name' => 'Менеджер задач',
+    'name' => 'В деле',
     'language' => 'ru',
 ];

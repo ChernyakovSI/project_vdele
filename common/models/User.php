@@ -35,6 +35,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $id_team;
     public $id_user;
+    //public $id_role;
 
     public function __construct(array $config = [])
     {

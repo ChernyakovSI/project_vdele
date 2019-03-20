@@ -8,6 +8,8 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
+
+    background: #FBF5EF;
 }
 
 .wrap > .container {
@@ -117,4 +119,50 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+
+/* ------------------------------------------------------------------------------ */
+
+.page_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left_panel {
+    height: 100%;
+    width: 19%;
+    padding: 0px 20px 20px 0px;
+}
+
+.right_panel {
+    height: 100%;
+    width: 19%;
+    padding: 0px 20px 20px 20px;
+}
+
+.center_panel {
+    height: 100%;
+    width: 62%;
+    padding: 0px 15px 20px 15px;
+}
+
+.main_container {
+    padding: 70px 0 0 0;
+}
+
+/* ------------------------------------------------------------------------------ */
+
+.navmenu-inverse > ul > li {
+    background: #101010;
+}
+
+.navmenu-inverse > ul > li > a {
+    text-decoration: none;
+    color: #FFAF01;
+}
+
+.navmenu-inverse > ul > li > a:hover {
+    color: #ffffff;
+    background: #101010;
 }

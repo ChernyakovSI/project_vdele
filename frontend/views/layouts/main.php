@@ -60,12 +60,41 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="main_container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
-        <?= $content ?>
+        <div class="page_row">
+            <div class="left_panel">
+                <?php
+                if (!(Yii::$app->user->isGuest)) { ?>
+                    <nav class="navmenu navmenu-inverse" role="navigation">
+                      <!--<a class="navmenu-brand" href="#">Название</a>-->
+                      <ul class="nav navmenu-nav navmenu-inverse">
+                        <li class="active"><a href="#">Пункт 1</a></li>
+                        <li><a href="#">Пункт 2</a></li>
+                          <!--<li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Пункт 3 <b class="caret"></b></a>
+                          <ul class="dropdown-menu navmenu-nav" role="menu">
+                            <li><a href="#">Пункт 3.1</a></li>
+                            <li><a href="#">Пункт 3.2</a></li>
+                            <li><a href="#">Пункт 3.3</a></li>
+                            <li><a href="#">Пункт 3.4</a></li>
+                          </ul>
+                        </li>-->
+                          <div><a href="#">Пункт 2</a></div>
+                      </ul>
+                    </nav>
+                <?php }
+                ?>
+            </div>
+            <div class="center_panel">
+                <?= $content ?>
+            </div>
+            <div class="right_panel"></div>
+        </div>
+
     </div>
 </div>
 

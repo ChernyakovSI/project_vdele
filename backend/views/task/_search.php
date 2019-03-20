@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \common\models\Task;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\TaskSearch */

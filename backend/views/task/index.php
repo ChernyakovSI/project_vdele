@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id_doer',
                 'value' => function ($data) { return User::getUserFIO($data->id_doer); },
+                //'filter' => Html::activeInput('', $dataProvider, '')
             ],
             [
                 'attribute' => 'id_manager',
