@@ -22,3 +22,4 @@ return [
     'name' => 'В деле',
     'language' => 'ru',
 ];
+

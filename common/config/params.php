@@ -4,3 +4,4 @@ return [
     'supportEmail' => 'paladin_cool@inbox.ru',
     'user.passwordResetTokenExpire' => 3600,
 ];
+
