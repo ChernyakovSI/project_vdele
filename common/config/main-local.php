@@ -1,4 +1,23 @@
 <?php
+
+return [
+    'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=sql213.main-hosting.eu;dbname=u237454327_vdele',
+            'username' => 'u237454327_palad',
+            'password' => '431107668727cnfc',
+            'charset' => 'utf8',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            'useFileTransport' => true,
+        ],
+    ],
+];
+
+
 return [
     'components' => [
         'db' => [
