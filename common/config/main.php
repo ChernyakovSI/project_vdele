@@ -19,7 +19,7 @@ return [
             'ruleFile' => '@common/components/rbac/rules.php'
         ],
     ],
-    'name' => 'В деле',
+    'name' => 'Я в деле',
     'language' => 'ru',
 ];
 

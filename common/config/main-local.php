@@ -18,7 +18,6 @@ return [
 ];
 
 
-
 return [
     'components' => [
         'db' => [
