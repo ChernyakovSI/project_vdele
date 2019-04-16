@@ -45,12 +45,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'signup'],
+                        'actions' => ['login', 'signup', 'index'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index', 'requestPasswordReset', 'ResetPassword'],
+                        'actions' => ['logout', 'requestPasswordReset', 'ResetPassword'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -88,15 +88,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $current_user_id = Yii::$app->user->identity->getId();
+        /*$current_user_id = Yii::$app->user->identity->getId();
 
         $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $current_user_id, 1);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $current_user_id, 1);*/
 
-        return $this->render('index', [
+        return $this->render('index' /*, [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]*/
+        );
     }
 
     /**

@@ -24,10 +24,10 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
+            /*['username', 'trim'],
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Такой логин уже занят.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'string', 'min' => 2, 'max' => 255],*/
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -42,7 +42,7 @@ class SignupForm extends Model
             ['passwordAgain', 'compare', 'compareAttribute'=>'password',  'message' => 'Пароли в двух полях должны совпадать'],
             ['passwordAgain', 'string', 'min' => 6],
 
-            ['name', 'trim'],
+            /*['name', 'trim'],
             ['name', 'required'],
             ['name', 'string', 'min' => 2, 'max' => 255],
 
@@ -50,14 +50,14 @@ class SignupForm extends Model
             ['surname', 'required'],
             ['surname', 'string', 'min' => 2, 'max' => 255],
 
-            ['middlename', 'trim'],
+            ['middlename', 'trim'],*/
         ];
     }
 
     public function attributeLabels()
     {
         return array(
-            'username' => 'Логин',
+            'username' => 'Электронная почта',
             'email' => 'Электронная почта',
             'password' => 'Пароль',
             'passwordAgain' => 'Повторите пароль',
@@ -83,11 +83,11 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $user->username = $this->username;
+        $user->username = $this->email;
         $user->email = $this->email;
-        $user->name = $this->name;
-        $user->surname = $this->surname;
-        $user->middlename = $this->middlename;
+        $user->name = "";//$this->name;
+        $user->surname = "";//$this->surname;
+        $user->middlename = "";//$this->middlename;
         $user->id_role = 2;
         $user->setPassword($this->password);
         $user->generateAuthKey();
