@@ -2,7 +2,7 @@
 return [
     'adminEmail' => 'yavdele@list.ru',
     'supportEmail' => 'yavdele@list.ru',
-    'robotEmail' => 'robot@yavdele.net',
+    'robotEmail' => 'yavdele@list.ru',
     'user.passwordResetTokenExpire' => 3600,
 ];
 
