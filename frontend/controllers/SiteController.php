@@ -44,13 +44,23 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
+                    /*[
+                        'actions' => ['index', 'requestPasswordReset', 'ResetPassword'],
+                        'allow' => true,
+                        'roles' => ['*'],
+                    ],*/
                     [
-                        'actions' => ['login', 'signup', 'index'],
+                        'actions' => ['index', 'request-password-reset', 'reset-password'],
+                        'controllers' => ['site'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['login', 'signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'requestPasswordReset', 'ResetPassword'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -163,14 +173,15 @@ class SiteController extends Controller
      */
     public function actionRequestPasswordReset()
     {
+
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', 'Проверьте вашу электронную почту, на которую было выслано письмо с дальнейшими инструкциями');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'К сожалению, не удалось сбросить пароль для указанного адреса электронной почты.');
             }
         }
 

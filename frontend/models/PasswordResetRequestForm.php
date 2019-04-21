@@ -25,9 +25,16 @@ class PasswordResetRequestForm extends Model
             ['email', 'exist',
                 'targetClass' => '\common\models\User',
                 'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'There is no user with this email address.'
+                'message' => 'Не обнаружено пользователя с такой электронной почтой.'
             ],
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return array(
+            'email' => 'Электронная почта',
+        );
     }
 
     /**
@@ -60,9 +67,10 @@ class PasswordResetRequestForm extends Model
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            //->setFrom(['yavdele@list.ru' => 'Я в деле'])
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' (робот)'])
             ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->setSubject('Сброс пароля на портале "' . Yii::$app->name . '"')
             ->send();
     }
 }
