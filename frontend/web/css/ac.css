@@ -1,0 +1,14 @@
+.container-wrap {
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 40px 40px;
+}
+
+.avatar {}
+
+.FIO {}
+
+.main-info {}
+
+.goals {}

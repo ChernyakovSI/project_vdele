@@ -1,0 +1,34 @@
+.container-wrap {
+    height: 100%;
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: 300px auto; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-rows: 40px 360px auto;
+}
+
+.avatar {
+    grid-row: 1 / 3;
+}
+
+.FIO {
+    grid-column: 2 / -1;
+}
+
+.main-info {}
+
+.goals {
+    grid-column: 1 / -1;
+}
+
+.window {
+    border-radius: 10px;
+    background-color: #C0C0C0; /*#F5F5F5;*/
+}
+
+.container-wrap > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    color: #000000;
+}

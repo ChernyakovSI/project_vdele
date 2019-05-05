@@ -103,11 +103,17 @@ class SiteController extends Controller
         $searchModel = new TaskSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $current_user_id, 1);*/
 
-        return $this->render('index' /*, [
+        if (isset(Yii::$app->user->identity)) {
+            return $this->render('ac');
+        }
+        else {
+            return $this->render('index');
+        }
+        /*return $this->render('index' , [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]*/
-        );
+        ]
+        );*/
     }
 
     /**

@@ -29,7 +29,9 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        //'brandLabel' => Yii::$app->name,
+        //'brandLabel' => Html::img('../img/logo.png', ['alt' => Yii::$app->name]),//'<img src="../../../../resources/images/general/logo.png" style="display:inline; vertical-align: top; height:32px;"/>Yii::$app->name',
+        //'brandLabel' => Html::img('img/logo.png', ['alt' => Yii::$app->name]), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -71,23 +73,27 @@ AppAsset::register($this);
             <div class="left_panel">
                 <?php
                 if (!(Yii::$app->user->isGuest)) { ?>
-                    <nav class="navmenu navmenu-inverse" role="navigation">
+                    <!--||||||||||||||||<nav class="navmenu navmenu-inverse" role="navigation">->
+
                       <!--<a class="navmenu-brand" href="#">Название</a>-->
-                      <ul class="nav navmenu-nav navmenu-inverse">
-                        <li class="active"><a href="#">Пункт 1</a></li>
-                        <li><a href="#">Пункт 4</a></li>
-                          <!--<li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Пункт 3 <b class="caret"></b></a>
-                          <ul class="dropdown-menu navmenu-nav" role="menu">
-                            <li><a href="#">Пункт 3.1</a></li>
-                            <li><a href="#">Пункт 3.2</a></li>
-                            <li><a href="#">Пункт 3.3</a></li>
-                            <li><a href="#">Пункт 3.4</a></li>
-                          </ul>
-                        </li>-->
-                          <div><a href="#">Пункт 2</a></div>
+
+                    <!--|||||||||||<ul class="nav navmenu-nav navmenu-inverse">
+                      <li class="active"><a href="#">Пункт 1</a></li>
+                      <li><a href="#">Пункт 4</a></li>-->
+
+                        <!--<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Пункт 3 <b class="caret"></b></a>
+                        <ul class="dropdown-menu navmenu-nav" role="menu">
+                          <li><a href="#">Пункт 3.1</a></li>
+                          <li><a href="#">Пункт 3.2</a></li>
+                          <li><a href="#">Пункт 3.3</a></li>
+                          <li><a href="#">Пункт 3.4</a></li>
+                        </ul>
+                      </li>-->
+
+                <!-- <div><a href="#">Пункт 2</a></div>
                       </ul>
-                    </nav>
+                    </nav>-->
                 <?php }
                 ?>
             </div>
