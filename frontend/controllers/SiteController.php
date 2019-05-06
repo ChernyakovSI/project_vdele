@@ -104,7 +104,9 @@ class SiteController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $current_user_id, 1);*/
 
         if (isset(Yii::$app->user->identity)) {
-            return $this->render('ac');
+            return $this->render('ac', [
+                'user_id' => Yii::$app->user->identity->getId(),
+            ]);
         }
         else {
             return $this->render('index');
