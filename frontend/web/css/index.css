@@ -20,10 +20,7 @@
     grid-column: 1 / -1;
 }
 
-.window {
-    border-radius: 10px;
-    background-color: #C0C0C0; /*#F5F5F5;*/
-}
+
 
 .container-wrap > div {
     display: flex;
@@ -31,4 +28,46 @@
     align-items: center;
     font-size: 2em;
     color: #000000;
+}
+
+.window {
+    background: #F0F0F0;
+}
+
+.window-border {
+    border-radius: 10px;
+    border: 3px solid #C0C0C0; /* Белая рамка */
+}
+
+/*.container-wrap-fio {
+    width: 100%;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}*/
+
+.FIO-main {
+    width: 100%;
+    text-align: center;
+}
+
+.subwindow {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.unactive {
+    color: #AAAAAA;
+}
+
+.interactive:hover {
+    color: #000000;
+}
+
+.symbol_style {
+    /*font-family: Verdana, Arial, Helvetica, sans-serif;*/
+    font-size: 15pt; /* Размер шрифта в пунктах */
 }

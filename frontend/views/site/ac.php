@@ -1,22 +1,29 @@
 <?php
 
 use \common\models\Ac;
+use yii\helpers\Html;
+use yii\web\UrlManager;
 
 /* @var $this yii\web\View class="site-index"*/
 
 $this->title = 'Мой аккаунт';
-$this->registerCssFile('css/ac.css');
+//$this->registerCssFile('css/ac.css');
 
 ?>
 <div class="content">
     <div class="container-wrap">
-        <div class="window avatar">avatar</div>
-        <div class="window FIO">
-            <?php
+        <div class="window window-border avatar">avatar</div>
+        <div class="FIO">
+            <div class="FIO-main">
+                <?php
                 $current_ac = new Ac;
                 echo $current_ac->getFIO($user_id);
-            ?></div>
-        <div class="window main-info">main info</div>
-        <div class="window goals">goals</div>
+                ?>
+            </div>
+            <a href="/"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
+            <div class="subwindow unactive">online</div>
+        </div>
+        <div class="window window-border main-info">main info</div>
+        <div class="window window-border goals">goals</div>
     </div>
 </div>

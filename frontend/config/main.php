@@ -12,9 +12,9 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-        'request' => [
+        /*'request' => [
             'csrfParam' => '_csrf-frontend',
-        ],
+        ],*/
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -36,14 +36,29 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'suffix' => '.html',
             'rules' => [
+                '' => 'site/index',
+
+
+                '<action>'=>'site/<action>',
+                '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',//контроллер теперь понимает путь task/123 и работает как с task/view?id=12
+                '<controller>' => '<controller>/index',
+                '<controller>s' => '<controller>/index',//контроллер теперь понимает путь tasks и работает как с task/index
             ],
         ],
-        */
+        'assetManager' => [
+            'basePath' => '@webroot/assets',
+            'baseUrl' => '@web/assets'
+        ],
+        'request' => [
+            'baseUrl' => '',
+            'csrfParam' => '_csrf-frontend',
+        ],
     ],
     'params' => $params,
+
 ];
