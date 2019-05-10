@@ -31,10 +31,10 @@ AppAsset::register($this);
     NavBar::begin([
         //'brandLabel' => Yii::$app->name,
         //'brandLabel' => Html::img('../img/logo.png', ['alt' => Yii::$app->name]),//'<img src="../../../../resources/images/general/logo.png" style="display:inline; vertical-align: top; height:32px;"/>Yii::$app->name',
-        //'brandLabel' => Html::img('img/logo.png', ['alt' => Yii::$app->name]), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
+        'brandLabel' => Html::img('img/logo.png', ['alt' => Yii::$app->name]), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
     $menuItems = [
@@ -48,7 +48,8 @@ AppAsset::register($this);
             ['label' => 'Мои задачи', 'url' => ['/task']],
             ['label' => 'Мои команды', 'url' => ['/team']],
         ];*/
-        $menuItems[] = '<li>'
+        $menuItems[] = /*['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];*/
+            '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Выйти (' . Yii::$app->user->identity->username . ')',
@@ -108,9 +109,9 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>
 </footer>
 

@@ -1,7 +1,7 @@
 .container-wrap {
     height: 100%;
     display: grid;
-    grid-gap: 3px;
+    grid-gap: 10px;
     grid-template-columns: 300px auto; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
     grid-template-rows: 40px 360px auto;
 }
@@ -26,7 +26,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
     color: #000000;
 }
 
@@ -36,7 +35,7 @@
 
 .window-border {
     border-radius: 10px;
-    border: 3px solid #C0C0C0; /* Белая рамка */
+    border: 1px solid #C0C0C0; /* Белая рамка */
 }
 
 /*.container-wrap-fio {
@@ -71,3 +70,4 @@
     /*font-family: Verdana, Arial, Helvetica, sans-serif;*/
     font-size: 15pt; /* Размер шрифта в пунктах */
 }
+

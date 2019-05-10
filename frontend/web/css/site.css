@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    font-size: 16px;
 }
 
 .wrap {
@@ -9,7 +10,7 @@ body {
     margin: 0 auto -60px;
     padding: 0 0 60px;
 
-    background: #FBF5EF;
+    background: #F5F5F5;
 }
 
 .wrap > .container {
@@ -18,7 +19,7 @@ body {
 
 .footer {
     height: 60px;
-    background-color: #f5f5f5;
+    background-color: #5b230e;
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
@@ -99,7 +100,7 @@ a.desc:after {
 
 /* align the logout "link" (button in form) of the navbar */
 .nav li > form > button.logout {
-    padding: 15px;
+    padding: 13px;
     border: none;
 }
 
@@ -148,21 +149,159 @@ a.desc:after {
 }
 
 .main_container {
-    padding: 70px 0 0 0;
+    padding: 95px 0 0 0;
 }
 
-/* ------------------------------------------------------------------------------ */
-
-.navmenu-inverse > ul > li {
-    background: #101010;
+/* Параметры главного меню */
+.navbar-default {
+    background-color: #5b230e;
+    border-color: #63271d;
 }
 
-.navmenu-inverse > ul > li > a {
+.navbar {
+    min-height: 80px;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #cccccc;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: #eeeeee;
+}
+
+.navbar-brand {
+    margin-top: 5px;
+    padding: 0;
+    height: 70px;
+    line-height: 70px;
+}
+.navbar-toggle {
+    /* (80px - высота кнопки 34px) / 2 = 23px */
+    margin-top: 23px;
+    padding: 9px 10px !important;
+}
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        /* (80px - line-height 27px) / 2 = 26.5px */
+        padding-top: 26.5px;
+        padding-bottom: 26.5px;
+        line-height: 27px;
+    }
+
+    .navbar-nav > li > form {
+        padding-top: 16.5px;
+        padding-bottom: 16.5px;
+        line-height: 10px;
+        background-color: #5b230e;
+    }
+}
+
+.nav li > form > button.logout {
+    color: #cccccc;
+}
+
+.nav li > form > button.logout:hover {
+    color: #eeeeee;
+}
+
+.navbar-default .navbar-nav > .active > a{
+    color: #dddddd;
+    background-color: #6b332e;
+}
+
+.navbar-default .navbar-nav > .active > a:hover{
+    color: #dddddd;
+    background-color: #5b230e;
+}
+
+/*- Высота главного меню */
+
+
+/* Параметры footer */
+.footer-text {
+    color: #cccccc;
+}
+
+.footer-text > a {
+    color: #cccccc;
     text-decoration: none;
-    color: #FFAF01;
 }
 
-.navmenu-inverse > ul > li > a:hover {
-    color: #ffffff;
-    background: #101010;
+.footer-text > a:hover {
+    color: #eeeeee;
+    text-decoration: none;
 }
+
+/*- Параметры footer */
+
+/* Кнопки */
+.btn-primary {
+    color: #fff;
+    background-color: #5b230e;
+    border-color: #63271d;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #5b230e;
+    border-color: #63271d;
+}
+
+.btn {
+    font-size: 16px;
+}
+
+a {
+    color: #5b230e;
+    text-decoration: none;
+}
+
+/*- Кнопки */
+
+/* Заставка */
+.opacity-img {
+    opacity: 0.3;
+}
+
+.background-start {
+    text-align: center;
+    float: left;
+}
+
+.text-start {
+    position: relative;
+    margin-top: -600px;
+    margin-left: 105px;
+
+    width: 770px;
+
+    float: left;
+
+    background-color: rgba(91, 35, 14, 0.3);
+    padding: 30px 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+ }
+
+.text-font {
+    font-size: 20px;
+    font-style: oblique;
+}
+
+.text-center {
+    width: 100%;
+    text-align: center;
+}
+
+.text-justify {
+    width: 100%;
+    text-align: justify;
+}
+
+.text-right {
+    width: 100%;
+    text-align: right;
+}
+/*- Заставка */

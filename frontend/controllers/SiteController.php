@@ -50,17 +50,19 @@ class SiteController extends Controller
                         'roles' => ['*'],
                     ],*/
                     [
-                        'actions' => ['index', 'request-password-reset', 'reset-password'],
+                        'actions' => ['index', 'request-password-reset', 'reset-password', 'logout'],
                         'controllers' => ['site'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['login', 'signup'],
+                        'actions' => ['login', 'signup', 'logout'],
+                        'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
                         'actions' => ['logout'],
+                        'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
