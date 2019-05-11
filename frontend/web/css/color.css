@@ -1,0 +1,68 @@
+.footer {
+    background-color: #54423a;
+}
+
+.navbar-default {
+    background-color: #54423a;
+    border-color: #63271d;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav > li > form {
+        background-color: #54423a;
+    }
+}
+
+.navbar-default .navbar-nav > .active > a{
+    color: #dddddd;
+    background-color: #64524a;
+}
+
+.navbar-default .navbar-nav > .active > a:hover{
+    color: #dddddd;
+    background-color: #54423a;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #54423a;
+    border-color: #63271d;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #54423a;
+    border-color: #63271d;
+}
+
+a {
+    color: #54423a;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #cccccc;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: #eeeeee;
+}
+
+.nav li > form > button.logout:hover {
+    color: #eeeeee;
+}
+
+.footer-text > a:hover {
+    color: #eeeeee;
+}
+
+.nav li > form > button.logout {
+    color: #cccccc;
+}
+
+.footer-text {
+    color: #cccccc;
+}
+
+.footer-text > a {
+    color: #cccccc;
+}
