@@ -2,8 +2,8 @@
 return [
     'adminEmail' => 'yavdele@list.ru',
     'supportEmail' => 'yavdele@list.ru',
-    'robotEmail' => 'yavdele@list.ru',
+    'robotEmail' => 'robot@yavdele.net',
     'user.passwordResetTokenExpire' => 3600,
-    'doman' => 'http://vdele.local/',
+    'doman' => 'http://yavdele.net/',
 ];
 
