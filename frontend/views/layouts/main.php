@@ -67,10 +67,7 @@ AppAsset::register($this);
     ?>
 
     <div class="main_container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
+
         <div class="page_row">
             <div class="left_panel">
                 <?php
@@ -100,6 +97,10 @@ AppAsset::register($this);
                 ?>
             </div>
             <div class="center_panel">
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]) ?>
+                <?= Alert::widget() ?>
                 <?= $content ?>
             </div>
             <div class="right_panel"></div>

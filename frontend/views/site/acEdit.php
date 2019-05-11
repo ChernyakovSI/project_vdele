@@ -8,12 +8,12 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Редактирование аккаунта';
+$this->title = 'Редактирование профиля';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="content">
-    <div class="window window-border window-caption">Редактирование аккаунта</div>
+    <div class="window window-border window-caption">Редактирование профиля</div>
 
     <?php $form = ActiveForm::begin(
         ['options' => ['class' => 'form-horizontal', 'id' => 'ac-edit'],

@@ -13,7 +13,7 @@ $this->title = 'Мой аккаунт';
 <div class="content">
     <div class="container-wrap">
         <div class="window window-border avatar">avatar</div>
-        <div class="FIO">
+        <div class="window window-border window-caption FIO">
             <div class="FIO-main">
                 <?php
                 $current_ac = new Ac;
