@@ -20,7 +20,7 @@ $this->title = 'Мой аккаунт';
                 echo $current_ac->getFIO($user_id);
                 ?>
             </div>
-            <a href="/"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
+            <a href="/site/ac-edit"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
             <div class="subwindow unactive">online</div>
         </div>
         <div class="window window-border main-info">main info</div>

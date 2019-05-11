@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\User;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -50,18 +51,18 @@ class SiteController extends Controller
                         'roles' => ['*'],
                     ],*/
                     [
-                        'actions' => ['index', 'request-password-reset', 'reset-password', 'logout'],
+                        'actions' => ['index', 'request-password-reset', 'reset-password', 'login', 'signup'],
                         'controllers' => ['site'],
                         'allow' => true,
                     ],
-                    [
-                        'actions' => ['login', 'signup', 'logout'],
+                    /*[
+                        'actions' => ['login', 'signup'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['?'],
-                    ],
+                    ],*/
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'ac-edit'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -224,5 +225,26 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionAcEdit()
+    {
+        if (isset(Yii::$app->user->identity)) {
+            $user_id = Yii::$app->user->identity->getId();
+            $cur_user = User::findIdentity($user_id);
+
+            if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate() && $cur_user->save()) {
+                Yii::$app->session->setFlash('success', 'Изменения сохранены');
+            }
+
+            return $this->render('acEdit', [
+                'cur_user' => $cur_user,
+            ]);
+        }
+        else {
+            return $this->render('index');
+        }
+
+
     }
 }

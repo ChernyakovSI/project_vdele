@@ -4,5 +4,6 @@ return [
     'supportEmail' => 'yavdele@list.ru',
     'robotEmail' => 'yavdele@list.ru',
     'user.passwordResetTokenExpire' => 3600,
+    'doman' => 'http://vdele.local/',
 ];
 

@@ -7,10 +7,10 @@ $this->registerCssFile('css/index.css');
 
 ?>
 <div class="content">
-    <div class="background-start">
+    <!--<div class="background-start">
         <img src="img/start.png" class="opacity-img">
-    </div>
-    <div class="text-start">
+    </div>-->
+    <div class="window window-border">
         <div class="text-font text-center">
             Добро пожаловать в сообщество "Я в деле"!
         </div>
