@@ -10,7 +10,7 @@ namespace common\models;
 
 class Ac
 {
-    public function getFIO($user_id)
+    public function getFIO($user_id, $abbreviated = false)
     {
         if ((isset($user_id)) && ($user_id > 0)) {
             $columns_array = [
@@ -27,11 +27,21 @@ class Ac
             if ((isset($model->surname)) && ($model->surname !== '')) {
                 $userFIO = $userFIO." ".$model->surname;
             }
+            $nameIsFull = " ";
             if ((isset($model->name)) && ($model->name !== '')) {
-                $userFIO = $userFIO." ".$model->name;
+                if ($abbreviated == true)
+                {
+                    $nameIsFull = "";
+                    $userFIO = $userFIO." ".mb_substr($model->name, 0, 1).".";
+                }
+                else
+                    $userFIO = $userFIO." ".$model->name;
             }
             if ((isset($model->middlename)) && ($model->middlename !== '')) {
-                $userFIO = $userFIO." ".$model->middlename;
+                if ($abbreviated == true)
+                    $userFIO = $userFIO.$nameIsFull.mb_substr($model->middlename, 0, 1).".";
+                else
+                    $userFIO = $userFIO." ".$model->middlename;
             }
 
             if ($userFIO == "") {

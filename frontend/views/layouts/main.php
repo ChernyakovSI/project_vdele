@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Ac;
 
 AppAsset::register($this);
 
@@ -49,11 +50,12 @@ AppAsset::register($this);
             ['label' => 'Мои задачи', 'url' => ['/task']],
             ['label' => 'Мои команды', 'url' => ['/team']],
         ];*/
+        $ac = new Ac();
         $menuItems[] = /*['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];*/
             '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Выйти (' . Yii::$app->user->identity->username . ')',
+                'Выйти (' . $ac->getFIO(Yii::$app->user->identity->getId(), true) . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

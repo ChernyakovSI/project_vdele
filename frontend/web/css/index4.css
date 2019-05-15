@@ -60,6 +60,13 @@
     margin-top: 10px;
 }
 
+.window-caption-full {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(84, 66, 58, 0.2);
+    font-weight: 600;
+}
+
 .window-panel-right {
     width: 100%;
     text-align: right;
