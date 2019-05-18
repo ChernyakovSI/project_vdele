@@ -13,6 +13,12 @@ use common\models\Ac;
 
 AppAsset::register($this);
 
+$this->registerLinkTag([
+    'rel' => 'shortcut icon',
+    'type' => 'image/x-icon',
+    'href' => '../favicon.png',
+]);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
