@@ -16,7 +16,7 @@ AppAsset::register($this);
 $this->registerLinkTag([
     'rel' => 'shortcut icon',
     'type' => 'image/x-icon',
-    'href' => '../favicon.png',
+    'href' => 'favicon.png',
 ]);
 
 ?>

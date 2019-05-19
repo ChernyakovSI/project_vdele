@@ -111,3 +111,24 @@
     font-size: 15pt; /* Размер шрифта в пунктах */
 }
 
+/*Разделение на две колонки*/
+.container-wrap-2colomns {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-rows: auto;
+}
+
+.wrap-column1 {
+    grid-row: 1 / -1;
+    grid-column: 1 / 2;
+    width: 100%;
+}
+
+.wrap-column2 {
+    grid-row: 1 / -1;
+    grid-column: 2 / 2;
+    width: 100%;
+}

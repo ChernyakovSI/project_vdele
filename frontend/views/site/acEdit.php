@@ -7,9 +7,16 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\jui\DatePicker;
 
 $this->title = 'Редактирование профиля';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerLinkTag([
+    'rel' => 'shortcut icon',
+    'type' => 'image/x-icon',
+    'href' => 'favicon.png',
+]);
 ?>
 
 <div class="content">
@@ -18,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(
         ['options' => ['class' => 'form-horizontal', 'id' => 'ac-edit'],
             'fieldConfig' => [
-                'template' => "<div class=\"col-lg-2\">{label}</div>\n<div class=\"col-lg-10\">{input}</div>\n<div class=\"col-lg-12 col-lg-offset-3\">{error}</div>",
+                'template' => "<div class=\"col-lg-3\">{label}</div>\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-12 col-lg-offset-3\">{error}</div>",
                 'labelOptions' => ['class' => ''],
             ],
         ]);
@@ -38,13 +45,41 @@ $this->params['breadcrumbs'][] = $this->title;
         <label for="tab5" title="Дополнительная информация" class="window window-border-top">Дополнительно</label>
 
         <section id="content-tab2" class="window window-border-bottom">
-            <p>
-                <?php
-                echo $form->field($cur_user, 'surname')->textInput(['autofocus' => true]);
-                echo $form->field($cur_user, 'name')->textInput();
-                echo $form->field($cur_user, 'middlename')->textInput();
-                ?>
-            </p>
+            <div class="container-wrap-acEdit">
+                <div class="column1">
+                    <?php
+                    echo $form->field($cur_user, 'surname')->textInput(['autofocus' => true]);
+                    echo $form->field($cur_user, 'name')->textInput();
+                    echo $form->field($cur_user, 'middlename')->textInput();
+                    ?>
+                </div>
+                <div class="column2">
+                    <?php
+                    echo $form->field($cur_user, 'gender')->dropDownList([
+                        '0' => 'Не выбрано',
+                        '1' => 'Мужской',
+                        '2'=> 'Женский'
+                    ]);
+                    echo $form->field($cur_user,'date_of_birth')->widget(DatePicker::class, [
+                        'language' => 'ru',
+                        'dateFormat' => 'dd.MM.yyyy',
+                        'options' => [
+                            'placeholder' => Yii::$app->formatter->asDate($cur_user->date_of_birth),
+                            'class'=> 'form-control',
+                            'autocomplete'=>'off'
+                        ],
+                        'clientOptions' => [
+                            'changeMonth' => true,
+                            'changeYear' => true,
+                            'yearRange' => '1960:'.date('Y'),
+                            //'showOn' => 'button',
+                            //'buttonText' => 'Выбрать дату',
+                            //'buttonImageOnly' => true,
+                            //'buttonImage' => 'images/calendar.gif'
+                        ]])
+                    ?>
+                </div>
+            </div>
         </section>
         <section id="content-tab3" class="window window-border-bottom">
             <p>

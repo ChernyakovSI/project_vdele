@@ -115,3 +115,23 @@
         padding: 15px;
     }
 }
+
+/*Размещение элементов в форме*/
+
+.container-wrap-acEdit {
+    height: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-rows: auto;
+}
+
+.column1 {
+    grid-row: 1 / -1;
+    grid-column: 1 / 2;
+}
+
+.column2 {
+    grid-row: 1 / -1;
+    grid-column: 2 / 2;
+}

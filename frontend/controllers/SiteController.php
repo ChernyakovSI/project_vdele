@@ -107,8 +107,25 @@ class SiteController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $current_user_id, 1);*/
 
         if (isset(Yii::$app->user->identity)) {
+            $months = [
+                'января',
+                'февраля',
+                'марта',
+                'апреля',
+                'мая',
+                'июня',
+                'июля',
+                'августа',
+                'сентября',
+                'октября',
+                'ноября',
+                'декабря'
+            ];
+
             return $this->render('ac', [
                 'user_id' => Yii::$app->user->identity->getId(),
+                'cur_user' => Yii::$app->user,
+                'months' => $months,
             ]);
         }
         else {
@@ -233,8 +250,12 @@ class SiteController extends Controller
             $user_id = Yii::$app->user->identity->getId();
             $cur_user = User::findIdentity($user_id);
 
-            if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate() && $cur_user->save()) {
-                Yii::$app->session->setFlash('success', 'Изменения сохранены');
+            if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
+                $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
+                if ($cur_user->save()) {
+                    Yii::$app->session->setFlash('success', 'Изменения сохранены');
+                }
+
             }
 
             return $this->render('acEdit', [

@@ -35,13 +35,14 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $id_team;
     public $id_user;
+
     //public $id_role;
 
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-
     }
+
 
     /**
      * {@inheritdoc}
@@ -69,7 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['id', 'status', 'id_role', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'status', 'id_role', 'created_at', 'updated_at', 'gender'], 'integer'],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'surname', 'middlename'], 'safe'],
         ];
     }
@@ -86,6 +87,9 @@ class User extends ActiveRecord implements IdentityInterface
             'updated_at' => 'Изменен',
             'id_role' => 'Роль',
             'userFIO' => 'Участник',
+            'gender' => 'Пол',
+            'date_of_birth' => 'Дата рождения',
+            'date_of_birth_str' => 'Дата рождения',
         );
     }
 
