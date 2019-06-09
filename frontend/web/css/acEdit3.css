@@ -135,3 +135,9 @@
     grid-row: 1 / -1;
     grid-column: 2 / 2;
 }
+
+.columnUnvis {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}

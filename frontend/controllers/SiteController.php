@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\models\User;
+use common\models\City;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -20,6 +21,11 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -51,7 +57,11 @@ class SiteController extends Controller
                         'roles' => ['*'],
                     ],*/
                     [
-                        'actions' => ['index', 'request-password-reset', 'reset-password', 'login', 'signup'],
+                        'actions' => ['index',
+                                    'request-password-reset',
+                                    'reset-password',
+                                    'login',
+                                    'signup'],
                         'controllers' => ['site'],
                         'allow' => true,
                     ],
@@ -62,7 +72,8 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],*/
                     [
-                        'actions' => ['logout', 'ac-edit'],
+                        'actions' => ['logout', 'ac-edit',
+                                    'ac-add-city'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -73,6 +84,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'ac-add-city' => ['post'],
                 ],
             ],
         ];
@@ -247,19 +259,31 @@ class SiteController extends Controller
     public function actionAcEdit()
     {
         if (isset(Yii::$app->user->identity)) {
+
             $user_id = Yii::$app->user->identity->getId();
             $cur_user = User::findIdentity($user_id);
 
             if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
                 $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
+                $cur_user->id_city = (integer)Yii::$app->request->post()['User']['id_city'];
                 if ($cur_user->save()) {
                     Yii::$app->session->setFlash('success', 'Изменения сохранены');
                 }
+                else
+                {
+                    //Yii::$app->session->setFlash('success', 'Не удалось записать изменения');
+                }
 
             }
+            else {
+                //Yii::$app->session->setFlash('success', 'Не удалось записать изменения 2');
+            }
+
+            $city = City::findById($cur_user->id_city);
 
             return $this->render('acEdit', [
                 'cur_user' => $cur_user,
+                'city' => $city,
             ]);
         }
         else {
@@ -267,5 +291,16 @@ class SiteController extends Controller
         }
 
 
+    }
+
+    public function actionAcAddCity()
+    {
+        if (!empty($_POST['id_city']) && ($_POST['id_city'] !== '') &&
+            !empty($_POST['name_city']) && ($_POST['name_city'] !== '')) {
+            return City::findOrCreate($_POST['id_city'], $_POST['name_city']);
+        }
+        else {
+            return 0;
+        }
     }
 }

@@ -15,10 +15,13 @@ class AppAsset extends AssetBundle
         'css/site4.css',
         'css/index5.css',
         'css/color2.css',
-        'css/acEdit2.css',
+        'css/acEdit3.css',
         'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
     ];
     public $js = [
+        //'//htmlweb.ru/geo/api.js',
+        'js/apiGeo.js',
+        //'js/geo/api.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
