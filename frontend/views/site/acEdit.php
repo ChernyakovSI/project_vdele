@@ -97,7 +97,8 @@ $this->registerLinkTag([
                 <p style='font-size:15px'><b>Текущий город:</b>
                     <input style='font-size:15px;width:450px' id="city" size="60"
                            placeholder="Начните вводить название"
-                           onfocus="_geo.f_Choice=CityChoice;_geo.init(this);" value=<?= $city->name ?> />
+                           value="<?= isset($city) ? $city->name : '' ?>"
+                           onfocus="_geo.f_Choice=CityChoice;_geo.init(this);" />
                 </p>
 
                 <div class="columnUnvis">
