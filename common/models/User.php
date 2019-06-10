@@ -78,8 +78,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return array(
-            'username' => 'Логин',
-            'email' => 'Электронная почта',
+            'username' => 'Электронная почта для входа',
+            'email' => 'Электронная почта для связи',
             'name' => 'Имя',
             'surname' => 'Фамилия',
             'middlename' => 'Отчество',
@@ -90,6 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
             'gender' => 'Пол',
             'date_of_birth' => 'Дата рождения',
             'date_of_birth_str' => 'Дата рождения',
+            'city' => 'Текущий город',
         );
     }
 

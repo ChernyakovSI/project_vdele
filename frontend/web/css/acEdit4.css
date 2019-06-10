@@ -141,3 +141,7 @@
     height: 0;
     opacity: 0;
 }
+
+.pad_text {
+    padding: 5px 15px;
+}

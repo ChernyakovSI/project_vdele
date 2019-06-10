@@ -94,12 +94,18 @@ $this->registerLinkTag([
             <div class="column1">
 
                 <script type="text/javascript" src="/js/geo/api.js" async></script>
-                <p style='font-size:15px'><b>Текущий город:</b>
+                <!--<p style='font-size:15px'><b>Текущий город:</b>
                     <input style='font-size:15px;width:450px' id="city" size="60"
                            placeholder="Начните вводить название"
-                           value="<?= isset($city) ? $city->name : '' ?>"
-                           onfocus="_geo.f_Choice=CityChoice;_geo.init(this);" />
-                </p>
+
+                           onfocus="_geo.f_Choice=CityChoice;_geo.init(this);"
+                            class = "pad_text" />
+                </p>-->
+                <?php
+                echo $form->field($cur_user, 'city')->textInput(['id' => "city", 'placeholder' => "Начните вводить название", 'value' => isset($city) ? $city->name : '', 'onfocus' => "_geo.f_Choice=CityChoice;_geo.init(this);"]);
+                echo $form->field($cur_user, 'email')->Input('email');
+                echo $form->field($cur_user, 'username')->textInput(['readonly' => true]);
+                ?>
 
                 <div class="columnUnvis">
                     <?php
