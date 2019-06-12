@@ -312,4 +312,24 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getFullYears($birthdayDate) {
+        $v  = time() - $birthdayDate;
+        return date('Y',$v)-1970;
+    }
+
+    public function getInclinationByNumber($number, $arr = Array()) {
+        $number = (string) $number;
+        $numberEnd = substr($number, -2);
+        $numberEnd2 = 0;
+        if(strlen($numberEnd) == 2){
+            $numberEnd2 = $numberEnd[0];
+            $numberEnd = $numberEnd[1];
+        }
+
+        if ($numberEnd2 == 1) return $arr[2];
+        else if ($numberEnd == 1) return $arr[0];
+        else if ($numberEnd > 1 && $numberEnd < 5)return $arr[1];
+        else return $arr[2];
+    }
 }

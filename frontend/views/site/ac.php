@@ -25,13 +25,14 @@ $this->title = 'Мой профиль';
         </div>
         <div class="window window-border main-info">
             <div class="full-width">
-                <?php if($cur_user->date_of_birth > 0) { ?>
+                <?php if($cur_user->date_of_birth > 0) {
+                    $fullYears = $cur_user->getFullYears($cur_user->date_of_birth); ?>
                 <div class="container-wrap-2colomns">
                     <div class="wrap2-column1">
                         <label>Дата рождения:</label>
                     </div>
                     <div class="wrap2-column2">
-                        <?= date('d', $cur_user->date_of_birth).' '.$months[date('n', $cur_user->date_of_birth) - 1].' '.date('Y', $cur_user->date_of_birth).' г.' ?>
+                        <?= date('d', $cur_user->date_of_birth).' '.$months[date('n', $cur_user->date_of_birth) - 1].' '.date('Y', $cur_user->date_of_birth).' г. ('.$fullYears.$cur_user->getInclinationByNumber($fullYears, Array(' год', ' года', ' лет')).')' ?>
                     </div>
                 </div>
                 <?php }
@@ -111,7 +112,7 @@ $this->title = 'Мой профиль';
                             <label>Skype:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->skype ?>
+                            <u><a href="skype:<?= $cur_user->skype ?>" target="_blank"> <?= $cur_user->skype ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -131,3 +132,5 @@ $this->title = 'Мой профиль';
         <div class="window window-border goals">goals</div>
     </div>
 </div>
+
+<a data-config="commands=*;size=14;status=off;theme=logo;language=ru;bgcolor=#2a92f3" id="skaip-buttons" href="http://www.skaip.su/">Skype</a><script src="//apps.skaip.su/buttons/widget/core.min.js" defer="defer"></script>
