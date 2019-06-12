@@ -61,7 +61,7 @@ $this->title = 'Мой профиль';
                             <label>ВКонтакте:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <u><a href="<?= $cur_user->url_vk ?>"> <?= $cur_user->url_vk ?> </a></u>
+                            <u><a href="<?= $cur_user->url_vk ?>" target="_blank"> <?= $cur_user->url_vk ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -71,7 +71,7 @@ $this->title = 'Мой профиль';
                             <label>Facebook:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <u><a href="<?= $cur_user->url_fb ?>"> <?= $cur_user->url_fb ?> </a></u>
+                            <u><a href="<?= $cur_user->url_fb ?>" target="_blank"> <?= $cur_user->url_fb ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -81,7 +81,7 @@ $this->title = 'Мой профиль';
                             <label>Одноклассники:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <u><a href="<?= $cur_user->url_ok ?>"> <?= $cur_user->url_ok ?> </a></u>
+                            <u><a href="<?= $cur_user->url_ok ?>" target="_blank"> <?= $cur_user->url_ok ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -91,7 +91,7 @@ $this->title = 'Мой профиль';
                             <label>Instagram:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <u><a href="<?= $cur_user->url_in ?>"> <?= $cur_user->url_in ?> </a></u>
+                            <u><a href="<?= $cur_user->url_in ?>" target="_blank"> <?= $cur_user->url_in ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -101,7 +101,7 @@ $this->title = 'Мой профиль';
                             <label>WWW:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <u><a href="<?= $cur_user->url_www ?>"> <?= $cur_user->url_www ?> </a></u>
+                            <u><a href="<?= $cur_user->url_www ?>" target="_blank"> <?= $cur_user->url_www ?> </a></u>
                         </div>
                     </div>
                 <?php }
