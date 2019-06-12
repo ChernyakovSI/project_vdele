@@ -61,7 +61,7 @@ $this->title = 'Мой профиль';
                             <label>ВКонтакте:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->url_vk ?>
+                            <u><a href="<?= $cur_user->url_vk ?>"> <?= $cur_user->url_vk ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -71,7 +71,7 @@ $this->title = 'Мой профиль';
                             <label>Facebook:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->url_fb ?>
+                            <u><a href="<?= $cur_user->url_fb ?>"> <?= $cur_user->url_fb ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -81,7 +81,7 @@ $this->title = 'Мой профиль';
                             <label>Одноклассники:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->url_ok ?>
+                            <u><a href="<?= $cur_user->url_ok ?>"> <?= $cur_user->url_ok ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -91,7 +91,7 @@ $this->title = 'Мой профиль';
                             <label>Instagram:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->url_in ?>
+                            <u><a href="<?= $cur_user->url_in ?>"> <?= $cur_user->url_in ?> </a></u>
                         </div>
                     </div>
                 <?php }
@@ -101,7 +101,7 @@ $this->title = 'Мой профиль';
                             <label>WWW:</label>
                         </div>
                         <div class="wrap2-column2">
-                            <?= $cur_user->url_www ?>
+                            <u><a href="<?= $cur_user->url_www ?>"> <?= $cur_user->url_www ?> </a></u>
                         </div>
                     </div>
                 <?php }
