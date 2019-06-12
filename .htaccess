@@ -7,3 +7,6 @@ RewriteRule ^admin\/?(.*) /backend/web/$1
 
 RewriteCond %{REQUEST_URI} !^/(frontend/web|backend/web|admin)
 RewriteRule (.*) /frontend/web/$1
+
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

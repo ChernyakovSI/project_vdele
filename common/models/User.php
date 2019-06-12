@@ -71,15 +71,16 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['id', 'status', 'id_role', 'created_at', 'updated_at', 'gender'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'surname', 'middlename'], 'safe'],
+            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'surname', 'middlename',
+                'phone', 'url_vk', 'url_fb', 'url_ok', 'url_in', 'url_www', 'skype', 'icq'], 'safe'],
         ];
     }
 
     public function attributeLabels()
     {
         return array(
-            'username' => 'Электронная почта для входа',
-            'email' => 'Электронная почта для связи',
+            'username' => 'Логин',
+            'email' => 'Email',
             'name' => 'Имя',
             'surname' => 'Фамилия',
             'middlename' => 'Отчество',
@@ -90,7 +91,16 @@ class User extends ActiveRecord implements IdentityInterface
             'gender' => 'Пол',
             'date_of_birth' => 'Дата рождения',
             'date_of_birth_str' => 'Дата рождения',
-            'city' => 'Текущий город',
+            'city' => 'Город',
+
+            'phone' => 'Телефон',
+            'url_vk' => 'ВКонтакте',
+            'url_fb' => 'Facebook',
+            'url_ok' => 'Одноклассники',
+            'url_in' => 'Instagram',
+            'url_www' => 'Другой сайт',
+            'skype' => 'Skype',
+            'icq' => 'ICQ',
         );
     }
 

@@ -113,12 +113,14 @@
 
 /*Разделение на две колонки*/
 .container-wrap-2colomns {
-    height: 100%;
+    /*height: 100%;*/
     width: 100%;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(2, 1fr); /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-columns: repeat(3, 1fr); /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
     grid-template-rows: auto;
+
+    /*grid-template-columns: 150px auto; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
 }
 
 .wrap-column1 {
@@ -131,4 +133,29 @@
     grid-row: 1 / -1;
     grid-column: 2 / 2;
     width: 100%;
+}
+
+.container-wrap2 {
+    height: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 150px auto; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-rows: auto;
+}
+
+.wrap2-column1 {
+    grid-row: 1 / -1;
+    grid-column: 1 / 1;
+    width: 100%;
+}
+
+.wrap2-column2 {
+    grid-row: 1 / -1;
+    grid-column: 2 / 5;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+    height: 100%;
 }

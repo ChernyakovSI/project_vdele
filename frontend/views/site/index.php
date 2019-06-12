@@ -23,7 +23,7 @@ $this->registerCssFile('css/index.css');
             (Платформа в разработке, плановая дата запуска 01.09.2019)
             <br>
             <br>
-            - Ознакомиться с презентацией проекта можно <a href="https://vk.cc/9tVs05" target="_blank">здесь</a>.
+            - Ознакомиться с презентацией проекта можно <u><a href="https://vk.cc/9tVs05" target="_blank">здесь</a></u>.
         </div>
         <div class="text-font text-right">
             <br>

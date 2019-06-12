@@ -134,10 +134,14 @@ class SiteController extends Controller
                 'декабря'
             ];
 
+            $cur_user = Yii::$app->user->identity;
+            $city = City::findById($cur_user->id_city);
+
             return $this->render('ac', [
-                'user_id' => Yii::$app->user->identity->getId(),
-                'cur_user' => Yii::$app->user,
+                'user_id' => $cur_user->getId(),
+                'cur_user' => $cur_user,
                 'months' => $months,
+                'city' => $city,
             ]);
         }
         else {

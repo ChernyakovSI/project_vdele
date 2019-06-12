@@ -91,37 +91,59 @@ $this->registerLinkTag([
             </p>
         </section>
         <section id="content-tab4" class="window window-border-bottom">
-            <div class="column1">
+            <div class="container-wrap-acEdit">
+                <div class="column1">
 
-                <script type="text/javascript" src="/js/geo/api.js" async></script>
-                <!--<p style='font-size:15px'><b>Текущий город:</b>
-                    <input style='font-size:15px;width:450px' id="city" size="60"
-                           placeholder="Начните вводить название"
+                    <script type="text/javascript" src="/js/geo/api.js" async></script>
 
-                           onfocus="_geo.f_Choice=CityChoice;_geo.init(this);"
-                            class = "pad_text" />
-                </p>-->
-                <?php
-                echo $form->field($cur_user, 'city')->textInput(['id' => "city", 'placeholder' => "Начните вводить название", 'value' => isset($city) ? $city->name : '', 'onfocus' => "_geo.f_Choice=CityChoice;_geo.init(this);"]);
-                echo $form->field($cur_user, 'email')->Input('email');
-                echo $form->field($cur_user, 'username')->textInput(['readonly' => true]);
-                ?>
-
-                <div class="columnUnvis">
+                    <div></div>
                     <?php
-                        echo $form->field($cur_user, 'id_city')->textInput(['id' => "id_city"]);
+                    echo Html::tag('div', 'Основные', ['class' => 'caption']);
                     ?>
+                    <div class="wrap_text">
+                        <?php
+                        echo $form->field($cur_user, 'city')->textInput(['id' => "city", 'placeholder' => "Начните вводить название", 'value' => isset($city) ? $city->name : '', 'onfocus' => "_geo.f_Choice=CityChoice;_geo.init(this);"]);
+                        echo $form->field($cur_user, 'email')->Input('email');
+                        echo $form->field($cur_user, 'username')->textInput(['readonly' => true]);
+                        echo $form->field($cur_user, 'phone')->widget(\yii\widgets\MaskedInput::className(), [
+                            'mask' => '+7 (999) 999-99-99',
+                        ])->textInput(['placeholder' => $cur_user->getAttributeLabel('phone')]);
+                        ?>
+                    </div>
+
+                    <div class="columnUnvis">
+                        <?php
+                            echo $form->field($cur_user, 'id_city')->textInput(['id' => "id_city"]);
+                        ?>
+                    </div>
+
+                    <?php
+                    echo Html::tag('div', 'Мессенджеры', ['class' => 'caption']);
+                    ?>
+                    <div class="wrap_text">
+                        <?php
+                        echo $form->field($cur_user, 'skype')->textInput();
+                        echo $form->field($cur_user, 'icq')->textInput();
+                        ?>
+                    </div>
+
+
+                    <div id="info"></div>
                 </div>
-
-                <!--<form method="get" action="//htmlweb.ru/geo/city.php" onsubmit="return CityChoice();" lpchecked="1">
-
-                    //_geo.f_Choice=CityChoice;_geo.init(this)  //htmlweb.ru/geo/api.js
-                    //echo $form->field($cur_user, 'surname')->textInput(['id' => 'city', 'onfocus' => "_geo.o_info=getObj('info');_geo.f_Choice=CityChoice;_geo.init(this)"]);
-                    //echo Html::Button('Показать', ['class' => 'btn btn-primary', 'onclick' => 'return CityChoice();']);
+                <div class="column2">
+                    <?php
+                    echo Html::tag('div', 'WWW адреса', ['class' => 'caption']);
                     ?>
-                </form>-->
-
-                <div id="info"></div>
+                    <div class="wrap_text">
+                        <?php
+                            echo $form->field($cur_user, 'url_vk')->textInput();
+                            echo $form->field($cur_user, 'url_fb')->textInput();
+                            echo $form->field($cur_user, 'url_ok')->textInput();
+                            echo $form->field($cur_user, 'url_in')->textInput();
+                            echo $form->field($cur_user, 'url_www')->textInput();
+                        ?>
+                    </div>
+                </div>
             </div>
         </section>
         <section id="content-tab5" class="window window-border-bottom">

@@ -145,3 +145,17 @@
 .pad_text {
     padding: 5px 15px;
 }
+
+.caption {
+    text-decoration: underline;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.wrap_text {
+    border-radius: 10px;
+    border: 1px solid #C0C0C0; /* Белая рамка */
+    padding: 15px;
+    margin-bottom: 15px;
+}
