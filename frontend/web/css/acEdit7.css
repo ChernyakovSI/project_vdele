@@ -159,3 +159,8 @@
     padding: 15px;
     margin-bottom: 15px;
 }
+
+.resize_vertical_only {
+    width: 100%;
+    resize: vertical;
+}

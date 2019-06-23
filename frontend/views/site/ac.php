@@ -7,12 +7,21 @@ use yii\web\UrlManager;
 /* @var $this yii\web\View class="site-index"*/
 
 $this->title = 'Мой профиль';
-//$this->registerCssFile('css/ac.css');
 
+$isFilled = false;
+//$this->registerCssFile('css/ac.css');
+//$path_avatar
 ?>
 <div class="content">
     <div class="container-wrap">
-        <div class="window window-border avatar">avatar</div>
+        <div class="window window-border avatar">
+            <?php if($path_avatar !== '') { ?>
+                <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
+            <?php }
+            else { ?>
+                <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font">
+            <?php } ?>
+        </div>
         <div class="window window-border window-caption-full FIO">
             <div class="FIO-main">
                 <?php
@@ -26,7 +35,8 @@ $this->title = 'Мой профиль';
         <div class="window window-border main-info">
             <div class="full-width">
                 <?php if($cur_user->date_of_birth > 0) {
-                    $fullYears = $cur_user->getFullYears($cur_user->date_of_birth); ?>
+                    $fullYears = $cur_user->getFullYears($cur_user->date_of_birth);
+                    $isFilled = true; ?>
                 <div class="container-wrap-2colomns">
                     <div class="wrap2-column1">
                         <label>Дата рождения:</label>
@@ -36,7 +46,8 @@ $this->title = 'Мой профиль';
                     </div>
                 </div>
                 <?php }
-                if($cur_user->id_city > 0) { ?>
+                if($cur_user->id_city > 0) {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Город:</label>
@@ -46,7 +57,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->phone <> '') { ?>
+                if($cur_user->phone <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Телефон:</label>
@@ -56,7 +68,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->url_vk <> '') { ?>
+                if($cur_user->url_vk <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>ВКонтакте:</label>
@@ -66,7 +79,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->url_fb <> '') { ?>
+                if($cur_user->url_fb <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Facebook:</label>
@@ -76,7 +90,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->url_ok <> '') { ?>
+                if($cur_user->url_ok <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Одноклассники:</label>
@@ -86,7 +101,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->url_in <> '') { ?>
+                if($cur_user->url_in <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Instagram:</label>
@@ -96,7 +112,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->url_www <> '') { ?>
+                if($cur_user->url_www <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>WWW:</label>
@@ -106,7 +123,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->skype <> '') { ?>
+                if($cur_user->skype <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>Skype:</label>
@@ -116,7 +134,8 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php }
-                if($cur_user->icq <> '') { ?>
+                if($cur_user->icq <> '') {
+                    $isFilled = true; ?>
                     <div class="container-wrap-2colomns">
                         <div class="wrap2-column1">
                             <label>ICQ:</label>
@@ -126,10 +145,41 @@ $this->title = 'Мой профиль';
                         </div>
                     </div>
                 <?php } ?>
+
+                <?php
+                if($cur_user->about <> '') {
+                    if($isFilled === true) {?>
+                        <br>
+                    <?php }
+                    $isFilled = true; ?>
+                    <div class="container-wrap-2colomns">
+                        <div class="wrap2-column1">
+                            <label>Доп. информация:</label>
+                        </div>
+                        <div class="wrap2-column2">
+                            <pre>
+                                <?= $cur_user->about ?>
+                            </pre>
+                        </div>
+                    </div>
+                <?php } ?>
+
+
+                <?php if($isFilled === false) {
+                ?>
+                    <div class="container-wrap-2colomns">
+                        <div class="wrap2-column1">
+
+                        </div>
+                        <div class="wrap2-column2">
+                            <label><u><a href="/site/ac-edit">Данные не заполнены.</a></u></label>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
 
         </div>
-        <div class="window window-border goals">goals</div>
+        <!--<div class="window window-border goals">goals</div>-->
     </div>
 </div>
 

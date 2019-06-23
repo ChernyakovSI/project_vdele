@@ -23,7 +23,9 @@ $this->registerLinkTag([
     <div class="window window-border window-caption">Редактирование профиля</div>
 
     <?php $form = ActiveForm::begin(
-        ['options' => ['class' => 'form-horizontal', 'id' => 'ac-edit'],
+        ['options' => ['class' => 'form-horizontal',
+                        'id' => 'ac-edit',
+                        'enctype' => 'multipart/form-data'],
             'fieldConfig' => [
                 'template' => "<div class=\"col-lg-3\">{label}</div>\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-12 col-lg-offset-3\">{error}</div>",
                 'labelOptions' => ['class' => ''],
@@ -52,9 +54,9 @@ $this->registerLinkTag([
             <div class="container-wrap-acEdit">
                 <div class="column1">
                     <?php
-                    echo $form->field($cur_user, 'surname')->textInput(['autofocus' => true]);
-                    echo $form->field($cur_user, 'name')->textInput();
-                    echo $form->field($cur_user, 'middlename')->textInput();
+                    echo $form->field($cur_user, 'surname')->textInput(['autofocus' => true])->label('Фамилия:');
+                    echo $form->field($cur_user, 'name')->textInput()->label('Имя:');
+                    echo $form->field($cur_user, 'middlename')->textInput()->label('Отчество:');
                     ?>
                 </div>
                 <div class="column2">
@@ -63,7 +65,7 @@ $this->registerLinkTag([
                         '0' => 'Не выбрано',
                         '1' => 'Мужской',
                         '2'=> 'Женский'
-                    ]);
+                    ])->label('Пол:');
                     echo $form->field($cur_user,'date_of_birth')->widget(DatePicker::class, [
                         'language' => 'ru',
                         'dateFormat' => 'dd.MM.yyyy',
@@ -80,15 +82,15 @@ $this->registerLinkTag([
                             //'buttonText' => 'Выбрать дату',
                             //'buttonImageOnly' => true,
                             //'buttonImage' => 'images/calendar.gif'
-                        ]])
+                        ]])->label('Дата рождения:')
                     ?>
                 </div>
             </div>
         </section>
         <section id="content-tab3" class="window window-border-bottom">
-            <p>
-                В разработке...
-            </p>
+            <?php echo $form->field($cur_user, 'imageFile')->fileInput()->label('Фото профиля:');
+            echo Html::tag('div', 'Рекомедуется загружать картинку с соотношением ширины к высоте, как 3:4'); ?>
+
         </section>
         <section id="content-tab4" class="window window-border-bottom">
             <div class="container-wrap-acEdit">
@@ -102,12 +104,14 @@ $this->registerLinkTag([
                     ?>
                     <div class="wrap_text">
                         <?php
-                        echo $form->field($cur_user, 'city')->textInput(['id' => "city", 'placeholder' => "Начните вводить название", 'value' => isset($city) ? $city->name : '', 'onfocus' => "_geo.f_Choice=CityChoice;_geo.init(this);"]);
-                        echo $form->field($cur_user, 'email')->Input('email');
-                        echo $form->field($cur_user, 'username')->textInput(['readonly' => true]);
+                        echo $form->field($cur_user, 'city')->
+                            textInput(['id' => "city", 'placeholder' => "Начните вводить название", 'value' => isset($city) ? $city->name : '', 'onfocus' => "_geo.f_Choice=CityChoice;_geo.init(this);"])->
+                            label('Город:');
+                        echo $form->field($cur_user, 'email')->Input('email')->label('Email:');
+                        echo $form->field($cur_user, 'username')->textInput(['readonly' => true])->label('Логин:');
                         echo $form->field($cur_user, 'phone')->widget(\yii\widgets\MaskedInput::className(), [
                             'mask' => '+7 (999) 999-99-99',
-                        ])->textInput(['placeholder' => $cur_user->getAttributeLabel('phone')]);
+                        ])->textInput(['placeholder' => $cur_user->getAttributeLabel('phone')])->label('Телефон:');
                         ?>
                     </div>
 
@@ -122,8 +126,8 @@ $this->registerLinkTag([
                     ?>
                     <div class="wrap_text">
                         <?php
-                        echo $form->field($cur_user, 'skype')->textInput();
-                        echo $form->field($cur_user, 'icq')->textInput();
+                        echo $form->field($cur_user, 'skype')->textInput()->label('Skype:');
+                        echo $form->field($cur_user, 'icq')->textInput()->label('ICQ:');
                         ?>
                     </div>
 
@@ -136,20 +140,22 @@ $this->registerLinkTag([
                     ?>
                     <div class="wrap_text">
                         <?php
-                            echo $form->field($cur_user, 'url_vk')->textInput();
-                            echo $form->field($cur_user, 'url_fb')->textInput();
-                            echo $form->field($cur_user, 'url_ok')->textInput();
-                            echo $form->field($cur_user, 'url_in')->textInput();
-                            echo $form->field($cur_user, 'url_www')->textInput();
+                            echo $form->field($cur_user, 'url_vk')->textInput()->label('ВКонтакте:');
+                            echo $form->field($cur_user, 'url_fb')->textInput()->label('Facebook:');
+                            echo $form->field($cur_user, 'url_ok')->textInput()->label('Одноклассники:');
+                            echo $form->field($cur_user, 'url_in')->textInput()->label('Instagram:');
+                            echo $form->field($cur_user, 'url_www')->textInput()->label('Другой сайт:');
                         ?>
                     </div>
                 </div>
             </div>
         </section>
         <section id="content-tab5" class="window window-border-bottom">
-            <p>
-                В разработке...
-            </p>
+            <?php
+            echo $form->field($cur_user, 'about', [
+                'template' => '{label}{input}{hint}{error}'
+            ])->textarea(['rows' => 15, 'cols' => 25, 'class' => 'resize_vertical_only'])->label('Дополнительная информация:');
+            ?>
         </section>
     </div>
 

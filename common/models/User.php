@@ -6,6 +6,8 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
+use common\models\Image;
 
 /**
  * User model
@@ -35,6 +37,11 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $id_team;
     public $id_user;
+
+    /**
+     * @var UploadedFile
+     */
+    public $imageFile;
 
     //public $id_role;
 
@@ -72,7 +79,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['id', 'status', 'id_role', 'created_at', 'updated_at', 'gender'], 'integer'],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'surname', 'middlename',
-                'phone', 'url_vk', 'url_fb', 'url_ok', 'url_in', 'url_www', 'skype', 'icq'], 'safe'],
+                'phone', 'url_vk', 'url_fb', 'url_ok', 'url_in', 'url_www', 'skype', 'icq', 'about'], 'safe'],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -101,6 +109,10 @@ class User extends ActiveRecord implements IdentityInterface
             'url_www' => 'Другой сайт',
             'skype' => 'Skype',
             'icq' => 'ICQ',
+
+            'about' => 'Дополнительная информация',
+
+            'imageFile' => 'Фото профиля',
         );
     }
 
@@ -331,5 +343,24 @@ class User extends ActiveRecord implements IdentityInterface
         else if ($numberEnd == 1) return $arr[0];
         else if ($numberEnd > 1 && $numberEnd < 5)return $arr[1];
         else return $arr[2];
+    }
+
+    public function upload($id_album = 0)
+    {
+        if ($this->validate()) {
+            $id_user = Yii::$app->user->identity->getId();
+            $imageFile = new Image();
+            $num = $imageFile->getNextNumForUser($id_user, $id_album);
+
+            $src = ''.$id_user.'_'.$id_album.'_'.$num. '.' . $this->imageFile->extension;
+
+            $this->imageFile->saveAs('data/img/avatar/'.$src);
+
+            $imageFile->addImage($id_user, $id_album, $num, $src);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

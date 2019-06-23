@@ -10,6 +10,10 @@
     grid-row: 1 / 3;
 }
 
+.avatar_font {
+    width: 290px;
+}
+
 .FIO {
     grid-column: 2 / -1;
 }
