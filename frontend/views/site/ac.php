@@ -10,7 +10,7 @@ $this->title = 'Мой профиль';
 
 $isFilled = false;
 //$this->registerCssFile('css/ac.css');
-//$path_avatar
+
 ?>
 <div class="content">
     <div class="container-wrap">
