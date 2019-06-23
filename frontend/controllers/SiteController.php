@@ -15,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\UploadedFile;
+use common\models\Image;
 
 /**
  * Site controller
@@ -135,13 +137,18 @@ class SiteController extends Controller
             ];
 
             $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
             $city = City::findById($cur_user->id_city);
 
+            $image = new Image();
+            $path_avatar = $image->getPathAvatarForUser($id_user);
+
             return $this->render('ac', [
-                'user_id' => $cur_user->getId(),
+                'user_id' => $id_user,
                 'cur_user' => $cur_user,
                 'months' => $months,
                 'city' => $city,
+                'path_avatar' => $path_avatar,
             ]);
         }
         else {
@@ -267,20 +274,36 @@ class SiteController extends Controller
             $user_id = Yii::$app->user->identity->getId();
             $cur_user = User::findIdentity($user_id);
 
-            if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
-                $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
-                $cur_user->id_city = (integer)Yii::$app->request->post()['User']['id_city'];
-                if ($cur_user->save()) {
-                    Yii::$app->session->setFlash('success', 'Изменения сохранены');
-                }
-                else
-                {
-                    //Yii::$app->session->setFlash('success', 'Не удалось записать изменения');
-                }
+            if (Yii::$app->request->isPost) {
+                if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
+                    $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
+                    $cur_user->id_city = (integer)Yii::$app->request->post()['User']['id_city'];
 
-            }
-            else {
-                //Yii::$app->session->setFlash('success', 'Не удалось записать изменения 2');
+                    $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
+                    //var_dump($cur_user->image);
+
+                    if (isset($cur_user->imageFile)) {
+                        if ($cur_user->upload()) {
+                            Yii::$app->session->setFlash('success', 'Фото профиля обновлено');
+                        }
+                        else
+                        {
+                            Yii::$app->session->setFlash('error', 'Не удалось обновить фото профиля');
+                        }
+                        //    Yii::$app->request->post()->image->saveAs('data/img/avatar/' . Yii::$app->request->post()->image->baseName . '.' . Yii::$app->request->post()->image->extension);
+                    }
+
+                    $cur_user->imageFile = '';
+
+                    if ($cur_user->save()) {
+                        Yii::$app->session->setFlash('success', 'Изменения сохранены');
+                    } else {
+                        //Yii::$app->session->setFlash('success', 'Не удалось записать изменения');
+                    }
+
+                } else {
+                    Yii::$app->session->setFlash('success', 'Не удалось записать изменения 2');
+                }
             }
 
             $city = City::findById($cur_user->id_city);
