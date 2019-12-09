@@ -12,7 +12,7 @@ $this->registerCssFile('css/index.css');
     </div>-->
     <div class="window window-border">
         <div class="text-font text-center">
-            Добро пожаловать в сообщество "Я в деле"!
+            Добро пожаловать в сообщество "Я в деле" !
         </div>
         <div class="text-font text-justify">
             <br>
