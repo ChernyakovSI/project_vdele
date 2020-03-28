@@ -202,10 +202,12 @@ $this->registerLinkTag([
         var imageFileInput = document.getElementById('imageFileInput');
         imageFileInput.value = '';
 
-        var Gender = document.getElementById('jsGender').val;
+        var Gender = document.getElementById('jsGender').value;
 
         var output = document.getElementById('output');
-        if (Gender = 1) {
+
+        //console.log('Gender = ' + Gender);
+        if (Gender == '1') {
             output.src = '/data/img/avatar/avatar_default.jpg';
         }
         else {
