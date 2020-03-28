@@ -88,8 +88,31 @@ $this->registerLinkTag([
             </div>
         </section>
         <section id="content-tab3" class="window window-border-bottom">
-            <?php echo $form->field($cur_user, 'imageFile')->fileInput()->label('Фото профиля:');
+            <?php
+            echo $form->field($cur_user, 'imageFile')->fileInput(['onchange' => 'loadFile(event)', 'id' => 'imageFileInput'])->label('Фото профиля:');
             echo Html::tag('div', 'Рекомедуется загружать картинку с соотношением ширины к высоте, как 3:4'); ?>
+            <div class="content">
+                <div class="container-wrap3">
+                    <div class="window window-border avatar">
+                        <?php if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                            <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font" id="output">
+                        <?php }
+                        else {
+                            if((isset($cur_user->gender)) && ($cur_user->gender === 2)) { ?>
+                                <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font" id="output">
+                            <?php }
+                            else { ?>
+                                <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font" id="output">
+                            <?php }
+                        } ?>
+                    </div>
+                    <div class="window window-border main-info columnUnvis">
+                        <input type="text" value="<?= ((isset($cur_user->gender)) && ($cur_user->gender === 2)) ? '2' : '1';  ?>" id = "jsGender" hidden>
+                    </div>
+                </div>
+            </div>
+            </br>
+            <?= Html::Button('Удалить', ['class' => 'btn btn-primary', 'onclick' => 'DeleteAvatar()']) ?>
 
         </section>
         <section id="content-tab4" class="window window-border-bottom">
@@ -165,3 +188,32 @@ $this->registerLinkTag([
 
     <?php ActiveForm::end(); ?>
 </div>
+
+<script>
+    var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+    var DeleteAvatar = function() {
+        var imageFileInput = document.getElementById('imageFileInput');
+        imageFileInput.value = '';
+
+        var Gender = document.getElementById('jsGender').val;
+
+        var output = document.getElementById('output');
+        if (Gender = 1) {
+            output.src = '/data/img/avatar/avatar_default.jpg';
+        }
+        else {
+            output.src = '/data/img/avatar/avatar_default_w.jpg';
+        }
+
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+</script>

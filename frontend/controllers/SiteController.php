@@ -274,6 +274,9 @@ class SiteController extends Controller
             $user_id = Yii::$app->user->identity->getId();
             $cur_user = User::findIdentity($user_id);
 
+            $image = new Image();
+            $path_avatar = $image->getPathAvatarForUser($user_id);
+
             if (Yii::$app->request->isPost) {
                 if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
                     $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
@@ -282,7 +285,7 @@ class SiteController extends Controller
                     $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
                     //var_dump($cur_user->image);
 
-                    if (isset($cur_user->imageFile)) {
+                    //if (isset($cur_user->imageFile)) {
                         if ($cur_user->upload()) {
                             Yii::$app->session->setFlash('success', 'Фото профиля обновлено');
                         }
@@ -291,7 +294,7 @@ class SiteController extends Controller
                             Yii::$app->session->setFlash('error', 'Не удалось обновить фото профиля');
                         }
                         //    Yii::$app->request->post()->image->saveAs('data/img/avatar/' . Yii::$app->request->post()->image->baseName . '.' . Yii::$app->request->post()->image->extension);
-                    }
+                    //}
 
                     $cur_user->imageFile = '';
 
@@ -311,6 +314,7 @@ class SiteController extends Controller
             return $this->render('acEdit', [
                 'cur_user' => $cur_user,
                 'city' => $city,
+                'path_avatar' => $path_avatar,
             ]);
         }
         else {
