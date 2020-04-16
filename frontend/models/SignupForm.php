@@ -36,11 +36,12 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Данная электронная почта уже зарегистрирована.'],
 
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'match', 'pattern' => '/^.*(?=.*\d)(?=.*[a-z,а-я,ё])(?=.*[A-Z,А-Я,Ё])(?=.*[@,_,-,\+,*,\/,\.,\,,\^,:,%]).*$/', 'message' => 'Пароль должен содержать минимум одну прописную букву, одну заглавную букву, одну цифру и один специальный символ'],
+            ['password', 'string', 'min' => 12],
 
             ['passwordAgain', 'required'],
             ['passwordAgain', 'compare', 'compareAttribute'=>'password',  'message' => 'Пароли в двух полях должны совпадать'],
-            ['passwordAgain', 'string', 'min' => 6],
+            ['passwordAgain', 'string', 'min' => 12],
 
             /*['name', 'trim'],
             ['name', 'required'],
@@ -91,7 +92,9 @@ class SignupForm extends Model
         $user->id_role = 2;
         $user->setPassword($this->password);
         $user->generateAuthKey();
+        $user->email_token = md5($user->email.time());
+        $user->sendConfirmLetter();
         
-        return $user->save() ? $user : null;
+        //return $user->save() ? $user : null;
     }
 }

@@ -186,6 +186,8 @@
     width: 100%;
     height: 100%;
     resize: none;
+    background-color: rgba(84, 66, 58, 0);
+    border: 0px;
 }
 
 .container-wrap-last {

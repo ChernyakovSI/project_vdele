@@ -2,6 +2,7 @@
 
 use \common\models\Ac;
 use yii\helpers\Html;
+use \common\models\GeneralView;
 use yii\web\UrlManager;
 
 /* @var $this yii\web\View class="site-index"*/
@@ -39,7 +40,7 @@ $isFilled = false;
         </div>
         <div class="window window-border main-info">
             <div class="full-height full-width">
-                <div class="full-width">
+
                     <?php if($cur_user->date_of_birth > 0) {
                         $fullYears = $cur_user->getFullYears($cur_user->date_of_birth);
                         $isFilled = true; ?>
@@ -152,22 +153,6 @@ $isFilled = false;
                         </div>
                     <?php } ?>
 
-                    <div class="full-width">
-                        <?php
-                        if($cur_user->about <> '') {
-                            if($isFilled === true) {?>
-                                <br>
-                            <?php }
-                            $isFilled = true; ?>
-                            <?= Html::label('Дополнительная информация:', 'about')?>
-                            <pre>
-                                <?php echo $cur_user->about ?>
-                            </pre>
-                            <?php //echo Html::textarea('about', $cur_user->about, ['class' => 'label-about']) ?>
-
-                        <?php } ?>
-                    </div>
-
                     <?php if(($isFilled === false) && ($cur_user->about === '')) {
                         ?>
                         <div class="container-wrap-2colomns">
@@ -179,16 +164,30 @@ $isFilled = false;
                             </div>
                         </div>
                     <?php } ?>
-                </div>
-
             </div>
 
 
         </div>
-        <!--<div class="window window-border add-info">
 
-        </div>-->
-        <!--<div class="window window-border goals">goals</div>-->
+        <div class="window window-border goals">
+            <div class="full-width">
+                <?php
+                if($cur_user->about <> '') {
+                    if($isFilled === true) {?>
+                        <br>
+                    <?php }
+                    $isFilled = true; ?>
+                    <?= Html::label('Дополнительная информация:', 'about')?>
+                    <?= Html::textarea('about', $cur_user->about, ['class' => 'label-about', 'readonly' => 'readonly', 'rows' => '10'])?>
+
+
+                    <?php //echo Html::textarea('about', $cur_user->about, ['class' => 'label-about']) ?>
+
+                <?php } ?>
+            </div>
+
+
+        </div>
     </div>
 </div>
 
