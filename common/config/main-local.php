@@ -20,7 +20,7 @@ return [
                 'username' => 'robot@yavdele.net',
                 'password' => '431107668727cnfc7',
                 'port' => '587', // Port 25 is a very common port too
-                //'encryption' => 'ssl', // It is often used, check your provider or mail server specs
+                'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],
         ],
     ],

@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
+use yii\helpers\Html;
 use common\models\Image;
 
 /**
@@ -381,7 +382,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         //Составляем дополнительные заголовки для почтового сервиса mail.ru
         //Переменная $email_admin, объявлена в файле dbconnect.php
-        $headers = "FROM: Yii::$app->params['adminEmail']\r\nReply-to: Yii::$app->params['adminEmail']\r\nContent-type: text/html; charset=utf-8\r\n";
+        $headers = 'FROM: '.Yii::$app->params['adminEmail'].'\r\nReply-to: '.Yii::$app->params['adminEmail'].'\r\nContent-type: text/html; charset=utf-8\r\n';
 
         mail($this->email, $subject, $message, $headers);
     }
