@@ -384,6 +384,17 @@ class User extends ActiveRecord implements IdentityInterface
         //Переменная $email_admin, объявлена в файле dbconnect.php
         $headers = 'FROM: '.Yii::$app->params['adminEmail'].'\r\nReply-to: '.Yii::$app->params['adminEmail'].'\r\nContent-type: text/html; charset=utf-8\r\n';
 
-        mail($this->email, $subject, $message, $headers);
+        Yii::$app->session->setFlash('success', 'Начало: '.$this->email);
+
+        //mail($this->email, $subject, $message, $headers);
+        Yii::$app->mailer->compose()
+            ->setFrom('robot@yavdele.net')
+            ->setTo($this->email)
+            ->setSubject($subject)
+            ->setTextBody($message)
+            //->setHtmlBody('<b>текст сообщения в формате HTML</b>')
+            ->send();
+
+        Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
     }
 }
