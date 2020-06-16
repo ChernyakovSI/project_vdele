@@ -393,7 +393,7 @@ class User extends ActiveRecord implements IdentityInterface
         $emailTo = $this->email;
         $server = $_SERVER['HTTP_HOST'];
         mail( "$emailTo", "$subject",
-            $message,  $headers);
+            $message,  "From: robot@" . $_SERVER['HTTP_HOST']);
         echo "Message has been sent to $emailTo";
 
         //mail($this->email, $subject, $message, $headers);...
