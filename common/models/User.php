@@ -403,8 +403,8 @@ class User extends ActiveRecord implements IdentityInterface
             ->setTo($emailTo)
             ->setFrom([$emailFrom => "Я в деле"])
             //->setSubject($subject)
-            //->setSubject($subject)
-            ->setTextBody($message)
+            ->setSubject($subject)
+            //->setTextBody($message)
             //->setCharset()
             ->setHtmlBody($message)
             ->send();
