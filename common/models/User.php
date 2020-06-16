@@ -395,7 +395,7 @@ class User extends ActiveRecord implements IdentityInterface
             $message, "From: robot@" . $_SERVER['HTTP_HOST'] );
         echo "Message has been sent to $emailTo";
 
-        //mail($this->email, $subject, $message, $headers);
+        //mail($this->email, $subject, $message, $headers);...
         Yii::$app->mailer->compose()
             ->setFrom($emailFrom)
             //->setTo($this->email)
