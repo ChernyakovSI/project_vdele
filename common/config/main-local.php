@@ -11,9 +11,9 @@ return [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
+            //'viewPath' => '@common/mail',
             //'useFileTransport' => true,
-            'useFileTransport' => false,
+            'useFileTransport' => true,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.hostinger.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
