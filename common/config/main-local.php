@@ -13,7 +13,7 @@ return [
             'class' => 'yii\swiftmailer\Mailer',
             //'viewPath' => '@common/mail',
             //'useFileTransport' => true,
-            'useFileTransport' => true,
+            'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.hostinger.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
