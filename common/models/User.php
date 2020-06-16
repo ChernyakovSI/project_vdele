@@ -386,29 +386,24 @@ class User extends ActiveRecord implements IdentityInterface
 
         //"From: robot@" . $_SERVER['HTTP_HOST']
 
-        Yii::$app->session->setFlash('success', 'Начало: '.$this->email);
+        //Yii::$app->session->setFlash('success', 'Начало: '.$this->email);
 
         //$email = $_REQUEST['email'] ;
         $emailFrom = "robot@yavdele.net";
         $emailTo = $this->email;
-        $server = $_SERVER['HTTP_HOST'];
-        mail( "$emailTo", "$subject",
+        /*mail( "$emailTo", "$subject",
             $message, "From: robot@" . $_SERVER['HTTP_HOST'] ."\r\n"
             ."Content-type: text/html; charset=utf-8\r\n"
-            ."X-Mailer: PHP mail script" );
+            ."X-Mailer: PHP mail script" );*/
 
         //mail($this->email, $subject, $message, $headers);...
         Yii::$app->mailer->compose()
-
             ->setTo($emailTo)
             ->setFrom([$emailFrom => "Я в деле"])
-            //->setSubject($subject)
             ->setSubject($subject)
-            //->setTextBody($message)
-            //->setCharset()
             ->setHtmlBody($message)
             ->send();
 
-        Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
+        //Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
     }
 }
