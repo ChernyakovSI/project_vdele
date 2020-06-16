@@ -398,7 +398,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         //mail($this->email, $subject, $message, $headers);...
         Yii::$app->mailer->compose()
-            //->setFrom($emailFrom)
+            ->setFrom($emailFrom)
             ->setTo($emailTo)
             //->setSubject($subject)
             ->setSubject($subject)
