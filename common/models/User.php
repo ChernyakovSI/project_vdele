@@ -388,8 +388,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         //$email = $_REQUEST['email'] ;
         $emailFrom = "robot@yavdele.net";
-        $emailTo = "robot@yavdele.net";
-        $subject = "Mail test" ;
+        $emailTo = "paladin_cool@inbox.ru";
         $server = $_SERVER['HTTP_HOST'];
         $message = "If you got this message, mail sending from $server is working fine :)" ;
         mail( "$emailTo", "$subject",
