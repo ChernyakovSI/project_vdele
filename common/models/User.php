@@ -393,18 +393,20 @@ class User extends ActiveRecord implements IdentityInterface
         $emailTo = $this->email;
         $server = $_SERVER['HTTP_HOST'];
         mail( "$emailTo", "$subject",
-            $message,  "From: robot@" . $_SERVER['HTTP_HOST']);
-        echo "Message has been sent to $emailTo";
+            $message, "From: robot@" . $_SERVER['HTTP_HOST'] ."\r\n"
+            ."Content-type: text/html; charset=utf-8\r\n"
+            ."X-Mailer: PHP mail script" );
 
         //mail($this->email, $subject, $message, $headers);...
         Yii::$app->mailer->compose()
-            ->setFrom($emailFrom)
+
             ->setTo($emailTo)
+            ->setFrom([$emailFrom => "Я в деле"])
             //->setSubject($subject)
-            ->setSubject($subject)
+            //->setSubject($subject)
             ->setTextBody($message)
             //->setCharset()
-            //->setHtmlBody('<b>текст сообщения в формате HTML</b>')
+            ->setHtmlBody($message)
             ->send();
 
         Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
