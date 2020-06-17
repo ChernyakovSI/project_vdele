@@ -95,6 +95,6 @@ class SignupForm extends Model
         $user->email_token = md5($user->email.time());
         $user->sendConfirmLetter();
         
-        //return $user->save() ? $user : null;
+        return $user->save() ? $user : null;
     }
 }
