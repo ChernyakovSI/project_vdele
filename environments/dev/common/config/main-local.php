@@ -11,17 +11,17 @@ return [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
+            //'viewPath' => '@common/mail',
             //'useFileTransport' => true,
             'useFileTransport' => false,
-            'transport' => [
+            /*'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.hostinger.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
                 'username' => 'robot@yavdele.net',
                 'password' => 'XX|jQ1XC$hf@wetl',
                 'port' => '587', // Port 25 is a very common port too
                 'encryption' => 'ssl', // It is often used, check your provider or mail server specs
-            ],
+            ],*/
         ],
         /*'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

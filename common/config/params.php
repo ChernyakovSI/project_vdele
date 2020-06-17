@@ -1,4 +1,5 @@
 <?php
+//Можно обращаться к ним Yii::$app->params['doman']
 return [
     'adminEmail' => 'yavdele@list.ru',
     'supportEmail' => 'yavdele@list.ru',

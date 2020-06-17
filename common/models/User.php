@@ -397,13 +397,15 @@ class User extends ActiveRecord implements IdentityInterface
             ."X-Mailer: PHP mail script" );*/
 
         //mail($this->email, $subject, $message, $headers);...
-        Yii::$app->mailer->compose()
+
+
+        /*Yii::$app->mailer->compose()
             ->setTo($emailTo)
             ->setFrom([$emailFrom => "Я в деле"])
             ->setSubject($subject)
             ->setHtmlBody($message)
             ->send();
-
+*/
         //Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
     }
 }
