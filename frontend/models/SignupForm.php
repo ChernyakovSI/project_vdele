@@ -82,6 +82,8 @@ class SignupForm extends Model
         if ($this->password != $this->passwordAgain) {
             return null;
         }
+
+        $this->username = $this->email;
         
         $user = new User();
         $user->username = $this->email;
