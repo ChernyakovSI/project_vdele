@@ -217,7 +217,7 @@ class SiteController extends Controller
                 //}
 
 
-                if (Yii::$app->user->login($user)) {
+                if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
                     /*if (isset(Yii::$app->user->identity)) {
                         //Yii::$app->session->setFlash('success', 'Авторизован');
                         //return Yii::$app->response->redirect(Url::to('site/index'));
