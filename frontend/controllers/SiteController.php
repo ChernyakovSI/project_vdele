@@ -17,6 +17,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\UploadedFile;
 use common\models\Image;
+use yii\helpers\Url;
 
 /**
  * Site controller
