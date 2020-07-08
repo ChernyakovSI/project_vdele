@@ -23,6 +23,7 @@ return [
                 //'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],*/
         ],
+
     ],
 ];
 

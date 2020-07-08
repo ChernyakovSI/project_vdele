@@ -64,7 +64,7 @@ class SiteController extends Controller
                                     'reset-password',
                                     'login',
                                     'signup'],
-                        'controllers' => ['site'],
+                        'controllers' => ['site','xxx'],
                         'allow' => true,
                     ],
                     /*[
@@ -76,7 +76,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'ac-edit',
                                     'ac-add-city'],
-                        'controllers' => ['site'],
+                        'controllers' => ['site','xxx'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -142,6 +142,10 @@ class SiteController extends Controller
 
             $image = new Image();
             $path_avatar = $image->getPathAvatarForUser($id_user);
+
+            if (!(user::activated($cur_user->getEmail()))) {
+            Yii::$app->session->setFlash('error', 'Аккаунт не подтвержден! Перейдите по ссылке подтверждения, высланной на почту, по которой зарегистрировались!');
+            }
 
             return $this->render('ac', [
                 'user_id' => $id_user,

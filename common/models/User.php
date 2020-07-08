@@ -222,6 +222,11 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
     /**
      * Finds user by password reset token
      *
@@ -263,6 +268,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -407,5 +417,35 @@ class User extends ActiveRecord implements IdentityInterface
             ->send();
 
         //Yii::$app->session->setFlash('success', 'Конец: '.$this->email);
+
+
+    }
+
+    public static function activate($token, $email)
+    {
+        $realToken = User::find()->select('max(email_token)')->where(['email' => $email])->scalar();
+
+        if (isset($realToken) && ($realToken == $token)) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static function activated($email)
+    {
+        $realStatus = User::find()->select('max(email_status)')->where(['email' => $email])->scalar();
+
+        if (isset($realStatus) && ($realStatus == 1)) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
+
+
