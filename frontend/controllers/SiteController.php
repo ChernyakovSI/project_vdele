@@ -210,9 +210,21 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
+                $model = new LoginForm();
+                //if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                    //return $this->goBack();
+                //}
+
+
                 if (Yii::$app->getUser()->login($user)) {
-                    sleep(2);
-                    return $this->goHome();
+                    if (isset(Yii::$app->user->identity)) {
+                        Yii::$app->session->setFlash('success', 'Авторизован');
+                    }
+                    else
+                    {
+                        Yii::$app->session->setFlash('error', 'Не авторизован');
+                    }
+                //    return $this->goHome();
                 }
             }
         }
