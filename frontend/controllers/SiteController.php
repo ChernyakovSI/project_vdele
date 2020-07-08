@@ -220,7 +220,40 @@ class SiteController extends Controller
                 if (Yii::$app->getUser()->login($user)) {
                     if (isset(Yii::$app->user->identity)) {
                         //Yii::$app->session->setFlash('success', 'Авторизован');
-                        return Yii::$app->response->redirect(Url::to('site/index'));
+                        //return Yii::$app->response->redirect(Url::to('site/index'));
+                        $months = [
+                            'января',
+                            'февраля',
+                            'марта',
+                            'апреля',
+                            'мая',
+                            'июня',
+                            'июля',
+                            'августа',
+                            'сентября',
+                            'октября',
+                            'ноября',
+                            'декабря'
+                        ];
+
+                        $cur_user = Yii::$app->user->identity;
+                        $id_user = $cur_user->getId();
+                        $city = City::findById($cur_user->id_city);
+
+                        $image = new Image();
+                        $path_avatar = $image->getPathAvatarForUser($id_user);
+
+                        if (!(user::activated($cur_user->getEmail()))) {
+                            Yii::$app->session->setFlash('error', 'Аккаунт не подтвержден! Перейдите по ссылке подтверждения, высланной на почту, по которой зарегистрировались!');
+                        }
+
+                        return $this->render('ac', [
+                            'user_id' => $id_user,
+                            'cur_user' => $cur_user,
+                            'months' => $months,
+                            'city' => $city,
+                            'path_avatar' => $path_avatar,
+                        ]);
                     }
 
                 //    return $this->goHome();
