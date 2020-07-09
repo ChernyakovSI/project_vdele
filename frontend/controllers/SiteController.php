@@ -346,6 +346,6 @@ class SiteController extends Controller
 
         $cur_user->sendConfirmLetter();
 
-        return $this->render('index');
+        return $this->render('ac');
     }
 }
