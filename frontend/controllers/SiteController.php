@@ -347,5 +347,7 @@ class SiteController extends Controller
         $cur_user = User::findIdentity($user_id);
 
         $cur_user->sendConfirmLetter();
+
+        return $this->render('index');
     }
 }
