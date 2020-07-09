@@ -68,6 +68,7 @@ class SiteController extends Controller
                         'controllers' => ['site'],
                         'allow' => true,
                     ],
+
                     /*[
                         'actions' => ['login', 'signup'],
                         'controllers' => ['site'],
