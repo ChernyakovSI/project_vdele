@@ -7,6 +7,14 @@ $config = [
             'cookieValidationKey' => '',
         ],
     ],
+
+    'controllerMap' => [
+        'ac' => 'frontend\controllers\SiteController',
+        //'yyy' => [
+        //    'class' => 'app\controllers\SiteController',
+        //    'enableCsrfValidation' => false,
+        //],
+    ],
 ];
 
 if (!YII_ENV_TEST) {

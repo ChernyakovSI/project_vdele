@@ -65,7 +65,7 @@ class SiteController extends Controller
                                     'reset-password',
                                     'login',
                                     'signup'],
-                        'controllers' => ['site','xxx'],
+                        'controllers' => ['site'],
                         'allow' => true,
                     ],
                     /*[
@@ -76,8 +76,9 @@ class SiteController extends Controller
                     ],*/
                     [
                         'actions' => ['logout', 'ac-edit',
-                                    'ac-add-city'],
-                        'controllers' => ['site','xxx'],
+                                    'ac-add-city',
+                                    'send-confirm-letter'],
+                        'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -211,23 +212,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
-                //$model = new LoginForm();
-                //if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                    //return $this->goBack();
-                //}
-
-
                 if (Yii::$app->user->login($user, 3600 * 24 * 30)) {
-                    /*if (isset(Yii::$app->user->identity)) {
-                        //Yii::$app->session->setFlash('success', 'Авторизован');
-                        //return Yii::$app->response->redirect(Url::to('site/index'));
-                        $model = new LoginForm();
-                        $model->username
-                        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                            return $this->goBack();
-                        }
-                    }*/
-
                     return $this->goHome();
                 }
             }
@@ -354,5 +339,12 @@ class SiteController extends Controller
         else {
             return 0;
         }
+    }
+
+    public function actionSendConfirmLetter() {
+        $user_id = Yii::$app->user->identity->getId();
+        $cur_user = User::findIdentity($user_id);
+
+        $cur_user->sendConfirmLetter();
     }
 }

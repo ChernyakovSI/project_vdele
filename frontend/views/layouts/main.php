@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use common\models\Ac;
+use common\models\User;
 
 AppAsset::register($this);
 
@@ -48,10 +49,18 @@ $this->registerLinkTag([
     $menuItems = [
         ['label' => 'Главная', 'url' => ['/']]
     ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Зарегистрироваться', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
+
+        $id = Yii::$app->user->id;
+        $curUser = User::findIdentity($id);
+        if (!User::activated($curUser->email))
+        {
+            $menuItems[] = ['label' => '(!) Выслать ссылку активации', 'url' => ['/site/send-confirm-letter']];
+        }
         /*$menuItems = [
             ['label' => 'Мои задачи', 'url' => ['/task']],
             ['label' => 'Мои команды', 'url' => ['/team']],

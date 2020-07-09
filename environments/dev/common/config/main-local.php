@@ -23,13 +23,7 @@ return [
                 'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],*/
         ],
-        /*'controllerMap' => [
-            'xxx' => 'app\controllers\SiteController',
-            'yyy' => [
-                'class' => 'app\controllers\SiteController',
-                'enableCsrfValidation' => false,
-            ],
-        ],*/
+
         /*'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
