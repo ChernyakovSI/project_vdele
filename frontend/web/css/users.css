@@ -1,0 +1,19 @@
+.users-container-wrap {
+    height: 200px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 150px repeat(1, 1fr);
+    grid-template-rows: auto;
+}
+
+.users-container-wrap:not(:first-child) {
+    margin-top: 20px;
+}
+
+.users-avatar {
+    grid-row: 1 / 2;
+}
+
+.users-avatar_font {
+    width: 130px;
+}

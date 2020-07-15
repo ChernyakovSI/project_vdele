@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use frontend\models\TaskSearch;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\data\Pagination;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -78,7 +79,8 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'ac-edit',
                                     'ac-add-city',
-                                    'send-confirm-letter'],
+                                    'send-confirm-letter',
+                                    'users'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@'],
@@ -347,5 +349,25 @@ class SiteController extends Controller
         $cur_user->sendConfirmLetter();
 
         return $this->actionIndex();
+    }
+
+    public function actionUsers() {
+
+        $query = User::find();
+
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        $users = $query->orderBy('id')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('users', [
+            'users' => $users,
+            'pagination' => $pagination,
+        ]);
     }
 }

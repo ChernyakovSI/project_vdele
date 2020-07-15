@@ -61,6 +61,10 @@ $this->registerLinkTag([
         {
             $menuItems[] = ['label' => '(!) Выслать ссылку активации', 'url' => ['/site/send-confirm-letter']];
         }
+        else
+        {
+            $menuItems[] = ['label' => 'Пользователи', 'url' => ['/users']];
+        }
         /*$menuItems = [
             ['label' => 'Мои задачи', 'url' => ['/task']],
             ['label' => 'Мои команды', 'url' => ['/team']],
@@ -128,7 +132,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> _ <?= date('Y') ?></p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>
