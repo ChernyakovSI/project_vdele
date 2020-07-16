@@ -320,7 +320,7 @@ class SiteController extends Controller
 
             $city = City::findById($cur_user->id_city);
 
-            return $this->render('acEdit', [
+            return $this->render('ac-edit', [
                 'cur_user' => $cur_user,
                 'city' => $city,
                 'path_avatar' => $path_avatar,

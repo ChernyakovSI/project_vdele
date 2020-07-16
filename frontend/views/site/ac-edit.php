@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerLinkTag([
     'rel' => 'shortcut icon',
     'type' => 'image/x-icon',
-    'href' => 'favicon.png',
+    'href' => '/frontend/web/favicon.png',
 ]);
 ?>
 

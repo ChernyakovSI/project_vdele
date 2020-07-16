@@ -5,8 +5,20 @@ use yii\widgets\LinkPager;
 use common\models\Image;
 
 $this->title = 'Пользователи';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-    <h1>Пользователи</h1>
+<div class="window window-border window-caption">Пользователи</div>
+
+
+<div class="users-center">
+    <?= LinkPager::widget(['pagination' => $pagination,
+        'firstPageLabel' => '<<',
+        'lastPageLabel' => '>>',
+        'prevPageLabel' => '<',
+        'nextPageLabel' => '>',
+        'maxButtonCount' => 8,
+        'disabledPageCssClass' => 'disabled',]) ?></div>
+
     <div class="content">
         <?php foreach ($users as $user): ?>
 
