@@ -72,3 +72,35 @@ a {
     border-color: rgba(84, 66, 58, 0.2);
     text-align: center;
 }
+
+.pagination > .active > a{
+    color: #ffffff;
+    background-color: #503836;
+    border-color: #44322a;
+}
+
+.pagination > .active > a:hover{
+    color: #ffffff;
+    background-color: #463232;
+    border-color: #402e28;
+}
+
+.pagination > li > a{
+    color: #dddddd;
+    background-color: #54423a;
+}
+
+.pagination > li > a:hover{
+    color: #ffffff;
+    background-color: #503836;
+}
+
+.pagination > .disabled > span {
+    color: #dddddd;
+    background-color: #54423a;
+}
+
+.pagination > .disabled > span:hover {
+    color: #dddddd;
+    background-color: #54423a;
+}

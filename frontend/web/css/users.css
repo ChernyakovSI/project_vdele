@@ -17,3 +17,7 @@
 .users-avatar_font {
     width: 130px;
 }
+
+.users-center {
+    text-align: center;
+}

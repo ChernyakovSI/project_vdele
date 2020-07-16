@@ -35,4 +35,11 @@ $this->title = 'Пользователи';
         <?php endforeach; ?>
     </div>
 
-<?= LinkPager::widget(['pagination' => $pagination]) ?>
+<div class="users-center">
+<?= LinkPager::widget(['pagination' => $pagination,
+    'firstPageLabel' => '<<',
+    'lastPageLabel' => '>>',
+    'prevPageLabel' => '<',
+    'nextPageLabel' => '>',
+    'maxButtonCount' => 8,
+    'disabledPageCssClass' => 'disabled',]) ?></div>
