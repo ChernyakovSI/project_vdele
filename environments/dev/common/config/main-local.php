@@ -23,6 +23,9 @@ return [
                 'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],*/
         ],
+        /*'bootstrap' => [
+            'class' => 'common\models\Bootstrap'
+        ]*/
 
         /*'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

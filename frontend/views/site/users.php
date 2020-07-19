@@ -7,7 +7,7 @@ use common\models\Image;
 $this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="window window-border window-caption">Пользователи</div>
+<div class="window window-border window-caption">Пользователи (<?= count($usersAll) ?>)</div>
 
 
 <div class="users-center">
@@ -42,9 +42,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 </a>
                 <div>
-                    <a href="/?id=<?= $user->getId() ?>">
-                    <?= Html::encode("{$user->getFIO($user->id, false)}") ?>
-                    </a>
+                    <div>
+                        <a href="/?id=<?= $user->getId() ?>">
+                            <?= Html::encode("{$user->getFIO($user->id, false)}") ?>
+                        </a>
+                        <div class="subwindow unactive">
+                            <?= Html::encode("{$user->getTimeLastActivity()}") ?>
+                        </div>
+                    </div>
+
                 </div>
 
 

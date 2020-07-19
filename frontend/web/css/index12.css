@@ -113,8 +113,21 @@
 }
 
 .subwindow {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+    min-width: 105px;
+}
+
+.ac-last-activity:hover::after {
+    content: 'Последний раз был активен';
+    position: absolute; /* Абсолютное позиционирование */
+    right: 20%; top: 10%; /* Положение подсказки */
+    z-index: 1; /* Отображаем подсказку поверх других элементов */
+    background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+    font-family: Arial, sans-serif; /* Гарнитура шрифта */
+    font-size: 11px; /* Размер текста подсказки */
+    padding: 5px 10px; /* Поля */
+    border: 1px solid #333; /* Параметры рамки */
 }
 
 .unactive {

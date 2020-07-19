@@ -37,8 +37,8 @@ $isFilled = false;
             </div>
             <?php if($cur_user_id == $user->getId()) { ?>
                 <a href="/site/ac-edit"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
-                <div class="subwindow unactive">online</div>
             <?php } ?>
+            <div class="subwindow unactive ac-last-activity"><?= $user->getTimeLastActivity() ?></div>
         </div>
         <div class="window window-border main-info">
             <div class="full-height full-width">
@@ -162,7 +162,11 @@ $isFilled = false;
 
                             </div>
                             <div class="wrap2-column2">
-                                <label><u><a href="/site/ac-edit">Данные не заполнены.</a></u></label>
+                                <?php if($cur_user_id == $user->getId()) { ?>
+                                    <label><u><a href="/site/ac-edit">Данные не заполнены.</a></u></label>
+                                <?php } else { ?>
+                                    <label>Данные не заполнены.</label>
+                                <?php } ?>
                             </div>
                         </div>
                     <?php } ?>

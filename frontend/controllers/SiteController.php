@@ -369,7 +369,9 @@ class SiteController extends Controller
             'totalCount' => $query->count(),
         ]);
 
-        $users = $query->orderBy('id')
+        $usersAll = $query->orderBy(['last_activity' => SORT_DESC])->all();
+
+        $users = $query->orderBy(['last_activity' => SORT_DESC])
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
@@ -377,6 +379,7 @@ class SiteController extends Controller
         return $this->render('users', [
             'users' => $users,
             'pagination' => $pagination,
+            'usersAll' => $usersAll,
         ]);
     }
 }

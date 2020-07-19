@@ -9,6 +9,7 @@ use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
 use yii\helpers\Html;
 use common\models\Image;
+use DateTime;
 
 /**
  * User model
@@ -26,6 +27,7 @@ use common\models\Image;
  * @property string $name
  * @property string $surname
  * @property string $middlename
+ * @property integer $last_activity
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -492,6 +494,48 @@ class User extends ActiveRecord implements IdentityInterface
         {
             return false;
         }
+    }
+
+    public function register_activity(){
+        $this->last_activity = time();
+        $this->save();
+
+        return true;
+    }
+
+    public function getTimeLastActivity(){
+        $lastActivity = $this->last_activity;
+
+        if((time() - 60) < $lastActivity){
+            return 'в сети';
+        }
+
+        $message = '';
+
+        $start_day = strtotime('now 00:00:00');
+        if($start_day < $lastActivity) {
+            return $message.date('H:i', $lastActivity);
+        }
+        elseif (($start_day - 24*60*60) < $lastActivity) {
+            return $message.'вчера '.date('H:i', $lastActivity);
+        }
+
+        $month = date('n', $lastActivity);
+        $year = date('Y', $lastActivity);
+        $yearNow = date('Y');
+        $months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+
+        $yearD = DateTime::createFromFormat('d.m.Y', '1.1.'.$year);
+        $yearNowD = DateTime::createFromFormat('d.m.Y', '1.1.'.$yearNow);
+
+        if($yearD == $yearNowD) {
+            return $message.date('d '.$months[$month-1], $lastActivity);
+        }
+        else{
+            return $message.date('d '.$months[$month-1].' Y', $lastActivity);
+        }
+
+
     }
 }
 
