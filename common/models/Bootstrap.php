@@ -19,6 +19,8 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+        date_default_timezone_set( 'Europe/Moscow' );
+
         $cur_user_id = Yii::$app->user->id;
 
         $cur_user = User::findIdentity($cur_user_id);
