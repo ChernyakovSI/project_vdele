@@ -15,7 +15,8 @@
 }
 
 .users-avatar_font {
-    width: 130px;
+    max-width: 130px;
+    max-height: 173px;
 }
 
 .users-center {

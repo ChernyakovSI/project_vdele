@@ -20,7 +20,8 @@
  }
 
 .avatar_font {
-    width: 290px;
+    max-width: 290px;
+    max-height: 400px;
 }
 
 .FIO {
