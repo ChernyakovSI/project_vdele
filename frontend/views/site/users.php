@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="users-avatar_font">
                     <?php }
                     else {
-                        if((isset($cur_user->gender)) && ($cur_user->gender === 2)) { ?>
+                        if((isset($user->gender)) && ($user->gender == 2)) { ?>
                             <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="users-avatar_font">
                         <?php }
                         else { ?>
