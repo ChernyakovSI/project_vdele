@@ -59,6 +59,11 @@ class Image extends ActiveRecord
     }
 
     public function addImage($id_user, $id_album, $num, $src, $description = '') {
+
+        if($src == ''){
+            return;
+        }
+
         $image = new Image();
         $image->src = $src;
         $image->description = $description;

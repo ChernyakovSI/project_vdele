@@ -415,14 +415,14 @@ class User extends ActiveRecord implements IdentityInterface
             if(isset($this->imageFile)) {
                 $src = ''.$id_user.'_'.$id_album.'_'.$num. '.' . $this->imageFile->extension;
                 $this->imageFile->saveAs('data/img/avatar/'.$src);
-                $imageFile->addImage($id_user, $id_album, $num, $src);
+
             }
             else
             {
                 $src = '';
             }
 
-
+            $imageFile->addImage($id_user, $id_album, $num, $src);
 
             return true;
         } else {
