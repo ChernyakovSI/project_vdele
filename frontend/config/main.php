@@ -64,6 +64,7 @@ return [
             'dateFormat' => 'php:j M Y',
             'datetimeFormat' => 'php:j M Y H:i',
             'timeFormat' => 'php:H:i',
+
             'timeZone' => 'Europe/Moscow',
         ],
     ],
