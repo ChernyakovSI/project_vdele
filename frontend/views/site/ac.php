@@ -20,7 +20,7 @@ $isFilled = false;
                 <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
             <?php }
             else {
-                if((isset($cur_user->gender)) && ($cur_user->gender === 2)) { ?>
+                if((isset($user->gender)) && ($user->gender === 2)) { ?>
                 <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font">
                 <?php }
                 else { ?>
@@ -35,25 +35,27 @@ $isFilled = false;
                 echo $current_ac->getFIO($user_id);
                 ?>
             </div>
-            <a href="/site/ac-edit"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
-            <div class="subwindow unactive">online</div>
+            <?php if($cur_user_id == $user->getId()) { ?>
+                <a href="/site/ac-edit"><div class="subwindow unactive FIO-edit"><span class="glyphicon glyphicon-pencil symbol_style interactive"></div></a>
+                <div class="subwindow unactive">online</div>
+            <?php } ?>
         </div>
         <div class="window window-border main-info">
             <div class="full-height full-width">
 
-                    <?php if($cur_user->date_of_birth > 0) {
-                        $fullYears = $cur_user->getFullYears($cur_user->date_of_birth);
+                    <?php if($user->date_of_birth > 0) {
+                        $fullYears = $user->getFullYears($user->date_of_birth);
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Дата рождения:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <?= date('d', $cur_user->date_of_birth).' '.$months[date('n', $cur_user->date_of_birth) - 1].' '.date('Y', $cur_user->date_of_birth).' г. ('.$fullYears.$cur_user->getInclinationByNumber($fullYears, Array(' год', ' года', ' лет')).')' ?>
+                                <?= date('d', $user->date_of_birth).' '.$months[date('n', $user->date_of_birth) - 1].' '.date('Y', $user->date_of_birth).' г. ('.$fullYears.$user->getInclinationByNumber($fullYears, Array(' год', ' года', ' лет')).')' ?>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->id_city > 0) {
+                    if($user->id_city > 0) {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
@@ -64,96 +66,96 @@ $isFilled = false;
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->phone <> '') {
+                    if($user->phone <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Телефон:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <?= $cur_user->phone ?>
+                                <?= $user->phone ?>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->url_vk <> '') {
+                    if($user->url_vk <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>ВКонтакте:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $cur_user->url_vk ?>" target="_blank"> <?= $cur_user->url_vk ?> </a></u>
+                                <u><a href="<?= $user->url_vk ?>" target="_blank"> <?= $user->url_vk ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->url_fb <> '') {
+                    if($user->url_fb <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Facebook:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $cur_user->url_fb ?>" target="_blank"> <?= $cur_user->url_fb ?> </a></u>
+                                <u><a href="<?= $user->url_fb ?>" target="_blank"> <?= $user->url_fb ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->url_ok <> '') {
+                    if($user->url_ok <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Одноклассники:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $cur_user->url_ok ?>" target="_blank"> <?= $cur_user->url_ok ?> </a></u>
+                                <u><a href="<?= $user->url_ok ?>" target="_blank"> <?= $user->url_ok ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->url_in <> '') {
+                    if($user->url_in <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Instagram:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $cur_user->url_in ?>" target="_blank"> <?= $cur_user->url_in ?> </a></u>
+                                <u><a href="<?= $user->url_in ?>" target="_blank"> <?= $user->url_in ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->url_www <> '') {
+                    if($user->url_www <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>WWW:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $cur_user->url_www ?>" target="_blank"> <?= $cur_user->url_www ?> </a></u>
+                                <u><a href="<?= $user->url_www ?>" target="_blank"> <?= $user->url_www ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->skype <> '') {
+                    if($user->skype <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Skype:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="skype:<?= $cur_user->skype ?>" target="_blank"> <?= $cur_user->skype ?> </a></u>
+                                <u><a href="skype:<?= $user->skype ?>" target="_blank"> <?= $user->skype ?> </a></u>
                             </div>
                         </div>
                     <?php }
-                    if($cur_user->icq <> '') {
+                    if($user->icq <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>ICQ:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <?= $cur_user->icq ?>
+                                <?= $user->icq ?>
                             </div>
                         </div>
                     <?php } ?>
 
-                    <?php if(($isFilled === false) && ($cur_user->about === '')) {
+                    <?php if(($isFilled === false) && ($user->about === '')) {
                         ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
@@ -172,16 +174,16 @@ $isFilled = false;
         <div class="window window-border goals">
             <div class="full-width">
                 <?php
-                if($cur_user->about <> '') {
+                if($user->about <> '') {
                     if($isFilled === true) {?>
                         <br>
                     <?php }
                     $isFilled = true; ?>
                     <?= Html::label('Дополнительная информация:', 'about')?>
-                    <?= Html::textarea('about', $cur_user->about, ['class' => 'label-about', 'readonly' => 'readonly', 'rows' => '10'])?>
+                    <?= Html::textarea('about', $user->about, ['class' => 'label-about', 'readonly' => 'readonly', 'rows' => '10'])?>
 
 
-                    <?php //echo Html::textarea('about', $cur_user->about, ['class' => 'label-about']) ?>
+                    <?php //echo Html::textarea('about', $user->about, ['class' => 'label-about']) ?>
 
                 <?php } ?>
             </div>

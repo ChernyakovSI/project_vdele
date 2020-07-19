@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($users as $user): ?>
 
             <div class="users-container-wrap window window-border">
+                <a href="/?id=<?= $user->getId() ?>">
                 <div class="users-avatar">
                     <?php
                     $image = new Image();
@@ -39,9 +40,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php }
                     } ?>
                 </div>
+                </a>
                 <div>
+                    <a href="/?id=<?= $user->getId() ?>">
                     <?= Html::encode("{$user->getFIO($user->id, false)}") ?>
+                    </a>
                 </div>
+
 
             </div>
         <?php endforeach; ?>

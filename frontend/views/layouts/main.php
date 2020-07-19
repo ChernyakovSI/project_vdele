@@ -47,7 +47,7 @@ $this->registerLinkTag([
         ],
     ]);
     $menuItems = [
-        ['label' => 'Главная', 'url' => ['/']]
+        //['label' => 'Главная', 'url' => ['/']]
     ];
 
     if (Yii::$app->user->isGuest) {

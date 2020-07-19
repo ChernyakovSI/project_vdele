@@ -142,8 +142,16 @@ class SiteController extends Controller
             ];
 
             $cur_user = Yii::$app->user->identity;
-            $id_user = $cur_user->getId();
-            $city = City::findById($cur_user->id_city);
+            if (!empty($_GET['id'])) {
+                $id_user = $_GET['id'];
+            }
+            else{
+                $id_user = $cur_user->getId();
+            }
+
+            $user = User::findIdentity($id_user);
+
+            $city = City::findById($user->id_city);
 
             $image = new Image();
             $path_avatar = $image->getPathAvatarForUser($id_user);
@@ -154,7 +162,8 @@ class SiteController extends Controller
 
             return $this->render('ac', [
                 'user_id' => $id_user,
-                'cur_user' => $cur_user,
+                'cur_user_id' => $cur_user->getId(),
+                'user' => $user,
                 'months' => $months,
                 'city' => $city,
                 'path_avatar' => $path_avatar,

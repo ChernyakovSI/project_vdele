@@ -104,3 +104,8 @@ a {
     color: #dddddd;
     background-color: #54423a;
 }
+
+a:hover {
+    text-decoration: none;
+    color: #463232;
+}
