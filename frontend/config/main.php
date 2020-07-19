@@ -50,13 +50,6 @@ return [
                 '<controller>' => '<controller>/index',
                 '<controller>s' => '<controller>/index',//контроллер теперь понимает путь tasks и работает как с task/index
             ],
-            'formatter' => [
-                'class' => 'yii\i18n\Formatter',
-                'dateFormat' => 'php:j M Y',
-                'datetimeFormat' => 'php:j M Y H:i',
-                'timeFormat' => 'php:H:i',
-                'timeZone' => 'Europe/Moscow',
-            ],
         ],
         'assetManager' => [
             'basePath' => '@webroot/assets',
@@ -65,6 +58,13 @@ return [
         'request' => [
             'baseUrl' => '',
             'csrfParam' => '_csrf-frontend',
+        ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'dateFormat' => 'php:j M Y',
+            'datetimeFormat' => 'php:j M Y H:i',
+            'timeFormat' => 'php:H:i',
+            'timeZone' => 'Europe/Moscow',
         ],
     ],
     'timeZone' => 'Europe/Moscow',
