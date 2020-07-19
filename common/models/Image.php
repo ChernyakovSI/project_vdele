@@ -97,7 +97,7 @@ class Image extends ActiveRecord
         $num = (int)$num;
 
         if (isset($num)) {
-            $path = Image::find()->select('src')->where(['id_user' => $id_user, 'id_album' => 0, 'num' => $num])->scalar();
+            $path = Image::find()->select('max(src)')->where(['id_user' => $id_user, 'id_album' => 0, 'num' => $num])->scalar();
             if (isset($path)) {
                 return $path;
             }

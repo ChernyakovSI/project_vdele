@@ -108,7 +108,11 @@ $this->registerLinkTag([
                     </div>
                     <div class="window window-border main-info columnUnvis">
                         <input type="text" value="<?= ((isset($cur_user->gender)) && ($cur_user->gender === 2)) ? '2' : '1';  ?>" id = "jsGender" hidden>
+                        <?php
+                            echo $form->field($cur_user, 'pathImageFile')->Input('pathImageFile', ['id' => "jsPath"]);
+                        ?>
                     </div>
+
                 </div>
             </div>
             </br>
@@ -193,6 +197,10 @@ $this->registerLinkTag([
     var loadFile = function(event) {
         var output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
+
+        var path = document.getElementById('jsPath');
+        path.value = output.src;
+
         output.onload = function() {
             URL.revokeObjectURL(output.src) // free memory
         }
@@ -213,6 +221,9 @@ $this->registerLinkTag([
         else {
             output.src = '/data/img/avatar/avatar_default_w.jpg';
         }
+
+        var path = document.getElementById('jsPath');
+        path.value = '';
 
         output.onload = function() {
             URL.revokeObjectURL(output.src) // free memory

@@ -295,13 +295,15 @@ class SiteController extends Controller
             $image = new Image();
             $path_avatar = $image->getPathAvatarForUser($user_id);
 
+
             if (Yii::$app->request->isPost) {
                 if ($cur_user->load(Yii::$app->request->post()) && $cur_user->validate()) {
                     $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
                     $cur_user->id_city = (integer)Yii::$app->request->post()['User']['id_city'];
 
-                    //if ((isset($cur_user->imageFile) && $cur_user->imageFile != '')) {
-                    $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
+                    if ($path_avatar != Yii::$app->request->post()['User']['pathImageFile']) {
+
+                        $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
                         //var_dump($cur_user->image);
 
 
@@ -313,12 +315,14 @@ class SiteController extends Controller
                             Yii::$app->session->setFlash('error', 'Не удалось обновить фото профиля');
                         }
                         //    Yii::$app->request->post()->image->saveAs('data/img/avatar/' . Yii::$app->request->post()->image->baseName . '.' . Yii::$app->request->post()->image->extension);
-                    //};
+                    };
 
                     $cur_user->imageFile = '';
 
                     if ($cur_user->save()) {
                         Yii::$app->session->setFlash('success', 'Изменения сохранены');
+                        $path_avatar = $image->getPathAvatarForUser($user_id);
+                        $cur_user->pathImageFile = $path_avatar;
                     } else {
                         //Yii::$app->session->setFlash('success', 'Не удалось записать изменения');
                     }
@@ -326,6 +330,10 @@ class SiteController extends Controller
                 } else {
                     Yii::$app->session->setFlash('success', 'Не удалось записать изменения 2');
                 }
+            }
+            else
+            {
+                $cur_user->pathImageFile = $path_avatar;
             }
 
             $city = City::findById($cur_user->id_city);

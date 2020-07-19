@@ -45,6 +45,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @var UploadedFile
      */
     public $imageFile;
+    public $pathImageFile;
 
     //public $id_role;
 
