@@ -303,7 +303,7 @@ class SiteController extends Controller
                     $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
                     //var_dump($cur_user->image);
 
-                    //if (isset($cur_user->imageFile)) {
+                    if ((isset($cur_user->imageFile) && $cur_user->imageFile != '')) {
                         if ($cur_user->upload()) {
                             Yii::$app->session->setFlash('success', 'Фото профиля обновлено');
                         }
@@ -312,7 +312,7 @@ class SiteController extends Controller
                             Yii::$app->session->setFlash('error', 'Не удалось обновить фото профиля');
                         }
                         //    Yii::$app->request->post()->image->saveAs('data/img/avatar/' . Yii::$app->request->post()->image->baseName . '.' . Yii::$app->request->post()->image->extension);
-                    //}
+                    }
 
                     $cur_user->imageFile = '';
 
