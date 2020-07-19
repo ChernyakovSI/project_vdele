@@ -300,8 +300,8 @@ class SiteController extends Controller
                     $cur_user->date_of_birth = strtotime(Yii::$app->request->post()['User']['date_of_birth']);//->getTimestamp();
                     $cur_user->id_city = (integer)Yii::$app->request->post()['User']['id_city'];
 
-                    if ((isset($cur_user->imageFile) && $cur_user->imageFile != '')) {
-                        $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
+                    //if ((isset($cur_user->imageFile) && $cur_user->imageFile != '')) {
+                    $cur_user->imageFile = UploadedFile::getInstance($cur_user, 'imageFile');
                         //var_dump($cur_user->image);
 
 
@@ -313,7 +313,7 @@ class SiteController extends Controller
                             Yii::$app->session->setFlash('error', 'Не удалось обновить фото профиля');
                         }
                         //    Yii::$app->request->post()->image->saveAs('data/img/avatar/' . Yii::$app->request->post()->image->baseName . '.' . Yii::$app->request->post()->image->extension);
-                    };
+                    //};
 
                     $cur_user->imageFile = '';
 
