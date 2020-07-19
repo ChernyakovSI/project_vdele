@@ -21,5 +21,6 @@ return [
     ],
     'name' => 'Я в деле',
     'language' => 'ru',
+    'timeZone' => 'Europe/Moscow',
 ];
 
