@@ -60,6 +60,7 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
     ],
+    'timeZone' => 'Europe/Moscow',
     'params' => $params,
 
 ];
