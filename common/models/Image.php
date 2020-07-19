@@ -58,9 +58,25 @@ class Image extends ActiveRecord
         }
     }
 
+    public function getPathOfLastPicture($id_user, $id_album = 0)
+    {
+        $num = Image::find()->select('max(num)')->where(['id_user' => $id_user, 'id_album' => $id_album])->scalar();
+        $num = (int)$num;
+
+        $src = Image::find()->select('max(src)')->where(['id_user' => $id_user, 'id_album' => $id_album, 'num' => $num])->scalar();
+
+        if (isset($src)) {
+            return $src;
+        }
+        else
+        {
+            return '';
+        }
+    }
+
     public function addImage($id_user, $id_album, $num, $src, $description = '') {
 
-        if($src == ''){
+        if(($src == '') && ($this->getPathAvatarForUser($id_user) == '')){
             return;
         }
 
