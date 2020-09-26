@@ -311,6 +311,23 @@ $script = new \yii\web\JsExpression("
 $this->registerJs($script, \yii\web\View::POS_READY);
 
 $script2 = new \yii\web\JsExpression("
+    $('.dialog-item').detach();
+        
+        $('#message-text').keypress(function(e) {
+                //13 maps to the enter key
+                if (e.keyCode == 13) {
+                    sendText();
+                    e.preventDefault(); 
+                    //console.log('---00---');
+                }
+                //if(e.ctrlKey && e.keyCode == 13)
+                //{
+                //    console.log('sddddd');
+                //    sendText();
+                //    e.preventDefault();
+                //}
+            })
+
     sendText = function() {  
                 
                 let ftext = document.querySelector('#message-text');
