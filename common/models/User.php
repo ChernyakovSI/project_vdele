@@ -206,6 +206,7 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+
     public function getFIO($user_id, $abbreviated = false)
     {
         if ((isset($user_id)) && ($user_id > 0)) {
@@ -253,6 +254,35 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+    public static function getI($user_id)
+    {
+        if ((isset($user_id)) && ($user_id > 0)) {
+            $columns_array = [
+                'user.name as name',
+                'user.email as email',
+            ];
+
+            $query = User::find()->select($columns_array);
+            $model = $query->where('user.id = '.$user_id)->one();
+
+            $userI = '';
+
+            if ((isset($model->name)) && ($model->name !== '')) {
+                $userI = $model->name;
+            }
+
+            if ($userI == "") {
+                $userI = $model->email;
+            }
+
+            return trim($userI);
+
+        }
+        else
+        {
+            return '';
+        }
+    }
     /**
      * {@inheritdoc}
      */

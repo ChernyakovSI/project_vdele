@@ -259,3 +259,84 @@ a {
     text-align: right;
 }
 /*- Заставка */
+
+.dialog-caption-caller {
+    margin: 10px 5% 10px 25%;
+}
+
+.dialog-caption-my {
+    margin: 10px 25% 10px 5%;
+}
+
+.dialog-capture-start {
+    position: relative;
+    font-weight: bold;
+    width: 80%;
+
+    float: left;
+}
+
+.dialog-capture-time {
+    position: relative;
+    color: #AAAAAA;
+    width: 20%;
+
+    float: left;
+}
+
+.dialog-field {
+     margin: 0px 10px;
+ }
+
+.dialog-caller {
+    float: left;
+    width: 70%;
+    margin: 10px 5% 10px 25%;
+
+    padding: 15px;
+    background-color: rgba(170, 170, 170, 0.1);
+}
+
+.dialog-my {
+    float: left;
+    width: 70%;
+    margin: 10px 25% 10px 5%;
+
+    padding: 15px;
+    background-color: rgba(170, 170, 170, 0.1);
+}
+
+.dialog-scroll {
+    overflow-y: scroll;
+}
+
+.dialog-list {
+    position: relative;
+    height: 100%;
+
+}
+
+.dialog-center {
+    text-align: center;
+}
+
+.dialog-button {
+    color: #67544f;
+}
+
+.dialog-button:hover {
+    color: #503836;
+}
+
+a:visited {
+    color: #67544f; /* Цвет посещенных ссылок */
+    text-decoration: none;
+}
+a:active {
+    color: #67544f; /* Цвет активной ссылки */
+    text-decoration: none;
+}
+
+.dialog-date {
+    color: #AAAAAA;
+}

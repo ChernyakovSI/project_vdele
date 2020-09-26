@@ -6,5 +6,6 @@ return [
     'robotEmail' => 'robot@yavdele.net',
     'user.passwordResetTokenExpire' => 3600,
     'doman' => 'http://yavdele.net/',
+    'domanName' => 'yavdele.net',
 ];
 

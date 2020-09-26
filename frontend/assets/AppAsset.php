@@ -12,8 +12,8 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site6.css',
-        'css/index14.css',
+        'css/site7.css',
+        'css/index15.css',
         'css/color5.css',
         'css/acEdit9.css',
         'css/users3.css',
@@ -24,6 +24,8 @@ class AppAsset extends AssetBundle
         //'//htmlweb.ru/geo/api.js',
         'js/apiGeo.js',
         //'js/geo/api.js',
+        //'js/githubusercontent.js',
+        //'js/messages.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

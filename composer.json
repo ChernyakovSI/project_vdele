@@ -21,7 +21,10 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-widget-datetimepicker": "*",
         "2amigos/yii2-date-picker-widget": "~1.0",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "cboden/ratchet": "^0.4.3",
+        "react/zmq": "^0.4.0",
+        "kop/yii2-scroll-pager": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

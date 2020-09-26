@@ -50,14 +50,30 @@
 }
 
 .window {
-    background: #F0F0F0;
     padding: 15px;
     background-color: rgba(84, 66, 58, 0.1);
 }
 
+.window-white {
+     background: #F0F0F0;
+     padding: 15px;
+     background-color: rgba(250, 250, 250, 1);
+ }
+
+.window-gray {
+    background: #F0F0F0;
+    padding: 15px;
+    background-color: rgba(230, 230, 230, 1);
+}
+
 .window-border {
+      border-radius: 10px;
+      border: 1px solid #C0C0C0; /* Белая рамка */
+  }
+
+.window-border-0 {
     border-radius: 10px;
-    border: 1px solid #C0C0C0; /* Белая рамка */
+    border: 0px solid #C0C0C0; /* Белая рамка */
 }
 
 .window-border-top {
@@ -206,4 +222,80 @@
 
 .container-wrap-last {
     height: auto;
+}
+
+.dialog-header {
+    grid-area: dialog-header;
+    height: 40px;
+}
+.dialog-main {
+    grid-area: dialog-main ;
+    height: 55vh;
+}
+.dialog-sidebar {
+    grid-area: dialog-sidebar;
+}
+
+.dialog-sidebar-left{
+    grid-area: dialog-sidebar-left;
+}
+
+.dialog-footer {
+    grid-area: dialog-footer;
+    height: 40px;
+}
+
+.dialog-container-wrap {
+    height: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 2fr 1fr; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-areas:
+    "dialog-sidebar-left dialog-header dialog-sidebar"
+    "dialog-sidebar-left dialog-main dialog-sidebar"
+    "dialog-sidebar-left dialog-footer dialog-sidebar";
+}
+
+.window-subcaption {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+.content {
+    height: 100%;
+}
+
+.chat-wrapper {
+    width: 100%;
+}
+
+.message-text {
+    min-height: 1em; /* prevent height collapsing when there is no text */
+    max-height: 97px;
+    width: 100%;
+    align-content: center;
+    outline: none;
+    overflow: hidden;
+}
+
+.message-wrapper {
+    width: 92%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+}
+
+.message-send {
+    float: left;
+    color: #67544f;
+    width: 8%;
+    text-align: center;
+    font-size: 30px;
+}
+
+.message-send:hover {
+    color: #503836;
 }

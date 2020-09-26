@@ -49,6 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="subwindow unactive">
                             <?= Html::encode("{$user->getTimeLastActivity()}") ?>
                         </div>
+                        <div></br></div>
+                        <div class="subwindow">
+                            <a href="/dialog?id=<?= $user->getId() ?>">Написать</a>
+                        </div>
                     </div>
 
                 </div>

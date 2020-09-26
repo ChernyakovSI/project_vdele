@@ -1,7 +1,8 @@
 <?php
 namespace frontend\controllers;
 
-use frontend\models\TaskSearch;
+use common\models\Dialog;
+use common\models\Message;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\data\Pagination;
@@ -15,10 +16,9 @@ use common\models\City;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use yii\web\UploadedFile;
 use common\models\Image;
-use yii\helpers\Url;
+use yii\filters\Cors;
 
 /**
  * Site controller
@@ -80,10 +80,13 @@ class SiteController extends Controller
                         'actions' => ['logout', 'ac-edit',
                                     'ac-add-city',
                                     'send-confirm-letter',
-                                    'users'],
+                                    'users',
+                                    'dialog',
+                                    'dialog-send',
+                                    'dialog-get-messages'],
                         'controllers' => ['site'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['@','ws://'],
                     ],
                 ],
             ],
@@ -94,6 +97,17 @@ class SiteController extends Controller
                     'ac-add-city' => ['post'],
                 ],
             ],
+            'corsFilter' => [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['*'],
+                ],
+            ],
+            //'authenticator' => [
+            //    'authMethods' => HttpBearerAuth::className()
+            //],
         ];
     }
 
@@ -390,5 +404,184 @@ class SiteController extends Controller
             'pagination' => $pagination,
             'usersAll' => $usersAll,
         ]);
+    }
+
+    public function actionDialog() {
+
+        if (Yii::$app->request->isGet) {
+            $user_id = Yii::$app->user->identity->getId();
+            $user_id2 = Yii::$app->request->get('id');
+
+            if($user_id == $user_id2){
+                return $this->goHome();
+            }
+
+            $dialog_id = Dialog::getDialogByUser($user_id, $user_id2, 1);
+            $dialog_name = Dialog::getNameById($dialog_id);
+            if ($dialog_name == ''){
+                $dialog_name = User::getI($user_id2);
+            }
+
+            $messagesQuery  = Message::findMessages($dialog_id);
+
+            $message = new Message([
+                'id_user' => $user_id,
+                'id_dialog' => $dialog_id,
+                'text' => ''
+            ]);
+
+            $option = [
+                'limit' => 5,
+                'name' => User::getI($user_id).':'
+            ];
+
+
+            //var_dump($messagesQuery);
+            //exit();
+
+            return $this->render('dialog',
+                compact('dialog_id', 'dialog_name', 'messagesQuery', 'message', 'option')
+            );
+
+            /*if ($message->load(Yii::$app->request->post()) && $message->validate()) {
+                $message->save();
+                $message = new Message([
+                    //'id_user' => $user_id,
+                    'text' => ''
+                ]);
+                if (Yii::$app->request->isPjax) {
+                    return $this->renderAjax('dialog/_chat',
+                        compact('dialog_id', 'dialog_name', 'messagesQuery', 'message'));
+                }
+            }*/
+
+
+            /*if (Yii::$app->request->isPjax) {
+                return $this->renderAjax('dialog/_list',
+                    compact('dialog_id', 'dialog_name', 'messagesQuery', 'message'));
+            }*/
+
+            /////////
+            ///
+            /*$entryData = array(
+                'text' => 'Всем привет',
+                'id_dialog' => $dialog_id,
+                'id_user' => $user_id,
+                'created_at' => time()
+            );
+
+            $newMessage = new Message();
+            $newMessage->addMessage($entryData);
+
+            // This is our new stuff
+            $context = new ZMQContext();
+            $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'new message');
+            $socket->connect("tcp://".Yii::$app->params['domanName'].":5555");
+
+            $socket->send(json_encode($entryData));
+               */
+
+        }
+        /*elseif (Yii::$app->request->isAjax) {
+            $entryData = array(
+                'text' => $_POST['text'],
+                'id_dialog' => $_POST['id_dialog'],
+                'id_user' => $_POST['id_user'],
+                'created_at' => time()
+            );
+
+            $newMessage = new Message();
+            $newMessage->addMessage($entryData);
+
+            // This is our new stuff
+            $context = new ZMQContext();
+            $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'new message');
+            $socket->connect("tcp://".Yii::$app->params['domanName'].":5555");
+
+            $socket->send(json_encode($entryData));
+        }
+        */
+        else
+        {
+            return $this->goHome();
+        }
+    }
+
+    public function actionDialogSend()
+    {
+        // Создаём экземпляр модели.
+        $newMessage = new Message();
+        // Устанавливаем формат ответа JSON
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            // Получаем данные модели из запроса
+            if ($newMessage->addMessage($data) > 0) {
+
+                //$newMessage->addMessage($data);
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    "data" => $newMessage,
+                    "error" => null
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм dialog_send работает только с AJAX"
+            ];
+        }
+    }
+
+    public function actionDialogGetMessages()
+    {
+
+        //$SetMessages = Message::getSetOfMessages(6, 6, 0);
+       // echo "<pre>";
+        //var_dump($SetMessages);
+        //exit();
+
+        // Создаём экземпляр модели.
+        $newMessage = new Message();
+        // Устанавливаем формат ответа JSON
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            // Получаем данные модели из запроса
+
+            if(isset($data['id_dialog']) && isset($data['limit']) && isset($data['offset']))
+            {
+                $SetMessages = Message::getSetOfMessages($data['id_dialog'], $data['limit'], $data['offset']);
+
+                return [
+                    "data" => $SetMessages,
+                    "error" => null
+                ];
+            }
+            else
+            {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        }
+        else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм dialog-get-messages работает только с AJAX"
+            ];
+        }
     }
 }
