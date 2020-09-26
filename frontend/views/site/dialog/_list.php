@@ -63,7 +63,7 @@
     //'emptyText' => 'В данном диалоге еще пока нет сообщений',
     'emptyText' => '',
 
-    'pager' => ['class' => \kop\y2sp\ScrollPager::className(),
+    /*'pager' => ['class' => \kop\y2sp\ScrollPager::className(),
         'container' => '.dialog-main',
         'item' => '.dialog-item',
         'triggerTemplate' => '<div class="reload">
@@ -74,7 +74,7 @@
         'historyPrevText' => 'Показать еще',
         'historyPrevTemplate' => '<div class="ias-trigger ias-trigger-prev" style="text-align: center; cursor: pointer;"><a>{text}</a></div>',
         //'negativeMargin' => 5,
-        ],
+        ],*/
 
 ])
 
