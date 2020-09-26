@@ -265,24 +265,6 @@
     $this->registerJs($script, \yii\web\View::POS_READY);
 
     $this->registerJs(<<<JS
-    /*function addMessages(count=10) {
-	const words = ["Привет.", "Как дела?", "Нормально.", "Плохо.", "У тебя как?", "Ясно"];
-      const messages = Array.from({length: count}, () => words[Math.floor(Math.random()*words.length)]);
-      jQuery('#w0').prepend(messages.map(el => `<div class="messager__message">${el}</div>`));
-    }
-    
-    addMessages();
-    $('#w0').scrollTop($('#w0')[0].scrollHeight);
-    
-    $('#w0').scroll(function () {
-      let lastHeight = $(this)[0].scrollHeight;
-      //console.log(lastHeight);
-      if ($(this)[0].scrollTop === 0) {
-        addMessages();
-        let newHeight = $(this)[0].scrollHeight;
-        $('#w0').scrollTop(newHeight - lastHeight);
-      }
-    });*/   
     
     $('#messager').scrollTop($('#messager')[0].scrollHeight);
     
