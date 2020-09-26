@@ -141,15 +141,24 @@
                                     divItemPrev = divItem;
                                  };
                                  
-                                 TimePrev = new Date(parseInt(divItemPrev.created_at)*1000);
-                                 TextDate = getTextDate(TimePrev);
-                                 TextDateClass = getTextDateClass(TimePrev);
-                                 
-                                 $('.'+TextDateClass).empty();
-                                 let divDateText = document.createElement('div');
-                                 divDateText.className = 'dialog-center dialog-date '+TextDateClass;
-                                 divDateText.innerText = TextDate;
-                                 fPanel.prepend(divDateText);
+                                 if(divItemPrev !== 'undefined'){
+                                     TimePrev = new Date(parseInt(divItemPrev.created_at)*1000);
+                                     TextDate = getTextDate(TimePrev);
+                                     TextDateClass = getTextDateClass(TimePrev);
+                                     
+                                     $('.'+TextDateClass).empty();
+                                     let divDateText = document.createElement('div');
+                                     divDateText.className = 'dialog-center dialog-date '+TextDateClass;
+                                     divDateText.innerText = TextDate;
+                                     fPanel.prepend(divDateText);
+                                 }
+                                 else
+                                 {
+                                    let divDateText = document.createElement('div');
+                                     divDateText.className = 'dialog-center dialog-date';
+                                     divDateText.innerText = 'Пока еще нет сообщений';
+                                     fPanel.prepend(divDateText);
+                                 }
                                  
                                  if (flimit.value > data.data.length) {
                                     var btn_load = document.querySelector('#loadMessages');
