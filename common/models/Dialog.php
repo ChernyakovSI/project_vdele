@@ -91,6 +91,10 @@ class Dialog extends ActiveRecord
             }
         }
 
+        if(count($arrDialogs) == 0) {
+            return Dialog::createNewDialog($user_id, $user_id2);
+        }
+
         $DialogsForTwo = DialogUsers::find()->select('id_dialog, count(id_user)')->where(['id_dialog' => $arrDialogs])->
             groupBy('id_dialog')->having(['count(id_user)' => 2])->all();
 

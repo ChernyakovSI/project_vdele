@@ -36,6 +36,10 @@ $script = new \yii\web\JsExpression("
                 let fid_user = document.querySelector('#id_user');
                 let fname = document.querySelector('#name');
                 
+                if(ftext.innerText == ''){
+                    return;
+                }
+                
                 let message = {
                     text: ftext.innerText,
                     id_dialog: fid_dialog.value,
@@ -334,6 +338,10 @@ $script2 = new \yii\web\JsExpression("
                 let fid_dialog = document.querySelector('#id_dialog');
                 let fid_user = document.querySelector('#id_user');
                 let fname = document.querySelector('#name');
+                
+                if(ftext.innerText == ''){
+                    return;
+                }
                 
                 let message = {
                     text: ftext.innerText,
