@@ -36,8 +36,12 @@
     grid-column: 2 / -1;
 }
 
+.button-panel {
+    grid-column: 2 / 1;
+}
+
 .goals {
-    grid-column: 1 / -1;
+    grid-column: 2 / -1;
 }
 
 
@@ -298,4 +302,8 @@
 
 .message-send:hover {
     color: #503836;
+}
+
+.button-item:hover {
+    background-color: rgba(84, 66, 58, 0.01);;
 }

@@ -49,10 +49,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="subwindow unactive">
                             <?= Html::encode("{$user->getTimeLastActivity()}") ?>
                         </div>
+                        <?php if($user->getId() != Yii::$app->user->identity->getId()) { ?>
                         <div></br></div>
                         <div class="subwindow">
                             <a href="/dialog?id=<?= $user->getId() ?>">Написать</a>
                         </div>
+                        <?php } ?>
                     </div>
 
                 </div>

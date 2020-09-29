@@ -13,7 +13,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site7.css',
-        'css/index15.css',
+        'css/index16.css',
         'css/color5.css',
         'css/acEdit9.css',
         'css/users3.css',

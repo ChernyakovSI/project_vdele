@@ -164,6 +164,11 @@
                                     var btn_load = document.querySelector('#loadMessages');
                                     btn_load.remove();
                                  };
+                                 
+                                 if(offset == 0){
+                                    $('#messager')[0].scrollTop = $('#messager')[0].scrollHeight;
+                                 }
+                                 
                                 
                                 $(\"#output\").text(data.data)
                             } else {
@@ -268,17 +273,12 @@
                     }
             }
             
-       loadMessages();        
+       loadMessages();     
+          
        
     ");
     $this->registerJs($script, \yii\web\View::POS_READY);
-
-    $this->registerJs(<<<JS
-    
-    $('#messager').scrollTop($('#messager')[0].scrollHeight);
-    
-JS
-) ?>
+ ?>
 
 <div class="window window-border window-caption">Диалоги</div>
 

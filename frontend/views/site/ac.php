@@ -175,6 +175,20 @@ $isFilled = false;
 
         </div>
 
+        <div class="window window-border button-panel">
+            <div class="full-width full-height window-subcaption">
+                <?php if($cur_user_id != $user->getId()) { ?>
+                    <a href="/dialog?id=<?= $user->getId() ?>">
+                        <div class="subwindow button-item">
+
+                        <hr/>Написать<hr/>
+
+                        </div>
+                    </a>
+                <?php } ?>
+            </div>
+        </div>
+
         <div class="window window-border goals">
             <div class="full-width">
                 <?php
