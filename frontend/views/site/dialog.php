@@ -335,7 +335,25 @@
             <?php \yii\widgets\Pjax::end() ?>
         </div>
         <div class="window window-border dialog-sidebar">
-
+            <a href="/?id=<?= $user_id2 ?>">
+                    <?php $user = User::findIdentity($user_id2); ?>
+                    <div class="users-avatar">
+                        <?php
+                        $image = new Image();
+                        $path_avatar = $image->getPathAvatarForUser($user_id2);
+                        if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                            <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
+                        <?php }
+                        else {
+                            if((isset($user->gender)) && ($user->gender == 2)) { ?>
+                                <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font">
+                            <?php }
+                            else { ?>
+                                <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font">
+                            <?php }
+                        } ?>
+                    </div>
+            </a>
 
         </div>
         <div class="dialog-footer">
