@@ -122,4 +122,22 @@ class Dialog extends ActiveRecord
     public function getId(){
         return $this->id;
     }
+
+    public static function getUsersWithOpenedDialogs($user_id)
+    {
+        $OpenedDialogs = DialogUsers::find()->select('id_dialog')->where(['id_user' => $user_id])->all();
+
+        $SortedDialogs = Message::find()->select('id_dialog, MAX(created_at) AS created_at')
+            ->where(['id_dialog' => $OpenedDialogs])
+            ->groupBy('id_dialog')
+            ->orderBy('created_at DESC')
+            ->column();
+
+        $UsersWithDialog = DialogUsers::find()->select('id_user')->
+            where(['id_dialog' => $SortedDialogs])->
+            andWhere(['and', 'id_user<>'.$user_id])->
+            all();
+
+        return $UsersWithDialog;
+    }
 }

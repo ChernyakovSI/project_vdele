@@ -1,5 +1,7 @@
 <?php
     use yii\helpers\Html;
+    use common\models\Image;
+    use common\models\User;
 
 
     $this->title = 'Диалог';
@@ -285,6 +287,38 @@
 <div class="content">
     <div class="dialog-container-wrap">
         <div class="window window-border dialog-sidebar-left">
+            <div class="dialog-dialogsList-header window-subcaption">
+                Диалоги
+            </div>
+            <div class="dialog-dialogsList-list dialog-scroll" id="list-dialogs">
+                <?php foreach ($usersWithDialogs as $strDU) {
+                    $user = User::findIdentity($strDU['id_user']); ?>
+                    <a href="/dialog?id=<?= $strDU['id_user'] ?>">
+                        <div class="dialog-containerList-wrap <?= ($user->id == $user_id2)?' dialog-list-active':'' ?>">
+                            <div class="dialog-list-avatar">
+                                <?php
+                                $image = new Image();
+                                $path_avatar = $image->getPathAvatarForUser($strDU['id_user']);
+                                if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                                    <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="dialogs-avatar_font">
+                                <?php }
+                                else {
+                                    if((isset($user->gender)) && ($user->gender == 2)) { ?>
+                                        <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="dialogs-avatar_font">
+                                    <?php }
+                                    else { ?>
+                                        <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="dialogs-avatar_font">
+                                    <?php }
+                                } ?>
+                            </div>
+                            <div class="dialog-list-name">
+                                <?= Html::encode("{$user->getFIO($user->id, true)}") ?>
+                            </div>
+                        </div>
+                    </a>
+
+                <?php } ?>
+            </div>
         </div>
         <div class="window window-border dialog-header window-subcaption">
             Диалог c <?= $dialog_name ?>
@@ -301,9 +335,7 @@
             <?php \yii\widgets\Pjax::end() ?>
         </div>
         <div class="window window-border dialog-sidebar">
-            <div class="dialog-header window-subcaption">
-                Диалоги
-            </div>
+
 
         </div>
         <div class="dialog-footer">

@@ -340,3 +340,48 @@ a:active {
 .dialog-date {
     color: #AAAAAA;
 }
+
+.dialogs-avatar_font {
+    max-width: 62px;
+    max-height: 43px;
+}
+
+.dialog-dialogsList-header {
+    height: 10%;
+}
+
+.dialog-dialogsList-list {
+    height: 90%;
+}
+
+.dialog-containerList-wrap {
+    height: 50px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 50px repeat(1, 1fr);
+    grid-template-rows: auto;
+}
+
+.dialog-containerList-wrap:not(:first-child) {
+    margin-top: 20px;
+}
+
+.dialog-containerList-wrap:hover{
+    background-color: rgba(170, 170, 170, 0.1);
+}
+
+.dialog-list-active{
+    background-color: rgba(170, 170, 170, 0.1);
+}
+
+.dialog-list-avatar {
+    grid-row: 1 / 2;
+}
+
+.dialog-center {
+    text-align: center;
+}
+
+.dialog-list-name {
+    margin-top: 15px;
+}

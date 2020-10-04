@@ -435,12 +435,13 @@ class SiteController extends Controller
                 'name' => User::getI($user_id).':'
             ];
 
+            $usersWithDialogs = Dialog::getUsersWithOpenedDialogs($user_id);
 
-            //var_dump($messagesQuery);
+            //var_dump($usersWithDialogs);
             //exit();
 
             return $this->render('dialog',
-                compact('dialog_id', 'dialog_name', 'messagesQuery', 'message', 'option')
+                compact('dialog_id', 'dialog_name', 'messagesQuery', 'message', 'option', 'usersWithDialogs', 'user_id2')
             );
 
             /*if ($message->load(Yii::$app->request->post()) && $message->validate()) {
