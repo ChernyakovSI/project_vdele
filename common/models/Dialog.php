@@ -133,10 +133,14 @@ class Dialog extends ActiveRecord
             ->orderBy('created_at DESC')
             ->column();
 
-        $UsersWithDialog = DialogUsers::find()->select('id_user')->
-            where(['id_dialog' => $SortedDialogs])->
-            andWhere(['and', 'id_user<>'.$user_id])->
-            all();
+        $UsersWithDialog = DialogUsers::find()->select('dialog_users.id_user')
+            ->where(['dialog_users.id_dialog' => $SortedDialogs])
+            ->andWhere(['and', 'dialog_users.id_user<>'.$user_id])
+            ->join('INNER JOIN', 'message', 'message.id_dialog=dialog_users.id_dialog')
+            ->addSelect('MAX(message.created_at) as created_at')
+            ->groupBy('dialog_users.id_user')
+            ->orderBy('created_at DESC')
+            ->all();
 
         return $UsersWithDialog;
     }
