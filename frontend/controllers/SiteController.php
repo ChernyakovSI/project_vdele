@@ -431,7 +431,7 @@ class SiteController extends Controller
             ]);
 
             $option = [
-                'limit' => 5,
+                'limit' => 30,
                 'name' => User::getI($user_id).':'
             ];
 
@@ -517,6 +517,14 @@ class SiteController extends Controller
         // Если пришёл AJAX запрос
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
+
+            if($data['text'] == ''){
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+
             // Получаем данные модели из запроса
             if ($newMessage->addMessage($data) > 0) {
 
@@ -561,7 +569,8 @@ class SiteController extends Controller
 
             if(isset($data['id_dialog']) && isset($data['limit']) && isset($data['offset']))
             {
-                $SetMessages = Message::getSetOfMessages($data['id_dialog'], $data['limit'], $data['offset']);
+                $user_id = Yii::$app->user->identity->getId();
+                $SetMessages = Message::getSetOfMessages($data['id_dialog'], $data['limit'], $data['offset'], $user_id);
 
                 return [
                     "data" => $SetMessages,

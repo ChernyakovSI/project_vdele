@@ -110,7 +110,14 @@
                                     divRow.append(divField);
                                     
                                     let divItem = document.createElement('div');
-                                    divItem.className = 'dialog-item';
+                                    if(data.data[i]['is_new'] == true)
+                                    {
+                                        divItem.className = 'dialog-item dialog-message-new';
+                                    }
+                                    else
+                                    {
+                                        divItem.className = 'dialog-item';
+                                    }                                 
                                     divItem.append(divRow);
                                     divItem.created_at = data.data[i]['created_at'];         
     
@@ -153,6 +160,15 @@
                                      divDateText.className = 'dialog-center dialog-date '+TextDateClass;
                                      divDateText.innerText = TextDate;
                                      fPanel.prepend(divDateText);
+                                     
+                                     if (flimit.value > data.data.length) {
+                                         var btn_load = document.querySelector('#loadMessages');
+                                         btn_load.remove();
+                                        
+                                         var btn_load = document.querySelector('#loadMessages_Wrap');
+                                         btn_load.className = 'dialog-center dialog-date';
+                                         btn_load.innerText = 'Все сообщения загружены';
+                                     };
                                  }
                                  else
                                  {
@@ -160,12 +176,14 @@
                                      divDateText.className = 'dialog-center dialog-date';
                                      divDateText.innerText = 'Пока еще нет сообщений';
                                      fPanel.prepend(divDateText);
+                                     
+                                     if (flimit.value > data.data.length) {
+                                         var btn_load = document.querySelector('#loadMessages');
+                                         btn_load.remove();
+                                     };
                                  }
                                  
-                                 if (flimit.value > data.data.length) {
-                                    var btn_load = document.querySelector('#loadMessages');
-                                    btn_load.remove();
-                                 };
+                                 
                                  
                                  if(offset == 0){
                                     $('#messager')[0].scrollTop = $('#messager')[0].scrollHeight;
@@ -324,7 +342,7 @@
             Диалог c <?= $dialog_name ?>
         </div>
         <div class="window-border dialog-main window-gray dialog-scroll" id="messager">
-            <div class="dialog-center dialog-button"><a href="#" id="loadMessages" onclick = "loadMessages()" >Показать еще</a></div>
+            <div class="dialog-center dialog-button" id="loadMessages_Wrap"><a href="#" id="loadMessages" onclick = "loadMessages()" >Показать еще</a></div>
             <?php \yii\widgets\Pjax::begin([
                 'timeout' => 3000,
                 'enablePushState' => false,

@@ -28,8 +28,12 @@ class Chat implements MessageComponentInterface
 
     public function onMessage(ConnectionInterface $from, $msg) {
         //$newMessage = new Message();
-        //$arr_message = json_decode($msg, true);
+        $arr_message = json_decode($msg, true);
         //$newMessage->addMessage($arr_message);
+
+        if($arr_message['text'] == ''){
+            return;
+        }
 
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"

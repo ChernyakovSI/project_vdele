@@ -131,7 +131,7 @@ $script = new \yii\web\JsExpression("
                             divRow.append(divField);
                                                     
                             let divItem = document.createElement('div');
-                            divItem.className = 'dialog-item';
+                            divItem.className = 'dialog-item dialog-message-new';
                             divItem.append(divRow);
                     
                             fPanel.append(divItem);
@@ -297,7 +297,7 @@ $script = new \yii\web\JsExpression("
             divRow.append(divField);
                                     
             let divItem = document.createElement('div');
-            divItem.className = 'dialog-item';
+            divItem.className = 'dialog-item dialog-message-new';
             divItem.append(divRow);
     
             fPanel.append(divItem);
@@ -434,7 +434,7 @@ $script2 = new \yii\web\JsExpression("
                             divRow.append(divField);
                                                     
                             let divItem = document.createElement('div');
-                            divItem.className = 'dialog-item';
+                            divItem.className = 'dialog-item dialog-message-new';
                             divItem.append(divRow);
                     
                             fPanel.append(divItem);

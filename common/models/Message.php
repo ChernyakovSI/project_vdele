@@ -112,9 +112,16 @@ class Message extends ActiveRecord
         return self::find()->where(['id_dialog' => $id_dialog])->orderBy('created_at desc');
     }
 
-    public static function getSetOfMessages($id_dialog, $limit, $offset) {
+    public static function getSetOfMessages($id_dialog, $limit, $offset, $user_id) {
         $messages = self::find()->where(['id_dialog' => $id_dialog])->orderBy('created_at desc')
             ->limit($limit)->offset($limit*$offset)->all();
+
+        foreach($messages as $message){
+            if($message->id_user != $user_id){
+                $message->is_new = 0;
+                $message->save();
+            }
+        }
 
         return $messages;
     }

@@ -386,3 +386,7 @@ a:active {
     margin-top: 15px;
     margin-left: 5px;
 }
+
+.dialog-message-new{
+    background-color: rgba(170, 170, 170, 0.15);
+}
