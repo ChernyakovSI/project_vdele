@@ -12,143 +12,8 @@ $script = new \yii\web\JsExpression("
     
     window.onload = function() {
     
-        $('.dialog-item').detach();
-        
-        $('#message-text').keypress(function(e) {
-                //13 maps to the enter key
-                if (e.keyCode == 13) {
-                    sendText();
-                    e.preventDefault(); 
-                    //console.log('---00---');
-                }
-                //if(e.ctrlKey && e.keyCode == 13)
-                //{
-                //    console.log('sddddd');
-                //    sendText();
-                //    e.preventDefault();
-                //}
-            })
-            
-        sendText = function() {  
-                
-                let ftext = document.querySelector('#message-text');
-                let fid_dialog = document.querySelector('#id_dialog');
-                let fid_user = document.querySelector('#id_user');
-                let fname = document.querySelector('#name');
-                
-                if(ftext.innerText == ''){
-                    return;
-                }
-                
-                let message = {
-                    text: ftext.innerText,
-                    id_dialog: fid_dialog.value,
-                    id_user: fid_user.value,
-                    name: fname.value,
-                };   
-            
-                ftext.innerText = '';
-              
-                $.ajax({
-                    // Метод отправки данных (тип запроса)
-                    type : 'post',
-                    // URL для отправки запроса
-                    url : '/dialog-send',
-                    // Данные формы
-                    data : message
-                }).done(function(data) {
-                        if (data.error == null) {
-                            var fPanel = document.querySelector('#w0'); 
-                                    
-                            let divAuthor = document.createElement('div');
-                            divAuthor.className = 'dialog-capture-start';
-                            if(fid_user.value == message.id_user)
-                            {
-                                divAuthor.innerText = 'Я:';
-                            }
-                            else
-                            {
-                                divAuthor.innerText = message.name;
-                            }
-                                        
-                            var curDate = new Date();
-                                                    
-                            let divTime = document.createElement('div');
-                            divTime.className = 'dialog-capture-time';
-                            
-                            let qHours = String(curDate.getHours()).length;
-                            let qMinutes = String(curDate.getMinutes()).length;
-                            let qSeconds = String(curDate.getSeconds()).length;
-                            
-                            let strTime = curDate.getHours();
-                            
-                            if(qMinutes == 1){
-                                strTime = strTime + ':0' + curDate.getMinutes();
-                            }
-                            else
-                            {
-                                 strTime = strTime + ':' + curDate.getMinutes();
-                            }
-                            
-                            if(qSeconds == 1){
-                                strTime = strTime + ':0' + curDate.getSeconds();
-                            }
-                            else
-                            {
-                                 strTime = strTime + ':' + curDate.getSeconds();
-                            }
-                            
-                            divTime.innerText = strTime;
-                                                    
-                            let divCaption = document.createElement('div');
-                            if (fid_user.value == message.id_user){
-                                divCaption.className = 'dialog-caption-my';
-                            }
-                            else
-                            {
-                                divCaption.className = 'dialog-caption-caller';
-                            };
-                            divCaption.append(divAuthor);
-                            divCaption.append(divTime);
-                                                    
-                            let divText = document.createElement('div');
-                            if (fid_user.value == message.id_user){
-                                divText.className = 'window-border-0 dialog-my';
-                            }
-                            else
-                            {
-                                divText.className = 'window-border-0 dialog-caller';
-                            }; 
-                            divText.innerText = message.text;
-                                                    
-                            let divField = document.createElement('div');
-                            divField.className = 'dialog-field';
-                            divField.append(divCaption);
-                            divField.append(divText);
-                                                    
-                            let divRow = document.createElement('div');
-                            divRow.className = 'row';
-                            divRow.append(divField);
-                                                    
-                            let divItem = document.createElement('div');
-                            divItem.className = 'dialog-item dialog-message-new';
-                            divItem.append(divRow);
-                    
-                            fPanel.append(divItem);
-                            $('#messager').scrollTop($('#messager')[0].scrollHeight);
-                        } else {
-                            // Если при обработке данных на сервере произошла ошибка
-                            console.log(data);
-                            $(\"#output\").text(data.error)
-                        }
-                }).fail(function() {
-                    // Если произошла ошибка при отправке запроса
-                    console.log(data);
-                    $(\"#output\").text(\"error3\");
-                })
-    
-            }
-     
+        $('.dialog-item').detach();    
+
         let socket = new WebSocket('ws://yavdele.local:8080');
                
         socket.onopen = function(event){
@@ -160,6 +25,13 @@ $script = new \yii\web\JsExpression("
                 let fid_dialog = document.querySelector('#id_dialog');
                 let fid_user = document.querySelector('#id_user');
                 let fname = document.querySelector('#name');
+                
+                let text_without_enter = ftext.innerText.replace(/\s/gi, '');
+                text_without_enter = text_without_enter.replace(/<br>/gi, '');
+                //console.log('text_without_enter 33 '+text_without_enter);
+                if(text_without_enter == ''){
+                    return;
+                }
                 
                 let message = {
                     text: ftext.innerText,
@@ -319,17 +191,28 @@ $script2 = new \yii\web\JsExpression("
         
         $('#message-text').keypress(function(e) {
                 //13 maps to the enter key
-                if (e.keyCode == 13) {
+                //console.log('Ввод');
+                var evtobj = window.event ? event : e;
+                
+                if(evtobj.ctrlKey && evtobj.keyCode == 13)
+                {
+                    console.log('ctrl');
+                    $('#message-text').append('<br>');
+                    return;
+                //    e.preventDefault();
+                }
+                else if(e.shiftKey && e.keyCode == 13)
+                {
+                    //console.log('shift');
+                    $('#message-text').append('<br>');
+                    return;
+                    //e.preventDefault();
+                }
+                else if (e.keyCode == 13) {
                     sendText();
                     e.preventDefault(); 
                     //console.log('---00---');
                 }
-                //if(e.ctrlKey && e.keyCode == 13)
-                //{
-                //    console.log('sddddd');
-                //    sendText();
-                //    e.preventDefault();
-                //}
             })
 
     sendText = function() {  
@@ -339,7 +222,10 @@ $script2 = new \yii\web\JsExpression("
                 let fid_user = document.querySelector('#id_user');
                 let fname = document.querySelector('#name');
                 
-                if(ftext.innerText == ''){
+                let text_without_enter = ftext.innerText.replace(/\s/gi, '');
+                text_without_enter = text_without_enter.replace(/<br>/gi, '');
+                //console.log('text_without_enter '+text_without_enter);
+                if(text_without_enter == ''){
                     return;
                 }
                 

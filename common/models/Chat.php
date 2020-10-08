@@ -31,7 +31,8 @@ class Chat implements MessageComponentInterface
         $arr_message = json_decode($msg, true);
         //$newMessage->addMessage($arr_message);
 
-        if($arr_message['text'] == ''){
+        $message_without_enter = str_replace('<br>', '', trim($arr_message['text']));
+        if($message_without_enter == ''){
             return;
         }
 
