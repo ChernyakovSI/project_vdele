@@ -11,6 +11,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use common\models\Ac;
 use common\models\User;
+use common\models\Message;
 
 AppAsset::register($this);
 
@@ -63,7 +64,12 @@ $this->registerLinkTag([
         }
         else
         {
-            $menuItems[] = ['label' => 'Пользователи', 'url' => ['/users']];
+            $QUnreadMessages = Message::GetQuantityOfUnreadDialogs($id);
+            $menuItems[] = ['label' => 'Меню'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
+                    ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
+                    ['label' => 'Пользователи', 'url' => ['/users']],
+                    ['label' => 'Диалоги'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'url' => ['/dialog']],
+            ]];
         }
         /*$menuItems = [
             ['label' => 'Мои задачи', 'url' => ['/task']],

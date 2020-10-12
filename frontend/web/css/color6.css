@@ -20,7 +20,35 @@
 
 .navbar-default .navbar-nav > .active > a:hover{
     color: #dddddd;
+    background-color: #64524a;
+}
+
+.navbar-nav > li > .dropdown-menu {
     background-color: #54423a;
+}
+
+.dropdown-menu > li > a {
+    color: #dddddd;
+}
+
+.dropdown-menu > li > a:hover {
+    color: #dddddd;
+    background-color: #64524a;
+}
+
+.navbar-default .navbar-nav > .open > a {
+    color: #dddddd;
+    background-color: #64524a;
+}
+
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #dddddd;
+    background-color: #64524a;
+}
+
+.navbar-default .navbar-nav > .open > a:hover {
+    color: #dddddd;
+    background-color: #64524a;
 }
 
 .btn-primary {

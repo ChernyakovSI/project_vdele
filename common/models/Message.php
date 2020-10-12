@@ -152,4 +152,22 @@ class Message extends ActiveRecord
         return $this->id;
     }
 
+    public static function GetQuantityOfUnreadDialogs($id_user) {
+        $OpenedDialogs = DialogUsers::find()->select('id_dialog')->where(['id_user' => $id_user])->all();
+
+        return self::find()->select('id_dialog')->distinct()
+            ->where(['is_new' => 1, 'id_dialog' => $OpenedDialogs])
+            ->andWhere(['!=', 'id_user', $id_user])->count();
+    }
+
+    public static function GetQuantityOfUnreadMessages($id_user, $id_user2) {
+        $OpenedDialogs = DialogUsers::find()->select('id_dialog')->where(['id_user' => $id_user])->all();
+
+        $OpenedDialogs2 = DialogUsers::find()->select('id_dialog')->where(['id_user' => $id_user2])->all();
+
+        return self::find()->select('id')->distinct()
+            ->where(['is_new' => 1, 'id_dialog' => $OpenedDialogs, 'id_dialog' => $OpenedDialogs2])
+            ->andWhere(['!=', 'id_user', $id_user])->count();
+    }
+
 }

@@ -13,8 +13,8 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site10.css',
-        'css/index16.css',
-        'css/color5.css',
+        'css/index17.css',
+        'css/color6.css',
         'css/acEdit9.css',
         'css/users3.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',

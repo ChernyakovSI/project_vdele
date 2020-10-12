@@ -2,6 +2,7 @@
     use yii\helpers\Html;
     use common\models\Image;
     use common\models\User;
+    use common\models\Message;
 
 
     $this->title = 'Диалог';
@@ -330,7 +331,8 @@
                                 } ?>
                             </div>
                             <div class="dialog-list-name">
-                                <?= Html::encode("{$user->getFIO($user->id, true)}") ?>
+                                <?php $QUnreadMessages = Message::GetQuantityOfUnreadMessages(Yii::$app->user->identity->getId(), $user->id); ?>
+                                <?= Html::encode("{$user->getFIO($user->id, true)}".(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):(''))) ?>
                             </div>
                         </div>
                     </a>
@@ -339,7 +341,7 @@
             </div>
         </div>
         <div class="window window-border dialog-header window-subcaption">
-            Диалог c <?= $dialog_name ?>
+            <?= ($dialog_id == 0?'Выберите диалог слева...':'Диалог c '.$dialog_name) ?>
         </div>
         <div class="window-border dialog-main window-gray dialog-scroll" id="messager">
             <div class="dialog-center dialog-button" id="loadMessages_Wrap"><a href="#" id="loadMessages" onclick = "loadMessages()" >Показать еще</a></div>
@@ -376,7 +378,7 @@
         </div>
         <div class="dialog-footer">
 
-            <?= $this->render('dialog/_control', compact('messagesQuery','message', 'option')) ?>
+            <?= $this->render('dialog/_control', compact('messagesQuery','message', 'option', 'dialog_id')) ?>
 
         </div>
 

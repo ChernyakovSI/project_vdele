@@ -358,8 +358,8 @@ $this->registerJs($script2, \yii\web\View::POS_READY);
 <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['class' => 'pjax-form']]) ?>
 
     <div class="chat-wrapper">
-        <div class="message-wrapper window-border">
-            <div class="message-text" contentEditable id="message-text" ></div>
+        <div <?= ($dialog_id != 0?'class="message-wrapper window-border"':'class="message-wrapper-gray window-border"')?>>
+            <div class="message-text" <?= ($dialog_id != 0?'contentEditable':'') ?> id="message-text" ></div>
         </div>
         <div class="message-send">
             <i class="fa fa-play-circle-o" aria-hidden="true" id="sendForm" onclick = "sendText()"></i>
