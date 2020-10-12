@@ -116,7 +116,13 @@ class Dialog extends ActiveRecord
     }
 
     public static function getNameById($id){
-        return Dialog::find()->select('name')->where(['id' => $id])->one()->name;
+        $Record = Dialog::find()->select('name')->where(['id' => $id])->one();
+
+        if(isset($Record)){
+            return $Record->name;
+        }
+
+        return '';
     }
 
     public function getId(){
