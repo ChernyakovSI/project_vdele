@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Dialog;
+use common\models\DialogUsers;
 use common\models\Message;
 use Yii;
 use yii\base\InvalidParamException;
@@ -407,6 +408,7 @@ class SiteController extends Controller
     }
 
     public function actionDialog() {
+        DialogUsers::renewSendedLettersAboutUnreadMessages();
 
         if (Yii::$app->request->isGet) {
             $user_id = Yii::$app->user->identity->getId();
