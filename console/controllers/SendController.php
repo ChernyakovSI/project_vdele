@@ -8,6 +8,9 @@
 
 namespace console\controllers;
 
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\filters\Cors;
 use common\models\DialogUsers;
 use common\models\User;
 use yii\console\Controller;
@@ -16,6 +19,32 @@ use common\models\Mailer;
 
 class SendController extends Controller
 {
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['mail'],
+                        'controllers' => ['send'],
+                        'allow' => true,
+                        'roles' => ['@','ws://'],
+                    ],
+                ],
+            ],
+            'corsFilter' => [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['*'],
+                ],
+            ],
+        ];
+    }
+
     public function actionMail(){
         DialogUsers::renewSendedLettersAboutUnreadMessages();
         $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
