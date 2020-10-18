@@ -8,9 +8,6 @@
 
 namespace console\controllers;
 
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\filters\Cors;
 use common\models\DialogUsers;
 use common\models\User;
 use yii\console\Controller;
@@ -20,39 +17,13 @@ use common\models\Mailer;
 class SendController extends Controller
 {
 
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['mail'],
-                        'controllers' => ['send'],
-                        'allow' => true,
-                        'roles' => ['@','ws://'],
-                    ],
-                ],
-            ],
-            'corsFilter' => [
-                'class' => Cors::className(),
-                'cors' => [
-                    'Origin' => ['*'],
-                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-                    'Access-Control-Request-Headers' => ['*'],
-                ],
-            ],
-            //'authenticator' => [
-            //    'authMethods' => HttpBearerAuth::className()
-            //],
-        ];
-    }
-
     public function actionMail(){
+        //echo '111';
+
         DialogUsers::renewSendedLettersAboutUnreadMessages();
         $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
 
-        foreach ($unreadDialogs as $DialogUser){
+        /*foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
 
             $userSender = User::findOne($anotherUser['id_user']);
@@ -61,6 +32,8 @@ class SendController extends Controller
             //Формирование ссылки на страницу поста
             $link = '/dialog?id=';
             $full_link = $home_url.$link.$anotherUser['id_user'];
+
+            echo $full_link;
 
             $msg = "Здравствуйте! У вас есть непрочитанные сообщения от пользователя ".$userSender->getFIO($anotherUser['id_user']).". Перейдите по ссылке, чтобы прочитать сообщение: ".$full_link;
             $msg_html  = "<html><body style='font-family:Arial,sans-serif;'>";
@@ -76,7 +49,7 @@ class SendController extends Controller
 
             $dialog = DialogUsers::findOne($DialogUser['id']);
             $dialog->setSended(2);
-        }
+        }*/
 
         return 0;
     }
