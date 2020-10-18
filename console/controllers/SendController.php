@@ -17,6 +17,11 @@ use common\models\Mailer;
 class SendController extends Controller
 {
 
+    public function actionIndex()
+    {
+        echo '777';
+    }
+
     public function actionMail(){
         echo '111';
 
