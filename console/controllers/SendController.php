@@ -25,10 +25,12 @@ class SendController extends Controller
     public function actionMail(){
         echo '111';
 
-        DialogUsers::renewSendedLettersAboutUnreadMessages();
-        $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
+        //DialogUsers::renewSendedLettersAboutUnreadMessages();
+        //$unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
 
         echo '222';
+
+        exit();
 
         /*foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
