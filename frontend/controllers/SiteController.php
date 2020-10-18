@@ -408,7 +408,7 @@ class SiteController extends Controller
     }
 
     public function actionDialog() {
-        DialogUsers::renewSendedLettersAboutUnreadMessages();
+        //DialogUsers::renewSendedLettersAboutUnreadMessages();
 
         if (Yii::$app->request->isGet) {
             $user_id = Yii::$app->user->identity->getId();

@@ -30,7 +30,6 @@ class SendController extends Controller
             $link = '/dialog?id=';
             $full_link = $home_url.$link.$anotherUser['id_user'];
 
-            //echo $full_link;
             $msg = "Здравствуйте! У вас есть непрочитанные сообщения от пользователя ".$userSender->getFIO($anotherUser['id_user']).". Перейдите по ссылке, чтобы прочитать сообщение: ".$full_link;
             $msg_html  = "<html><body style='font-family:Arial,sans-serif;'>";
             $msg_html .= "<h3 style='font-weight:bold;border-bottom:1px dotted #ccc;'>Здравствуйте! У вас есть непрочитанные сообщения от пользователя  " . $userSender->getFIO($anotherUser['id_user']) . ".</h3>\r\n";
@@ -39,8 +38,9 @@ class SendController extends Controller
 
             $subject = "Новое сообщение от ".$userSender->getFIO($anotherUser['id_user']);
 
-            //echo $full_link;
+
             Mailer::sendLetter($subject, $msg_html, 'paladin_cool@inbox.ru');
+            echo $full_link;
 
             $dialog = DialogUsers::findOne($DialogUser['id']);
             $dialog->setSended(2);
