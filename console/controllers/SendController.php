@@ -42,6 +42,9 @@ class SendController extends Controller
                     'Access-Control-Request-Headers' => ['*'],
                 ],
             ],
+            //'authenticator' => [
+            //    'authMethods' => HttpBearerAuth::className()
+            //],
         ];
     }
 
