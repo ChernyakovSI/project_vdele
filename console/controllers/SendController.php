@@ -25,10 +25,8 @@ class SendController extends Controller
     public function actionMail(){
         echo '111';
 
-        //DialogUsers::renewSendedLettersAboutUnreadMessages();
-        //$unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
-
-        echo '222';
+        DialogUsers::renewSendedLettersAboutUnreadMessages();
+        $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
 
         exit();
 
