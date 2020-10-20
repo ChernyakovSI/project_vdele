@@ -33,6 +33,8 @@ class SendController extends Controller
         foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
 
+
+
             $userSender = User::findOne($anotherUser['id_user']);
 
             $home_url = Yii::$app->params['doman'];
