@@ -39,7 +39,7 @@ class SendController extends Controller
 
             $home_url = Yii::$app->params['doman'];
             //Формирование ссылки на страницу поста
-            $link = '/dialog?id=';
+            $link = 'dialog?id=';
             $full_link = $home_url.$link.$anotherUser['id_user'];
 
             echo $full_link;
