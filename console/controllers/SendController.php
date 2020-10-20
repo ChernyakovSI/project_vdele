@@ -29,8 +29,6 @@ class SendController extends Controller
         foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
 
-
-
             $userSender = User::findOne($anotherUser['id_user']);
             $userReceiver = User::findOne($DialogUser['id_user']);
 
@@ -48,7 +46,6 @@ class SendController extends Controller
             $msg_html .= "</body></html>";
 
             $subject = "Новое сообщение от ".$userSender->getFIO($anotherUser['id_user']);
-
 
             Mailer::sendLetter($subject, $msg_html, $userReceiver->getEmail());
 
