@@ -23,12 +23,8 @@ class SendController extends Controller
     }
 
     public function actionMail(){
-        echo '111';
-
         DialogUsers::renewSendedLettersAboutUnreadMessages();
         $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
-
-        //exit();
 
         foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
@@ -36,6 +32,7 @@ class SendController extends Controller
 
 
             $userSender = User::findOne($anotherUser['id_user']);
+            $userReceiver = User::findOne($DialogUser['id_user']);
 
             $home_url = Yii::$app->params['doman'];
             //Формирование ссылки на страницу поста
@@ -53,8 +50,7 @@ class SendController extends Controller
             $subject = "Новое сообщение от ".$userSender->getFIO($anotherUser['id_user']);
 
 
-            Mailer::sendLetter($subject, $msg_html, 'paladin_cool@inbox.ru');
-            echo $full_link;
+            Mailer::sendLetter($subject, $msg_html, $userReceiver->getEmail());
 
             $dialog = DialogUsers::findOne($DialogUser['id']);
             $dialog->setSended(2);
