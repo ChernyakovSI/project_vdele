@@ -28,9 +28,9 @@ class SendController extends Controller
         DialogUsers::renewSendedLettersAboutUnreadMessages();
         $unreadDialogs = DialogUsers::getArrayOfUsersWithUnreadDialogs();
 
-        exit();
+        //exit();
 
-        /*foreach ($unreadDialogs as $DialogUser){
+        foreach ($unreadDialogs as $DialogUser){
             $anotherUser = DialogUsers::getAnotherUserInDialog($DialogUser['id_dialog'], $DialogUser['id_user']);
 
             $userSender = User::findOne($anotherUser['id_user']);
@@ -56,7 +56,7 @@ class SendController extends Controller
 
             $dialog = DialogUsers::findOne($DialogUser['id']);
             $dialog->setSended(2);
-        }*/
+        }
 
         return 0;
     }
