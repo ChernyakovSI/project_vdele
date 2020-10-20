@@ -87,7 +87,28 @@ class DialogUsers extends ActiveRecord
             $DialogUsers = DialogUsers::findOne($receiver['id']);
             $DialogUsers->sended = 1;
             $DialogUsers->save();
-        }
+        };
+
+        $receivers = DialogUsers::find()->select('dialog_users.id_user, dialog_users.id_dialog, dialog_users.id')
+            ->innerJoin(['m' => $senders], 'm.id_dialog = dialog_users.id_dialog AND NOT m.id_user = dialog_users.id_user')
+            ->all();
+        $arr = [];
+        foreach ($receivers as $receiver){
+            $arr[] = $receiver['id'];
+            echo 'in arr for '.$receiver['id'];
+        };
+
+        $dialogsIsRead = DialogUsers::find()->select('id')
+            ->where('sended <> 0')
+            ->all();
+
+        foreach ($dialogsIsRead as $dialogIsRead){
+            if(array_search($dialogIsRead['id'], $arr) === false) {
+                $DialogUsers = DialogUsers::findOne($dialogIsRead['id']);
+                $DialogUsers->sended = 0;
+                $DialogUsers->save();
+            }
+        };
 
         return 1;
     }
