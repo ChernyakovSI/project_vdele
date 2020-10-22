@@ -51,6 +51,8 @@
                                     divAuthor.className = 'dialog-capture-start';
                                     divAuthor.innerText = data.data[i]['name']; 
                                     
+                                    //console.dir(data.data[i]);
+                                    
                                     curDate = new Date(parseInt(data.data[i]['created_at'])*1000);
                                     
                                     let divTime = document.createElement('div');
@@ -91,15 +93,35 @@
                                     divCaption.append(divAuthor);
                                     divCaption.append(divTime);
                                     
+                                    //let divText = document.createElement('div');
+                                    //if (data.data[i]['name'] == 'Я:'){
+                                    //    divText.className = 'window-border-0 dialog-my';
+                                    //}
+                                    //else
+                                    //{
+                                    //    divText.className = 'window-border-0 dialog-caller';
+                                    //}; 
+                                    //divText.innerText = data.data[i]['text'];
+                                    
                                     let divText = document.createElement('div');
                                     if (data.data[i]['name'] == 'Я:'){
+                                        let divTxt = document.createElement('div');
+                                        divTxt.className = 'window-border-0 dialog-my-txt';
+                                        divTxt.innerText = data.data[i]['text'];
+                                        
+                                        let divPanel = document.createElement('div');
+                                        divPanel.className = 'window-border-0 dialog-my-panel';
+                                        divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" onclick=\"confirmDelete('+data.data[i]['id']+')\">';
+                                         
                                         divText.className = 'window-border-0 dialog-my';
+                                        divText.append(divTxt);
+                                        divText.append(divPanel);
                                     }
                                     else
                                     {
                                         divText.className = 'window-border-0 dialog-caller';
-                                    }; 
-                                    divText.innerText = data.data[i]['text'];
+                                        divText.innerText = data.data[i]['text'];
+                                    };
                                     
                                     let divField = document.createElement('div');
                                     divField.className = 'dialog-field';
@@ -120,7 +142,8 @@
                                         divItem.className = 'dialog-item';
                                     }                                 
                                     divItem.append(divRow);
-                                    divItem.created_at = data.data[i]['created_at'];         
+                                    divItem.created_at = data.data[i]['created_at']; 
+                                    divItem.setAttribute('id', data.data[i]['id']);        
     
                                     if(divItemPrev !== 'undefined'){
                                         TimePrev = new Date(parseInt(divItemPrev.created_at)*1000); 
@@ -292,6 +315,19 @@
                         
                         return TextDate;
                     }
+                    
+                    confirmDelete = function(id) {
+                        console.log(id);
+                        let ans = confirm(\"Удалить сообщение?\"); 
+                        
+                        if(ans == true) {
+                            deleteText(id);
+                        }
+                        
+                        return 1;
+                    }
+                    
+                    
             }
             
        loadMessages();     

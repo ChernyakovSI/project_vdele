@@ -299,11 +299,26 @@ a {
 
 .dialog-my {
     float: left;
-    width: 70%;
+    width: 80%;
     margin: 10px 25% 10px 5%;
 
     padding: 15px;
     background-color: rgba(170, 170, 170, 0.1);
+}
+
+.dialog-my-txt {
+    position: relative;
+    width: 95%;
+
+    float: left;
+}
+
+.dialog-my-panel {
+    position: relative;
+    color: #AAAAAA;
+    width: 5%;
+
+    float: left;
 }
 
 .dialog-scroll {

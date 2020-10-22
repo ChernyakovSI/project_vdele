@@ -12,7 +12,7 @@ $script = new \yii\web\JsExpression("
     
     window.onload = function() {
     
-        $('.dialog-item').detach();    
+        //$('.dialog-item').detach();    
 
         let socket = new WebSocket('ws://yavdele.local:8080');
                
@@ -40,7 +40,7 @@ $script = new \yii\web\JsExpression("
                     name: fname.value,
                 };
                 
-                socket.send(JSON.stringify(message));
+                
             
                 ftext.innerText = '';
                 
@@ -56,8 +56,9 @@ $script = new \yii\web\JsExpression("
                 }).done(function(data) {
                         if (data.error == null) {
                             // Если ответ сервера успешно получен
-                            //console.log(data);
+                            console.log(data);
                             $(\"#output\").text(data.data.text)
+                            socket.send(JSON.stringify(data.data));
                         } else {
                             // Если при обработке данных на сервере произошла ошибка
                             console.log(data);
@@ -94,7 +95,7 @@ $script = new \yii\web\JsExpression("
             
             //console.log('Пришли данные: ' + message.name); 
             
-            
+            console.dir('Пришли данные: ' + message);
             
             var fPanel = document.querySelector('#w0'); 
                                 
@@ -151,13 +152,24 @@ $script = new \yii\web\JsExpression("
                                     
             let divText = document.createElement('div');
             if (fid_user.value == message.id_user){
+                let divTxt = document.createElement('div');
+                divTxt.className = 'window-border-0 dialog-my-txt';
+                divTxt.innerText = message.text;
+                
+                let divPanel = document.createElement('div');
+                divPanel.className = 'window-border-0 dialog-my-panel';
+                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" onclick=\"confirmDelete('+message.id+')\">';
+                
                 divText.className = 'window-border-0 dialog-my';
+                divText.append(divTxt);
+                divText.append(divPanel);
             }
             else
             {
                 divText.className = 'window-border-0 dialog-caller';
+                divText.innerText = message.text;
             }; 
-            divText.innerText = message.text;
+            
                                     
             let divField = document.createElement('div');
             divField.className = 'dialog-field';
@@ -171,6 +183,7 @@ $script = new \yii\web\JsExpression("
             let divItem = document.createElement('div');
             divItem.className = 'dialog-item dialog-message-new';
             divItem.append(divRow);
+            divItem.setAttribute('id', message.id);
     
             fPanel.append(divItem);
             $('#messager').scrollTop($('#messager')[0].scrollHeight);
@@ -187,7 +200,7 @@ $script = new \yii\web\JsExpression("
 $this->registerJs($script, \yii\web\View::POS_READY);
 
 $script2 = new \yii\web\JsExpression("
-    $('.dialog-item').detach();
+    //$('.dialog-item').detach();
         
         $('#message-text').keypress(function(e) {
                 //13 maps to the enter key
@@ -247,6 +260,8 @@ $script2 = new \yii\web\JsExpression("
                     data : message
                 }).done(function(data) {
                         if (data.error == null) {
+                            //console.log(data.data.id);
+                        
                             var fPanel = document.querySelector('#w0'); 
                                     
                             let divAuthor = document.createElement('div');
@@ -298,17 +313,27 @@ $script2 = new \yii\web\JsExpression("
                                 divCaption.className = 'dialog-caption-caller';
                             };
                             divCaption.append(divAuthor);
-                            divCaption.append(divTime);
-                                                    
+                            divCaption.append(divTime);                                               
+                            
                             let divText = document.createElement('div');
                             if (fid_user.value == message.id_user){
+                                let divTxt = document.createElement('div');
+                                divTxt.className = 'window-border-0 dialog-my-txt';
+                                divTxt.innerText = message.text;
+                                
+                                let divPanel = document.createElement('div');
+                                divPanel.className = 'window-border-0 dialog-my-panel';
+                                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" onclick=\"confirmDelete('+data.data.id+')\">';
+                                   
                                 divText.className = 'window-border-0 dialog-my';
+                                divText.append(divTxt);
+                                divText.append(divPanel);
                             }
                             else
                             {
                                 divText.className = 'window-border-0 dialog-caller';
-                            }; 
-                            divText.innerText = message.text;
+                                divText.innerText = message.text;
+                            };
                                                     
                             let divField = document.createElement('div');
                             divField.className = 'dialog-field';
@@ -322,6 +347,7 @@ $script2 = new \yii\web\JsExpression("
                             let divItem = document.createElement('div');
                             divItem.className = 'dialog-item dialog-message-new';
                             divItem.append(divRow);
+                            divItem.setAttribute('id', data.data.id);
                     
                             fPanel.append(divItem);
                             $('#messager').scrollTop($('#messager')[0].scrollHeight);
@@ -337,6 +363,42 @@ $script2 = new \yii\web\JsExpression("
                 })
     
             }
+            
+    deleteText = function(id) {
+            
+            
+                let message = {
+                    id: id,
+                };
+                
+                console.log(message);
+    
+                $.ajax({
+                    // Метод отправки данных (тип запроса)
+                    type : 'post',
+                    // URL для отправки запроса
+                    url : '/dialog-delete',
+                    // Данные формы
+                    data : message
+                }).done(function(data) {
+                        if (data.error == null) {
+                            //console.log(data.data.id);
+                        
+                        console.dir(data.data.id);
+                            let divItem = document.getElementById(data.data.id);
+                            
+                            divItem.parentNode.removeChild(divItem);
+                        } else {
+                            // Если при обработке данных на сервере произошла ошибка
+                            console.log(data);
+                            $(\"#output\").text(data.error)
+                        }
+                }).fail(function() {
+                    // Если произошла ошибка при отправке запроса
+                    //console.log(data);
+                    //$(\"#output\").text(\"error3\");
+                })
+    }
 ");
 $this->registerJs($script2, \yii\web\View::POS_READY);
 

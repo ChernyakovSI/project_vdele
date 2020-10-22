@@ -113,7 +113,7 @@ class Message extends ActiveRecord
     }
 
     public static function getSetOfMessages($id_dialog, $limit, $offset, $user_id) {
-        $messages = self::find()->where(['id_dialog' => $id_dialog])->orderBy('created_at desc')
+        $messages = self::find()->where(['id_dialog' => $id_dialog, 'is_deleted' => false])->orderBy('created_at desc')
             ->limit($limit)->offset($limit*$offset)->all();
 
         foreach($messages as $message){
@@ -146,6 +146,15 @@ class Message extends ActiveRecord
         };
 
         $this->is_new = 1;
+
+        $this->save();
+
+        return $this->id;
+    }
+
+    public function deleteMessage() {
+
+        $this->is_deleted = !($this->is_deleted);
 
         $this->save();
 

@@ -84,6 +84,7 @@ class SiteController extends Controller
                                     'users',
                                     'dialog',
                                     'dialog-send',
+                                    'dialog-delete',
                                     'dialog-get-messages'],
                         'controllers' => ['site'],
                         'allow' => true,
@@ -534,6 +535,49 @@ class SiteController extends Controller
                 //Если всё успешно, отправляем ответ с данными
                 return [
                     "data" => $newMessage,
+                    "error" => null
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм dialog_send работает только с AJAX"
+            ];
+        }
+    }
+
+    public function actionDialogDelete()
+    {
+        // Устанавливаем формат ответа JSON
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+
+
+            if($data['id'] == ''){
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные2"
+                ];
+            }
+
+            $Message = Message::findOne($data['id']);
+            // Получаем данные модели из запроса
+            if ($Message->deleteMessage() > 0) {
+
+                //$newMessage->addMessage($data);
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    "data" => $data,
                     "error" => null
                 ];
             } else {
