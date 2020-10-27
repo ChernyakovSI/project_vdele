@@ -158,7 +158,7 @@ $script = new \yii\web\JsExpression("
                 
                 let divPanel = document.createElement('div');
                 divPanel.className = 'window-border-0 dialog-my-panel';
-                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" onclick=\"confirmDelete('+message.id+')\">';
+                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" data-tooltip2=\"Удалить\" onclick=\"confirmDelete('+message.id+')\">';
                 
                 divText.className = 'window-border-0 dialog-my';
                 divText.append(divTxt);
@@ -323,7 +323,7 @@ $script2 = new \yii\web\JsExpression("
                                 
                                 let divPanel = document.createElement('div');
                                 divPanel.className = 'window-border-0 dialog-my-panel';
-                                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" onclick=\"confirmDelete('+data.data.id+')\">';
+                                divPanel.innerHTML = '<span class=\"glyphicon glyphicon-remove symbol_style interactive\" data-tooltip2=\"Удалить\" onclick=\"confirmDelete('+data.data.id+')\">';   
                                    
                                 divText.className = 'window-border-0 dialog-my';
                                 divText.append(divTxt);

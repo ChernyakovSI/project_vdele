@@ -405,3 +405,15 @@ a:active {
 .dialog-message-new{
     background-color: rgba(170, 170, 170, 0.15);
 }
+
+.tooltip2 {
+    position: fixed;
+    padding: 10px 20px;
+    border: 1px solid #b3c9ce;
+    border-radius: 4px;
+    text-align: center;
+    font: italic 14px/1.3 sans-serif;
+    color: #333;
+    background: #fff;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+}
