@@ -381,7 +381,7 @@
 
 <div class="content">
     <div class="dialog-container-wrap">
-        <div class="window window-border dialog-sidebar-left">
+        <div class="window-right window-border dialog-sidebar-left">
             <div class="dialog-dialogsList-header window-subcaption">
                 Диалоги
             </div>
@@ -395,14 +395,20 @@
                                 $image = new Image();
                                 $path_avatar = $image->getPathAvatarForUser($strDU['id_user']);
                                 if((isset($path_avatar)) && ($path_avatar != '')) { ?>
-                                    <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="dialogs-avatar_font">
+                                    <div class="img-wrap-mini">
+                                        <img class="img-mini" src=<?= '/data/img/avatar/'.$path_avatar; ?> class="dialogs-avatar_font">
+                                    </div>
                                 <?php }
                                 else {
                                     if((isset($user->gender)) && ($user->gender == 2)) { ?>
-                                        <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="dialogs-avatar_font">
+                                        <div class="img-wrap-mini">
+                                            <img class="img-mini" src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="dialogs-avatar_font">
+                                        </div>
                                     <?php }
                                     else { ?>
-                                        <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="dialogs-avatar_font">
+                                        <div class="img-wrap-mini">
+                                            <img class="img-mini" src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="dialogs-avatar_font">
+                                        </div>
                                     <?php }
                                 } ?>
                             </div>

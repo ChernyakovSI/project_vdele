@@ -58,6 +58,11 @@
     background-color: rgba(84, 66, 58, 0.1);
 }
 
+.window-right {
+    padding: 15px 0 15px 15px;
+    background-color: rgba(84, 66, 58, 0.1);
+}
+
 .window-white {
      background: #F0F0F0;
      padding: 15px;
