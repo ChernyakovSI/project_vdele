@@ -65,10 +65,13 @@ $this->registerLinkTag([
         else
         {
             $QUnreadMessages = Message::GetQuantityOfUnreadDialogs($id);
+            $menuItems[] = ['label' => 'Финансы', 'url' => ['/fin/accounts']];
             $menuItems[] = ['label' => 'Меню'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
                     ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
                     ['label' => 'Пользователи', 'url' => ['/users']],
                     ['label' => 'Диалоги'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'url' => ['/dialog']],
+                    ['label' => ''],['label' => ''],
+                    ['label' => 'Написать в поддержку', 'url' => ['/dialog?id=1']],
             ]];
         }
         /*$menuItems = [
