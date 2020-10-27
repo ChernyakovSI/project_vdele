@@ -25,20 +25,22 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="users-container-wrap window window-border">
                 <a href="/?id=<?= $user->getId() ?>">
                 <div class="users-avatar">
-                    <?php
-                    $image = new Image();
-                    $path_avatar = $image->getPathAvatarForUser($user->id);
-                    if((isset($path_avatar)) && ($path_avatar != '')) { ?>
-                        <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="users-avatar_font">
-                    <?php }
-                    else {
-                        if((isset($user->gender)) && ($user->gender == 2)) { ?>
-                            <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="users-avatar_font">
+                    <div class="img-wrap-user">
+                        <?php
+                        $image = new Image();
+                        $path_avatar = $image->getPathAvatarForUser($user->id);
+                        if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                            <img class="img-user" src=<?= '/data/img/avatar/'.$path_avatar; ?> class="users-avatar_font">
                         <?php }
-                        else { ?>
-                            <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="users-avatar_font">
-                        <?php }
-                    } ?>
+                        else {
+                            if((isset($user->gender)) && ($user->gender == 2)) { ?>
+                                <img class="img-user" src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="users-avatar_font">
+                            <?php }
+                            else { ?>
+                                <img class="img-user" src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="users-avatar_font">
+                            <?php }
+                        } ?>
+                    </div>
                 </div>
                 </a>
                 <div>
