@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($accounts as $account): var_dump($account); ?>
 
 
+
     <?php endforeach; } ?>
 </div>
 
