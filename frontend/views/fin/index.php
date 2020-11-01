@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View class="site-index"*/
 use frontend\assets\AppAsset;
+use common\models\fin\Account;
 
 AppAsset::register($this);
 
@@ -26,13 +27,15 @@ $script = new \yii\web\JsExpression("
         document.body.style.overflowY = '';
     }
 
-    function showFormNew(text, callback) {
+    function showFormNew(callback) {
         showCover();
         let form = document.getElementById('prompt-form');
         let container = document.getElementById('prompt-form-container');
         let btnClose = document.getElementById('btnClose');
         let valueAcc = document.getElementById('valueAcc');
         let valueAmo = document.getElementById('valueAmo');
+        let valueCom = document.getElementById('valueCom');
+        let buttonAdd = document.getElementById('button-add');
         //document.getElementById('prompt-message').innerHTML = text;
         //form.text.value = '';
         
@@ -78,15 +81,24 @@ $script = new \yii\web\JsExpression("
                 CtrlDown = true;
             }
             
-            //alert(e.code);
-            if(CtrlDown == false){
-                if((e.key).length==1){
-                    if (Number(this.innerHTML + e.key) != (this.innerHTML + e.key)) {
-                        e.preventDefault();
-                    }  
+            if(e.key != ','){
+                if(CtrlDown == false){
+                    if((e.key).length==1){
+                        newString = this.innerHTML.replace(/,/, '.');
+                        if (Number(newString + e.key) != (newString + e.key)) {
+                            e.preventDefault();
+                        }  
+                    }
                 }
-            }
-            
+            }     
+            else
+            {
+                newString = this.innerHTML.replace(/,/, '.');
+                arrNum = newString.split('.');
+                if(arrNum.length > 1){
+                    e.preventDefault();
+                }
+            }   
         };
         
         valueAmo.onkeyup = function(e) {
@@ -96,11 +108,31 @@ $script = new \yii\web\JsExpression("
         };
         
         valueAmo.onblur = function(e) {
+            this.innerHTML = this.innerHTML.replace(/,/, '.');
             this.innerHTML = isNaN(Number(this.innerHTML)) ? 0 : Number(this.innerHTML);
         };
         
         btnClose.onclick = function(e) {
             complete(null);
+        };
+        
+        buttonAdd.onclick = function(e) {
+            if(valueAcc.innerHTML.trim() == '') {
+                valueAccWrap.classList.add('redBorder');  
+                return 0;
+            }
+        
+            let newAccount = {
+                'name' : valueAcc.innerHTML,
+                'amount' : Number(valueAmo.innerHTML),
+                'comment' : valueCom.innerHTML,
+            };
+            
+            valueAcc.innerHTML = 'Новый счет';
+            valueAmo.innerHTML = '0';
+            valueCom.innerHTML = '';
+            
+            complete(newAccount);
         };
 
         /*let lastElem = form.elements[form.elements.length - 1];
@@ -125,8 +157,97 @@ $script = new \yii\web\JsExpression("
     }
 
     document.getElementById('button-new').onclick = function() {
-        showFormNew(\"Введите что-нибудь<br>...умное :)\", function(value) {
-            //alert(\"Вы ввели: \" + value);
+        showFormNew(function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-add',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                console.log(data);
+                                
+                                let listAccounts = document.getElementById('listAccounts'); 
+                                
+                                let info = document.getElementById('info');
+                                if (info != undefined){
+                                    info.remove();
+                                };
+                                
+                                let divMainName = document.createElement('div');
+                                divMainName.className = 'fin-acc-name table-text';
+                                
+                                let divWrapName = document.createElement('div');
+                                divWrapName.className = 'message-wrapper-title';
+                                
+                                let divTextName = document.createElement('div');
+                                divTextName.className = 'message-text-line'; 
+                                divTextName.innerHTML = data.data['name'];    
+                                
+                                divWrapName.append(divTextName);
+                                divMainName.append(divWrapName);
+                                listAccounts.append(divMainName);
+                                
+                                
+                                let divMainAmount = document.createElement('div');
+                                divMainAmount.className = 'fin-acc-amount table-text';
+                                
+                                let divWrapAmount = document.createElement('div');
+                                divWrapAmount.className = 'message-wrapper-title';
+                                
+                                let divTextAmount = document.createElement('div');
+                                divTextAmount.className = 'message-text-line right-text'; 
+                                divTextAmount.innerHTML = data.total;    
+                                
+                                divWrapAmount.append(divTextAmount);
+                                divMainAmount.append(divWrapAmount);
+                                listAccounts.append(divMainAmount);
+                                
+                                
+                                let divMainComment = document.createElement('div');
+                                divMainComment.className = 'fin-acc-comment table-text';
+                                
+                                let divWrapComment = document.createElement('div');
+                                divWrapComment.className = 'message-wrapper-title';
+                                
+                                let divTextComment = document.createElement('div');
+                                divTextComment.className = 'message-text-line'; 
+                                divTextComment.innerHTML = data.data['comment'];    
+                                
+                                divWrapComment.append(divTextComment);
+                                divMainComment.append(divWrapComment);
+                                listAccounts.append(divMainComment);
+                                
+                                
+                                let divPanel = document.createElement('div');
+                                divPanel.className = 'fin-acc-panel table-text';        
+                                divWrapComment.append(divPanel);
+                                
+                                
+                                let hrLine = document.createElement('hr');
+                                hrLine.className = 'line';
+                                
+                                let divClear = document.createElement('div');
+                                divClear.className = 'clearfix';
+                                
+                                divClear.append(hrLine);
+                                listAccounts.append(divClear);
+                                
+                                let divtotal = document.getElementById('total');
+                                divtotal.innerHTML = data.totalAllAccounts;
+                                
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                console.log(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        console.log(data.error);
+                    });    
+            }
         });
     };
 
@@ -149,7 +270,32 @@ $this->registerJs($script, \yii\web\View::POS_READY);
     <div class="fin-acc-panel table-caption">
 
     </div>
+    <div class="clearfix"></div>
+
+    <div class="fin-acc-name table-text brown-back">
+        <div class="message-wrapper-title">
+            <div class="message-text-line"><?= 'Всего:' ?></div>
+        </div>
+    </div>
+    <div class="fin-acc-amount table-text brown-back">
+        <div class="message-wrapper-title">
+            <div class="message-text-line right-text" id="total"><?= Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user)) ?></div>
+        </div>
+    </div>
+    <div class="fin-acc-comment table-text brown-back">
+        <div class="message-wrapper-title">
+            <div class="message-text-line"><?= '-' ?></div>
+        </div>
+    </div>
+    <div class="fin-acc-panel table-text brown-back">
+        <div class="message-wrapper-title">
+            <div class="message-text-line"><?= '-' ?></div>
+        </div>
+    </div>
+
     <div class="clearfix"><hr class="line"></div>
+
+    <div id="listAccounts">
     <?php if (count($accounts) == 0) { ?>
         <div id="info" class="text-font text-center margin-v20">
             У вас пока нет ни одного счета.
@@ -157,21 +303,28 @@ $this->registerJs($script, \yii\web\View::POS_READY);
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
 
-            <div class="fin-acc-name">
-                Счет
+            <div class="fin-acc-name table-text">
+                <div class="message-wrapper-title">
+                    <div class="message-text-line"><?= $account['name'] ?></div>
+                </div>
             </div>
-            <div class="fin-acc-amount">
-                Сумма
+            <div class="fin-acc-amount table-text">
+                <div class="message-wrapper-title">
+                    <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['amount']) ?></div>
+                </div>
             </div>
-            <div class="fin-acc-comment">
-                Комментарий
+            <div class="fin-acc-comment table-text">
+                <div class="message-wrapper-title">
+                    <div class="message-text-line"><?= $account['comment'] ?></div>
+                </div>
             </div>
-            <div class="fin-acc-panel">
+            <div class="fin-acc-panel table-text">
 
             </div>
             <div class="clearfix"><hr class="line"></div>
 
     <?php endforeach; } ?>
+    </div>
 
     <div class="clearfix"></div>
     <div class="window-button window-border" id="button-new">Добавить</div>
@@ -184,7 +337,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
                 <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
             </div>
             <div>
-                <div class="caption-line">Счет:</div><div class="message-wrapper-line window-border">
+                <div class="caption-line">Счет:</div><div class="message-wrapper-line window-border" id="valueAccWrap">
                     <div class="message-text-line" contentEditable id="valueAcc" >Новый счет</div>
                 </div>
             </div>

@@ -365,6 +365,12 @@
     margin-top: 10px;
 }
 
+.message-wrapper-title {
+    width: 100%;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+}
+
 .caption-line {
     width: 15%;
     padding: 8px; /* the container will keep the padding untouched */
@@ -420,9 +426,16 @@
 }
 
 .table-caption {
-    align-content: center;
-    text-align: center;
+    padding: 0 10px;
     font-weight: bold;
+ }
+
+.table-text {
+    padding: 0 10px 0 10px;
+}
+
+.right-text {
+    text-align: right;
 }
 
 .line {
@@ -466,4 +479,16 @@
     height: 100%;
     background-color: #C9C9C9;
     opacity: 0.3;
+}
+
+.redBorder  {
+    border: solid 1px red;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.brown-back {
+    background-color: #C9C9C9;
 }
