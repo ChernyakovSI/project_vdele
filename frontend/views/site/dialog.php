@@ -422,9 +422,11 @@
                 <?php } ?>
             </div>
         </div>
+        <a href="/?id=<?= $user_id2 ?>">
         <div class="window window-border dialog-header window-subcaption">
             <?= ($dialog_id == 0?'Выберите диалог слева...':'Диалог c '.$dialog_name) ?>
         </div>
+        </a>
         <div class="window-border dialog-main window-gray dialog-scroll" id="messager">
             <div class="dialog-center dialog-button" id="loadMessages_Wrap"><a href="#" id="loadMessages" onclick = "loadMessages()" >Показать еще</a></div>
             <?php \yii\widgets\Pjax::begin([
@@ -436,28 +438,28 @@
             <?= $this->render('dialog/_chat', compact('messagesQuery', 'message', 'dialog_id', 'option')) ?>
             <?php \yii\widgets\Pjax::end() ?>
         </div>
-        <div class="window window-border dialog-sidebar">
-            <a href="/?id=<?= $user_id2 ?>">
-                    <?php $user = User::findIdentity($user_id2); ?>
+        <!--<div class="window window-border dialog-sidebar">
+            <a href="/?id=<?= ''//$user_id2 ?>">
+                    <?php //$user = User::findIdentity($user_id2); ?>
                     <div class="users-avatar">
                         <?php
-                        $image = new Image();
-                        $path_avatar = $image->getPathAvatarForUser($user_id2);
-                        if((isset($path_avatar)) && ($path_avatar != '')) { ?>
-                            <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
-                        <?php }
-                        else {
-                            if((isset($user->gender)) && ($user->gender == 2)) { ?>
-                                <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font">
-                            <?php }
-                            else { ?>
-                                <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font">
-                            <?php }
-                        } ?>
+                        //$image = new Image();
+                        //$path_avatar = $image->getPathAvatarForUser($user_id2);
+                        //if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                            <img src=<?= ''// '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
+                        <?php //}
+                        //else {
+                        //    if((isset($user->gender)) && ($user->gender == 2)) { ?>
+                                <img src=<?= ''//'/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font">
+                            <?php //}
+                            //else { ?>
+                                <img src=<?= ''//'/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font">
+                            <?php //}
+                       // } ?>
                     </div>
             </a>
 
-        </div>
+        </div> -->
         <div class="dialog-footer">
 
             <?= $this->render('dialog/_control', compact('messagesQuery','message', 'option', 'dialog_id')) ?>

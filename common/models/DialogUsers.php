@@ -75,7 +75,7 @@ class DialogUsers extends ActiveRecord
 
     public static function renewSendedLettersAboutUnreadMessages() {
         $senders = Message::find()->select('id_dialog, id_user')->distinct()
-            ->where(['is_new' => 1]);
+            ->where(['is_new' => 1, 'is_deleted' => 0]);
 
 
         $receivers = DialogUsers::find()->select('dialog_users.id_user, dialog_users.id_dialog, dialog_users.id')
@@ -95,7 +95,7 @@ class DialogUsers extends ActiveRecord
         $arr = [];
         foreach ($receivers as $receiver){
             $arr[] = $receiver['id'];
-            echo 'in arr for '.$receiver['id'];
+            //echo 'in arr for '.$receiver['id'];
         };
 
         $dialogsIsRead = DialogUsers::find()->select('id')

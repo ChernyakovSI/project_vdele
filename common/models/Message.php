@@ -165,7 +165,7 @@ class Message extends ActiveRecord
         $OpenedDialogs = DialogUsers::find()->select('id_dialog')->where(['id_user' => $id_user])->all();
 
         return self::find()->select('id_dialog')->distinct()
-            ->where(['is_new' => 1, 'id_dialog' => $OpenedDialogs])
+            ->where(['is_new' => 1, 'is_deleted' => 0, 'id_dialog' => $OpenedDialogs])
             ->andWhere(['!=', 'id_user', $id_user])->count();
     }
 
@@ -173,7 +173,7 @@ class Message extends ActiveRecord
         $dialog_id = Dialog::getDialogByUser($id_user, $id_user2, 0);
 
         return self::find()->select('id')->distinct()
-            ->where(['is_new' => 1, 'id_dialog' => $dialog_id])
+            ->where(['is_new' => 1, 'is_deleted' => 0, 'id_dialog' => $dialog_id])
             ->andWhere(['!=', 'id_user', $id_user])->count();
     }
 

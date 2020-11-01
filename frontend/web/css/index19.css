@@ -58,6 +58,25 @@
     background-color: rgba(84, 66, 58, 0.1);
 }
 
+.window-button {
+    padding: 10px;
+    background-color: #67544f;
+    text-align: center;
+    color: #F0F0F0;
+    width: 100px;
+
+    margin-top: 10px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.window-button:hover {
+    background-color: #503836;
+    cursor: pointer;
+}
+
+
 .window-right {
     padding: 15px 0 15px 15px;
     background-color: rgba(84, 66, 58, 0.1);
@@ -258,11 +277,11 @@
     height: 100%;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 1fr 2fr 1fr; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
+    grid-template-columns: 1fr 3fr; /*1fr 2fr 1fr; /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
     grid-template-areas:
-    "dialog-sidebar-left dialog-header dialog-sidebar"
-    "dialog-sidebar-left dialog-main dialog-sidebar"
-    "dialog-sidebar-left dialog-footer dialog-sidebar";
+    "dialog-sidebar-left dialog-header" /*dialog-sidebar*/
+    "dialog-sidebar-left dialog-main"
+    "dialog-sidebar-left dialog-footer";
 }
 
 .window-subcaption {
@@ -320,4 +339,131 @@
 
 .button-item:hover {
     background-color: rgba(84, 66, 58, 0.01);;
+}
+
+.clearfix {
+    clear: both;
+}
+.message-text-line {
+    min-height: 1em; /* prevent height collapsing when there is no text */
+    max-height: 97px;
+    width: 100%;
+    /*align-content: center;*/
+    outline: none;
+    overflow: hidden;
+
+    text-align: left;
+}
+
+.message-wrapper-line {
+    width: 85%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
+.caption-line {
+    width: 15%;
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+    text-align: right;
+
+    margin-top: 10px;
+}
+
+.caption-text{
+    width: 90%;
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+
+    text-align: center;
+    font-weight: bold;
+
+    margin-top: 10px;
+}
+
+.caption-begin {
+     width: 5%;
+    float: left;
+ }
+
+.caption-close {
+    width: 5%;
+    float: left;
+
+    padding: 8px;
+}
+
+.fin-acc-name {
+    float: left;
+    width: 20%
+}
+
+.fin-acc-amount {
+    float: left;
+    width: 20%
+}
+
+.fin-acc-comment {
+    float: left;
+    width: 40%
+}
+
+
+
+.fin-acc-panel {
+    float: left;
+    width: 20%
+}
+
+.table-caption {
+    align-content: center;
+    text-align: center;
+    font-weight: bold;
+}
+
+.line {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid #666;
+}
+
+.margin-v20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#prompt-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#prompt-form {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 10%;
+    background-color: #E9E9E9;
+    border: solid 2px #67544f;
+    width: 1000px;
+}
+
+#cover-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+    width: 100%;
+    height: 100%;
+    background-color: #C9C9C9;
+    opacity: 0.3;
 }
