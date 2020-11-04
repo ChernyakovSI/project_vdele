@@ -87,6 +87,33 @@ class Account extends ActiveRecord
         return $newAcc;
     }
 
+    public static function edit($id, $data){
+        $Acc = static::findOne(['id' => $id]);
+
+        $Acc->name = $data['name'];
+        $Acc->amount = (float)$data['amount'];
+        $Acc->comment = $data['comment'];
+
+        if(isset($data['updated_at'])) {
+            $Acc->updated_at = $data['updated_at'];
+        }
+        else{
+            $Acc->updated_at = time();
+        };
+
+        if(isset($data['num'])) {
+            $Acc->num = $data['num'];
+        };
+
+        if(isset($data['id_currency'])) {
+            $Acc->id_currency = $data['id_currency'];
+        };
+
+        $Acc->save();
+
+        return $Acc;
+    }
+
     public static function getNumByUser($id_user){
         $accs =  self::find()->select('num')
             ->where(['id_user' => $id_user])

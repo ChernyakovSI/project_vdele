@@ -10,6 +10,112 @@ $this->title = 'Финансы: Счета';
 $this->params['breadcrumbs'][] = $this->title;
 
 $script = new \yii\web\JsExpression("
+    $(document).ready( function() {
+        resize();    
+    })
+    
+    function resize() {
+        let divListAccounts = document.getElementById('listAccounts');  
+        let children = divListAccounts.childNodes;
+        let divRow;
+        
+        let colName, colAmount, colComment, colPanel;
+
+        for(child in children){
+            divRow = children[child].childNodes;
+            //console.log(divRow);
+            for(column in divRow){
+                if (divRow.length > 0){
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-name') > -1) {
+                        colName = divRow[column]; 
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-amount') > -1) {
+                        colAmount = divRow[column];
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-comment') > -1) {
+                        colComment = divRow[column];
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-panel') > -1) {
+                        colPanel = divRow[column];
+                    }
+                }
+                
+            } 
+            if(colName != undefined & colComment != undefined) {
+                //console.dir(colName.clientHeight);
+                colName.style.height = colComment.clientHeight + \"px\";
+            }
+            if(colAmount != undefined & colComment != undefined) {
+                //console.dir(colAmount.clientHeight);
+                colAmount.style.height = colComment.clientHeight + \"px\";
+            }
+            if(colPanel != undefined & colComment != undefined) {
+                //console.dir(colPanel.clientHeight);
+                colPanel.style.height = colComment.clientHeight + \"px\";
+            }  
+            colName = undefined;
+            colAmount = undefined;
+            colComment = undefined;
+            colPanel = undefined;
+                        
+        }  
+    }
+    
+    document.getElementById('button-new').onclick = function() {
+        showFormNew(0, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-add',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                confirm(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                console.log(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        console.log(data.error);
+                    });    
+            }
+        });
+    };
+
+");
+$this->registerJs($script, \yii\web\View::POS_READY);
+
+$script = new \yii\web\JsExpression("
+   
+    function editAcc(id) {
+        showFormNew(id, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-edit',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                confirmEdit(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                console.log(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        console.log(data.error);
+                    });    
+            }
+        });
+    }
+    
     // Показать полупрозрачный DIV, чтобы затенить страницу
     // (форма располагается не внутри него, а рядом, потому что она не должна быть полупрозрачной)
     function showCover() {
@@ -27,7 +133,9 @@ $script = new \yii\web\JsExpression("
         document.body.style.overflowY = '';
     }
 
-    function showFormNew(callback) {
+    
+    
+    function showFormNew(id, callback) {
         showCover();
         let form = document.getElementById('prompt-form');
         let container = document.getElementById('prompt-form-container');
@@ -38,6 +146,43 @@ $script = new \yii\web\JsExpression("
         let buttonAdd = document.getElementById('button-add');
         //document.getElementById('prompt-message').innerHTML = text;
         //form.text.value = '';
+        
+        let fromCaption =  document.getElementById('form-caption');
+        if(id == 0){
+            fromCaption.innerHTML = 'Новый счет';
+            
+            valueAcc.innerHTML = 'Новый счет';
+            valueAmo.innerHTML = '0';
+            valueCom.innerHTML = '';
+            
+            buttonAdd.onclick = function(e) {
+                initBtnConfirm();
+            };
+        }
+        else
+        {
+            fromCaption.innerHTML = 'Редактирование счета';
+            buttonAdd.onclick = null;
+            
+            $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-get',
+                        // Данные формы
+                        data : {id : id}
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                fullData(data);                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                console.log(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        console.log(data.error);
+                    });    
+        }
         
         let CtrlDown = false;
 
@@ -116,24 +261,7 @@ $script = new \yii\web\JsExpression("
             complete(null);
         };
         
-        buttonAdd.onclick = function(e) {
-            if(valueAcc.innerHTML.trim() == '') {
-                valueAccWrap.classList.add('redBorder');  
-                return 0;
-            }
         
-            let newAccount = {
-                'name' : valueAcc.innerHTML,
-                'amount' : Number(valueAmo.innerHTML),
-                'comment' : valueCom.innerHTML,
-            };
-            
-            valueAcc.innerHTML = 'Новый счет';
-            valueAmo.innerHTML = '0';
-            valueCom.innerHTML = '';
-            
-            complete(newAccount);
-        };
 
         /*let lastElem = form.elements[form.elements.length - 1];
         let firstElem = form.elements[0];
@@ -151,26 +279,41 @@ $script = new \yii\web\JsExpression("
                 return false;
             }
         };*/
+        
+        function fullData(data) {
+        
+            valueAcc.innerHTML = data.data.name;
+            valueAmo.innerHTML = data.data.amount;
+            valueCom.innerHTML = data.data.comment;
+            
+            buttonAdd.onclick = function(e) {
+                initBtnConfirm();
+            };
+        };
+        
+        function initBtnConfirm() {
+        
+            if(valueAcc.innerHTML.trim() == '') {
+                valueAccWrap.classList.add('redBorder');  
+                return 0;
+            }
+            
+            let newAccount = {
+                    'id' : id,
+                    'name' : valueAcc.innerHTML,
+                    'amount' : Number(valueAmo.innerHTML),
+                    'comment' : valueCom.innerHTML,
+            };
+        
+            complete(newAccount);
+        };
 
         container.style.display = 'block';
         //form.elements.text.focus();
     }
-
-    document.getElementById('button-new').onclick = function() {
-        showFormNew(function(value) {
-            if (value != null) {
-                $.ajax({
-                        // Метод отправки данных (тип запроса)
-                        type : 'post',
-                        // URL для отправки запроса
-                        url : '/fin/accounts-add',
-                        // Данные формы
-                        data : value
-                    }).done(function(data) {
-                            if (data.error == null) {
-                                console.log(data);
-                                
-                                let listAccounts = document.getElementById('listAccounts'); 
+    
+    function confirm(data) {
+        let listAccounts = document.getElementById('listAccounts'); 
                                 
                                 let info = document.getElementById('info');
                                 if (info != undefined){
@@ -179,6 +322,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 let divRow = document.createElement('div');
                                 divRow.className = 'fin-acc-row';
+                                divRow.setAttribute('id', data.data.id);
                                 
                                 let divMainName = document.createElement('div');
                                 divMainName.className = 'fin-acc-name table-text';
@@ -232,8 +376,16 @@ $script = new \yii\web\JsExpression("
                                 divWrapPanel.className = 'message-wrapper-title';
                                 
                                 let divTextPanel = document.createElement('div');
-                                divTextPanel.className = 'message-text-line';     
+                                divTextPanel.className = 'message-text-line unactive'; 
                                 
+                                let spanEdit = document.createElement('span');
+                                spanEdit.className = 'glyphicon glyphicon-pencil symbol_style interactive text-center'; 
+                                //spanEdit.onclick = editAcc;  
+                                spanEdit.addEventListener('click', function() {
+                                    editAcc(data.data.id);
+                                }, false); 
+                                
+                                divTextPanel.append(spanEdit);
                                 divWrapPanel.append(divTextPanel);
                                 divPanel.append(divWrapPanel);
                                 divRow.append(divPanel);
@@ -253,79 +405,66 @@ $script = new \yii\web\JsExpression("
                                 divtotal.innerHTML = data.totalAllAccounts;
                                 
                                 resize();
-                                
-                            } else {
-                                // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
-                            }
-                    }).fail(function() {
-                        // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
-                    });    
-            }
-        });
-    };
+    }
     
-    
-    
-    $(document).ready( function() {
-        resize();    
-    })
-    
-    function resize() {
-        let divListAccounts = document.getElementById('listAccounts');  
-        let children = divListAccounts.childNodes;
-        let divRow;
+    function confirmEdit(data) {
+        let divRow = document.getElementById(data.data.id);  
         
-        let colName, colAmount, colComment, colPanel;
+        let children = divRow.childNodes;
 
-        for(child in children){
-            divRow = children[child].childNodes;
-            //console.log(divRow);
-            for(column in divRow){
-                if (divRow.length > 0){
-                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-name') > -1) {
-                        colName = divRow[column]; 
-                    }
-                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-amount') > -1) {
-                        colAmount = divRow[column];
-                    }
-                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-comment') > -1) {
-                        colComment = divRow[column];
-                    }
-                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-panel') > -1) {
-                        colPanel = divRow[column];
-                    }
-                }
+        for(column in children){
+
                 
-            } 
-            if(colName != undefined & colComment != undefined) {
-                //console.dir(colName.clientHeight);
-                colName.style.height = colComment.clientHeight + \"px\";
-            }
-            if(colAmount != undefined & colComment != undefined) {
-                //console.dir(colAmount.clientHeight);
-                colAmount.style.height = colComment.clientHeight + \"px\";
-            }
-            if(colPanel != undefined & colComment != undefined) {
-                //console.dir(colPanel.clientHeight);
-                colPanel.style.height = colComment.clientHeight + \"px\";
-            }  
-            colName = undefined;
-            colAmount = undefined;
-            colComment = undefined;
-            colPanel = undefined;
-                        
-        }  
+                if(children[column].nodeName == 'DIV' & (' ' + children[column].className + ' ').indexOf('fin-acc-name') > -1) { 
+                    for(wrap in children[column].childNodes){
+                        if(children[column].childNodes[wrap].nodeName == 'DIV') {
+                            for(element in children[column].childNodes[wrap].childNodes){
+                                if(children[column].childNodes[wrap].childNodes[element].nodeName == 'DIV') {
+                                    children[column].childNodes[wrap].childNodes[element].innerHTML = data.data.name;
+                                }
+                            }
+                        }
+                    }
+                } 
+                if(children[column].nodeName == 'DIV' & (' ' + children[column].className + ' ').indexOf('fin-acc-amount') > -1) { 
+                    for(wrap in children[column].childNodes){
+                        if(children[column].childNodes[wrap].nodeName == 'DIV') {
+                            for(element in children[column].childNodes[wrap].childNodes){
+                                if(children[column].childNodes[wrap].childNodes[element].nodeName == 'DIV') {
+                                    children[column].childNodes[wrap].childNodes[element].innerHTML = data.total;
+                                }
+                            }
+                        }
+                    }
+                } 
+                if(children[column].nodeName == 'DIV' & (' ' + children[column].className + ' ').indexOf('fin-acc-comment') > -1) { 
+                    for(wrap in children[column].childNodes){
+                        if(children[column].childNodes[wrap].nodeName == 'DIV') {
+                            for(element in children[column].childNodes[wrap].childNodes){
+                                if(children[column].childNodes[wrap].childNodes[element].nodeName == 'DIV') {
+                                    children[column].childNodes[wrap].childNodes[element].innerHTML = data.data.comment;
+                                }
+                            }
+                        }
+                    }
+                } 
+                  
+        }   
+        
+        let divtotal = document.getElementById('total');
+        divtotal.innerHTML = data.totalAllAccounts;                     
     }
 
 ");
-$this->registerJs($script, \yii\web\View::POS_READY);
+$this->registerJs($script, \yii\web\View::POS_BEGIN);
 
 ?>
 <div class="window window-border window-caption">Счета</div>
 
 <div class="window window-border" id="content">
+
+    <div class="clearfix"><hr class="line"></div>
+
     <div class="fin-acc-name table-text">
         <div class="message-wrapper-title">
             <div class="message-text-line table-caption"><?= 'Счет' ?></div>
@@ -378,7 +517,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
         </div>
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
-            <div class="fin-acc-row">
+            <div class="fin-acc-row" id="<?= $account['id'] ?>">
                 <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line"><?= $account['name'] ?></div>
@@ -394,9 +533,11 @@ $this->registerJs($script, \yii\web\View::POS_READY);
                         <div class="message-text-line"><?= $account['comment'] ?></div>
                     </div>
                 </div>
-                <div class="fin-acc-panel table-text">
+                <div class="fin-acc-panel">
                     <div class="message-wrapper-title">
-                        <div class="message-text-line"></div>
+                        <div class="message-text-line unactive">
+                            <span class="glyphicon glyphicon-pencil symbol_style interactive text-center" onclick="editAcc(<?= $account['id'] ?>)"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"><hr class="line"></div>
@@ -412,7 +553,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
         <div id="prompt-form" class="window window-border">
             <div class="caption-wrap">
                 <div class="caption-begin">&nbsp;</div>
-                <div class="caption-text">Новый счет</div>
+                <div class="caption-text" id="form-caption">Новый счет</div>
                 <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
             </div>
             <div>
@@ -421,7 +562,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
                 </div>
             </div>
             <div>
-                <div class="caption-line">Сумма:</div><div class="message-wrapper-line window-border">
+                <div class="caption-line">Начальный остаток:</div><div class="message-wrapper-line window-border">
                     <div class="message-text-line" contentEditable id="valueAmo" >0</div>
                 </div>
             </div>
@@ -431,7 +572,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="window-button window-border" id="button-add">Добавить</div>
+            <div class="window-button window-border" id="button-add">Подтвердить</div>
         </div>
 
     </div>
