@@ -181,7 +181,7 @@ $script = new \yii\web\JsExpression("
                                 divRow.className = 'fin-acc-row';
                                 
                                 let divMainName = document.createElement('div');
-                                divMainName.className = 'fin-acc-name table-text fin-acc-row';
+                                divMainName.className = 'fin-acc-name table-text';
                                 
                                 let divWrapName = document.createElement('div');
                                 divWrapName.className = 'message-wrapper-title';
@@ -196,7 +196,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 
                                 let divMainAmount = document.createElement('div');
-                                divMainAmount.className = 'fin-acc-amount table-text fin-acc-row';
+                                divMainAmount.className = 'fin-acc-amount table-text';
                                 
                                 let divWrapAmount = document.createElement('div');
                                 divWrapAmount.className = 'message-wrapper-title';
@@ -211,7 +211,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 
                                 let divMainComment = document.createElement('div');
-                                divMainComment.className = 'fin-acc-comment table-text fin-acc-row';
+                                divMainComment.className = 'fin-acc-comment table-text';
                                 
                                 let divWrapComment = document.createElement('div');
                                 divWrapComment.className = 'message-wrapper-title';
@@ -227,8 +227,16 @@ $script = new \yii\web\JsExpression("
                                 
                                 let divPanel = document.createElement('div');
                                 divPanel.className = 'fin-acc-panel table-text';        
-                                divWrapComment.append(divPanel);
                                 
+                                let divWrapPanel = document.createElement('div');
+                                divWrapPanel.className = 'message-wrapper-title';
+                                
+                                let divTextPanel = document.createElement('div');
+                                divTextPanel.className = 'message-text-line';     
+                                
+                                divWrapPanel.append(divTextPanel);
+                                divPanel.append(divWrapPanel);
+                                divRow.append(divPanel);
                                 
                                 let hrLine = document.createElement('hr');
                                 hrLine.className = 'line';
@@ -244,6 +252,8 @@ $script = new \yii\web\JsExpression("
                                 let divtotal = document.getElementById('total');
                                 divtotal.innerHTML = data.totalAllAccounts;
                                 
+                                resize();
+                                
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 console.log(data);
@@ -255,6 +265,59 @@ $script = new \yii\web\JsExpression("
             }
         });
     };
+    
+    
+    
+    $(document).ready( function() {
+        resize();    
+    })
+    
+    function resize() {
+        let divListAccounts = document.getElementById('listAccounts');  
+        let children = divListAccounts.childNodes;
+        let divRow;
+        
+        let colName, colAmount, colComment, colPanel;
+
+        for(child in children){
+            divRow = children[child].childNodes;
+            //console.log(divRow);
+            for(column in divRow){
+                if (divRow.length > 0){
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-name') > -1) {
+                        colName = divRow[column]; 
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-amount') > -1) {
+                        colAmount = divRow[column];
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-comment') > -1) {
+                        colComment = divRow[column];
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-acc-panel') > -1) {
+                        colPanel = divRow[column];
+                    }
+                }
+                
+            } 
+            if(colName != undefined & colComment != undefined) {
+                //console.dir(colName.clientHeight);
+                colName.style.height = colComment.clientHeight + \"px\";
+            }
+            if(colAmount != undefined & colComment != undefined) {
+                //console.dir(colAmount.clientHeight);
+                colAmount.style.height = colComment.clientHeight + \"px\";
+            }
+            if(colPanel != undefined & colComment != undefined) {
+                //console.dir(colPanel.clientHeight);
+                colPanel.style.height = colComment.clientHeight + \"px\";
+            }  
+            colName = undefined;
+            colAmount = undefined;
+            colComment = undefined;
+            colPanel = undefined;
+                        
+        }  
+    }
 
 ");
 $this->registerJs($script, \yii\web\View::POS_READY);
@@ -263,17 +326,25 @@ $this->registerJs($script, \yii\web\View::POS_READY);
 <div class="window window-border window-caption">Счета</div>
 
 <div class="window window-border" id="content">
-    <div class="fin-acc-name table-caption">
-        Счет
+    <div class="fin-acc-name table-text">
+        <div class="message-wrapper-title">
+            <div class="message-text-line table-caption"><?= 'Счет' ?></div>
+        </div>
     </div>
-    <div class="fin-acc-amount table-caption">
-        Сумма
+    <div class="fin-acc-amount table-text">
+        <div class="message-wrapper-title">
+            <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
+        </div>
     </div>
-    <div class="fin-acc-comment table-caption">
-        Комментарий
+    <div class="fin-acc-comment table-text">
+        <div class="message-wrapper-title">
+            <div class="message-text-line table-caption"><?= 'Комментарий' ?></div>
+        </div>
     </div>
     <div class="fin-acc-panel table-caption">
-
+        <div class="message-wrapper-title">
+            <div class="message-text-line"><?= '' ?></div>
+        </div>
     </div>
     <div class="clearfix"></div>
 
@@ -308,23 +379,25 @@ $this->registerJs($script, \yii\web\View::POS_READY);
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
             <div class="fin-acc-row">
-                <div class="fin-acc-name table-text fin-acc-row">
+                <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line"><?= $account['name'] ?></div>
                     </div>
                 </div>
-                <div class="fin-acc-amount table-text fin-acc-row">
+                <div class="fin-acc-amount table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['amount']) ?></div>
                     </div>
                 </div>
-                <div class="fin-acc-comment table-text fin-acc-row">
+                <div class="fin-acc-comment table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line"><?= $account['comment'] ?></div>
                     </div>
                 </div>
                 <div class="fin-acc-panel table-text">
-
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line"></div>
+                    </div>
                 </div>
                 <div class="clearfix"><hr class="line"></div>
             </div>
