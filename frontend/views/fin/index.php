@@ -177,8 +177,11 @@ $script = new \yii\web\JsExpression("
                                     info.remove();
                                 };
                                 
+                                let divRow = document.createElement('div');
+                                divRow.className = 'fin-acc-row';
+                                
                                 let divMainName = document.createElement('div');
-                                divMainName.className = 'fin-acc-name table-text';
+                                divMainName.className = 'fin-acc-name table-text fin-acc-row';
                                 
                                 let divWrapName = document.createElement('div');
                                 divWrapName.className = 'message-wrapper-title';
@@ -189,11 +192,11 @@ $script = new \yii\web\JsExpression("
                                 
                                 divWrapName.append(divTextName);
                                 divMainName.append(divWrapName);
-                                listAccounts.append(divMainName);
+                                divRow.append(divMainName);
                                 
                                 
                                 let divMainAmount = document.createElement('div');
-                                divMainAmount.className = 'fin-acc-amount table-text';
+                                divMainAmount.className = 'fin-acc-amount table-text fin-acc-row';
                                 
                                 let divWrapAmount = document.createElement('div');
                                 divWrapAmount.className = 'message-wrapper-title';
@@ -204,11 +207,11 @@ $script = new \yii\web\JsExpression("
                                 
                                 divWrapAmount.append(divTextAmount);
                                 divMainAmount.append(divWrapAmount);
-                                listAccounts.append(divMainAmount);
+                                divRow.append(divMainAmount);
                                 
                                 
                                 let divMainComment = document.createElement('div');
-                                divMainComment.className = 'fin-acc-comment table-text';
+                                divMainComment.className = 'fin-acc-comment table-text fin-acc-row';
                                 
                                 let divWrapComment = document.createElement('div');
                                 divWrapComment.className = 'message-wrapper-title';
@@ -219,7 +222,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 divWrapComment.append(divTextComment);
                                 divMainComment.append(divWrapComment);
-                                listAccounts.append(divMainComment);
+                                divRow.append(divMainComment);
                                 
                                 
                                 let divPanel = document.createElement('div');
@@ -234,7 +237,9 @@ $script = new \yii\web\JsExpression("
                                 divClear.className = 'clearfix';
                                 
                                 divClear.append(hrLine);
-                                listAccounts.append(divClear);
+                                divRow.append(divClear);
+                                
+                                listAccounts.append(divRow);
                                 
                                 let divtotal = document.getElementById('total');
                                 divtotal.innerHTML = data.totalAllAccounts;
@@ -284,12 +289,12 @@ $this->registerJs($script, \yii\web\View::POS_READY);
     </div>
     <div class="fin-acc-comment table-text brown-back">
         <div class="message-wrapper-title">
-            <div class="message-text-line"><?= '-' ?></div>
+            <div class="message-text-line"><?= '' ?></div>
         </div>
     </div>
     <div class="fin-acc-panel table-text brown-back">
         <div class="message-wrapper-title">
-            <div class="message-text-line"><?= '-' ?></div>
+            <div class="message-text-line"><?= '' ?></div>
         </div>
     </div>
 
@@ -302,26 +307,27 @@ $this->registerJs($script, \yii\web\View::POS_READY);
         </div>
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
+            <div class="fin-acc-row">
+                <div class="fin-acc-name table-text fin-acc-row">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line"><?= $account['name'] ?></div>
+                    </div>
+                </div>
+                <div class="fin-acc-amount table-text fin-acc-row">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['amount']) ?></div>
+                    </div>
+                </div>
+                <div class="fin-acc-comment table-text fin-acc-row">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line"><?= $account['comment'] ?></div>
+                    </div>
+                </div>
+                <div class="fin-acc-panel table-text">
 
-            <div class="fin-acc-name table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line"><?= $account['name'] ?></div>
                 </div>
+                <div class="clearfix"><hr class="line"></div>
             </div>
-            <div class="fin-acc-amount table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['amount']) ?></div>
-                </div>
-            </div>
-            <div class="fin-acc-comment table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line"><?= $account['comment'] ?></div>
-                </div>
-            </div>
-            <div class="fin-acc-panel table-text">
-
-            </div>
-            <div class="clearfix"><hr class="line"></div>
 
     <?php endforeach; } ?>
     </div>
