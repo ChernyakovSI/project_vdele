@@ -117,7 +117,7 @@ class FinController extends Controller
             $Acc = Account::findOne($id);
             // Получаем данные модели из запроса
             if ($Acc['id'] != 0) {
-
+                $Acc['amount'] = Account::formatNumberToMoney($Acc['amount']);
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
                 return [
