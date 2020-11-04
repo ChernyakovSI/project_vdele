@@ -522,7 +522,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
         </div>
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
-            <div class="fin-acc-row" id="<?= $account['id'] ?>">
+            <div class="fin-acc-row white-back" id="<?= $account['id'] ?>">
                 <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line"><?= $account['name'] ?></div>
