@@ -144,6 +144,7 @@ $script = new \yii\web\JsExpression("
         let valueAmo = document.getElementById('valueAmo');
         let valueCom = document.getElementById('valueCom');
         let buttonAdd = document.getElementById('button-add');
+        let floatingCirclesG = document.getElementById('floatingCirclesG');
         //document.getElementById('prompt-message').innerHTML = text;
         //form.text.value = '';
         
@@ -155,12 +156,15 @@ $script = new \yii\web\JsExpression("
             valueAmo.innerHTML = '0';
             valueCom.innerHTML = '';
             
+            floatingCirclesG.hidden = true;
+            
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
             };
         }
         else
         {
+            floatingCirclesG.hidden = false;
             fromCaption.innerHTML = 'Редактирование счета';
             buttonAdd.onclick = null;
             
@@ -173,7 +177,8 @@ $script = new \yii\web\JsExpression("
                         data : {id : id}
                     }).done(function(data) {
                             if (data.error == null) {
-                                fullData(data);                       
+                                fullData(data);     
+                                floatingCirclesG.hidden = true;                  
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 console.log(data);
@@ -552,10 +557,22 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     <div id="prompt-form-container">
         <div id="prompt-form" class="window window-border">
             <div class="caption-wrap">
-                <div class="caption-begin">&nbsp;</div>
+                <div class="caption-begin">
+                    <div id="floatingCirclesG">
+                        <div class="f_circleG" id="frotateG_01"></div>
+                        <div class="f_circleG" id="frotateG_02"></div>
+                        <div class="f_circleG" id="frotateG_03"></div>
+                        <div class="f_circleG" id="frotateG_04"></div>
+                        <div class="f_circleG" id="frotateG_05"></div>
+                        <div class="f_circleG" id="frotateG_06"></div>
+                        <div class="f_circleG" id="frotateG_07"></div>
+                        <div class="f_circleG" id="frotateG_08"></div>
+                    </div>
+                </div>
                 <div class="caption-text" id="form-caption">Новый счет</div>
                 <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
             </div>
+
             <div>
                 <div class="caption-line">Счет:</div><div class="message-wrapper-line window-border" id="valueAccWrap">
                     <div class="message-text-line" contentEditable id="valueAcc" >Новый счет</div>

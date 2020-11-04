@@ -23,7 +23,7 @@ class Account extends ActiveRecord
     {
         return [
             [['id', 'created_at', 'updated_at', 'num', 'id_user', 'id_currency', 'is_deleted'], 'integer'],
-            [['amount'], 'double'],
+            ['amount', 'double'],
             [['name', 'comment'], 'safe'],
         ];
     }

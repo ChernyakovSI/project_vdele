@@ -18,7 +18,8 @@ class AppAsset extends AssetBundle
         'css/acEdit9.css',
         'css/users4.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
-        'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
+        'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
+        'css/floatingCircles.css'
     ];
     public $js = [
         //'//htmlweb.ru/geo/api.js',
