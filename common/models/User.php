@@ -599,10 +599,10 @@ class User extends ActiveRecord implements IdentityInterface
         $yearNowD = DateTime::createFromFormat('d.m.Y', '1.1.'.$yearNow);
 
         if($yearD == $yearNowD) {
-            return $message.date('d '.$months[$month-1], $lastActivity);
+            return $message.date('j '.$months[$month-1], $lastActivity);
         }
         else{
-            return $message.date('d '.$months[$month-1].' Y', $lastActivity);
+            return $message.date('j '.$months[$month-1].' Y', $lastActivity);
         }
 
 

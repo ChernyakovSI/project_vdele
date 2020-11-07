@@ -519,6 +519,8 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     <?php if (count($accounts) == 0) { ?>
         <div id="info" class="text-font text-center margin-v20">
             У вас пока нет ни одного счета.
+            <br>
+            Добавьте несколько, например, "Кошелек", "Карта Тинькофф" и "Резервный Фонд"
         </div>
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
