@@ -541,3 +541,10 @@
 .white-back {
     background-color: #eeeeee;
 }
+
+.red-comment{
+    margin-top: 10px;
+    color: red;
+    text-align: center;
+    width: 100%;
+}

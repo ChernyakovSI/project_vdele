@@ -67,6 +67,18 @@ class FinController extends Controller
                 ];
             }
 
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+            if(Account::existsNameByUser($data['name'], $id_user, 0) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Счет с таким же наименованием уже существует",
+                    "element" => "name"
+                ];
+            }
+
+            $changedId = Account::changeOtherNumByUser($data['num'], $id_user, 0);
+            $maxNum = Account::getMaxNumByUser($id_user);
             $newAcc = Account::add($data);
             // Получаем данные модели из запроса
             if ($newAcc['id'] != 0) {
@@ -76,13 +88,27 @@ class FinController extends Controller
                 $id_user = Yii::$app->user->identity->getId();
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
 
+                if($changedId > 0 || $maxNum > $data['num']){
+                    if($changedId == 0){
+                        $changedId = 1;
+                    }
+                    $newAcc = Account::getAllAccountsByUser($id_user);
+
+                    foreach ($newAcc as $item) {
+                        if ($item['id'] != 0) {
+                            $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                        }
+                    }
+                }
+
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
                 return [
                     "data" => $newAcc,
                     "error" => null,
                     "total" => $total,
-                    "totalAllAccounts" => $totalAllAccounts
+                    "totalAllAccounts" => $totalAllAccounts,
+                    "changedNumId" => $changedId
                 ];
             } else {
                 // Если нет, отправляем ответ с сообщением об ошибке
@@ -120,7 +146,7 @@ class FinController extends Controller
             $Acc = Account::findOne($id);
             // Получаем данные модели из запроса
             if ($Acc['id'] != 0) {
-                $Acc['amount'] = Account::formatNumberToMoney($Acc['amount']);
+                $Acc['amount'] = Account::formatNumberToMoneyOnlyCents($Acc['amount']);
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
                 return [
@@ -159,6 +185,18 @@ class FinController extends Controller
                 ];
             }
 
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+            if(Account::existsNameByUser($data['name'], $id_user, $data['id']) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Счет с таким же наименованием уже существует",
+                    "element" => "name"
+                ];
+            }
+
+            $changedId = Account::changeOtherNumByUser($data['num'], $id_user, $data['id']);
+            $maxNum = Account::getMaxNumByUser($id_user);
             $Acc = Account::edit($data['id'], $data);
             // Получаем данные модели из запроса
             if ($Acc['id'] != 0) {
@@ -168,13 +206,29 @@ class FinController extends Controller
                 $id_user = Yii::$app->user->identity->getId();
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
 
+                if($changedId > 0 || $maxNum > $data['num']){
+                    if($changedId == 0){
+                        $changedId = 1;
+                    }
+                    $Acc = Account::getAllAccountsByUser($id_user);
+
+                    foreach ($Acc as $item) {
+                        if ($item['id'] != 0) {
+                            $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                        }
+                    }
+
+
+                }
+
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
                 return [
                     "data" => $Acc,
                     "error" => null,
                     "total" => $total,
-                    "totalAllAccounts" => $totalAllAccounts
+                    "totalAllAccounts" => $totalAllAccounts,
+                    "changedNumId" => $changedId
                 ];
             } else {
                 // Если нет, отправляем ответ с сообщением об ошибке

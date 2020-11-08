@@ -133,6 +133,10 @@ class Account extends ActiveRecord
         return number_format ( $num, 2,  "." , " " );
     }
 
+    public static function formatNumberToMoneyOnlyCents($num){
+        return round  ( $num, 2 );
+    }
+
     public static function getTotalAmountAccountsByUser($id_user){
         $amounts = self::find()->select('amount')->where(['id_user' => $id_user])->all();
         $total = 0;
@@ -148,7 +152,6 @@ class Account extends ActiveRecord
 
     public static function getMaxNumByUser($id_user)
     {
-        //
         $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user])->scalar();
 
         if (isset($realNum)) {
@@ -159,6 +162,46 @@ class Account extends ActiveRecord
             return 0;
         }
     }
+
+    public static function existsNameByUser($name, $id_user, $id){
+        $amounts = self::find()->select('id')->where(['id_user' => $id_user, 'name' => $name])
+            ->andWhere('not id = '.$id)->all();
+
+        if(count($amounts) > 0) {
+            return true;
+        };
+
+        return false;
+    }
+
+    public static function changeOtherNumByUser($num, $id_user, $id){
+        $accounts = self::find()->select('id')->where(['id_user' => $id_user, 'num' => $num])
+            ->andWhere('not id = '.$id)->all();
+
+        if(count($accounts) > 0) {
+            foreach ($accounts as $account){
+                $acc = self::findOne($account['id']);
+                if($id == 0){
+                    $maxNum = self::getMaxNumByUser($id_user);
+                    $curNum = $maxNum + 1;
+                }
+                else{
+                    $curAcc = self::findOne($id);
+                    $curNum = $curAcc->num;
+                }
+
+                $acc->num = $curNum;
+                $acc->save();
+
+                return $account['id'];
+            }
+        };
+
+        return 0;
+    }
+
+
+
 
 
 }

@@ -11,44 +11,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $script = new \yii\web\JsExpression("
     $(document).ready( function() {
-        resize();    
+        resize();       
     })
-    
-    
-    
-    document.getElementById('button-new').onclick = function() {
-        showFormNew(0, function(value) {
-            if (value != null) {
-                $.ajax({
-                        // Метод отправки данных (тип запроса)
-                        type : 'post',
-                        // URL для отправки запроса
-                        url : '/fin/accounts-add',
-                        // Данные формы
-                        data : value
-                    }).done(function(data) {
-                            if (data.error == null) {
-                                confirm(data)                       
-                            } else {
-                                // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
-                            }
-                    }).fail(function() {
-                        // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
-                    });    
-            }
-        });
-    };
-
 ");
 $this->registerJs($script, \yii\web\View::POS_READY);
 
 $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNum.";
     let gID = 0;
-    let changeNum = false;
-    let oldNum;
+    
+    let divRedComment;
 
     function resize() {
         let divListAccounts = document.getElementById('listAccounts');  
@@ -96,6 +68,39 @@ $script = new \yii\web\JsExpression("
                         
         }  
     }
+    
+    function addAcc() {
+        showFormNew(0, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-add',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                deleteForm();
+                                confirm(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+        });
+    };
    
     function editAcc(id) {
         showFormNew(id, function(value) {
@@ -109,14 +114,20 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
+                                deleteForm();
                                 confirmEdit(data)                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
+                        //console.log(data.error);
                     });    
             }
         });
@@ -139,6 +150,13 @@ $script = new \yii\web\JsExpression("
         document.body.style.overflowY = '';
     }
 
+    function deleteForm(){
+        let container = document.getElementById('prompt-form-container');
+    
+        hideCover();
+        container.style.display = 'none';
+        document.onkeydown = null;
+    }
     
     
     function showFormNew(id, callback) {
@@ -159,6 +177,10 @@ $script = new \yii\web\JsExpression("
         //form.text.value = '';
         
         let fromCaption =  document.getElementById('form-caption');
+        
+        divRedComment = document.getElementById('red-comment');
+        divRedComment.hidden = true;
+        
         if(id == 0){
             fromCaption.innerHTML = 'Новый счет';
             
@@ -166,10 +188,8 @@ $script = new \yii\web\JsExpression("
             valueAmo.innerHTML = '0';
             valueCom.innerHTML = '';
             maxNum = Number(maxNum) + 1;
-            console.log(maxNum);
+            //console.log(maxNum);
             valueNum.value = maxNum;
-            
-            oldNum = Number(maxNum);
             
             
             floatingCirclesG.hidden = true;
@@ -210,30 +230,18 @@ $script = new \yii\web\JsExpression("
         function complete(value) {
             if(value !== null){
                 //console.log('val = ', value);
-                maxNum = Number(value.num);
+                maxNum = Number(value.num)>maxNum?Number(value.num):maxNum;
             }
-        
-            hideCover();
-            container.style.display = 'none';
-            document.onkeydown = null;
+            
             callback(value);
         }
-
-        /*form.onsubmit = function() {
-            let value = form.text.value;
-            if (value == '') return false; // игнорируем отправку пустой формы
-
-            complete(value);
-            return false;
-        };
-
-        form.cancel.onclick = function() {
-            complete(null);
-        };*/
+        
+        
 
         document.onkeydown = function(e) {
             if (e.key == 'Escape') {
                 complete(null);
+                deleteForm();
             }
         };
         
@@ -288,7 +296,14 @@ $script = new \yii\web\JsExpression("
         };
         
         divContainer.ondblclick = function(e) {
+            if (event.defaultPrevented) return;
+            
             closeFrom();
+        };
+        
+        form.ondblclick = function(e) {
+            e.preventDefault();
+            return false;
         };
         
         function closeFrom() { 
@@ -296,6 +311,7 @@ $script = new \yii\web\JsExpression("
                 maxNum = Number(maxNum) - 1;
             }
             complete(null);
+            deleteForm();
         };
         
 
@@ -323,8 +339,6 @@ $script = new \yii\web\JsExpression("
             valueCom.innerHTML = data.data.comment;
             valueNum.value = data.data.num;
             
-            oldNum = Number(data.data.num);
-            
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
             };
@@ -344,6 +358,8 @@ $script = new \yii\web\JsExpression("
                     'comment' : valueCom.innerHTML,
                     'num' : valueNum.value,
             };
+            
+            console.dir(valueAmo.innerHTML);
         
             complete(newAccount);
         };
@@ -354,9 +370,10 @@ $script = new \yii\web\JsExpression("
     
     function confirm(data) {
     
-        if(oldNum != data.data['num'])
+        if(data.changedNumId > 0)
         {
             rerenderTable(data);
+            return;
         };
     
         let listAccounts = document.getElementById('listAccounts'); 
@@ -367,8 +384,11 @@ $script = new \yii\web\JsExpression("
                                 };
                                 
                                 let divRow = document.createElement('div');
-                                divRow.className = 'fin-acc-row';
+                                divRow.className = 'fin-acc-row white-back';
                                 divRow.setAttribute('id', data.data.id);
+                                divRow.addEventListener('dblclick', function() {
+                                    editAcc(data.data.id);
+                                }, false);
                                 
                                 let divMainName = document.createElement('div');
                                 divMainName.className = 'fin-acc-name table-text';
@@ -454,9 +474,10 @@ $script = new \yii\web\JsExpression("
     }
     
     function confirmEdit(data) {
-        if(oldNum != data.data['num'])
+        if(data.changedNumId > 0)
         {
             rerenderTable(data);
+            return;
         };
     
         let divRow = document.getElementById(data.data.id);  
@@ -506,8 +527,100 @@ $script = new \yii\web\JsExpression("
         divtotal.innerHTML = data.totalAllAccounts;                     
     }
     
-    function rerenderTable(data) {
-    
+    function rerenderTable(dataSet) {
+        let listAccounts = document.getElementById('listAccounts'); 
+        listAccounts.innerHTML = ''; 
+         
+        dataSet.data.forEach(function(data, i, arrData){ 
+            let divRow = document.createElement('div');
+            divRow.className = 'fin-acc-row white-back';
+            divRow.setAttribute('id', data['id']);
+            divRow.addEventListener('dblclick', function() {
+                editAcc(data['id']);
+            }, false);
+                                
+                                let divMainName = document.createElement('div');
+                                divMainName.className = 'fin-acc-name table-text';
+                                
+                                let divWrapName = document.createElement('div');
+                                divWrapName.className = 'message-wrapper-title';
+                                
+                                let divTextName = document.createElement('div');
+                                divTextName.className = 'message-text-line'; 
+                                divTextName.innerHTML = data['num'] + '. ' + data['name'];    
+                                
+                                divWrapName.append(divTextName);
+                                divMainName.append(divWrapName);
+                                divRow.append(divMainName);
+                                
+                                
+                                let divMainAmount = document.createElement('div');
+                                divMainAmount.className = 'fin-acc-amount table-text';
+                                
+                                let divWrapAmount = document.createElement('div');
+                                divWrapAmount.className = 'message-wrapper-title';
+                                
+                                let divTextAmount = document.createElement('div');
+                                divTextAmount.className = 'message-text-line right-text'; 
+                                divTextAmount.innerHTML = data['amount'];    
+                                
+                                divWrapAmount.append(divTextAmount);
+                                divMainAmount.append(divWrapAmount);
+                                divRow.append(divMainAmount);
+                                
+                                
+                                let divMainComment = document.createElement('div');
+                                divMainComment.className = 'fin-acc-comment table-text';
+                                
+                                let divWrapComment = document.createElement('div');
+                                divWrapComment.className = 'message-wrapper-title';
+                                
+                                let divTextComment = document.createElement('div');
+                                divTextComment.className = 'message-text-line'; 
+                                divTextComment.innerHTML = data['comment'];    
+                                
+                                divWrapComment.append(divTextComment);
+                                divMainComment.append(divWrapComment);
+                                divRow.append(divMainComment);
+                                
+                                
+                                let divPanel = document.createElement('div');
+                                divPanel.className = 'fin-acc-panel table-text';        
+                                
+                                let divWrapPanel = document.createElement('div');
+                                divWrapPanel.className = 'message-wrapper-title';
+                                
+                                let divTextPanel = document.createElement('div');
+                                divTextPanel.className = 'message-text-line unactive'; 
+                                
+                                let spanEdit = document.createElement('span');
+                                spanEdit.className = 'glyphicon glyphicon-pencil symbol_style interactive text-center'; 
+                                //spanEdit.onclick = editAcc;  
+                                spanEdit.addEventListener('click', function() {
+                                    editAcc(data['id']);
+                                }, false); 
+                                
+                                divTextPanel.append(spanEdit);
+                                divWrapPanel.append(divTextPanel);
+                                divPanel.append(divWrapPanel);
+                                divRow.append(divPanel);
+                                
+                                let hrLine = document.createElement('hr');
+                                hrLine.className = 'line';
+                                
+                                let divClear = document.createElement('div');
+                                divClear.className = 'clearfix';
+                                
+                                divClear.append(hrLine);
+                                divRow.append(divClear);
+                                
+                                listAccounts.append(divRow);
+        });
+                                
+        let divtotal = document.getElementById('total');
+        divtotal.innerHTML = dataSet.totalAllAccounts;
+                                
+        resize();
     }
 
 ");
@@ -604,7 +717,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     </div>
 
     <div class="clearfix"></div>
-    <div class="window-button window-border" id="button-new">Добавить</div>
+    <div class="window-button window-border" id="button-new" onclick="addAcc()">Добавить</div>
 
     <div id="prompt-form-container">
         <div id="prompt-form" class="window window-border">
@@ -625,6 +738,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 <div class="caption-text" id="form-caption">Новый счет</div>
                 <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
             </div>
+            <div class="clearfix"></div>
 
             <div>
                 <div class="caption-line">Счет:</div><div class="message-wrapper-line window-border" id="valueAccWrap">
@@ -638,7 +752,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="half_width">
                 <div class="caption-line-half">Порядок:</div><div class="message-wrapper-line-half window-border">
-                    <input type="number" class="message-text-line" contentEditable id="valueNum" value="1">
+                    <input type="number" class="message-text-line" contentEditable id="valueNum" value="1" min="1">
                 </div>
             </div>
             <div>
@@ -647,6 +761,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 </div>
             </div>
             <div class="clearfix"></div>
+            <div class="red-comment" id="red-comment"></div>
             <div class="window-button window-border" id="button-add">Подтвердить</div>
         </div>
 
