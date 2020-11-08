@@ -146,4 +146,19 @@ class Account extends ActiveRecord
         return $total;
     }
 
+    public static function getMaxNumByUser($id_user)
+    {
+        //
+        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user])->scalar();
+
+        if (isset($realNum)) {
+            return $realNum;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
 }
