@@ -353,6 +353,9 @@
     overflow: hidden;
 
     text-align: left;
+
+    border: 0px;
+    background-color: rgba(1,1,1,0);
 }
 
 .message-wrapper-line {
@@ -373,6 +376,30 @@
 
 .caption-line {
     width: 20%;
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+    text-align: right;
+
+    margin-top: 10px;
+}
+
+.half_width {
+    width: 50%;
+    float: left;
+}
+
+.message-wrapper-line-half {
+    width: 60%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
+.caption-line-half {
+    width: 40%;
     padding: 8px; /* the container will keep the padding untouched */
     float: left;
     text-align: right;
@@ -405,7 +432,7 @@
 
 .fin-acc-name {
     float: left;
-    width: 20%;
+    width: 25%;
 }
 
 .fin-acc-amount {
@@ -415,14 +442,14 @@
 
 .fin-acc-comment {
     float: left;
-    width: 40%;
+    width: 45%;
 }
 
 
 
 .fin-acc-panel {
     float: left;
-    width: 20%;
+    width: 10%;
 
     border-left: 1px solid #AAA;
     border-right: 1px solid #AAA;

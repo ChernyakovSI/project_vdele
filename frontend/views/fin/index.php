@@ -14,6 +14,42 @@ $script = new \yii\web\JsExpression("
         resize();    
     })
     
+    
+    
+    document.getElementById('button-new').onclick = function() {
+        showFormNew(0, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-add',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                confirm(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                console.log(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        console.log(data.error);
+                    });    
+            }
+        });
+    };
+
+");
+$this->registerJs($script, \yii\web\View::POS_READY);
+
+$script = new \yii\web\JsExpression("
+    let maxNum = " .$maxNum.";
+    let gID = 0;
+    let changeNum = false;
+    let oldNum;
+
     function resize() {
         let divListAccounts = document.getElementById('listAccounts');  
         let children = divListAccounts.childNodes;
@@ -60,36 +96,6 @@ $script = new \yii\web\JsExpression("
                         
         }  
     }
-    
-    document.getElementById('button-new').onclick = function() {
-        showFormNew(0, function(value) {
-            if (value != null) {
-                $.ajax({
-                        // Метод отправки данных (тип запроса)
-                        type : 'post',
-                        // URL для отправки запроса
-                        url : '/fin/accounts-add',
-                        // Данные формы
-                        data : value
-                    }).done(function(data) {
-                            if (data.error == null) {
-                                confirm(data)                       
-                            } else {
-                                // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
-                            }
-                    }).fail(function() {
-                        // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
-                    });    
-            }
-        });
-    };
-
-");
-$this->registerJs($script, \yii\web\View::POS_READY);
-
-$script = new \yii\web\JsExpression("
    
     function editAcc(id) {
         showFormNew(id, function(value) {
@@ -136,6 +142,7 @@ $script = new \yii\web\JsExpression("
     
     
     function showFormNew(id, callback) {
+        gID = id;
         showCover();
         let form = document.getElementById('prompt-form');
         let container = document.getElementById('prompt-form-container');
@@ -145,6 +152,9 @@ $script = new \yii\web\JsExpression("
         let valueCom = document.getElementById('valueCom');
         let buttonAdd = document.getElementById('button-add');
         let floatingCirclesG = document.getElementById('floatingCirclesG');
+        let valueNum = document.getElementById('valueNum');
+        
+        let divContainer = document.getElementById('prompt-form-container'); 
         //document.getElementById('prompt-message').innerHTML = text;
         //form.text.value = '';
         
@@ -155,6 +165,12 @@ $script = new \yii\web\JsExpression("
             valueAcc.innerHTML = 'Новый счет';
             valueAmo.innerHTML = '0';
             valueCom.innerHTML = '';
+            maxNum = Number(maxNum) + 1;
+            console.log(maxNum);
+            valueNum.value = maxNum;
+            
+            oldNum = Number(maxNum);
+            
             
             floatingCirclesG.hidden = true;
             
@@ -192,6 +208,11 @@ $script = new \yii\web\JsExpression("
         let CtrlDown = false;
 
         function complete(value) {
+            if(value !== null){
+                //console.log('val = ', value);
+                maxNum = Number(value.num);
+            }
+        
             hideCover();
             container.style.display = 'none';
             document.onkeydown = null;
@@ -263,9 +284,19 @@ $script = new \yii\web\JsExpression("
         };
         
         btnClose.onclick = function(e) {
-            complete(null);
+            closeFrom();
         };
         
+        divContainer.ondblclick = function(e) {
+            closeFrom();
+        };
+        
+        function closeFrom() { 
+            if(gID == 0){
+                maxNum = Number(maxNum) - 1;
+            }
+            complete(null);
+        };
         
 
         /*let lastElem = form.elements[form.elements.length - 1];
@@ -290,6 +321,9 @@ $script = new \yii\web\JsExpression("
             valueAcc.innerHTML = data.data.name;
             valueAmo.innerHTML = data.data.amount;
             valueCom.innerHTML = data.data.comment;
+            valueNum.value = data.data.num;
+            
+            oldNum = Number(data.data.num);
             
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
@@ -308,6 +342,7 @@ $script = new \yii\web\JsExpression("
                     'name' : valueAcc.innerHTML,
                     'amount' : Number(valueAmo.innerHTML),
                     'comment' : valueCom.innerHTML,
+                    'num' : valueNum.value,
             };
         
             complete(newAccount);
@@ -318,6 +353,12 @@ $script = new \yii\web\JsExpression("
     }
     
     function confirm(data) {
+    
+        if(oldNum != data.data['num'])
+        {
+            rerenderTable(data);
+        };
+    
         let listAccounts = document.getElementById('listAccounts'); 
                                 
                                 let info = document.getElementById('info');
@@ -337,7 +378,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 let divTextName = document.createElement('div');
                                 divTextName.className = 'message-text-line'; 
-                                divTextName.innerHTML = data.data['name'];    
+                                divTextName.innerHTML = data.data['num'] + '. ' + data.data['name'];    
                                 
                                 divWrapName.append(divTextName);
                                 divMainName.append(divWrapName);
@@ -413,6 +454,11 @@ $script = new \yii\web\JsExpression("
     }
     
     function confirmEdit(data) {
+        if(oldNum != data.data['num'])
+        {
+            rerenderTable(data);
+        };
+    
         let divRow = document.getElementById(data.data.id);  
         
         let children = divRow.childNodes;
@@ -425,7 +471,7 @@ $script = new \yii\web\JsExpression("
                         if(children[column].childNodes[wrap].nodeName == 'DIV') {
                             for(element in children[column].childNodes[wrap].childNodes){
                                 if(children[column].childNodes[wrap].childNodes[element].nodeName == 'DIV') {
-                                    children[column].childNodes[wrap].childNodes[element].innerHTML = data.data.name;
+                                    children[column].childNodes[wrap].childNodes[element].innerHTML = data.data.num + '. ' + data.data.name;
                                 }
                             }
                         }
@@ -458,6 +504,10 @@ $script = new \yii\web\JsExpression("
         
         let divtotal = document.getElementById('total');
         divtotal.innerHTML = data.totalAllAccounts;                     
+    }
+    
+    function rerenderTable(data) {
+    
     }
 
 ");
@@ -524,10 +574,10 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
         </div>
     <?php } else { ?>
     <?php foreach ($accounts as $account): ?>
-            <div class="fin-acc-row white-back" id="<?= $account['id'] ?>">
+            <div class="fin-acc-row white-back" ondblclick="editAcc(<?= $account['id'] ?>)" id="<?= $account['id'] ?>">
                 <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
-                        <div class="message-text-line"><?= $account['name'] ?></div>
+                        <div class="message-text-line"><?= $account['num'] ?>. <?= $account['name'] ?></div>
                     </div>
                 </div>
                 <div class="fin-acc-amount table-text">
@@ -570,6 +620,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                         <div class="f_circleG" id="frotateG_07"></div>
                         <div class="f_circleG" id="frotateG_08"></div>
                     </div>
+                    <div><?='&nbsp;'?></div>
                 </div>
                 <div class="caption-text" id="form-caption">Новый счет</div>
                 <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
@@ -580,9 +631,14 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                     <div class="message-text-line" contentEditable id="valueAcc" >Новый счет</div>
                 </div>
             </div>
-            <div>
-                <div class="caption-line">Начальный остаток:</div><div class="message-wrapper-line window-border">
+            <div class="half_width">
+                <div class="caption-line-half">Начальный остаток:</div><div class="message-wrapper-line-half window-border">
                     <div class="message-text-line" contentEditable id="valueAmo" >0</div>
+                </div>
+            </div>
+            <div class="half_width">
+                <div class="caption-line-half">Порядок:</div><div class="message-wrapper-line-half window-border">
+                    <input type="number" class="message-text-line" contentEditable id="valueNum" value="1">
                 </div>
             </div>
             <div>

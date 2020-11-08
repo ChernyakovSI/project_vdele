@@ -42,9 +42,12 @@ class FinController extends Controller
 
         $accounts = Account::getAllAccountsByUser($id_user);
 
+        $maxNum = Account::getMaxNumByUser($id_user);
+
         return $this->render('index', [
                 'id_user' => $id_user,
-                'accounts' => $accounts
+                'accounts' => $accounts,
+                'maxNum' => $maxNum
             ]);
 
     }
