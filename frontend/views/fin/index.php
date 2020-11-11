@@ -20,7 +20,7 @@ $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNum.";
     let gID = 0;
     
-    let divRedComment;
+    let divRedComment; 
 
     function resize() {
         let divListAccounts = document.getElementById('listAccounts');  
@@ -105,6 +105,7 @@ $script = new \yii\web\JsExpression("
     function editAcc(id) {
         showFormNew(id, function(value) {
             if (value != null) {
+                console.dir(value);
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -168,6 +169,7 @@ $script = new \yii\web\JsExpression("
         let valueAcc = document.getElementById('valueAcc');
         let valueAmo = document.getElementById('valueAmo');
         let valueCom = document.getElementById('valueCom');
+        let valueDel = document.getElementById('valueDel');
         let buttonAdd = document.getElementById('button-add');
         let floatingCirclesG = document.getElementById('floatingCirclesG');
         let valueNum = document.getElementById('valueNum');
@@ -187,6 +189,7 @@ $script = new \yii\web\JsExpression("
             valueAcc.innerHTML = 'Новый счет';
             valueAmo.innerHTML = '0';
             valueCom.innerHTML = '';
+            valueDel.checked = false;
             maxNum = Number(maxNum) + 1;
             //console.log(maxNum);
             valueNum.value = maxNum;
@@ -338,6 +341,7 @@ $script = new \yii\web\JsExpression("
             valueAmo.innerHTML = data.data.amount;
             valueCom.innerHTML = data.data.comment;
             valueNum.value = data.data.num;
+            valueDel.checked = data.data.is_deleted;
             
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
@@ -357,9 +361,8 @@ $script = new \yii\web\JsExpression("
                     'amount' : Number(valueAmo.innerHTML),
                     'comment' : valueCom.innerHTML,
                     'num' : valueNum.value,
+                    'is_deleted' : valueDel.checked,
             };
-            
-            console.dir(valueAmo.innerHTML);
         
             complete(newAccount);
         };
@@ -622,6 +625,31 @@ $script = new \yii\web\JsExpression("
                                 
         resize();
     }
+    
+    function setVisibleDeleted(e) {
+        //floatingCirclesG.hidden = false;
+        let chkDeleted = document.getElementById('setVisibleDeleted');      
+        
+        $.ajax({
+            // Метод отправки данных (тип запроса)
+            type : 'post',
+            // URL для отправки запроса
+            url : '/fin/accounts-get-all',
+            // Данные формы
+            data : {is_deleted : chkDeleted.checked}
+            }).done(function(data) {
+                if (data.error == null) {
+                    rerenderTable(data);     
+                    //floatingCirclesG.hidden = true;                  
+                } else {
+                    // Если при обработке данных на сервере произошла ошибка
+                    console.log(data);
+                }
+            }).fail(function() {
+                // Если произошла ошибка при отправке запроса
+                console.log(data.error);
+        });
+    };
 
 ");
 $this->registerJs($script, \yii\web\View::POS_BEGIN);
@@ -679,14 +707,14 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     <div class="clearfix"><hr class="line"></div>
 
     <div id="listAccounts">
-    <?php if (count($accounts) == 0) { ?>
+        <?php if (count($accounts) == 0) { ?>
         <div id="info" class="text-font text-center margin-v20">
             У вас пока нет ни одного счета.
             <br>
             Добавьте несколько, например, "Кошелек", "Карта Тинькофф" и "Резервный Фонд"
         </div>
-    <?php } else { ?>
-    <?php foreach ($accounts as $account): ?>
+        <?php } else { ?>
+        <?php foreach ($accounts as $account): ?>
             <div class="fin-acc-row white-back" ondblclick="editAcc(<?= $account['id'] ?>)" id="<?= $account['id'] ?>">
                 <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
@@ -713,11 +741,17 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 <div class="clearfix"><hr class="line"></div>
             </div>
 
-    <?php endforeach; } ?>
+        <?php endforeach; } ?>
     </div>
 
     <div class="clearfix"></div>
     <div class="window-button window-border" id="button-new" onclick="addAcc()">Добавить</div>
+
+    <div class="height-3em">
+        <input type="checkbox" id="setVisibleDeleted" class="custom-checkbox" onclick="setVisibleDeleted()">
+        <label for="setVisibleDeleted">Показать скрытые</label>
+    </div>
+
 
     <div id="prompt-form-container">
         <div id="prompt-form" class="window window-border">
@@ -758,6 +792,12 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div>
                 <div class="caption-line">Комментарий:</div><div class="message-wrapper-line window-border">
                     <div class="message-text-line" contentEditable id="valueCom" ></div>
+                </div>
+            </div>
+            <div>
+                <div class="caption-line">
+                    <input type="checkbox" id="valueDel" class="custom-checkbox">
+                    <label for="valueDel">Скрыть счет</label>
                 </div>
             </div>
             <div class="clearfix"></div>

@@ -42,6 +42,10 @@ class Account extends ActiveRecord
     }
 
     public static function getAllAccountsByUser($id_user){
+        return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0])->orderBy('num')->all();
+    }
+
+    public static function getAllAccountsByUserWithDeleted($id_user){
         return self::find()->where(['id_user' => $id_user])->orderBy('num')->all();
     }
 
@@ -82,6 +86,18 @@ class Account extends ActiveRecord
             $newAcc->id_currency = 1;
         };
 
+        if(isset($data['is_deleted'])) {
+            if($data['is_deleted'] == 'true'){
+                $newAcc->is_deleted = 1;
+            }
+            else if($data['is_deleted'] == 'false'){
+                $newAcc->is_deleted = 0;
+            }
+            else{
+                $newAcc->is_deleted = $data['is_deleted'];
+            }
+        };
+
         $newAcc->save();
 
         return $newAcc;
@@ -107,6 +123,18 @@ class Account extends ActiveRecord
 
         if(isset($data['id_currency'])) {
             $Acc->id_currency = $data['id_currency'];
+        };
+
+        if(isset($data['is_deleted'])) {
+            if($data['is_deleted'] == 'true'){
+                $Acc->is_deleted = 1;
+            }
+            else if($data['is_deleted'] == 'false'){
+                $Acc->is_deleted = 0;
+            }
+            else{
+                $Acc->is_deleted = $data['is_deleted'];
+            }
         };
 
         $Acc->save();
@@ -138,6 +166,19 @@ class Account extends ActiveRecord
     }
 
     public static function getTotalAmountAccountsByUser($id_user){
+        $amounts = self::find()->select('amount')->where(['id_user' => $id_user, 'is_deleted' => 0])->all();
+        $total = 0;
+
+        if(count($amounts) > 0) {
+            foreach ($amounts as $amount){
+                $total = $total + $amount['amount'];
+            }
+        };
+
+        return $total;
+    }
+
+    public static function getTotalAmountAccountsByUserWithDeleted($id_user){
         $amounts = self::find()->select('amount')->where(['id_user' => $id_user])->all();
         $total = 0;
 
