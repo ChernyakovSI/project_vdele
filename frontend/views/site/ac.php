@@ -118,7 +118,7 @@ $isFilled = false;
                                 <label>Instagram:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= User::wrapURL($user->url_in) ?>" target="_blank"> <?= $user->url_in ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_in, true) ?>" target="_blank"> <?= $user->url_in ?> </a></u>
                             </div>
                         </div>
                     <?php }
