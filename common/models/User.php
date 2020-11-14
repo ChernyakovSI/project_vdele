@@ -607,6 +607,15 @@ class User extends ActiveRecord implements IdentityInterface
 
 
     }
+
+    public static function wrapURL($url){
+
+        if(stripos($url, 'http://') === false && stripos($url, 'https://') === false){
+            $url = 'http://'.$url;
+        }
+
+        return $url;
+    }
 }
 
 

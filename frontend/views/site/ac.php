@@ -1,6 +1,7 @@
 <?php
 
 use \common\models\Ac;
+use common\models\User;
 use yii\helpers\Html;
 use \common\models\GeneralView;
 use yii\web\UrlManager;
@@ -84,7 +85,7 @@ $isFilled = false;
                                 <label>ВКонтакте:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $user->url_vk ?>" target="_blank"> <?= $user->url_vk ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_vk) ?>" target="_blank"> <?= $user->url_vk ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -95,7 +96,7 @@ $isFilled = false;
                                 <label>Facebook:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $user->url_fb ?>" target="_blank"> <?= $user->url_fb ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_fb) ?>" target="_blank"> <?= $user->url_fb ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -106,7 +107,7 @@ $isFilled = false;
                                 <label>Одноклассники:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $user->url_ok ?>" target="_blank"> <?= $user->url_ok ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_ok) ?>" target="_blank"> <?= $user->url_ok ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -117,7 +118,7 @@ $isFilled = false;
                                 <label>Instagram:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $user->url_in ?>" target="_blank"> <?= $user->url_in ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_in) ?>" target="_blank"> <?= $user->url_in ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -128,7 +129,7 @@ $isFilled = false;
                                 <label>WWW:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= $user->url_www ?>" target="_blank"> <?= $user->url_www ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_www) ?>" target="_blank"> <?= $user->url_www ?> </a></u>
                             </div>
                         </div>
                     <?php }
