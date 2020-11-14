@@ -85,7 +85,7 @@ $isFilled = false;
                                 <label>ВКонтакте:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= User::wrapURL($user->url_vk) ?>" target="_blank"> <?= $user->url_vk ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_vk, 'https://vk.com/') ?>" target="_blank"> <?= $user->url_vk ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -96,7 +96,7 @@ $isFilled = false;
                                 <label>Facebook:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= User::wrapURL($user->url_fb) ?>" target="_blank"> <?= $user->url_fb ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_fb, 'https://www.facebook.com/') ?>" target="_blank"> <?= $user->url_fb ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -107,7 +107,7 @@ $isFilled = false;
                                 <label>Одноклассники:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= User::wrapURL($user->url_ok) ?>" target="_blank"> <?= $user->url_ok ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_ok, 'https://ok.ru/') ?>" target="_blank"> <?= $user->url_ok ?> </a></u>
                             </div>
                         </div>
                     <?php }
@@ -118,7 +118,7 @@ $isFilled = false;
                                 <label>Instagram:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <u><a href="<?= User::wrapURL($user->url_in, true) ?>" target="_blank"> <?= $user->url_in ?> </a></u>
+                                <u><a href="<?= User::wrapURL($user->url_in, 'http://www.instagram.com/') ?>" target="_blank"> <?= $user->url_in ?> </a></u>
                             </div>
                         </div>
                     <?php }

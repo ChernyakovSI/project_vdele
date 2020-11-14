@@ -608,11 +608,11 @@ class User extends ActiveRecord implements IdentityInterface
 
     }
 
-    public static function wrapURL($url, $isInstagram = false){
+    public static function wrapURL($url, $insreadAt = ''){
 
-        if($isInstagram == true && stripos($url, '@') === 0){
+        if($insreadAt != '' && stripos($url, '@') === 0){
             $url = mb_substr($url, 1);
-            $url = 'http://www.instagram.com/'.$url;
+            $url = $insreadAt.$url;
         }
 
         if(stripos($url, 'http://') === false && stripos($url, 'https://') === false){
