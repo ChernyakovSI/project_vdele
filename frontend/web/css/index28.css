@@ -180,7 +180,12 @@
 }
 
 .interactive:hover {
-    color: #000000;
+     color: #000000;
+     cursor: pointer;
+ }
+
+.interactive-only:hover {
+    cursor: pointer;
 }
 
 .symbol_style {
@@ -542,6 +547,10 @@
     background-color: #eeeeee;
 }
 
+.rose-back {
+    background-color: rgba(200, 100, 200, 0.09);
+}
+
 .red-comment{
     margin-top: 10px;
     color: red;
@@ -568,6 +577,7 @@
     flex-shrink: 0;
     flex-grow: 0;
     border: 1px solid #adb5bd;
+    background-color: #eeeeee;
     border-radius: 0.25em;
     margin-right: 0.5em;
     background-repeat: no-repeat;

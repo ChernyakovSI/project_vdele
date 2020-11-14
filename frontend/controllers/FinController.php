@@ -94,18 +94,23 @@ class FinController extends Controller
                 $id_user = Yii::$app->user->identity->getId();
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
 
-                if($changedId > 0 || $maxNum > $data['num'] || $deletedDefore != $deletedAfter){
-                    if($changedId == 0){
+                if($changedId > 0 || $maxNum > $data['num'] || $deletedDefore != $deletedAfter) {
+                    if ($changedId == 0) {
                         $changedId = 1;
-                    }
-                    $newAcc = Account::getAllAccountsByUser($id_user);
+                    };
+
+                    if ($data['option-deleted'] == true) {
+                        $newAcc = Account::getAllAccountsByUserWithDeleted($id_user);
+                    } else{
+                        $newAcc = Account::getAllAccountsByUser($id_user);
+                    };
 
                     foreach ($newAcc as $item) {
                         if ($item['id'] != 0) {
                             $item['amount'] = Account::formatNumberToMoney($item['amount']);
                         }
                     }
-                }
+                };
 
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
@@ -129,7 +134,7 @@ class FinController extends Controller
                 "data" => null,
                 "error" => "Механизм AccountsAdd работает только с AJAX"
             ];
-        }
+        };
 
     }
 
@@ -178,7 +183,12 @@ class FinController extends Controller
                     if($changedId == 0){
                         $changedId = 1;
                     }
-                    $Acc = Account::getAllAccountsByUser($id_user);
+
+                    if ($data['option-deleted'] == true) {
+                        $Acc = Account::getAllAccountsByUserWithDeleted($id_user);
+                    } else{
+                        $Acc = Account::getAllAccountsByUser($id_user);
+                    };
 
                     foreach ($Acc as $item) {
                         if ($item['id'] != 0) {

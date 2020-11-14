@@ -424,7 +424,7 @@ $this->registerJs($script2, \yii\web\View::POS_READY);
             <div class="message-text" <?= ($dialog_id != 0?'contentEditable':'') ?> id="message-text" ></div>
         </div>
         <div class="message-send">
-            <i class="fa fa-play-circle-o" aria-hidden="true" id="sendForm" onclick = "sendText()"></i>
+            <i class="fa fa-play-circle-o interactive-only" aria-hidden="true" id="sendForm" onclick = "sendText()"></i>
         </div>
         <br/>
     </div>

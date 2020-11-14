@@ -355,6 +355,8 @@ $script = new \yii\web\JsExpression("
                 return 0;
             }
             
+            let chkDeleted = document.getElementById('setVisibleDeleted');
+            
             let newAccount = {
                     'id' : id,
                     'name' : valueAcc.innerHTML,
@@ -362,6 +364,7 @@ $script = new \yii\web\JsExpression("
                     'comment' : valueCom.innerHTML,
                     'num' : valueNum.value,
                     'is_deleted' : valueDel.checked,
+                    'option-deleted' : chkDeleted.checked,
             };
         
             complete(newAccount);
@@ -387,7 +390,7 @@ $script = new \yii\web\JsExpression("
                                 };
                                 
                                 let divRow = document.createElement('div');
-                                divRow.className = 'fin-acc-row white-back';
+                                divRow.className = 'fin-acc-row white-back interactive-only';
                                 divRow.setAttribute('id', data.data.id);
                                 divRow.addEventListener('dblclick', function() {
                                     editAcc(data.data.id);
@@ -536,7 +539,11 @@ $script = new \yii\web\JsExpression("
          
         dataSet.data.forEach(function(data, i, arrData){ 
             let divRow = document.createElement('div');
-            divRow.className = 'fin-acc-row white-back';
+            if (data['is_deleted'] == 1) {
+                divRow.className = 'fin-acc-row rose-back interactive-only';
+            } else {
+                divRow.className = 'fin-acc-row white-back interactive-only';
+            } 
             divRow.setAttribute('id', data['id']);
             divRow.addEventListener('dblclick', function() {
                 editAcc(data['id']);
@@ -715,7 +722,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
         </div>
         <?php } else { ?>
         <?php foreach ($accounts as $account): ?>
-            <div class="fin-acc-row white-back" ondblclick="editAcc(<?= $account['id'] ?>)" id="<?= $account['id'] ?>">
+            <div class="fin-acc-row white-back interactive-only" ondblclick="editAcc(<?= $account['id'] ?>)" id="<?= $account['id'] ?>">
                 <div class="fin-acc-name table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line"><?= $account['num'] ?>. <?= $account['name'] ?></div>
@@ -749,7 +756,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
     <div class="height-3em">
         <input type="checkbox" id="setVisibleDeleted" class="custom-checkbox" onclick="setVisibleDeleted()">
-        <label for="setVisibleDeleted">Показать скрытые</label>
+        <label for="setVisibleDeleted" class="interactive-only">Показать скрытые</label>
     </div>
 
 
@@ -797,7 +804,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div>
                 <div class="caption-line">
                     <input type="checkbox" id="valueDel" class="custom-checkbox">
-                    <label for="valueDel">Скрыть счет</label>
+                    <label for="valueDel" class="interactive-only">Скрыть счет</label>
                 </div>
             </div>
             <div class="clearfix"></div>
