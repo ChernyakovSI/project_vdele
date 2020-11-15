@@ -4,8 +4,6 @@ use yii\helpers\Html;
 $this->title = 'Веб-ссылки';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJs($script, \yii\web\View::POS_READY);
-
 $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNumInCategory.";
     let id_category = " .$id_category.";
