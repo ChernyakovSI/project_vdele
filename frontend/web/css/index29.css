@@ -78,7 +78,7 @@
 
 
 .window-right {
-    padding: 15px 0 15px 15px;
+    padding: 15px 0 0 15px;
     background-color: rgba(84, 66, 58, 0.1);
 }
 
@@ -263,7 +263,7 @@
 }
 .dialog-main {
     grid-area: dialog-main ;
-    height: 55vh;
+    height: 59vh;
 }
 .dialog-sidebar {
     grid-area: dialog-sidebar;

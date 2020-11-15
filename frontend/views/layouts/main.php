@@ -65,6 +65,7 @@ $this->registerLinkTag([
         else
         {
             $QUnreadMessages = Message::GetQuantityOfUnreadDialogs($id);
+            $menuItems[] = ['label' => 'Веб-ссылки (в разработке)', 'url' => ['/url/all']];
             $menuItems[] = ['label' => 'Финансы (в разработке)', 'url' => ['/fin/accounts']];
             $menuItems[] = ['label' => 'Меню'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
                     ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
@@ -79,15 +80,19 @@ $this->registerLinkTag([
             ['label' => 'Мои команды', 'url' => ['/team']],
         ];*/
         $ac = new Ac();
-        $menuItems[] = /*['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];*/
-            '<li>'
+        $menuItems[] = ['label' => $ac->getFIO(Yii::$app->user->identity->getId(), true), 'items' => [
+            ['label' => 'Выйти', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']],
+        ]];
+
+            /*['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];*/
+            /*'<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Выйти (' . $ac->getFIO(Yii::$app->user->identity->getId(), true) . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
-            . '</li>';
+            . '</li>';*/
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
