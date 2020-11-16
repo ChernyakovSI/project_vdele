@@ -173,7 +173,10 @@ class SiteController extends Controller
             $path_avatar = $image->getPathAvatarForUser($id_user);
 
             if (!(user::activated($cur_user->getEmail()))) {
-            Yii::$app->session->setFlash('error', 'Аккаунт не подтвержден! Перейдите по ссылке подтверждения, высланной на почту, по которой зарегистрировались!');
+            Yii::$app->session->setFlash('error', 'Аккаунт не подтвержден! 
+                Поэтому полный функционал сайта пока недоступен. 
+                Перейдите по ссылке подтверждения, высланной на почту, по которой зарегистрировались.
+                Если письмо не пришло, то вышлете повторное письмо по кнопке из меню сверху, либо напишите в поддержку');
             }
 
             return $this->render('ac', [
