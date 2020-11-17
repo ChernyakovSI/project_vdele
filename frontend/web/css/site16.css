@@ -165,12 +165,16 @@ a.desc:after {
 }
 
 .navbar-collapse {
-    padding-top: 22px;
+    padding-top: 15px;
 }
 
 .dropdown-menu {
-    top: 27px;
+    top: 37px;
     min-width: 90px;
+}
+
+.nav > li > a {
+    display: inline-block;
 }
 
 /*
