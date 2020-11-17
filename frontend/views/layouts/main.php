@@ -41,7 +41,7 @@ $this->registerLinkTag([
     NavBar::begin([
         //'brandLabel' => Yii::$app->name,
         //'brandLabel' => Html::img('../img/logo.png', ['alt' => Yii::$app->name]),//'<img src="../../../../resources/images/general/logo.png" style="display:inline; vertical-align: top; height:32px;"/>Yii::$app->name',
-        'brandLabel' => Html::img(Yii::$app->params['doman'].'img/logo.png', ['alt' => Yii::$app->name, 'height' => '70px']), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
+        'brandLabel' => Html::img(Yii::$app->params['doman'].'img/logo.png', ['alt' => Yii::$app->name, 'class' => 'logo-pic']), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default navbar-fixed-top',

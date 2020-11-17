@@ -148,22 +148,38 @@ a.desc:after {
 }
 
 .main_container {
-    padding: 95px 0 0 0;
+    padding: 60px 0 0 0;
+}
+
+.navbar-brand {
+    padding: 2px;
 }
 
 /* Параметры главного меню */
 .navbar {
-    min-height: 80px;
+    min-height: 40px;
 }
 
+.logo-pic {
+    height: 46px;
+}
 
+.navbar-collapse {
+    padding-top: 22px;
+}
 
+.dropdown-menu {
+    top: 27px;
+    min-width: 90px;
+}
+
+/*
 .navbar-brand {
     margin-top: 5px;
     padding: 0;
     height: 70px;
     line-height: 70px;
-}
+}*/
 .navbar-toggle {
     /* (80px - высота кнопки 34px) / 2 = 23px */
     margin-top: 23px;
