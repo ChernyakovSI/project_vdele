@@ -6,13 +6,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNumInCategory.";
+    let maxNumCat = " .$maxNumCategory.";
     let id_category = " .$id_category.";
     let gID = 0;
     
     let divRedComment; 
 
     function addUrl() {
-        showFormNew(0, function(value) {
+        showFormNew(0, id_category, function(value) {
             if (value != null) {
                 $.ajax({
                         // Метод отправки данных (тип запроса)
@@ -24,7 +25,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 deleteForm();
-                                confirm(data)                       
+                                confirmData(data)                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -43,7 +44,7 @@ $script = new \yii\web\JsExpression("
     };
     
     function editUrl(id) {
-        showFormNew(id, function(value) {
+        showFormNew(id, id_category, function(value) {
             if (value != null) {
                 $.ajax({
                         // Метод отправки данных (тип запроса)
@@ -55,7 +56,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 deleteForm();
-                                confirm(data);                       
+                                confirmData(data);                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -72,6 +73,103 @@ $script = new \yii\web\JsExpression("
             }
         });
     }
+    
+    confirmDelete = function(id) {
+        let ans = confirm('Удалить веб-ссылку?'); 
+                        
+        if(ans == true) {
+            deleteUrl(id);
+        }
+                        
+        return 1;
+    }
+    
+    function deleteUrl(id) {
+        let value = {
+            'id': id,
+            'id_category': id_category
+        };
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/url/url-delete',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                confirmData(data);                       
+                            } else {
+
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+
+    }
+    
+    function addCategory() {
+        showFormNew(0, -1, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/url/cat-add',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                deleteForm();
+                                confirmDataCat(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+        });
+    };
+    
+    function fullUrl(id){
+        let value = {
+            'id_category': id,
+        };
+        id_category = id;
+        
+            $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/url/all',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                confirmData(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });  
+    };
     
     function showCover() {
         let coverDiv = document.createElement('div');
@@ -96,13 +194,14 @@ $script = new \yii\web\JsExpression("
         document.onkeydown = null;
     }
     
-    function showFormNew(id, callback) {
+    function showFormNew(id, id_category, callback) {
         gID = id;
         showCover();
         let form = document.getElementById('prompt-form');
         let container = document.getElementById('prompt-form-container');
         let btnClose = document.getElementById('btnClose');
         let valueUrl = document.getElementById('valueUrl');
+        let wrapUrl = document.getElementById('wrapUrl');
         let valueName = document.getElementById('valueName');
         let valueCom = document.getElementById('valueCom');
         let buttonAdd = document.getElementById('button-add');
@@ -116,20 +215,40 @@ $script = new \yii\web\JsExpression("
         divRedComment = document.getElementById('red-comment');
         divRedComment.hidden = true;
         
+        if (id_category >= 0){
+            wrapUrl.hidden = false;
+        }
+        else
+        {
+            wrapUrl.hidden = true;
+        }
+        
         if(id == 0){
-            fromCaption.innerHTML = 'Новая веб-ссылка';
-            
+            if (id_category >= 0){
+                fromCaption.innerHTML = 'Новая веб-ссылка';
+            }
+            else
+            {
+                fromCaption.innerHTML = 'Новая категория';
+            }
+                      
             valueUrl.innerHTML = '';
             valueCom.innerHTML = '';
             valueName.innerHTML = '';
-            maxNum = Number(maxNum) + 1;
-            valueNum.value = maxNum;
-            
-            
+            if(id_category >= 0){
+                maxNum = Number(maxNum) + 1;
+                valueNum.value = maxNum;
+            }
+            else
+            {
+                maxNumCat = Number(maxNumCat) + 1;
+                valueNum.value = maxNumCat;
+            }
+
             floatingCirclesG.hidden = true;
             
             buttonAdd.onclick = function(e) {
-                initBtnConfirm();
+                initBtnConfirm(id_category);
             };
         }
         else
@@ -213,25 +332,40 @@ $script = new \yii\web\JsExpression("
             valueNum.value = data.data.num;
             
             buttonAdd.onclick = function(e) {
-                initBtnConfirm();
+                initBtnConfirm(0);
             };
         };
         
-        function initBtnConfirm() {
+        function initBtnConfirm(id_category) {
         
-            if(valueUrl.innerHTML.trim() == '') {
+            if(id_category >= 0 & valueUrl.innerHTML.trim() == '') {
                 valueUrlWrap.classList.add('redBorder');  
                 return 0;
             }      
             
-            let newUrl = {
-                'id' : id,
-                'url' : valueUrl.innerHTML,
-                'name' : valueName.innerHTML,
-                'comment' : valueCom.innerHTML,
-                'num' : valueNum.value,
-                'id_category': id_category,
-            };
+            let newUrl;
+            if(id_category >= 0){
+                newUrl = {
+                    'id' : id,
+                    'url' : valueUrl.innerHTML,
+                    'name' : valueName.innerHTML,
+                    'comment' : valueCom.innerHTML,
+                    'num' : valueNum.value,
+                    'id_category': id_category,
+                };
+            }
+            else
+            {
+                newUrl = {
+                    'id' : id,
+                    'url' : '',
+                    'name' : valueName.innerHTML,
+                    'comment' : valueCom.innerHTML,
+                    'num' : valueNum.value,
+                    'id_category': -1,
+                };
+            }
+            
         
             complete(newUrl);
         };
@@ -240,11 +374,19 @@ $script = new \yii\web\JsExpression("
         //form.elements.text.focus();
     }
     
-    function confirm(data) {
+    function confirmData(data) {
         maxNum = data.maxNumInCategory;
     
         rerenderTable(data);
     }
+    
+    function confirmDataCat(data) {
+        maxNumCat = data.maxNumCat;
+    
+        rerenderTableCat(data);
+    }
+    
+    
     
     function rerenderTable(dataSet) {
         let listUrls = document.getElementById('list-urls'); 
@@ -295,7 +437,7 @@ $script = new \yii\web\JsExpression("
                 divWrapPanel.className = 'message-wrapper-title';
                                     
                 let divTextPanel = document.createElement('div');
-                divTextPanel.className = 'message-text-line unactive'; 
+                divTextPanel.className = 'message-text-line-half unactive'; 
                                     
                 let spanEdit = document.createElement('span');
                 spanEdit.className = 'glyphicon glyphicon-pencil symbol_style interactive text-center';   
@@ -305,19 +447,89 @@ $script = new \yii\web\JsExpression("
                                     
                 divTextPanel.append(spanEdit);
                 divWrapPanel.append(divTextPanel);
+                
+                divTextPanel = document.createElement('div');
+                divTextPanel.className = 'message-text-line-half unactive'; 
+                                    
+                let spanDel = document.createElement('span');
+                spanDel.className = 'glyphicon glyphicon-remove symbol_style interactive text-center';   
+                spanDel.addEventListener('click', function() {
+                    confirmDelete(data['id']);
+                }, false);
+                
+                divTextPanel.append(spanDel);
+                divWrapPanel.append(divTextPanel);
+                
+                let divClear = document.createElement('div');
+                divClear.className = 'clearfix';
+                
+                divWrapPanel.append(divClear);
                 divPanel.append(divWrapPanel);
                 divRow.append(divPanel);
                                     
                 let hrLine = document.createElement('hr');
                 hrLine.className = 'line';
                                     
-                let divClear = document.createElement('div');
+                divClear = document.createElement('div');
                 divClear.className = 'clearfix';
                                     
                 divClear.append(hrLine);
                 divRow.append(divClear);
                                     
                 listUrls.append(divRow);
+            });
+        }
+        else
+        {
+            let divInfo = document.createElement('div');
+            divInfo.className = 'text-font text-center margin-v20';
+            divInfo.setAttribute('id', 'info');
+            divInfo.innerHTML = 'У вас пока нет ни одной веб-ссылки.<br>Добавляйте здесь важные для вас веб-ссылки, чтобы не держать открытыми вкладки в браузере<br>и иметь возможность быстро их открывать';
+            
+            listUrls.append(divInfo);           
+        };
+    }
+    
+    function rerenderTableCat(dataSet) {
+        let listCats = document.getElementById('list-categories'); 
+        listCats.innerHTML = '';
+        
+        if(dataSet.data.length > 0){
+            dataSet.data.forEach(function(data, i, arrData){ 
+                let divRow = document.createElement('div');
+                divRow.className = 'fin-acc-row white-back interactive-only';
+                divRow.setAttribute('id', data['id']);
+                divRow.addEventListener('click', function() {
+                    fullUrl(data['id']);
+                }, false);
+                divRow.addEventListener('dblclick', function() {
+                    editCategory(data['id']);
+                }, false);
+                                                            
+                let divCol = document.createElement('div');
+                divCol.className = 'url-col-category table-text';
+                                    
+                let divWrapName = document.createElement('div');
+                divWrapName.className = 'message-wrapper-title';
+                                    
+                let divTextName = document.createElement('div');
+                divTextName.className = 'message-text-line'; 
+                divTextName.innerHTML = data['num'] + '. ' + data['name'];    
+                                    
+                divWrapName.append(divTextName);
+                divCol.append(divWrapName);
+                divRow.append(divCol);      
+                                    
+                let hrLine = document.createElement('hr');
+                hrLine.className = 'line';
+                                    
+                divClear = document.createElement('div');
+                divClear.className = 'clearfix';
+                                    
+                divClear.append(hrLine);
+                divRow.append(divClear);
+                                    
+                listCats.append(divRow);
             });
         };
     }
@@ -384,9 +596,13 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                             </a>
                             <div class="url-col-panel" ondblclick="editUrl(<?= $url['id'] ?>)">
                                 <div class="message-wrapper-title">
-                                    <div class="message-text-line unactive">
+                                    <div class="message-text-line-half unactive">
                                         <span class="glyphicon glyphicon-pencil symbol_style interactive text-center" onclick="editUrl(<?= $url['id'] ?>)"></span>
                                     </div>
+                                    <div class="message-text-line-half unactive">
+                                        <span class="glyphicon glyphicon-remove symbol_style interactive text-center" onclick="confirmDelete(<?= $url['id'] ?>)"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="clearfix"><hr class="line"></div>
@@ -421,7 +637,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
 
-            <div>
+            <div id="wrapUrl">
                 <div class="caption-line">Ссылка HTTP:</div><div class="message-wrapper-line window-border" id="valueUrlWrap">
                     <div class="message-text-line" contentEditable id="valueUrl" placeholder="http://yavdele.net" ></div>
                 </div>

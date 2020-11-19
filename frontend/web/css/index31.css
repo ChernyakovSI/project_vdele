@@ -363,6 +363,22 @@
     background-color: rgba(1,1,1,0);
 }
 
+.message-text-line-half {
+    min-height: 22px; /* prevent height collapsing when there is no text */
+    max-height: 97px;
+    width: 50%;
+    /*align-content: center;*/
+    outline: none;
+    overflow: hidden;
+
+    text-align: left;
+
+    border: 0px;
+    background-color: rgba(1,1,1,0);
+
+    float: left;
+}
+
 .message-wrapper-line {
     width: 80%;
     background-color: #f9fafb;

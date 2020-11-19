@@ -97,6 +97,13 @@ class Url extends ActiveRecord
             }
         };
 
+        if(isset($data['id_category'])) {
+            $newUrl->id_category = $data['id_category'];
+        }
+        else{
+            $newUrl->id_category = -1;
+        }
+
         $newUrl->save();
 
         return $newUrl;
@@ -137,6 +144,23 @@ class Url extends ActiveRecord
         return $url;
     }
 
+    public static function del($id){
+        $url = static::findOne(['id' => $id]);
+
+        if($url->is_deleted == 0) {
+            $url->is_deleted = 1;
+        }
+        else {
+            $url->is_deleted = 0;
+        };
+
+        $url->updated_at = time();
+
+        $url->save();
+
+        return $url;
+    }
+
     public static function getNumByUserAndCategory($id_user, $id_category){
         $urls =  self::find()->select('num')
             ->where(['id_user' => $id_user, 'id_category' => $id_category])
@@ -156,6 +180,20 @@ class Url extends ActiveRecord
     {
         $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => $id_category])
             ->andWhere('not url = ""')->scalar();
+
+        if (isset($realNum)) {
+            return $realNum;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static function getMaxNumCatByUser($id_user)
+    {
+        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => -1])
+            ->scalar();
 
         if (isset($realNum)) {
             return $realNum;
@@ -201,6 +239,32 @@ class Url extends ActiveRecord
                 $urlElem = self::findOne($url['id']);
                 if($id == 0){
                     $maxNum = self::getMaxNumURLByUserAndCategory($id_user, $id_category);
+                    $curNum = $maxNum + 1;
+                }
+                else{
+                    $curUrl = self::findOne($id);
+                    $curNum = $curUrl->num;
+                }
+
+                $url->num = $curNum;
+                $url->save();
+
+                return $urlElem['id'];
+            }
+        };
+
+        return 0;
+    }
+
+    public static function changeOtherNumByUser($num, $id_user, $id){
+        $urls = self::find()->select('id')->where(['id_user' => $id_user, 'num' => $num, 'id_category' => -1])
+            ->andWhere('not id = '.$id)->all();
+
+        if(count($urls) > 0) {
+            foreach ($urls as $url){
+                $urlElem = self::findOne($url['id']);
+                if($id == 0){
+                    $maxNum = self::getMaxNumCatByUser($id_user);
                     $curNum = $maxNum + 1;
                 }
                 else{
