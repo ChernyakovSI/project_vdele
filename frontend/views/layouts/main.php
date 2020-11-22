@@ -67,7 +67,7 @@ $this->registerLinkTag([
         {
             $QUnreadMessages = Message::GetQuantityOfUnreadDialogs($id);
             $menuItems[] = ['label' => 'Система', 'items' => [
-                ['label' => 'Веб-ссылки (в разработке)', 'url' => ['/url/all']],
+                ['label' => 'Веб-ссылки', 'url' => ['/url/all']],
             ]];
             $menuItems[] = ['label' => 'Финансы', 'items' => [
                 ['label' => 'Счета', 'url' => ['/fin/accounts']],

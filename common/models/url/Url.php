@@ -156,6 +156,7 @@ class Url extends ActiveRecord
 
         if($url->is_deleted == 0) {
             $url->is_deleted = 1;
+            $url->num = -1;
         }
         else {
             $url->is_deleted = 0;
@@ -170,7 +171,7 @@ class Url extends ActiveRecord
 
     public static function getNumByUserAndCategory($id_user, $id_category){
         $urls =  self::find()->select('num')
-            ->where(['id_user' => $id_user, 'id_category' => $id_category])
+            ->where(['id_user' => $id_user, 'id_category' => $id_category, 'is_deleted' => 0])
             ->orderBy('num DESC')->all();
 
         if (count($urls) > 0){
@@ -185,7 +186,7 @@ class Url extends ActiveRecord
 
     public static function getMaxNumURLByUserAndCategory($id_user, $id_category)
     {
-        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => $id_category])
+        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => $id_category, 'is_deleted' => 0])
             ->andWhere('not url = ""')->scalar();
 
         if (isset($realNum)) {
@@ -199,7 +200,7 @@ class Url extends ActiveRecord
 
     public static function getMaxNumCatByUser($id_user)
     {
-        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => -1])
+        $realNum = self::find()->select('max(num)')->where(['id_user' => $id_user, 'id_category' => -1, 'is_deleted' => 0])
             ->scalar();
 
         if (isset($realNum)) {
