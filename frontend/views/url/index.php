@@ -386,8 +386,14 @@ $script = new \yii\web\JsExpression("
         };
         
         function closeFrom() { 
-            if(gID == 0){
-                maxNum = Number(maxNum) - 1;
+            if(gID == 0){  
+                if(id_category >= 0){
+                    maxNum = Number(maxNum) - 1;
+                }
+                else
+                {
+                    maxNumCat = Number(maxNumCat) - 1;
+                }
             }
             complete(null);
             deleteForm();
