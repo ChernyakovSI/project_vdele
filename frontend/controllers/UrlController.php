@@ -29,6 +29,8 @@ class UrlController extends Controller
                                     'url-edit',
                                     'url-delete',
                                     'cat-add',
+                                    'cat-edit',
+                                    'cat-delete',
                             ],
                         'controllers' => ['url'],
                         'allow' => true,
@@ -53,6 +55,7 @@ class UrlController extends Controller
             $id_category = $data['id_category'];
 
             $urls = myURL::getAllURLsByUserAndCategory($id_user, $id_category);
+            $categories = myURL::getAllCategoriesByUser($id_user);
 
             $maxNumInCategory = myURL::getMaxNumURLByUserAndCategory($id_user, $id_category);
 
@@ -67,6 +70,7 @@ class UrlController extends Controller
                     "data" => $urls,
                     "error" => null,
                     "maxNumInCategory" => $maxNumInCategory,
+                    'categories' => $categories,
             ];
         } else {
 
@@ -358,6 +362,108 @@ class UrlController extends Controller
                 "error" => "Механизм UtlAdd работает только с AJAX"
             ];
         };
+
+    }
+
+    public function actionCatEdit()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Устанавливаем формат ответа JSON
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            //$data['id_category'] = -1;
+            $changedId = myURL::changeOtherNumByUser($data['num'], $id_user,0);
+
+            $curUrl = myURL::edit($data['id'], $data);
+
+            // Получаем данные модели из запроса
+            if ($curUrl['id'] != 0) {
+
+                $cats = myURL::getAllCategoriesByUser($id_user);
+                $maxNumCat = myURL::getMaxNumCatByUser($id_user);
+
+
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    "data" => $cats,
+                    "error" => null,
+                    "maxNumCat" => $maxNumCat,
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм UtlAdd работает только с AJAX"
+            ];
+        };
+
+    }
+
+    public function actionCatDelete()
+    {
+        // Устанавливаем формат ответа JSON
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            $id_category = 0;
+
+            $url = myURL::del($data['id']);
+
+            // Получаем данные модели из запроса
+            if ($url['id'] != 0) {
+                $urls = myURL::getAllURLsByUserAndCategory($id_user, $id_category);
+                $categories = myURL::getAllCategoriesByUser($id_user);
+
+                $maxNumInCategory = myURL::getMaxNumURLByUserAndCategory($id_user, $id_category);
+
+                foreach ($urls as $item) {
+                    if ($item['id'] != 0) {
+                        $item['url'] = User::wrapURL($item['url']);
+                    }
+                };
+
+                //$newMessage->addMessage($data);
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    "data" => $urls,
+                    "error" => null,
+                    "maxNumInCategory" => $maxNumInCategory,
+                    'categories' => $categories,
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм AccountsAdd работает только с AJAX"
+            ];
+        }
 
     }
 

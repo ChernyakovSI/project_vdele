@@ -58,6 +58,34 @@
     background-color: rgba(84, 66, 58, 0.1);
 }
 
+.window-button-panel {
+    text-align: center;
+    width: fit-content;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 10px;
+}
+
+.window-button-in-panel {
+    padding: 10px;
+    background-color: #67544f;
+    text-align: center;
+    color: #F0F0F0;
+    width: fit-content;
+    float: left;
+}
+
+.window-button-in-panel:not(:first-child) {
+    margin-left: 10px;
+}
+
+.window-button-in-panel:hover {
+    background-color: #503836;
+    cursor: pointer;
+}
+
 .window-button {
     padding: 10px;
     background-color: #67544f;
@@ -476,9 +504,7 @@
     border-right: 1px solid #AAA;
 }
 
-.fin-acc-row:hover {
-    background-color: rgba(84, 66, 58, 0.06);
-}
+
 
 .fin-acc-row {
     min-height: 22px;
@@ -553,18 +579,6 @@
 
 .text-center {
     text-align: center;
-}
-
-.brown-back {
-    background-color: #C9C9C9;
-}
-
-.white-back {
-    background-color: #eeeeee;
-}
-
-.rose-back {
-    background-color: rgba(200, 100, 200, 0.09);
 }
 
 .red-comment{

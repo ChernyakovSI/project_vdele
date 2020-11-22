@@ -139,6 +139,13 @@ class Url extends ActiveRecord
             }
         };
 
+        if(isset($data['id_category'])) {
+            $url->id_category = $data['id_category'];
+        }
+        else{
+            $url->id_category = -1;
+        }
+
         $url->save();
 
         return $url;

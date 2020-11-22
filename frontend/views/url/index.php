@@ -109,6 +109,32 @@ $script = new \yii\web\JsExpression("
 
     }
     
+    function deleteCat(id) {
+        let value = {
+            'id': id,
+            'id_category': -1
+        };
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/url/cat-delete',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                deleteForm();
+                                confirmData(data);                       
+                            } else {
+
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+
+    }   
+  
     function addCategory() {
         showFormNew(0, -1, function(value) {
             if (value != null) {
@@ -139,6 +165,37 @@ $script = new \yii\web\JsExpression("
             } 
         });
     };
+    
+    function editCategory(id) {
+        showFormNew(id, -1, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/url/cat-edit',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                deleteForm();
+                                confirmDataCat(data);                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            }
+        });
+    }
     
     function fullUrl(id){
         let value = {
@@ -205,6 +262,7 @@ $script = new \yii\web\JsExpression("
         let valueName = document.getElementById('valueName');
         let valueCom = document.getElementById('valueCom');
         let buttonAdd = document.getElementById('button-add');
+        let buttonDel = document.getElementById('button-del');
         let floatingCirclesG = document.getElementById('floatingCirclesG');
         let valueNum = document.getElementById('valueNum');
         
@@ -231,6 +289,8 @@ $script = new \yii\web\JsExpression("
             {
                 fromCaption.innerHTML = 'Новая категория';
             }
+            
+            buttonDel.hidden = true;
                       
             valueUrl.innerHTML = '';
             valueCom.innerHTML = '';
@@ -254,8 +314,17 @@ $script = new \yii\web\JsExpression("
         else
         {
             floatingCirclesG.hidden = false;
-            fromCaption.innerHTML = 'Редактирование веб-ссылки';
+            if (id_category >= 0){
+                fromCaption.innerHTML = 'Редактирование веб-ссылки';
+                buttonDel.hidden = true;
+            }
+            else
+            {
+                fromCaption.innerHTML = 'Редактирование категории';
+                buttonDel.hidden = false;                  
+            }
             buttonAdd.onclick = null;
+            buttonDel.onclick = null;
             
             $.ajax({
                         // Метод отправки данных (тип запроса)
@@ -266,7 +335,7 @@ $script = new \yii\web\JsExpression("
                         data : {id : id}
                     }).done(function(data) {
                             if (data.error == null) {
-                                fullData(data);     
+                                fullData(data, id_category);     
                                 floatingCirclesG.hidden = true;                  
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
@@ -324,15 +393,32 @@ $script = new \yii\web\JsExpression("
             deleteForm();
         };
         
-        function fullData(data) {
+        function fullData(data, id_category) {
         
-            valueUrl.innerHTML = data.data.url;
+            if (id_category >= 0){
+                valueUrl.innerHTML = data.data.url;
+            }
+            else
+            {
+                valueUrl.innerHTML = '';
+            }       
+            
             valueName.innerHTML = data.data.name;
             valueCom.innerHTML = data.data.comment;
             valueNum.value = data.data.num;
             
             buttonAdd.onclick = function(e) {
-                initBtnConfirm(0);
+                initBtnConfirm(id_category);
+            };
+            
+            buttonDel.onclick = function(e) {
+                let ans = confirm('Удалить категорию и все веб-ссылки в ней?'); 
+                        
+                if(ans == true) {
+                    deleteCat(data.data.id);
+                }
+                                    
+                return 1;
             };
         };
         
@@ -378,6 +464,13 @@ $script = new \yii\web\JsExpression("
         maxNum = data.maxNumInCategory;
     
         rerenderTable(data);
+        
+        if(data.categories != null) {
+            let mData = {
+                'data' : data.categories
+            };
+            rerenderTableCat(mData);
+        }
     }
     
     function confirmDataCat(data) {
@@ -494,17 +587,26 @@ $script = new \yii\web\JsExpression("
         let listCats = document.getElementById('list-categories'); 
         listCats.innerHTML = '';
         
+        let divDefault = document.getElementById('0');
+        let isDefault = true;
+        
         if(dataSet.data.length > 0){
             dataSet.data.forEach(function(data, i, arrData){ 
                 let divRow = document.createElement('div');
-                divRow.className = 'fin-acc-row white-back interactive-only';
-                divRow.setAttribute('id', data['id']);
-                divRow.addEventListener('click', function() {
-                    fullUrl(data['id']);
-                }, false);
-                divRow.addEventListener('dblclick', function() {
-                    editCategory(data['id']);
-                }, false);
+                if (id_category == data['id']){
+                    divRow.className = 'fin-acc-row active-back interactive-only';
+                    divRow.addEventListener('click', function() {
+                        editCategory(data['id']);
+                    }, false);
+                    isDefault = false;
+                }
+                else {
+                    divRow.className = 'fin-acc-row white-back interactive-only';
+                    divRow.addEventListener('click', function() {
+                        fullUrl(data['id']);
+                    }, false);
+                };  
+                divRow.setAttribute('id', data['id']);   
                                                             
                 let divCol = document.createElement('div');
                 divCol.className = 'url-col-category table-text';
@@ -532,6 +634,14 @@ $script = new \yii\web\JsExpression("
                 listCats.append(divRow);
             });
         };
+        
+        if(isDefault == true){
+            divDefault.className = 'fin-acc-row active-back interactive-only';
+        }
+        else
+        {
+            divDefault.className = 'fin-acc-row white-back interactive-only';
+        };
     }
 ");
 $this->registerJs($script, \yii\web\View::POS_BEGIN);
@@ -546,7 +656,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 Категории
             </div>
             <div class="clearfix"><hr class="line"></div>
-            <div class="fin-acc-row white-back interactive-only" onclick="fullUrl(0)" ondblclick="editCategory(0)" id="0">
+            <div class="fin-acc-row active-back interactive-only" onclick="fullUrl(0)" id="0">
                 <div class="url-col-category table-text">
                     <div class="message-wrapper-title">
                         <div class="message-text-line">Без категории</div>
@@ -557,7 +667,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div id="list-categories">
 
                 <?php foreach ($categories as $category): ?>
-                    <div class="fin-acc-row white-back interactive-only" onclick="fullUrl(<?= $category['id'] ?>)" ondblclick="editCategory(<?= $category['id'] ?>)" id="<?= $category['id'] ?>">
+                    <div class="fin-acc-row white-back interactive-only" onclick="fullUrl(<?= $category['id'] ?>)" id="<?= $category['id'] ?>">
                         <div class="url-col-category table-text">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line"><?= $category['num'] ?>. <?= $category['name'] ?></div>
@@ -660,7 +770,10 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
             <div class="red-comment" id="red-comment"></div>
-            <div class="window-button window-border" id="button-add">Подтвердить</div>
+            <div class="window-button-panel">
+                <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
+                <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
+            </div>
         </div>
 
     </div>

@@ -149,3 +149,23 @@ a:hover {
     text-decoration: none;
     color: #463232;
 }
+
+.brown-back {
+    background-color: #C9C9C9;
+}
+
+.white-back {
+     background-color: #eeeeee;
+ }
+
+.active-back {
+    background-color: rgba(184, 166, 158, 0.2);
+}
+
+.rose-back {
+    background-color: rgba(200, 100, 200, 0.09);
+}
+
+.fin-acc-row:hover {
+    background-color: rgba(84, 66, 58, 0.06);
+}
