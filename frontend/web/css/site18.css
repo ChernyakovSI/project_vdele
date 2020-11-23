@@ -170,11 +170,16 @@ a.desc:after {
 
 .dropdown-menu {
     top: 34px;
-    min-width: 90px;
+    min-width: 135px;
+    padding: 0;
 }
 
 .nav > li > a {
     display: inline-block;
+}
+
+.dropdown-menu > li > a {
+    padding: 6px 20px;
 }
 
 /*
@@ -369,6 +374,11 @@ a:visited {
 }
 a:active {
     color: #67544f; /* Цвет активной ссылки */
+    text-decoration: none;
+}
+
+a:focus {
+    color: #67544f; /* Цвет посещенных ссылок */
     text-decoration: none;
 }
 

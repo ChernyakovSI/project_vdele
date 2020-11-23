@@ -291,7 +291,7 @@
 }
 .dialog-main {
     grid-area: dialog-main ;
-    height: 59vh;
+    height: 67vh;
 }
 .dialog-sidebar {
     grid-area: dialog-sidebar;

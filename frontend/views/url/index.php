@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Веб-ссылки';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 
 $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNumInCategory.";

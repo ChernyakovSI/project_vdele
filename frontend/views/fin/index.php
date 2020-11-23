@@ -7,7 +7,18 @@ use common\models\fin\Account;
 AppAsset::register($this);
 
 $this->title = 'Финансы: Счета';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
+?>
+
+<div class="submenu">
+    <span class="btn-submenu btn-active">Счета</span>
+    <span class="btn-submenu"><a href="#">Категории</a></span>
+    <span class="btn-submenu"><a href="#">Расходы</a></span>
+    <span class="btn-submenu"><a href="#">Доходы</a></span>
+    <span class="btn-submenu"><a href="#">Отчеты</a></span>
+</div>
+
+<?php
 
 $script = new \yii\web\JsExpression("
     $(document).ready( function() {

@@ -5,7 +5,7 @@ use yii\widgets\LinkPager;
 use common\models\Image;
 
 $this->title = 'Пользователи';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="window window-border window-caption">Пользователи (<?= count($usersAll) ?>)</div>
 

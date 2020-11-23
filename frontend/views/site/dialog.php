@@ -6,7 +6,7 @@
 
 
     $this->title = 'Диалог';
-    $this->params['breadcrumbs'][] = $this->title;
+    //$this->params['breadcrumbs'][] = $this->title;
 
     $script = new \yii\web\JsExpression("
         
