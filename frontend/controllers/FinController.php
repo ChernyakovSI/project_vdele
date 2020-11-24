@@ -99,7 +99,7 @@ class FinController extends Controller
                         $changedId = 1;
                     };
 
-                    if ($data['option-deleted'] == true) {
+                    if ($data['option-deleted'] == 'true') {
                         $newAcc = Account::getAllAccountsByUserWithDeleted($id_user);
                     } else{
                         $newAcc = Account::getAllAccountsByUser($id_user);
@@ -184,7 +184,7 @@ class FinController extends Controller
                         $changedId = 1;
                     }
 
-                    if ($data['option-deleted'] == true) {
+                    if ($data['option-deleted'] == 'true') {
                         $Acc = Account::getAllAccountsByUserWithDeleted($id_user);
                     } else{
                         $Acc = Account::getAllAccountsByUser($id_user);

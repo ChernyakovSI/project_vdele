@@ -18,13 +18,13 @@
     background-color: #64524a;
 }
 
-.navbar-default .navbar-nav > .active > a:hover{
-    color: #dddddd;
-    background-color: #64524a;
-}
-
 .navbar-nav > li > .dropdown-menu {
     background-color: #54423a;
+}
+
+.navbar-nav > li > .dropdown-menu > li > a:focus {
+    color: #dddddd;
+    background-color: #64524a;
 }
 
 .dropdown-menu > li > a {
@@ -32,9 +32,15 @@
 }
 
 .dropdown-menu > li > a:hover {
+     color: #dddddd;
+     background-color: #64524a;
+ }
+
+.dropdown-menu:focus {
     color: #dddddd;
     background-color: #64524a;
 }
+
 
 .navbar-default .navbar-nav > .open > a {
     color: #dddddd;
@@ -177,3 +183,4 @@ a:hover {
 .btn-active {
     color: #aaaaaa;
 }
+
