@@ -604,14 +604,20 @@ $this->title = 'Финансы: Категории расходов и дохо�
         let btnExpense = document.getElementById('btn-expense');
         let btnProfit = document.getElementById('btn-profit');
         
+        let divCaption = document.getElementById('caption');
+        
         if(isProfit == 1){
             btnExpense.className = 'btn-submenu btn-submenu-interactive';
             btnProfit.className = 'btn-submenu btn-active btn-submenu-interactive';
+            
+            divCaption.innerHTML = 'Категории доходов';
         }
         else
         {
             btnExpense.className = 'btn-submenu btn-active btn-submenu-interactive';
             btnProfit.className = 'btn-submenu btn-submenu-interactive';
+            
+            divCaption.innerHTML = 'Категории расходов';
         } 
     }
     
@@ -619,7 +625,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
     $this->registerJs($script, \yii\web\View::POS_BEGIN);
 ?>
 
-<div class="window window-border window-caption">Категории<?= ($isProfit == 0 ? ' расходов' : ' доходов') ?></div>
+<div class="window window-border window-caption" id="caption">Категории<?= ($isProfit == 0 ? ' расходов' : ' доходов') ?></div>
 
 <div class="submenu">
     <?php if ($isProfit == 0){ ?>
