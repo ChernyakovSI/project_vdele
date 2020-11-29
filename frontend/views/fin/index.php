@@ -12,9 +12,8 @@ $this->title = 'Финансы: Счета';
 
 <div class="submenu">
     <span class="btn-submenu btn-active">Счета</span>
-    <span class="btn-submenu"><a href="#">Категории</a></span>
-    <span class="btn-submenu"><a href="#">Расходы</a></span>
-    <span class="btn-submenu"><a href="#">Доходы</a></span>
+    <span class="btn-submenu"><a href="/fin/categories">Категории</a></span>
+    <span class="btn-submenu"><a href="#">Движения</a></span>
     <span class="btn-submenu"><a href="#">Отчеты</a></span>
 </div>
 

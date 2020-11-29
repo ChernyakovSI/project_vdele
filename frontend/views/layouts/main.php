@@ -71,6 +71,7 @@ $this->registerLinkTag([
             ]];
             $menuItems[] = ['label' => 'Финансы', 'items' => [
                 ['label' => 'Счета', 'url' => ['/fin/accounts']],
+                ['label' => 'Категории', 'url' => ['/fin/categories']],
             ]];
             $menuItems[] = ['label' => 'Контакты'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
                     ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],

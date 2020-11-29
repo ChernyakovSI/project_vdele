@@ -13,12 +13,12 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site18.css',
-        'css/index33.css',
+        'css/index34.css',
         'css/color11.css',
         'css/acEdit9.css',
         'css/users4.css',
         'css/url2.css',
-        'css/fin.css',
+        'css/fin1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles.css'
