@@ -180,7 +180,24 @@ a:hover {
     background-color: rgba(84, 66, 58, 0.06);
 }
 
-.btn-active {
-    color: #aaaaaa;
+.btn-submenu {
+    color: #848484;
 }
+
+.btn-active {
+    color: #8A2908;
+}
+
+.btn-active-profit {
+    color: #04B404;
+}
+
+.btn-active-expense {
+    color: #FE2E2E;
+}
+
+.btn-active-replacement {
+    color: #5882FA;
+}
+
 

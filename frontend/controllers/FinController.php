@@ -35,7 +35,8 @@ class FinController extends Controller
                                         'cat-delete',
                                         'sub-add',
                                         'sub-edit',
-                                        'sub-delete',],
+                                        'sub-delete',
+                                        'register',],
                         'controllers' => ['fin'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -733,6 +734,27 @@ class FinController extends Controller
                 "error" => "Механизм AccountsAdd работает только с AJAX"
             ];
         }
+
+    }
+
+    public function actionRegister()
+    {
+        $cur_user = Yii::$app->user->identity;
+        $id_user = $cur_user->getId();
+
+        $isExpense = 1;
+        $isProfit = 0;
+        $isReplacement = 0;
+
+        $transactions = [];
+
+        return $this->render('register', [
+            'id_user' => $id_user,
+            'transactions' => $transactions,
+            'isExpense' => $isExpense,
+            'isProfit' => $isProfit,
+            'isReplacement' => $isReplacement,
+        ]);
 
     }
 

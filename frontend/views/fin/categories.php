@@ -9,7 +9,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
 <div class="submenu">
     <span class="btn-submenu"><a href="/fin/accounts">Счета</a></span>
     <span class="btn-submenu btn-active">Категории</span>
-    <span class="btn-submenu"><a href="#">Движения</a></span>
+    <span class="btn-submenu"><a href="/fin/register">Движения</a></span>
     <span class="btn-submenu"><a href="#">Отчеты</a></span>
 </div>
 
