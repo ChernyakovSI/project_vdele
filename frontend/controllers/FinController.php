@@ -748,12 +748,15 @@ class FinController extends Controller
 
         $transactions = [];
 
+        $total = 0;
+
         return $this->render('register', [
             'id_user' => $id_user,
             'transactions' => $transactions,
             'isExpense' => $isExpense,
             'isProfit' => $isProfit,
             'isReplacement' => $isReplacement,
+            'total' => $total
         ]);
 
     }
