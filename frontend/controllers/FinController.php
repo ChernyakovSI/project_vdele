@@ -750,13 +750,35 @@ class FinController extends Controller
 
         $total = 0;
 
+        $Accs = Account::getAllAccountsByUser($id_user);
+        foreach ($Accs as $item) {
+            if ($item['id'] != 0) {
+                $item['amount'] = Account::formatNumberToMoney($item['amount']);
+            }
+        }
+
+        $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
+
+        if(count($cats) > 0){
+            $id_category = $cats[0]['id'];
+            $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+        }
+        else
+        {
+            $subs = [];
+        }
+
+
         return $this->render('register', [
             'id_user' => $id_user,
             'transactions' => $transactions,
             'isExpense' => $isExpense,
             'isProfit' => $isProfit,
             'isReplacement' => $isReplacement,
-            'total' => $total
+            'total' => $total,
+            'accs' => $Accs,
+            'cats' => $cats,
+            'subs' => $subs
         ]);
 
     }

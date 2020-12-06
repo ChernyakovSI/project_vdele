@@ -137,11 +137,20 @@ $script = new \yii\web\JsExpression("
         let btnClose = document.getElementById('btnClose');
         let valueDate = document.getElementById('valueDate');
         let valueAmo = document.getElementById('valueAmo');
+        let valueType = document.getElementById('valueType');
+        let valueAcc = document.getElementById('valueType');
+        let valueCat = document.getElementById('valueCat');
+        let valueSub = document.getElementById('valueSub');
+        let valueCom = document.getElementById('valueCom');
       
         let buttonAdd = document.getElementById('button-add');
         let floatingCirclesG = document.getElementById('floatingCirclesG');
         
         let fromCaption =  document.getElementById('form-caption');
+        
+        let nowServer = new Date();
+        let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60; 
+        nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset); 
         
         divRedComment = document.getElementById('red-comment');
         divRedComment.hidden = true;
@@ -157,6 +166,8 @@ $script = new \yii\web\JsExpression("
             {
                 fromCaption.innerHTML = 'Новое перемещение';
             }
+            
+            valueDate.value = nowServer.toISOString().substring(0, 16);          
                      
             floatingCirclesG.hidden = true;
             
@@ -445,36 +456,61 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 </div>
             </div>
             <div class="half_width">
-                <div class="caption-line-half-20">Тип:</div><div class="message-wrapper-line-half window-border">
-                    <select size="1" class="message-text-line" contentEditable id="valueType">
+
+                    <div class="radio-container">
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueType" id="isExpense" checked>
+                            <label for="isExpense">Расход</label>
+                        </div>
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueType" id="isProfit">
+                            <label for="isProfit">Доход</label>
+                        </div>
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueType" id="isReplacement">
+                            <label for="isReplacement">Перемещение</label>
+                        </div>
+                    </div>
+
+                    <!--<select size="1" class="message-text-line" contentEditable id="valueType">
                         <option selected value="0">Расход</option>
                         <option  value="1">Доход</option>
                         <option value="2">Перемещение</option>
-                    </select>
-                </div>
+                    </select>-->
+
             </div>
             <div class="clearfix"></div>
             <div>
                 <div class="caption-line-10">Счет:</div><div class="message-wrapper-line window-border" id="valueAccWrap">
-                    <select size="1" class="message-text-line" contentEditable id="valueAcc">
+                    <input type="text" class="message-text-line" list="list_accounts" id="valueAcc" contentEditable />
+                    <datalist id="list_accounts">
+                        <?php foreach ($accs as $account): ?>
+                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
 
-                    </select>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div>
                 <div class="caption-line-10">Категория:</div><div class="message-wrapper-line window-border" id="valueCatWrap">
-                    <select size="1" class="message-text-line" contentEditable id="valueCat">
-
-                    </select>
+                    <input type="text" class="message-text-line" list="list_categories" id="valueCat" contentEditable />
+                    <datalist id="list_categories">
+                        <?php foreach ($cats as $category): ?>
+                            <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div>
                 <div class="caption-line-10">Подкатегория:</div><div class="message-wrapper-line window-border" id="valueSubWrap">
-                    <select size="1" class="message-text-line" contentEditable id="valueSub">
-
-                    </select>
+                    <input type="text" class="message-text-line" list="list_subcategories" id="valueSub" contentEditable />
+                    <datalist id="list_subcategories">
+                        <?php foreach ($subs as $category): ?>
+                            <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
                 </div>
             </div>
             <div class="clearfix"></div>
