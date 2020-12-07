@@ -141,14 +141,27 @@ $script = new \yii\web\JsExpression("
         let valIsProfit = document.getElementById('isProfit');
         let valIsReplacement = document.getElementById('isReplacement');
         let valueAcc = document.getElementById('valueAcc');
+        let valueAccTo = document.getElementById('valueAccTo');
         let valueCat = document.getElementById('valueCat');
         let valueSub = document.getElementById('valueSub');
         let valueCom = document.getElementById('valueCom');
       
         let textAcc = document.getElementById('textAcc');
         let ClearAcc = document.getElementById('ClearAcc');
+        let textAccTo = document.getElementById('textAccTo');
+        let ClearAccTo = document.getElementById('ClearAccTo');
+        let textCat = document.getElementById('textCat');
+        let ClearCat = document.getElementById('ClearCat');
+        let textSub = document.getElementById('textSub');
+        let ClearSub = document.getElementById('ClearSub');
+        
+        let fieldAccTo = document.getElementById('fieldAccTo');
+        let fieldCat = document.getElementById('fieldCat');
+        let fieldSub = document.getElementById('fieldSub');
+        let fieldAcc = document.getElementById('fieldAcc');
       
         let buttonAdd = document.getElementById('button-add');
+        let buttonDel = document.getElementById('button-del'); 
         let floatingCirclesG = document.getElementById('floatingCirclesG');
         
         let fromCaption =  document.getElementById('form-caption');
@@ -160,24 +173,75 @@ $script = new \yii\web\JsExpression("
         divRedComment = document.getElementById('red-comment');
         divRedComment.hidden = true;
         
+        let thisData = {
+            'id' : 0,
+            'date' : 0,
+            'type' : 0,
+            'AccId' : 0,
+            'AccName' : '',
+            'CatId' : 0,
+            'CatName' : '',
+            'SubId' : 0,
+            'SubName' : '',
+            'Amount' : 0,
+            'Com' : '',
+            'AccToId' : 0,
+            'AccToName' : '',
+        };
+        
+        valueAcc.value = '';
+        valueAccTo.value = '';
+        valueCat.value = '';
+        valueSub.value = '';
+        valueAmo.innerHTML = '';
+        valueCom.innerHTML = '';
+        
+        textAcc.innerHTML = '';
+        textAccTo.innerHTML = '';
+        textCat.innerHTML = '';
+        textSub.innerHTML = '';
+        
         if(id == 0){
             if(type == 0){
                 fromCaption.innerHTML = 'Новый расход';
                 valIsExpense.checked = true;
+                thisData['type'] = 0;
+                
+                fieldAccTo.hidden = true;
+                fieldCat.hidden = false;
+                fieldSub.hidden = false;
+                
+                fieldAcc.innerHTML = 'Счет';
             }
             else if(type == 1){
                 fromCaption.innerHTML = 'Новый доход';
                 valIsProfit.checked = true;
+                thisData['type'] = 1;
+                
+                fieldAccTo.hidden = true;
+                fieldCat.hidden = false;
+                fieldSub.hidden = false;
+                
+                fieldAcc.innerHTML = 'Счет';
             }
             else
             {
                 fromCaption.innerHTML = 'Новое перемещение';
                 valIsReplacement.checked = true;
+                thisData['type'] = 2;
+                
+                fieldAccTo.hidden = false;
+                fieldCat.hidden = true;
+                fieldSub.hidden = true;
+                
+                fieldAcc.innerHTML = 'Со счета';
             }
             
-            valueDate.value = nowServer.toISOString().substring(0, 16);          
+            valueDate.value = nowServer.toISOString().substring(0, 16);  
+            thisData['date'] = nowServer.getTime();                 
                      
             floatingCirclesG.hidden = true;
+            buttonDel.hidden = true;
             
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
@@ -185,6 +249,8 @@ $script = new \yii\web\JsExpression("
         }
         else
         {
+            buttonDel.hidden = false;
+        
             floatingCirclesG.hidden = false;
             if(type == 0){
                 fromCaption.innerHTML = 'Редактирование расхода';
@@ -273,6 +339,10 @@ $script = new \yii\web\JsExpression("
             this.innerHTML = this.innerHTML.replace(/,/, '.');
             this.innerHTML = isNaN(Number(this.innerHTML)) ? 0 : Number(this.innerHTML);
         };
+        
+        valueAmo.onchange = function(event) {
+            thisData['Amount'] = Number(this.value.innerHTML)
+        }
         
         btnClose.onclick = function(e) {
             closeFrom();
@@ -371,16 +441,280 @@ $script = new \yii\web\JsExpression("
             else
             {
                 textAcc.innerHTML = '';
-            }    
+            } 
+            
+            thisData['AccId'] = value['id'];
+            thisData['AccName'] = value['name'];   
         };
         
         ClearAcc.onclick = function(e) {
             valueAcc.value = '';
             textAcc.innerHTML = '';
+            
+            thisData['AccId'] = 0;
+            thisData['AccName'] = '';
+        };
+        
+        valueAccTo.onchange = function(event) {
+            let nameAcc = this.value.trim();
+            let idAcc = 0;
+        
+            let idList = this.getAttribute('list');
+            let divList = document.getElementById(idList);
+            
+            let children = divList.childNodes;
+
+            for(column in children){ 
+                if(children[column].nodeName == 'OPTION' & children[column].innerHTML == nameAcc) { 
+                    idAcc = children[column].getAttribute('data-id');        
+                    break;
+                }      
+            } 
+            
+            let value = {
+                'name' : nameAcc,
+                'id' : idAcc
+            };
+            if((value['id'] == 0) && (value['name'] != '')){
+                textAccTo.innerHTML = 'Будет создан новый счет!';
+            }
+            else if (value['id'] > 0) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-get',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                textAccTo.innerHTML = '(' + data.data.amount + ')';                           
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+            else
+            {
+                textAccTo.innerHTML = '';
+            } 
+            
+            thisData['AccIdTo'] = value['id'];
+            thisData['AccNameTo'] = value['name'];   
+        };
+        
+        ClearAccTo.onclick = function(e) {
+            valueAccTo.value = '';
+            textAccTo.innerHTML = '';
+            
+            thisData['AccIdTo'] = 0;
+            thisData['AccNameTo'] = '';
+        };
+        
+        valueCat.onchange = function(event) {
+            let nameCat = this.value.trim();
+            let idCat = 0;
+        
+            let idList = this.getAttribute('list');
+            let divList = document.getElementById(idList);
+            
+            let children = divList.childNodes;
+
+            for(column in children){ 
+                if(children[column].nodeName == 'OPTION' & children[column].innerHTML == nameCat) { 
+                    idCat = children[column].getAttribute('data-id');        
+                    break;
+                }      
+            } 
+            
+            let value = {
+                'name' : nameCat,
+                'id' : idCat
+            };
+            if((value['id'] == 0) && (value['name'] != '')){
+                textCat.innerHTML = 'Будет создана новая категория!';
+                rerenderListSubs([]);
+                textSub.innerHTML = '';
+                valueSub.value = '';
+            }
+            else if (value['id'] > 0) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/cat-get',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                textCat.innerHTML = ''; 
+                                rerenderListSubs(data.subs);                          
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+            else
+            {
+                textCat.innerHTML = '';
+                rerenderListSubs([]);
+                textSub.innerHTML = '';
+                valueSub.value = '';
+            }   
+            
+            thisData['CatId'] = value['id'];
+            thisData['CatName'] = value['name'];
+            thisData['SubId'] = 0;
+            thisData['SubName'] = ''; 
+        };
+        
+        ClearCat.onclick = function(e) {
+            valueCat.value = '';
+            textCat.innerHTML = '';
+            
+            valueSub.value = '';
+            textSub.innerHTML = '';
+            
+            thisData['CatId'] = 0;
+            thisData['CatName'] = '';
+            thisData['SubId'] = 0;
+            thisData['SubName'] = '';
+            
+            rerenderListSubs([]);
+        };
+        
+        valueSub.onchange = function(event) {
+            let nameSub = this.value.trim();
+            let idSub = 0;
+        
+            let idList = this.getAttribute('list');
+            let divList = document.getElementById(idList);
+            
+            let children = divList.childNodes;
+
+            for(column in children){ 
+                if(children[column].nodeName == 'OPTION' & children[column].innerHTML == nameSub) { 
+                    idSub = children[column].getAttribute('data-id');        
+                    break;
+                }      
+            } 
+            
+            if((idSub == 0) && (nameSub != '')){
+                textSub.innerHTML = 'Будет создана новая подкатегория!';
+            }
+            else
+            {
+                textCat.innerHTML = '';
+            }    
+            
+            thisData['SubId'] = idSub;
+            thisData['SubName'] = nameSub;
+        };
+        
+        ClearSub.onclick = function(e) {
+            valueSub.value = '';
+            textSub.innerHTML = '';
+            
+            thisData['SubId'] = 0;
+            thisData['SubName'] = '';
+        };
+        
+        valIsExpense.onchange = function(event) {
+            if(this.checked == true) {
+                thisData['type'] = 0;
+                if(thisData['id'] == 0) {
+                    fromCaption.innerHTML = 'Новый расход';
+                }
+                else
+                {
+                    fromCaption.innerHTML = 'Редактирование расход';
+                }  
+                
+                fieldAccTo.hidden = true;
+                fieldCat.hidden = false;
+                fieldSub.hidden = false; 
+                
+                fieldAcc.innerHTML = 'Счет';   
+            }    
+        };
+        
+        valIsProfit.onchange = function(event) {
+            if(this.checked == true) {
+                thisData['type'] = 1;
+                if(thisData['id'] == 0) {
+                    fromCaption.innerHTML = 'Новый доход';
+                }
+                else
+                {
+                    fromCaption.innerHTML = 'Редактирование дохода';
+                }    
+                
+                fieldAccTo.hidden = true;
+                fieldCat.hidden = false;
+                fieldSub.hidden = false;
+                
+                fieldAcc.innerHTML = 'Счет';  
+            }    
+        };
+        
+        valIsReplacement.onchange = function(event) {
+            if(this.checked == true) {
+                thisData['type'] = 2;
+                if(thisData['id'] == 0) {
+                    fromCaption.innerHTML = 'Новое перемещение';
+                }
+                else
+                {
+                    fromCaption.innerHTML = 'Редактирование перемещения';
+                }    
+                
+                fieldAccTo.hidden = false;
+                fieldCat.hidden = true;
+                fieldSub.hidden = true;  
+                
+                fieldAcc.innerHTML = 'Со счета';
+            }    
         };
 
         container.style.display = 'block';
         //form.elements.text.focus();
+    }
+    
+    function rerenderListSubs(dataSet) {
+        let listSubs = document.getElementById('list_subcategories'); 
+        listSubs.innerHTML = '';
+        
+        if(dataSet.length > 0){
+            dataSet.forEach(function(data, i, arrData){ 
+                let divOpt = document.createElement('option');
+                divOpt.setAttribute('data-id', data['id']); 
+                divOpt.innerHTML = data['name'];          
+                                    
+                listSubs.append(divOpt);  
+            });
+        }  
     }
     
     ");
@@ -550,7 +884,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
             <div>
-                <div class="caption-line-10">Счет:</div><div class="message-wrapper-line-half window-border" id="valueAccWrap">
+                <div class="caption-line-10" id="fieldAcc">Счет:</div><div class="message-wrapper-line-half window-border" id="valueAccWrap">
                     <input type="text" class="message-text-line" list="list_accounts" id="valueAcc" contentEditable />
                     <datalist id="list_accounts">
                         <?php foreach ($accs as $account): ?>
@@ -562,8 +896,21 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 <div class="caption-line-left" id="textAcc"></div>
             </div>
             <div class="clearfix"></div>
-            <div>
-                <div class="caption-line-10">Категория:</div><div class="message-wrapper-line window-border" id="valueCatWrap">
+            <div hidden="hidden" id="fieldAccTo">
+                <div class="caption-line-10">На счет:</div><div class="message-wrapper-line-half window-border" id="valueAccToWrap">
+                    <input type="text" class="message-text-line" list="list_accountsTo" id="valueAccTo" contentEditable />
+                    <datalist id="list_accountsTo">
+                        <?php foreach ($accs as $account): ?>
+                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="ClearAccTo">х</div>
+                <div class="caption-line-left" id="textAccTo"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div id="fieldCat">
+                <div class="caption-line-10">Категория:</div><div class="message-wrapper-line-half window-border" id="valueCatWrap">
                     <input type="text" class="message-text-line" list="list_categories" id="valueCat" contentEditable />
                     <datalist id="list_categories">
                         <?php foreach ($cats as $category): ?>
@@ -571,10 +918,12 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                         <?php endforeach; ?>
                     </datalist>
                 </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="ClearCat">х</div>
+                <div class="caption-line-left" id="textCat"></div>
             </div>
             <div class="clearfix"></div>
-            <div>
-                <div class="caption-line-10">Подкатегория:</div><div class="message-wrapper-line window-border" id="valueSubWrap">
+            <div id="fieldSub">
+                <div class="caption-line-10">Подкатегория:</div><div class="message-wrapper-line-half window-border" id="valueSubWrap">
                     <input type="text" class="message-text-line" list="list_subcategories" id="valueSub" contentEditable />
                     <datalist id="list_subcategories">
                         <?php foreach ($subs as $category): ?>
@@ -582,6 +931,8 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                         <?php endforeach; ?>
                     </datalist>
                 </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="ClearSub">х</div>
+                <div class="caption-line-left" id="textSub"></div>
             </div>
             <div class="clearfix"></div>
             <div class="half_width">

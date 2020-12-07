@@ -151,8 +151,8 @@ class Category extends ActiveRecord
             ->orderBy('name')->all();
     }
 
-    public static function getAllSubsByUserAndCategory($id_user, $id_category, $isProfit = 0){
-        return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_category' => $id_category, 'isProfit' => $isProfit])
+    public static function getAllSubsByUserAndCategory($id_user, $id_category){
+        return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_category' => $id_category])
             ->orderBy('name')->all();
     }
 }

@@ -350,7 +350,7 @@ class FinController extends Controller
             $id_category = $data['id_category'];
 
             if($id_category > 0) {
-                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
             }
             else{
                 $subs = [];
@@ -506,9 +506,15 @@ class FinController extends Controller
             // Получаем данные модели из запроса
             if ($Cat['id'] != 0) {
 
+                $cur_user = Yii::$app->user->identity;
+                $id_user = $cur_user->getId();
+
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $Cat['id']);
+
                 //Если всё успешно, отправляем ответ с данными
                 return [
                     "data" => $Cat,
+                    "subs" => $subs,
                     "error" => null,
                 ];
             } else {
@@ -598,15 +604,15 @@ class FinController extends Controller
             // Получаем данные модели из запроса
             if ($newCat['id'] != 0) {
 
-                if(isset($data['isProfit']) && $data['isProfit'] == '1'){
+                /*if(isset($data['isProfit']) && $data['isProfit'] == '1'){
                     $isProfit = 1;
                 }
                 else{
                     $isProfit = 0;
-                }
+                }*/
 
                 $id_category = $data['id_category'];
-                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
 
                 //Если всё успешно, отправляем ответ с данными
                 return [
@@ -655,15 +661,15 @@ class FinController extends Controller
 
             // Получаем данные модели из запроса
             if ($sub['id'] != 0) {
-                if(isset($data['isProfit']) && $data['isProfit'] == '1'){
+                /*if(isset($data['isProfit']) && $data['isProfit'] == '1'){
                     $isProfit = 1;
                 }
                 else{
                     $isProfit = 0;
-                }
+                }*/
 
                 $id_category = $data['id_category'];
-                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
 
                 //Если всё успешно, отправляем ответ с данными
                 return [
@@ -711,7 +717,7 @@ class FinController extends Controller
                 }
 
                 $id_category = $data['id_category'];
-                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
 
                 $categories = Category::getAllCategoriesByUser($id_user, $isProfit);
                 //Если всё успешно, отправляем ответ с данными

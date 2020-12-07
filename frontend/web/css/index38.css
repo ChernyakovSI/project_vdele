@@ -70,7 +70,7 @@
 
 .window-button-in-panel {
     background: linear-gradient(to bottom, #f8f8fa 0%,#c8c8c7 100%);
-    display: block;
+    /*display: block;*/
     padding: 6px 12px;
     text-align: center;
     color: #7e7e7e;
