@@ -51,6 +51,10 @@
     margin-top: 20px;
 }
 
+.gap-v-13{
+    margin-top: 13px;
+}
+
 .url-window-right-hidden {
     width: 0px;
 }
@@ -72,3 +76,4 @@
 
     margin-top: 10px;
 }
+

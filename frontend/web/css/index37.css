@@ -456,6 +456,15 @@
     margin-top: 10px;
 }
 
+.caption-line-left {
+    width: 20%;
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+    text-align: left;
+
+    margin-top: 10px;
+}
+
 .half_width {
     width: 50%;
     float: left;

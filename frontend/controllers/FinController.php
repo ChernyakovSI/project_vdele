@@ -759,14 +759,16 @@ class FinController extends Controller
 
         $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
 
-        if(count($cats) > 0){
+        /*if(count($cats) > 0){
             $id_category = $cats[0]['id'];
             $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
         }
         else
         {
             $subs = [];
-        }
+        }*/
+
+        $subs = [];
 
 
         return $this->render('register', [

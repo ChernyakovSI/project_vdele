@@ -137,11 +137,16 @@ $script = new \yii\web\JsExpression("
         let btnClose = document.getElementById('btnClose');
         let valueDate = document.getElementById('valueDate');
         let valueAmo = document.getElementById('valueAmo');
-        let valueType = document.getElementById('valueType');
-        let valueAcc = document.getElementById('valueType');
+        let valIsExpense = document.getElementById('isExpense');
+        let valIsProfit = document.getElementById('isProfit');
+        let valIsReplacement = document.getElementById('isReplacement');
+        let valueAcc = document.getElementById('valueAcc');
         let valueCat = document.getElementById('valueCat');
         let valueSub = document.getElementById('valueSub');
         let valueCom = document.getElementById('valueCom');
+      
+        let textAcc = document.getElementById('textAcc');
+        let ClearAcc = document.getElementById('ClearAcc');
       
         let buttonAdd = document.getElementById('button-add');
         let floatingCirclesG = document.getElementById('floatingCirclesG');
@@ -158,13 +163,16 @@ $script = new \yii\web\JsExpression("
         if(id == 0){
             if(type == 0){
                 fromCaption.innerHTML = 'Новый расход';
+                valIsExpense.checked = true;
             }
             else if(type == 1){
                 fromCaption.innerHTML = 'Новый доход';
+                valIsProfit.checked = true;
             }
             else
             {
                 fromCaption.innerHTML = 'Новое перемещение';
+                valIsReplacement.checked = true;
             }
             
             valueDate.value = nowServer.toISOString().substring(0, 16);          
@@ -308,6 +316,67 @@ $script = new \yii\web\JsExpression("
             };
         
             complete(newAccount);
+        };
+        
+        valueAcc.onchange = function(event) {
+            let nameAcc = this.value.trim();
+            let idAcc = 0;
+        
+            let idList = this.getAttribute('list');
+            let divList = document.getElementById(idList);
+            
+            let children = divList.childNodes;
+
+            for(column in children){ 
+                if(children[column].nodeName == 'OPTION' & children[column].innerHTML == nameAcc) { 
+                    idAcc = children[column].getAttribute('data-id');        
+                    break;
+                }      
+            } 
+            
+            let value = {
+                'name' : nameAcc,
+                'id' : idAcc
+            };
+            if((value['id'] == 0) && (value['name'] != '')){
+                textAcc.innerHTML = 'Будет создан новый счет!';
+            }
+            else if (value['id'] > 0) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/accounts-get',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                textAcc.innerHTML = '(' + data.data.amount + ')';                           
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    divRedComment = document.getElementById('red-comment');
+                                    divRedComment.hidden = false;
+                                    divRedComment.innerHTML = data.error;
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+            else
+            {
+                textAcc.innerHTML = '';
+            }    
+        };
+        
+        ClearAcc.onclick = function(e) {
+            valueAcc.value = '';
+            textAcc.innerHTML = '';
         };
 
         container.style.display = 'block';
@@ -481,15 +550,16 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
             <div>
-                <div class="caption-line-10">Счет:</div><div class="message-wrapper-line window-border" id="valueAccWrap">
+                <div class="caption-line-10">Счет:</div><div class="message-wrapper-line-half window-border" id="valueAccWrap">
                     <input type="text" class="message-text-line" list="list_accounts" id="valueAcc" contentEditable />
                     <datalist id="list_accounts">
                         <?php foreach ($accs as $account): ?>
                             <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
                         <?php endforeach; ?>
                     </datalist>
-
                 </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="ClearAcc">х</div>
+                <div class="caption-line-left" id="textAcc"></div>
             </div>
             <div class="clearfix"></div>
             <div>
