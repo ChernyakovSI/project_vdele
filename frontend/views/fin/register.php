@@ -20,6 +20,34 @@ $script = new \yii\web\JsExpression("
     let isProfit = " .$isProfit.";
     let isReplacement = " .$isReplacement.";
     
+    let divRedComment = document.getElementById('red-comment');
+    let divWrapError = null;
+    
+    function showError(data) {
+        divRedComment.hidden = false;
+        divRedComment.innerHTML = data.error;
+           
+        if(data['element'] != null) {
+            
+            divWrapError = document.getElementById('value'+data['element']+'Wrap');
+            divWrapError.classList.add('redBorder');
+        }                             
+    };   
+    
+    function HideError(data) {
+        divRedComment.hidden = true;
+        divRedComment.innerHTML = data.error;
+           
+        if(data['element'] != null) {
+            let divWrap = document.getElementById('value'+data['element']+'Wrap');
+            divWrap.classList.remove('redBorder');
+        }
+        else if(divWrapError != null) {
+            divWrapError.classList.remove('redBorder');
+            divWrapError = null;
+        }                             
+    };
+    
     function expense(){
         let divExpense = document.getElementById('btn-expense');
     
@@ -86,18 +114,15 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
+                                console.dir(data);
                                 //deleteForm();
                                 //confirm(data)                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
-                                
-                                //valueAccWrap.classList.add('redBorder');
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
@@ -276,8 +301,7 @@ $script = new \yii\web\JsExpression("
                                 //fullData(data);     
                                 floatingCirclesG.hidden = true;                  
                             } else {
-                                // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
+                                showError(data);
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
@@ -300,7 +324,7 @@ $script = new \yii\web\JsExpression("
             }
         }; 
         
-        valueAmo.onkeydown = function(e) {
+        /*valueAmo.onkeydown = function(e) {
             if (e.key == 'Enter') {
                 e.preventDefault();
             }
@@ -338,10 +362,18 @@ $script = new \yii\web\JsExpression("
         valueAmo.onblur = function(e) {
             this.innerHTML = this.innerHTML.replace(/,/, '.');
             this.innerHTML = isNaN(Number(this.innerHTML)) ? 0 : Number(this.innerHTML);
-        };
+        };*/    
         
         valueAmo.onchange = function(event) {
-            thisData['Amount'] = Number(this.value.innerHTML)
+            console.log(Number(this.value).toFixed(2));
+            this.value = Number(this.value).toFixed(2);
+            
+            data = {
+                'element': 'Amo',
+            };
+            HideError(data);
+        
+            thisData['Amount'] = Number(this.value);
         }
         
         btnClose.onclick = function(e) {
@@ -374,21 +406,15 @@ $script = new \yii\web\JsExpression("
         };
         
         function initBtnConfirm() {
-        
-            /*if(valueAcc.innerHTML.trim() == '') {
-                valueAccWrap.classList.add('redBorder');  
-                return 0;
-            }*/
-            
-            let newReg = {
-                    'id' : id,
-                    'date' : valueDate.innerHTML,    
-            };
-        
-            complete(newAccount);
+            complete(thisData);
         };
         
         valueAcc.onchange = function(event) {
+            data = {
+                'element': 'Acc',
+            };
+            HideError(data);
+        
             let nameAcc = this.value.trim();
             let idAcc = 0;
         
@@ -412,6 +438,7 @@ $script = new \yii\web\JsExpression("
                 textAcc.innerHTML = 'Будет создан новый счет!';
             }
             else if (value['id'] > 0) {
+                floatingCirclesG.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -421,14 +448,13 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
+                                floatingCirclesG.hidden = true;
                                 textAcc.innerHTML = '(' + data.data.amount + ')';                           
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                                 
                                 //valueAccWrap.classList.add('redBorder');
@@ -448,6 +474,11 @@ $script = new \yii\web\JsExpression("
         };
         
         ClearAcc.onclick = function(e) {
+            data = {
+                'element': 'Acc',
+            };
+            HideError(data);
+            
             valueAcc.value = '';
             textAcc.innerHTML = '';
             
@@ -456,6 +487,11 @@ $script = new \yii\web\JsExpression("
         };
         
         valueAccTo.onchange = function(event) {
+            data = {
+                'element': 'AccTo',
+            };
+            HideError(data);
+        
             let nameAcc = this.value.trim();
             let idAcc = 0;
         
@@ -479,6 +515,7 @@ $script = new \yii\web\JsExpression("
                 textAccTo.innerHTML = 'Будет создан новый счет!';
             }
             else if (value['id'] > 0) {
+                floatingCirclesG.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -488,14 +525,13 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
+                                floatingCirclesG.hidden = true;
                                 textAccTo.innerHTML = '(' + data.data.amount + ')';                           
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                                 
                                 //valueAccWrap.classList.add('redBorder');
@@ -510,19 +546,29 @@ $script = new \yii\web\JsExpression("
                 textAccTo.innerHTML = '';
             } 
             
-            thisData['AccIdTo'] = value['id'];
-            thisData['AccNameTo'] = value['name'];   
+            thisData['AccToId'] = value['id'];
+            thisData['AccToName'] = value['name'];   
         };
         
         ClearAccTo.onclick = function(e) {
+            data = {
+                'element': 'AccTo',
+            };
+            HideError(data);
+            
             valueAccTo.value = '';
             textAccTo.innerHTML = '';
             
-            thisData['AccIdTo'] = 0;
-            thisData['AccNameTo'] = '';
+            thisData['AccToId'] = 0;
+            thisData['AccToName'] = '';
         };
         
         valueCat.onchange = function(event) {
+            data = {
+                'element': 'Cat',
+            };
+            HideError(data);
+            
             let nameCat = this.value.trim();
             let idCat = 0;
         
@@ -549,6 +595,7 @@ $script = new \yii\web\JsExpression("
                 valueSub.value = '';
             }
             else if (value['id'] > 0) {
+                floatingCirclesG.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -558,15 +605,14 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
+                                floatingCirclesG.hidden = true;
                                 textCat.innerHTML = ''; 
                                 rerenderListSubs(data.subs);                          
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                                 
                                 //valueAccWrap.classList.add('redBorder');
@@ -591,6 +637,11 @@ $script = new \yii\web\JsExpression("
         };
         
         ClearCat.onclick = function(e) {
+            data = {
+                'element': 'Cat',
+            };
+            HideError(data);
+            
             valueCat.value = '';
             textCat.innerHTML = '';
             
@@ -606,6 +657,11 @@ $script = new \yii\web\JsExpression("
         };
         
         valueSub.onchange = function(event) {
+            data = {
+                'element': 'Sub',
+            };
+            HideError(data);
+            
             let nameSub = this.value.trim();
             let idSub = 0;
         
@@ -634,6 +690,11 @@ $script = new \yii\web\JsExpression("
         };
         
         ClearSub.onclick = function(e) {
+            data = {
+                'element': 'Sub',
+            };
+            HideError(data);
+            
             valueSub.value = '';
             textSub.innerHTML = '';
             
@@ -642,7 +703,49 @@ $script = new \yii\web\JsExpression("
         };
         
         valIsExpense.onchange = function(event) {
+            data = { 
+            };
+            HideError(data);
+            
             if(this.checked == true) {
+                //if (thisData['type'] == 1){              
+                    floatingCirclesG.hidden = false;
+                    
+                    value = {
+                        'isProfit' : 0,
+                    };
+                    
+                    $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/categories',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                floatingCirclesG.hidden = true;
+                                textCat.innerHTML = ''; 
+                                valueCat.value = '';
+                                rerenderListCats(data.categories);                          
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    showError(data);
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    }); 
+                    
+                    rerenderListSubs([]);
+                    textSub.innerHTML = ''; 
+                    valueSub.value = '';   
+                //}
                 thisData['type'] = 0;
                 if(thisData['id'] == 0) {
                     fromCaption.innerHTML = 'Новый расход';
@@ -661,7 +764,50 @@ $script = new \yii\web\JsExpression("
         };
         
         valIsProfit.onchange = function(event) {
+            data = { 
+            };
+            HideError(data);
             if(this.checked == true) {
+                //if (thisData['type'] == 0){              
+                    floatingCirclesG.hidden = false;
+                    
+                    value = {
+                        'isProfit' : 1,
+                    };
+                    
+                    $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/categories',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                floatingCirclesG.hidden = true;
+                                textCat.innerHTML = ''; 
+                                valueCat.value = '';
+                                rerenderListCats(data.categories);                          
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    showError(data);
+                                }
+                                
+                                //valueAccWrap.classList.add('redBorder');
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    }); 
+                    
+                    rerenderListSubs([]);
+                    textSub.innerHTML = ''; 
+                    valueSub.value = '';   
+                //}
+            
+            
                 thisData['type'] = 1;
                 if(thisData['id'] == 0) {
                     fromCaption.innerHTML = 'Новый доход';
@@ -680,6 +826,9 @@ $script = new \yii\web\JsExpression("
         };
         
         valIsReplacement.onchange = function(event) {
+            data = { 
+            };
+            HideError(data);
             if(this.checked == true) {
                 thisData['type'] = 2;
                 if(thisData['id'] == 0) {
@@ -704,6 +853,21 @@ $script = new \yii\web\JsExpression("
     
     function rerenderListSubs(dataSet) {
         let listSubs = document.getElementById('list_subcategories'); 
+        listSubs.innerHTML = '';
+        
+        if(dataSet.length > 0){
+            dataSet.forEach(function(data, i, arrData){ 
+                let divOpt = document.createElement('option');
+                divOpt.setAttribute('data-id', data['id']); 
+                divOpt.innerHTML = data['name'];          
+                                    
+                listSubs.append(divOpt);  
+            });
+        }  
+    }
+    
+    function rerenderListCats(dataSet) {
+        let listSubs = document.getElementById('list_categories'); 
         listSubs.innerHTML = '';
         
         if(dataSet.length > 0){
@@ -936,8 +1100,9 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
             <div class="half_width">
-                <div class="caption-line-half-20">Сумма:</div><div class="message-wrapper-line-half window-border">
-                    <div class="message-text-line" contentEditable id="valueAmo" >0</div>
+                <div class="caption-line-half-20">Сумма:</div><div class="message-wrapper-line-half window-border" id="valueAmoWrap">
+                    <!--<div class="message-text-line" contentEditable id="valueAmo" >0</div>-->
+                    <input type="number" class="message-text-line" id="valueAmo" step="0.01" contentEditable />
                 </div>
             </div>
             <div class="clearfix"></div>

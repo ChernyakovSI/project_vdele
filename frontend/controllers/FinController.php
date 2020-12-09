@@ -36,7 +36,8 @@ class FinController extends Controller
                                         'sub-add',
                                         'sub-edit',
                                         'sub-delete',
-                                        'register',],
+                                        'register',
+                                        'reg-add',],
                         'controllers' => ['fin'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -84,7 +85,7 @@ class FinController extends Controller
                 return [
                     "data" => $data,
                     "error" => "Счет с таким же наименованием уже существует",
-                    "element" => "name"
+                    "element" => "Name"
                 ];
             }
 
@@ -169,7 +170,7 @@ class FinController extends Controller
                 return [
                     "data" => $data,
                     "error" => "Счет с таким же наименованием уже существует",
-                    "element" => "name"
+                    "element" => "Name"
                 ];
             }
 
@@ -398,8 +399,24 @@ class FinController extends Controller
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
 
+            if($data['name'] == ''){
+                return [
+                    "data" => $data,
+                    "error" => "Не заполнено название",
+                    "element" => "Name"
+                ];
+            }
+
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
+
+            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Категория с таким же названием уже существует",
+                    "element" => "Name"
+                ];
+            }
 
             $newCat = Category::add($data);
 
@@ -447,8 +464,23 @@ class FinController extends Controller
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
 
+            if($data['name'] == ''){
+                return [
+                    "data" => $data,
+                    "error" => "Не заполнено название"
+                ];
+            }
+
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
+
+            if(Category::existsNameByUser($data['name'], $id_user, $data['id']) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Категория с таким же названием уже существует",
+                    "element" => "Name"
+                ];
+            }
 
             $Cat = Category::edit($data['id'], $data);
 
@@ -546,8 +578,6 @@ class FinController extends Controller
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
-            $id_category = 0;
-
             $url = Category::del($data['id']);
 
             // Получаем данные модели из запроса
@@ -596,8 +626,23 @@ class FinController extends Controller
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
 
+            if($data['name'] == ''){
+                return [
+                    "data" => $data,
+                    "error" => "Не заполнено название"
+                ];
+            }
+
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
+
+            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Категория с таким же названием уже существует",
+                    "element" => "Name"
+                ];
+            }
 
             $newCat = Category::add($data);
 
@@ -654,6 +699,14 @@ class FinController extends Controller
 
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
+
+            if(Category::existsNameByUser($data['name'], $id_user, $data['id']) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Категория с таким же названием уже существует",
+                    "element" => "Name"
+                ];
+            }
 
             $id_category = $data['id_category'];
 
@@ -743,6 +796,9 @@ class FinController extends Controller
 
     }
 
+
+    //--REGISTER--------------------------------------------------------------------------
+
     public function actionRegister()
     {
         $cur_user = Yii::$app->user->identity;
@@ -788,6 +844,189 @@ class FinController extends Controller
             'cats' => $cats,
             'subs' => $subs
         ]);
+
+    }
+
+    public function actionRegAdd()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Устанавливаем формат ответа JSON
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            if($data['AccId'] == 0){
+                if($data['AccName'] == ''){
+                    return [
+                        "data" => $data,
+                        "error" => "Не заполнен счет",
+                        "element" => "Acc"
+                    ];
+                }
+                else
+                {
+                    if(Account::existsNameByUser($data['AccName'], $id_user, 0) == true){
+                        return [
+                            "data" => $data,
+                            "error" => "Счет с таким же наименованием уже существует",
+                            "element" => "Acc"
+                        ];
+                    }
+                }
+
+                $newAccData = [
+                    'name' => $data['AccName'],
+                    'amount' => 0,
+                    'comment' => '',
+                ];
+                $newAcc = Account::add($newAccData);
+                $data['AccId'] = $newAcc['id'];
+            }
+
+            if($data['type'] != 2) {
+                if ($data['CatId'] == 0) {
+                    if ($data['CatName'] == '') {
+                        return [
+                            "data" => $data,
+                            "error" => "Не заполнена категория",
+                            "element" => "Cat"
+                        ];
+                    } else {
+                        if (Category::existsNameByUser($data['CatName'], $id_user, 0) == true) {
+                            return [
+                                "data" => $data,
+                                "error" => "Категория с таким же названием уже существует",
+                                "element" => "Cat"
+                            ];
+                        }
+                    }
+
+                    $newCatData = [
+                        'name' => $data['CatName'],
+                    ];
+                    $newCat = Category::add($newCatData);
+                    $data['CatId'] = $newCat['id'];
+                }
+
+                if ($data['SubId'] == 0) {
+                    if ($data['SubName'] == '') {
+                        return [
+                            "data" => $data,
+                            "error" => "Не заполнена подкатегория",
+                            "element" => "Sub"
+                        ];
+                    } else {
+                        if (Category::existsNameByUser($data['SubName'], $id_user, 0) == true) {
+                            return [
+                                "data" => $data,
+                                "error" => "Подкатегория с таким же названием уже существует",
+                                "element" => "Sub"
+                            ];
+                        }
+                    }
+
+                    $newSubData = [
+                        'name' => $data['SubName'],
+                        'id_category' => $data['CatId'],
+                    ];
+                    $newSub = Category::add($newSubData);
+                    $data['SubId'] = $newSub['id'];
+                }
+            }
+            else{
+                if($data['AccToId'] == 0){
+                    if($data['AccToName'] == ''){
+                        return [
+                            "data" => $data,
+                            "error" => "Не указано, на какой счет перенести",
+                            "element" => "AccTo"
+                        ];
+                    }
+                    else
+                    {
+                        if(Account::existsNameByUser($data['AccToName'], $id_user, 0) == true){
+                            return [
+                                "data" => $data,
+                                "error" => "Счет с таким же наименованием уже существует",
+                                "element" => "AccTo"
+                            ];
+                        }
+                    }
+
+                    $newAccData = [
+                        'name' => $data['AccToName'],
+                        'amount' => 0,
+                        'comment' => '',
+                    ];
+                    $newAcc = Account::add($newAccData);
+                    $data['AccToId'] = $newAcc['id'];
+                }
+                if($data['AccToId'] == $data['AccId']) {
+                    return [
+                        "data" => $data,
+                        "error" => "Необходимо выбрать разные счета для перемещения",
+                        "element" => "AccTo"
+                    ];
+                }
+            }
+
+            if($data['Amount'] == 0) {
+                return [
+                    "data" => $data,
+                    "error" => "Необходимо указать сумму",
+                    "element" => "Amo"
+                ];
+            }
+
+            return $data['SubId'];
+
+            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
+                return [
+                    "data" => $data,
+                    "error" => "Категория с таким же названием уже существует",
+                    "element" => "Name"
+                ];
+            }
+
+            $newCat = Category::add($data);
+
+            // Получаем данные модели из запроса
+            if ($newCat['id'] != 0) {
+
+                /*if(isset($data['isProfit']) && $data['isProfit'] == '1'){
+                    $isProfit = 1;
+                }
+                else{
+                    $isProfit = 0;
+                }*/
+
+                $id_category = $data['id_category'];
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
+
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    "data" => $subs,
+                    "error" => null,
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм UtlAdd работает только с AJAX"
+            ];
+        };
 
     }
 

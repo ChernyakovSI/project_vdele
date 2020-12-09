@@ -19,6 +19,9 @@ $this->title = 'Финансы: Категории расходов и дохо�
     let id_category = " .$id_category.";
     let isProfit = " .$isProfit.";
     
+    let divRedComment = document.getElementById('red-comment');
+    let divWrapError = null;
+    
     function expense(){
         isProfit = 0;
         fullSubCategories(0);
@@ -27,7 +30,31 @@ $this->title = 'Финансы: Категории расходов и дохо�
     function profit(){
         isProfit = 1;
         fullSubCategories(0);
-    };    
+    }; 
+    
+    function showError(data) {
+        divRedComment.hidden = false;
+        divRedComment.innerHTML = data.error;
+           
+        if(data['element'] != null) {
+            divWrapError = document.getElementById('value'+data['element']+'Wrap');
+            divWrapError.classList.add('redBorder');
+        }                             
+    };   
+    
+    function HideError(data) {
+        divRedComment.hidden = true;
+        divRedComment.innerHTML = data.error;
+           
+        if(data['element'] != null) {
+            let divWrap = document.getElementById('value'+data['element']+'Wrap');
+            divWrap.classList.remove('redBorder');
+        }
+        else if(divWrapError != null) {
+            divWrapError.classList.remove('redBorder');
+            divWrapError = null;
+        }                             
+    };
     
     function addCategory() {
         showFormNew(0, 0, function(value) {
@@ -45,11 +72,9 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 confirmDataCat(data)                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
-                                //console.log(data);
+                                // console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);    
                                 }
                             }
                     }).fail(function() {
@@ -78,9 +103,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                             }
                     }).fail(function() {
@@ -108,7 +131,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 deleteForm();
                                 confirmData(data);                       
                             } else {
-
+                                showError(data);
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
@@ -138,9 +161,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                             }
                     }).fail(function() {
@@ -167,9 +188,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                             }
                     }).fail(function() {
@@ -198,9 +217,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
                                 if (data.error != ''){
-                                    divRedComment = document.getElementById('red-comment');
-                                    divRedComment.hidden = false;
-                                    divRedComment.innerHTML = data.error;
+                                    showError(data);
                                 }
                             }
                     }).fail(function() {
@@ -238,7 +255,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                             if (data.error == null) {
                                 confirmData(data);                       
                             } else {
-
+                                showError(data);
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
@@ -331,8 +348,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
                                 fullData(data, id_category);     
                                 floatingCirclesG.hidden = true;                  
                             } else {
-                                // Если при обработке данных на сервере произошла ошибка
-                                console.log(data);
+                                showError(data);
                             }
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
@@ -366,6 +382,13 @@ $this->title = 'Финансы: Категории расходов и дохо�
             return false;
         };
         
+        valueName.onblur = function(e){
+            data = {
+                'element': 'Name',
+            };
+            HideError(data);
+        };
+        
         function closeFrom() { 
             complete(null);
             deleteForm();
@@ -392,10 +415,10 @@ $this->title = 'Финансы: Категории расходов и дохо�
         
         function initBtnConfirm(id_category) {
         
-            if(valueName.innerHTML.trim() == '') {
+            /*if(valueName.innerHTML.trim() == '') {
                 valueNameWrap.classList.add('redBorder');  
                 return 0;
-            }      
+            }*/      
             
             let newCat;
             newCat = {

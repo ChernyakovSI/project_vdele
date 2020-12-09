@@ -155,4 +155,15 @@ class Category extends ActiveRecord
         return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_category' => $id_category])
             ->orderBy('name')->all();
     }
+
+    public static function existsNameByUser($name, $id_user, $id){
+        $amounts = self::find()->select('id')->where(['id_user' => $id_user, 'name' => $name, 'is_deleted' => 0])
+            ->andWhere('not id = '.$id)->all();
+
+        if(count($amounts) > 0) {
+            return true;
+        };
+
+        return false;
+    }
 }
