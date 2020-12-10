@@ -713,6 +713,7 @@ $script = new \yii\web\JsExpression("
                     
                     value = {
                         'isProfit' : 0,
+                        'id_category' : 0,
                     };
                     
                     $.ajax({
@@ -773,6 +774,7 @@ $script = new \yii\web\JsExpression("
                     
                     value = {
                         'isProfit' : 1,
+                        'id_category' : 0,
                     };
                     
                     $.ajax({
