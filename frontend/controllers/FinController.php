@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\fin\Account;
 use common\models\fin\Category;
+use common\models\fin\Register;
 use yii\web\Controller;
 use Yii;
 use yii\filters\AccessControl;
@@ -100,7 +101,7 @@ class FinController extends Controller
             // Получаем данные модели из запроса
             if ($newAcc['id'] != 0) {
 
-                $total = Account::formatNumberToMoney($newAcc['amount']);
+                $total = Account::formatNumberToMoney($newAcc['sum']);
 
                 $id_user = Yii::$app->user->identity->getId();
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
@@ -118,7 +119,7 @@ class FinController extends Controller
 
                     foreach ($newAcc as $item) {
                         if ($item['id'] != 0) {
-                            $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                            $item['sum'] = Account::formatNumberToMoney($item['sum']);
                         }
                     }
                 };
@@ -177,7 +178,7 @@ class FinController extends Controller
             $changedId = Account::changeOtherNumByUser($data['num'], $id_user, $data['id']);
             $maxNum = Account::getMaxNumByUser($id_user);
 
-            $deletedDefore = ($data['is_deleted'] == true);
+            $deletedBefore = ($data['is_deleted'] == 1);
 
             $Acc = Account::edit($data['id'], $data);
 
@@ -185,12 +186,12 @@ class FinController extends Controller
             // Получаем данные модели из запроса
             if ($Acc['id'] != 0) {
 
-                $total = Account::formatNumberToMoney($Acc['amount']);
+                $total = Account::formatNumberToMoney($Acc['sum']);
 
                 $id_user = Yii::$app->user->identity->getId();
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
 
-                if($changedId > 0 || $maxNum > $data['num'] || $deletedDefore != $deletedAfter){
+                if($changedId > 0 || $maxNum > $data['num'] || $deletedBefore != $deletedAfter){
                     if($changedId == 0){
                         $changedId = 1;
                     }
@@ -203,7 +204,7 @@ class FinController extends Controller
 
                     foreach ($Acc as $item) {
                         if ($item['id'] != 0) {
-                            $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                            $item['sum'] = Account::formatNumberToMoney($item['sum']);
                         }
                     }
 
@@ -256,6 +257,7 @@ class FinController extends Controller
             // Получаем данные модели из запроса
             if ($Acc['id'] != 0) {
                 $Acc['amount'] = Account::formatNumberToMoneyOnlyCents($Acc['amount']);
+                $Acc['sum'] = Account::formatNumberToMoneyOnlyCents($Acc['sum']);
                 //$newMessage->addMessage($data);
                 //Если всё успешно, отправляем ответ с данными
                 return [
@@ -288,27 +290,34 @@ class FinController extends Controller
             $data = Yii::$app->request->post();
             $withDeleted = $data['is_deleted'];
 
+            if(isset($data['calc']) && $data['calc'] == '1'){
+                $calc = true;
+            }
+            else{
+                $calc = false;
+            }
+
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
             if ($withDeleted == 'false') {
-                $Acc = Account::getAllAccountsByUser($id_user);
+                $Acc = Account::getAllAccountsByUser($id_user, $calc);
 
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUser($id_user));
 
                 foreach ($Acc as $item) {
                     if ($item['id'] != 0) {
-                        $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                        $item['sum'] = Account::formatNumberToMoney($item['sum']);
                     }
                 }
             } else {
-                $Acc = Account::getAllAccountsByUserWithDeleted($id_user);
+                $Acc = Account::getAllAccountsByUserWithDeleted($id_user, $calc);
 
                 $totalAllAccounts = Account::formatNumberToMoney(Account::getTotalAmountAccountsByUserWithDeleted($id_user));
 
                 foreach ($Acc as $item) {
                     if ($item['id'] != 0) {
-                        $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                        $item['sum'] = Account::formatNumberToMoney($item['sum']);
                     }
                 }
             }
@@ -804,46 +813,115 @@ class FinController extends Controller
         $cur_user = Yii::$app->user->identity;
         $id_user = $cur_user->getId();
 
-        $isExpense = 1;
-        $isProfit = 0;
-        $isReplacement = 0;
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $transactions = [];
+            $data = Yii::$app->request->post();
 
-        $total = 0;
-
-        $Accs = Account::getAllAccountsByUser($id_user);
-        foreach ($Accs as $item) {
-            if ($item['id'] != 0) {
-                $item['amount'] = Account::formatNumberToMoney($item['amount']);
+            $types = [];
+            if($data['isExpense'] == 1){
+                $types[] = 0;
             }
-        }
+            if($data['isProfit'] == 1){
+                $types[] = 1;
+            }
+            if($data['isReplacement'] == 1){
+                $types[] = 2;
+            }
 
-        $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
+            if(count($types) == 0){
+                $transactions = Register::getAllRegsByUser($id_user);
+            }
+            else{
+                $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+            }
 
-        /*if(count($cats) > 0){
-            $id_category = $cats[0]['id'];
-            $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+            $total = 0;
+
+            $SumFormat = [];
+
+            foreach ($transactions as $item) {
+                if ($item['id'] != 0) {
+                    $total = $total + $item['sum'];
+                    $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+                }
+            }
+
+            $total = Account::formatNumberToMoney($total);
+
+            return [
+                'data' => $transactions,
+                'total' => $total,
+                'SumFormat' => $SumFormat,
+            ];
+
         }
-        else
-        {
+        else{
+
+            $isExpense = 1;
+            $isProfit = 0;
+            $isReplacement = 0;
+            $types[] = 0;
+
+            $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+
+            $total = 0;
+
+            foreach ($transactions as $item) {
+                if ($item['id'] != 0) {
+                    $total = $total + $item['sum'];
+                }
+            }
+
+            $Accs = Account::getAllAccountsByUser($id_user);
+
+            /*$dataSet = [
+                'id_user' => $id_user,
+                'id_category' => 23,
+                'id_subcategory' => 24,
+                'date' => 1607599034938,
+                'sum' => 2500,
+                'comment' => '',
+                'id_type' => 0,
+                'id_account' => 94,
+            ];
+
+
+            $newReg = Register::add($dataSet);*/
+
+
+            foreach ($Accs as $item) {
+                if ($item['id'] != 0) {
+                    $item['amount'] = Account::formatNumberToMoney($item['amount']);
+                }
+            }
+
+            $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
+
+            /*if(count($cats) > 0){
+                $id_category = $cats[0]['id'];
+                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category, $isProfit);
+            }
+            else
+            {
+                $subs = [];
+            }*/
+
             $subs = [];
-        }*/
-
-        $subs = [];
 
 
-        return $this->render('register', [
-            'id_user' => $id_user,
-            'transactions' => $transactions,
-            'isExpense' => $isExpense,
-            'isProfit' => $isProfit,
-            'isReplacement' => $isReplacement,
-            'total' => $total,
-            'accs' => $Accs,
-            'cats' => $cats,
-            'subs' => $subs
-        ]);
+            return $this->render('register', [
+                'id_user' => $id_user,
+                'transactions' => $transactions,
+                'isExpense' => $isExpense,
+                'isProfit' => $isProfit,
+                'isReplacement' => $isReplacement,
+                'total' => $total,
+                'accs' => $Accs,
+                'cats' => $cats,
+                'subs' => $subs
+            ]);
+        }
 
     }
 
@@ -983,35 +1061,71 @@ class FinController extends Controller
                 ];
             }
 
-            return $data['SubId'];
-
-            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
-                return [
-                    "data" => $data,
-                    "error" => "Категория с таким же названием уже существует",
-                    "element" => "Name"
+            if($data['type'] != 2) {
+                $dataSet = [
+                    'id_user' => $id_user,
+                    'id_category' => $data['CatId'],
+                    'id_subcategory' => $data['SubId'],
+                    'date' => $data['date'],
+                    'sum' => $data['Amount'],
+                    'comment' => $data['Com'],
+                    'id_type' => $data['type'],
+                    'id_account' => $data['AccId'],
                 ];
             }
+            else{
+                $dataSet = [
+                    'id_user' => $id_user,
+                    'date' => $data['date'],
+                    'sum' => $data['Amount'],
+                    'comment' => $data['Com'],
+                    'id_type' => $data['type'],
+                    'id_account' => $data['AccId'],
+                    'id_account_to' => $data['AccToId'],
+                ];
+            };
 
-            $newCat = Category::add($data);
+            $newReg = Register::add($dataSet);
 
             // Получаем данные модели из запроса
-            if ($newCat['id'] != 0) {
+            if ($newReg['id'] != 0) {
 
-                /*if(isset($data['isProfit']) && $data['isProfit'] == '1'){
-                    $isProfit = 1;
+                $types = [];
+                if($data['isExpense'] == 1){
+                    $types[] = 0;
+                }
+                if($data['isProfit'] == 1){
+                    $types[] = 1;
+                }
+                if($data['isReplacement'] == 1){
+                    $types[] = 2;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user);
                 }
                 else{
-                    $isProfit = 0;
-                }*/
+                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                }
 
-                $id_category = $data['id_category'];
-                $subs = Category::getAllSubsByUserAndCategory($id_user, $id_category);
+                $total = 0;
+
+                $SumFormat = [];
+
+                foreach ($transactions as $item) {
+                    if ($item['id'] != 0) {
+                        $total = $total + $item['sum'];
+                        $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+                    }
+                }
+
+                $total = Account::formatNumberToMoney($total);
 
                 //Если всё успешно, отправляем ответ с данными
                 return [
-                    "data" => $subs,
-                    "error" => null,
+                    'data' => $transactions,
+                    'total' => $total,
+                    'SumFormat' => $SumFormat,
                 ];
             } else {
                 // Если нет, отправляем ответ с сообщением об ошибке

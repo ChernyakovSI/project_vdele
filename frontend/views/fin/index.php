@@ -21,6 +21,8 @@ $this->title = 'Финансы: Счета';
 
 $script = new \yii\web\JsExpression("
     $(document).ready( function() {
+        let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
+        
         resize();       
     })
 ");
@@ -28,7 +30,7 @@ $this->registerJs($script, \yii\web\View::POS_READY);
 
 $script = new \yii\web\JsExpression("
     let maxNum = " .$maxNum.";
-    let gID = 0;
+    let gID = 0;  
     
     let divRedComment; 
 
@@ -82,6 +84,7 @@ $script = new \yii\web\JsExpression("
     function addAcc() {
         showFormNew(0, function(value) {
             if (value != null) {
+                floatingCirclesGMain.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -92,7 +95,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 deleteForm();
-                                confirm(data)                       
+                                confirm(data);                        
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -104,18 +107,48 @@ $script = new \yii\web\JsExpression("
                                 
                                 //valueAccWrap.classList.add('redBorder');
                             }
+                            floatingCirclesGMain.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         //console.log(data.error);
+                        floatingCirclesGMain.hidden = true;
                     });    
             } 
         });
     };
+    
+    function recalculateAllAcc() {
+        let valueDel = document.getElementById('valueDel');
+        value = {
+            'is_deleted' : valueDel.checked,
+            'calc' : 1,
+        };
+        floatingCirclesGMain.hidden = false;
+    
+        $.ajax({
+            type : 'post',
+            url : '/fin/accounts-get-all',
+            data : value
+        }).done(function(data) {
+            if (data.error == null) {
+                rerenderTable(data);                       
+            } else {
+                if (data.error != ''){
+                    divRedComment = document.getElementById('red-comment');
+                    divRedComment.hidden = false;
+                    divRedComment.innerHTML = data.error;
+                }
+            };
+            floatingCirclesGMain.hidden = true;
+        }).fail(function() {
+            floatingCirclesGMain.hidden = true;
+        });     
+    };
    
     function editAcc(id) {
         showFormNew(id, function(value) {
+            floatingCirclesGMain.hidden = false;
             if (value != null) {
-                console.dir(value);
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -126,7 +159,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 deleteForm();
-                                confirmEdit(data)                       
+                                confirmEdit(data);                      
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -135,10 +168,12 @@ $script = new \yii\web\JsExpression("
                                     divRedComment.hidden = false;
                                     divRedComment.innerHTML = data.error;
                                 }
-                            }
+                            };
+                            floatingCirclesGMain.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         //console.log(data.error);
+                        floatingCirclesGMain.hidden = true;
                     });    
             }
         });
@@ -226,15 +261,16 @@ $script = new \yii\web\JsExpression("
                         data : {id : id}
                     }).done(function(data) {
                             if (data.error == null) {
-                                fullData(data);     
-                                floatingCirclesG.hidden = true;                  
+                                fullData(data);                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 console.log(data);
-                            }
+                            };
+                            floatingCirclesG.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
+                        //console.log(data.error);
+                        floatingCirclesG.hidden = true;
                     });    
         }
         
@@ -429,7 +465,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 let divTextAmount = document.createElement('div');
                                 divTextAmount.className = 'message-text-line right-text'; 
-                                divTextAmount.innerHTML = data.total;    
+                                divTextAmount.innerHTML = data.sum;    
                                 
                                 divWrapAmount.append(divTextAmount);
                                 divMainAmount.append(divWrapAmount);
@@ -491,7 +527,7 @@ $script = new \yii\web\JsExpression("
     
     function confirmEdit(data) {
         if(data.changedNumId > 0)
-        {
+        { 
             rerenderTable(data);
             return;
         };
@@ -582,7 +618,7 @@ $script = new \yii\web\JsExpression("
                                 
                                 let divTextAmount = document.createElement('div');
                                 divTextAmount.className = 'message-text-line right-text'; 
-                                divTextAmount.innerHTML = data['amount'];    
+                                divTextAmount.innerHTML = data['sum'];    
                                 
                                 divWrapAmount.append(divTextAmount);
                                 divMainAmount.append(divWrapAmount);
@@ -644,8 +680,8 @@ $script = new \yii\web\JsExpression("
     }
     
     function setVisibleDeleted(e) {
-        //floatingCirclesG.hidden = false;
-        let chkDeleted = document.getElementById('setVisibleDeleted');      
+        let chkDeleted = document.getElementById('setVisibleDeleted');     
+        floatingCirclesGMain.hidden = false; 
         
         $.ajax({
             // Метод отправки данных (тип запроса)
@@ -656,15 +692,16 @@ $script = new \yii\web\JsExpression("
             data : {is_deleted : chkDeleted.checked}
             }).done(function(data) {
                 if (data.error == null) {
-                    rerenderTable(data);     
-                    //floatingCirclesG.hidden = true;                  
+                    rerenderTable(data);                       
                 } else {
                     // Если при обработке данных на сервере произошла ошибка
                     console.log(data);
                 }
+                floatingCirclesGMain.hidden = true;
             }).fail(function() {
                 // Если произошла ошибка при отправке запроса
-                console.log(data.error);
+                //console.log(data.error);
+                floatingCirclesGMain.hidden = true;
         });
     };
 
@@ -672,7 +709,23 @@ $script = new \yii\web\JsExpression("
 $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
 ?>
-<div class="window window-border window-caption">Счета</div>
+<div class="window window-border window-caption-2em caption-wrap">
+    <div class="caption-text-new">Счета<div><?='&nbsp;'?></div></div>
+    <div class="caption-close-new">
+        <div id="floatingCirclesGMain" hidden>
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+        <div><?='&nbsp;'?></div>
+    </div>
+
+</div>
 
 <div class="window window-border" id="content">
 
@@ -740,7 +793,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 </div>
                 <div class="fin-acc-amount table-text">
                     <div class="message-wrapper-title">
-                        <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['amount']) ?></div>
+                        <div class="message-text-line right-text"><?= Account::formatNumberToMoney($account['sum']) ?></div>
                     </div>
                 </div>
                 <div class="fin-acc-comment table-text">
@@ -764,9 +817,12 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     <div class="clearfix"></div>
     <div class="window-button window-border" id="button-new" onclick="addAcc()">Добавить</div>
 
-    <div class="height-3em">
+
+    <div class="height-5em">
         <input type="checkbox" id="setVisibleDeleted" class="custom-checkbox" onclick="setVisibleDeleted()">
         <label for="setVisibleDeleted" class="interactive-only">Показать скрытые</label>
+
+        <div class="window-button window-button-left window-border" id="button-calc" onclick="recalculateAllAcc()">Пересчитать суммы</div>
     </div>
 
 

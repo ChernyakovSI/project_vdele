@@ -60,6 +60,8 @@ $script = new \yii\web\JsExpression("
             isExpense = 0;
             divExpense.className = 'btn-submenu btn-submenu-interactive';
         }
+        
+        readTable();
     };
     
     function profit(){
@@ -74,6 +76,8 @@ $script = new \yii\web\JsExpression("
             isProfit = 0;
             divProfit.className = 'btn-submenu btn-submenu-interactive';
         }
+        
+        readTable();
     };
     
     function trans(){
@@ -88,6 +92,32 @@ $script = new \yii\web\JsExpression("
             isReplacement = 0;
             divReplacement.className = 'btn-submenu btn-submenu-interactive';
         }
+        
+        readTable();
+    };
+    
+    function readTable(){
+        value = {
+            'isExpense' : isExpense,
+            'isProfit' : isProfit,
+            'isReplacement' : isReplacement,    
+        };
+        
+        $.ajax({
+            type : 'post',
+            url : '/fin/register',
+            data : value
+            }).done(function(data) {
+                if (data.error == null) {
+                    rerender(data);                       
+            } else {
+                if (data.error != ''){
+                    console.dir(data);
+                }
+            }
+        }).fail(function() {
+
+        });    
     };
     
     function minType() {
@@ -114,9 +144,9 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
-                                console.dir(data);
-                                //deleteForm();
-                                //confirm(data)                       
+                                //console.dir(data);
+                                deleteForm();
+                                rerender(data)                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -212,6 +242,9 @@ $script = new \yii\web\JsExpression("
             'Com' : '',
             'AccToId' : 0,
             'AccToName' : '',
+            'isExpense' : isExpense,
+            'isProfit' : isProfit,
+            'isReplacement' : isReplacement,
         };
         
         valueAcc.value = '';
@@ -262,8 +295,10 @@ $script = new \yii\web\JsExpression("
                 fieldAcc.innerHTML = 'Со счета';
             }
             
-            valueDate.value = nowServer.toISOString().substring(0, 16);  
-            thisData['date'] = nowServer.getTime();                 
+            valueDate.value = nowServer.toISOString().substring(0, 16); 
+            let curDate = new Date(valueDate.value); 
+            curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+            thisData['date'] = String(curDate.getTime()).substr(0, 10);                  
                      
             floatingCirclesG.hidden = true;
             buttonDel.hidden = true;
@@ -365,7 +400,6 @@ $script = new \yii\web\JsExpression("
         };*/    
         
         valueAmo.onchange = function(event) {
-            console.log(Number(this.value).toFixed(2));
             this.value = Number(this.value).toFixed(2);
             
             data = {
@@ -449,7 +483,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 floatingCirclesG.hidden = true;
-                                textAcc.innerHTML = '(' + data.data.amount + ')';                           
+                                textAcc.innerHTML = '(' + data.data.sum + ')';                           
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -526,7 +560,7 @@ $script = new \yii\web\JsExpression("
                     }).done(function(data) {
                             if (data.error == null) {
                                 floatingCirclesG.hidden = true;
-                                textAccTo.innerHTML = '(' + data.data.amount + ')';                           
+                                textAccTo.innerHTML = '(' + data.data.sum + ')';                           
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -848,6 +882,12 @@ $script = new \yii\web\JsExpression("
                 fieldAcc.innerHTML = 'Со счета';
             }    
         };
+        
+        valueDate.onchange = function(event){
+            let curDate = new Date(this.value); 
+            curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+            thisData['date'] = String(curDate.getTime()).substr(0, 10);
+        }
 
         container.style.display = 'block';
         //form.elements.text.focus();
@@ -881,6 +921,166 @@ $script = new \yii\web\JsExpression("
                 listSubs.append(divOpt);  
             });
         }  
+    }
+    
+    function rerender(dataSet) {
+        let listReg = document.getElementById('list-register'); 
+        listReg.innerHTML = '';
+        
+        let SumFormat = dataSet.SumFormat;
+        
+        if(dataSet.data.length > 0){
+            dataSet.data.forEach(function(data, i, arrData){ 
+                let divRow = document.createElement('div');
+                if (data['id_type'] == 0) {
+                    divRow.className = 'fin-acc-row expense-back interactive-only';
+                } else if(data['id_type'] == 1) {
+                    divRow.className = 'fin-acc-row profit-back interactive-only';
+                } else {
+                    divRow.className = 'fin-acc-row white-back interactive-only';
+                } 
+                divRow.setAttribute('id', data['id']);
+                divRow.addEventListener('dblclick', function() {
+                    editReg(data['id']);
+                }, false);
+                
+                let divMainDate = document.createElement('div');
+                divMainDate.className = 'fin-reg-date table-text';
+                                
+                let divWrapDate = document.createElement('div');
+                divWrapDate.className = 'message-wrapper-title';
+                                
+                let divTextDate = document.createElement('div');
+                divTextDate.className = 'message-text-line'; 
+                
+                divTextDate.innerHTML = convertTimeStamp(data['date']);    
+                                
+                divWrapDate.append(divTextDate);
+                divMainDate.append(divWrapDate);
+                divRow.append(divMainDate);
+                
+                
+                let divMainAcc = document.createElement('div');
+                divMainAcc.className = 'fin-reg-acc table-text';
+                                
+                let divWrapAcc = document.createElement('div');
+                divWrapAcc.className = 'message-wrapper-title';
+                                
+                let divTextAcc = document.createElement('div');
+                divTextAcc.className = 'message-text-line'; 
+                divTextAcc.innerHTML = data['AccName'];    
+                                
+                divWrapAcc.append(divTextAcc);
+                divMainAcc.append(divWrapAcc);
+                divRow.append(divMainAcc);
+                
+                let divMainCat = document.createElement('div');
+                divMainCat.className = 'fin-reg-cat table-text';
+                                    
+                let divWrapCat = document.createElement('div');
+                divWrapCat.className = 'message-wrapper-title';
+                                    
+                let divTextCat = document.createElement('div');
+                divTextCat.className = 'message-text-line';
+                
+                if (data['id_type'] != 2) { 
+                    divTextCat.innerHTML = data['CatName'];     
+                }
+                else
+                {
+                    divTextCat.innerHTML = data['AccToName'];
+                }
+                
+                divWrapCat.append(divTextCat);
+                divMainCat.append(divWrapCat);
+                divRow.append(divMainCat);
+                
+                
+                let divMainSub = document.createElement('div');
+                divMainSub.className = 'fin-reg-sub table-text';
+                                    
+                let divWrapSub = document.createElement('div');
+                divWrapSub.className = 'message-wrapper-title';
+                                    
+                let divTextSub = document.createElement('div');
+                divTextSub.className = 'message-text-line';
+                
+                if (data['id_type'] != 2) { 
+                    divTextSub.innerHTML = data['SubName'];     
+                }
+                else
+                {
+                    divTextSub.innerHTML = '';
+                }
+                
+                divWrapSub.append(divTextSub);
+                divMainSub.append(divWrapSub);
+                divRow.append(divMainSub);
+                
+                
+                let divMainAmount = document.createElement('div');
+                divMainAmount.className = 'fin-reg-amount table-text';
+                                
+                let divWrapAmount = document.createElement('div');
+                divWrapAmount.className = 'message-wrapper-title';
+                                
+                let divTextAmount = document.createElement('div');
+                divTextAmount.className = 'message-text-line right-text'; 
+                //console.log(SumFormat);
+                divTextAmount.innerHTML = SumFormat[data['id']];    
+                                
+                divWrapAmount.append(divTextAmount);
+                divMainAmount.append(divWrapAmount);
+                divRow.append(divMainAmount);
+                
+                let divMainComment = document.createElement('div');
+                divMainComment.className = 'fin-reg-com table-text';
+                                
+                let divWrapComment = document.createElement('div');
+                divWrapComment.className = 'message-wrapper-title';
+                                
+                let divTextComment = document.createElement('div');
+                divTextComment.className = 'message-text-line'; 
+                divTextComment.innerHTML = data['comment'];    
+                                
+                divWrapComment.append(divTextComment);
+                divMainComment.append(divWrapComment);
+                divRow.append(divMainComment);
+
+                let hrLine = document.createElement('hr');
+                hrLine.className = 'line';
+                                
+                let divClear = document.createElement('div');
+                divClear.className = 'clearfix';
+                                
+                divClear.append(hrLine);
+                divRow.append(divClear);
+                                
+                listReg.append(divRow);
+            });
+                                    
+            let divtotal = document.getElementById('total');
+            divtotal.innerHTML = dataSet.total;
+        }
+        else
+        {
+            let divInfo = document.createElement('div');
+            divInfo.className = 'text-font text-center margin-v20';
+            divInfo.setAttribute('id', 'info');
+            divInfo.innerHTML = 'Нет движений';
+            
+            listReg.append(divInfo);
+        }
+    }
+    
+    function convertTimeStamp(timestamp) {
+          var condate = new Date(timestamp*1000);
+          
+          return [
+            condate.getFullYear(),           // Get day and pad it with zeroes
+            ('0' + (condate.getMonth()+1)).slice(-2),      // Get month and pad it with zeroes
+            ('0' + condate.getDate()).slice(-2)                          // Get full year
+          ].join('.');                                  // Glue the pieces together
     }
     
     ");
@@ -976,7 +1176,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="fin-reg-amount table-text brown-back">
                 <div class="message-wrapper-title">
-                    <div class="message-text-line right-text"><?= Account::formatNumberToMoney($total) ?></div>
+                    <div class="message-text-line right-text" id="total"><?= Account::formatNumberToMoney($total) ?></div>
                 </div>
             </div>
             <div class="fin-reg-com table-text brown-back">
@@ -986,14 +1186,70 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
 
             <div class="clearfix"><hr class="line"></div>
-            <div id="list-subcategories">
+            <div id="list-register">
                 <?php if (count($transactions) == 0){ ?>
                     <div id="info" class="text-font text-center margin-v20">
                         Нет движений
                     </div>
-                <?php } else { ?>
+                <?php } else {  foreach ($transactions as $reg): ?>
+                    <?php if ($reg['id_type'] == 0){ ?>
+                    <div class="fin-acc-row expense-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                    <?php }?>
 
-                <?php } ?>
+                     <?php if ($reg['id_type'] == 1){ ?>
+                     <div class="fin-acc-row profit-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                     <?php }?>
+
+                     <?php if ($reg['id_type'] == 2){ ?>
+                     <div class="fin-acc-row white-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                     <?php }?>
+
+                        <div class="fin-reg-date table-text">
+                            <div class="message-wrapper-title">
+                                <div class="message-text-line"><?= date("Y.m.d", $reg['date']) ?></div>
+                            </div>
+                        </div>
+                        <div class="fin-reg-acc table-text">
+                            <div class="message-wrapper-title">
+                                <div class="message-text-line"><?= $reg['AccName'] ?></div>
+                            </div>
+                        </div>
+                        <?php if ($reg['id_type'] == 2){ ?>
+                            <div class="fin-reg-cat table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= $reg['AccToName'] ?></div>
+                                </div>
+                            </div>
+                            <div class="fin-reg-sub table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= '' ?></div>
+                                </div>
+                            </div>
+                        <?php } else {?>
+                            <div class="fin-reg-cat table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= $reg['CatName'] ?></div>
+                                </div>
+                            </div>
+                            <div class="fin-reg-sub table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= $reg['SubName'] ?></div>
+                                </div>
+                            </div>
+                        <?php }?>
+                        <div class="fin-reg-amount table-text">
+                            <div class="message-wrapper-title">
+                                <div class="message-text-line right-text"><?= Account::formatNumberToMoney($reg['sum']) ?></div>
+                            </div>
+                        </div>
+                        <div class="fin-reg-com table-text">
+                            <div class="message-wrapper-title">
+                                <div class="message-text-line"><?= $reg['comment'] ?></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"><hr class="line"></div>
+                    </div>
+                <?php endforeach; } ?>
             </div>
         </div>
     </div>

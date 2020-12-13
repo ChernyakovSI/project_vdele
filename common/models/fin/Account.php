@@ -10,6 +10,7 @@ namespace common\models\fin;
 
 use yii\db\ActiveRecord;
 use Yii;
+use common\models\fin\Register;
 
 class Account extends ActiveRecord
 {
@@ -23,7 +24,7 @@ class Account extends ActiveRecord
     {
         return [
             [['id', 'created_at', 'updated_at', 'num', 'id_user', 'id_currency', 'is_deleted'], 'integer'],
-            ['amount', 'double'],
+            [['amount', 'sum'], 'double'],
             [['name', 'comment'], 'safe'],
         ];
     }
@@ -35,18 +36,45 @@ class Account extends ActiveRecord
             'name' => 'Название',
             'id_user' => 'Владелец',
             'amount' => 'Сумма',
+            'sum' => 'Сумма',
             'id_currency' => 'Валюта',
             'is_deleted' => 'Скрыт',
             'comment' => 'Примечание'
         );
     }
 
-    public static function getAllAccountsByUser($id_user){
-        return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0])->orderBy('num')->all();
+    public static function getNameById($id){
+        return self::find()->where(['id' => $id])->one()['name'];
     }
 
-    public static function getAllAccountsByUserWithDeleted($id_user){
-        return self::find()->where(['id_user' => $id_user])->orderBy('num')->all();
+    public static function getAllAccountsByUser($id_user, $calc = false){
+        $Accs = self::find()->where(['id_user' => $id_user, 'is_deleted' => 0])->orderBy('num')->all();
+
+        if($calc == true){
+            foreach ($Accs as $Acc){
+                $newSum = static::recalculateAcc($Acc['id'], $Acc['amount'], $id_user);
+
+                $Acc = static::findOne($Acc['id']);
+                $Acc->sum = $newSum;
+                $Acc->save();
+            }
+        }
+
+        $Accs = self::find()->where(['id_user' => $id_user, 'is_deleted' => 0])->orderBy('num')->all();
+
+        return $Accs;
+    }
+
+    public static function getAllAccountsByUserWithDeleted($id_user, $calc = false){
+        $Accs = self::find()->where(['id_user' => $id_user])->orderBy('num')->all();
+
+        if($calc == true){
+            foreach ($Accs as $Acc){
+                static::recalculateAcc($Acc['id'], $Acc['amount'], $id_user);
+            }
+        }
+
+        return $Accs;
     }
 
     public static function add($data){
@@ -55,6 +83,8 @@ class Account extends ActiveRecord
         $newAcc->name = $data['name'];
         $newAcc->amount = (float)$data['amount'];
         $newAcc->comment = $data['comment'];
+
+        $newAcc->sum = (float)$data['amount'];
 
         if(isset($data['created_at'])) {
             $newAcc->created_at = $data['created_at'];
@@ -106,9 +136,15 @@ class Account extends ActiveRecord
     public static function edit($id, $data){
         $Acc = static::findOne(['id' => $id]);
 
+        $id_user = Yii::$app->user->identity->getId();
+
+        $amount = (float)$data['amount'];
+
         $Acc->name = $data['name'];
-        $Acc->amount = (float)$data['amount'];
+        $Acc->amount = $amount;
         $Acc->comment = $data['comment'];
+
+        $Acc->sum = static::recalculateAcc($id, $amount, $id_user);
 
         if(isset($data['updated_at'])) {
             $Acc->updated_at = $data['updated_at'];
@@ -166,12 +202,12 @@ class Account extends ActiveRecord
     }
 
     public static function getTotalAmountAccountsByUser($id_user){
-        $amounts = self::find()->select('amount')->where(['id_user' => $id_user, 'is_deleted' => 0])->all();
+        $amounts = self::find()->select('sum')->where(['id_user' => $id_user, 'is_deleted' => 0])->all();
         $total = 0;
 
         if(count($amounts) > 0) {
             foreach ($amounts as $amount){
-                $total = $total + $amount['amount'];
+                $total = $total + $amount['sum'];
             }
         };
 
@@ -179,12 +215,12 @@ class Account extends ActiveRecord
     }
 
     public static function getTotalAmountAccountsByUserWithDeleted($id_user){
-        $amounts = self::find()->select('amount')->where(['id_user' => $id_user])->all();
+        $amounts = self::find()->select('sum')->where(['id_user' => $id_user])->all();
         $total = 0;
 
         if(count($amounts) > 0) {
             foreach ($amounts as $amount){
-                $total = $total + $amount['amount'];
+                $total = $total + $amount['sum'];
             }
         };
 
@@ -241,7 +277,40 @@ class Account extends ActiveRecord
         return 0;
     }
 
+    public static function recalculateAcc($id, $amount, $id_user){
+        $sum = $amount;
 
+        $Register = Register::find()->select('sum, id_type, id_account')
+            ->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_account' => $id])
+            ->orWhere(['id_user' => $id_user, 'is_deleted' => 0, 'id_account_to' => $id])
+            ->all();
+
+        foreach ($Register as $reg){
+            if($reg['id_type'] == 0) {
+                $sum = $sum - $reg['sum'];
+            }
+            else if($reg['id_type'] == 1){
+                $sum = $sum + $reg['sum'];
+            }
+            else {
+                if($reg['id_account'] == $id) {
+                    $sum = $sum - $reg['sum'];
+                }
+                else{
+                    $sum = $sum + $reg['sum'];
+                }
+            }
+        }
+
+        return $sum;
+    }
+
+    public function calculateAcc($sum){
+        $this->sum = $this->sum + $sum;
+        $this->save();
+
+        return 1;
+    }
 
 
 

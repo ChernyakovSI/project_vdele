@@ -168,6 +168,14 @@ a:hover {
      background-color: #eeeeee;
  }
 
+.expense-back {
+    background-color: rgba(153, 0, 0, 0.1);;
+}
+
+.profit-back {
+    background-color: rgba(0, 153, 0, 0.1);;
+}
+
 .active-back {
     background-color: rgba(184, 166, 158, 0.2);
 }

@@ -54,7 +54,7 @@
 }
 
 .window {
-    padding: 15px;
+    padding: 5px;
     background-color: rgba(84, 66, 58, 0.1);
 }
 
@@ -122,6 +122,10 @@
     margin-right: auto;
 }
 
+.window-button-left {
+    margin-left: 0;
+}
+
 .window-button:hover {
     /*background-color: #503836;*/
     background: linear-gradient(to bottom, #54423a 0%,#63271d 100%);
@@ -173,6 +177,16 @@
     background-color: rgba(84, 66, 58, 0.2);
     font-weight: 600;
 
+    margin-bottom: 10px;
+}
+
+.window-caption-2em {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(84, 66, 58, 0.2);
+    font-weight: 600;
+
+    height: 2em;
     margin-bottom: 10px;
 }
 
@@ -500,6 +514,14 @@
     margin-top: 10px;
 }
 
+.caption-text-new{
+    width: 90%;
+    float: left;
+
+    text-align: center;
+    font-weight: bold;
+}
+
 .caption-begin {
      width: 5%;
     float: left;
@@ -510,6 +532,12 @@
     float: left;
 
     padding: 8px;
+}
+
+.caption-close-new {
+    width: 5%;
+    float: left;
+    margin-top: -10px;
 }
 
 .fin-acc-name {
@@ -681,4 +709,8 @@ label {
 
 .height-3em {
     height: 1em;
+}
+
+.height-5em {
+    height: 5em;
 }
