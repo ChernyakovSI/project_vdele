@@ -162,6 +162,58 @@ $script = new \yii\web\JsExpression("
         });
     };
     
+    function editReg(id) {
+        showFormNew(id, 0, function(value) {
+            if (value != null) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/reg-edit',
+                        // Данные формы
+                        data : value
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                //console.dir(data);
+                                deleteForm();
+                                rerender(data)                       
+                            } else {
+                                // Если при обработке данных на сервере произошла ошибка
+                                //console.log(data);
+                                if (data.error != ''){
+                                    showError(data);
+                                }
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+            } 
+        });
+    }; 
+    
+    function deleteReg(thisData) {
+                $.ajax({
+                        // Метод отправки данных (тип запроса)
+                        type : 'post',
+                        // URL для отправки запроса
+                        url : '/fin/reg-delete',
+                        // Данные формы
+                        data : thisData
+                    }).done(function(data) {
+                            if (data.error == null) {
+                                deleteForm();
+                                rerender(data);                       
+                            } else {
+                                showError(data);
+                            }
+                    }).fail(function() {
+                        // Если произошла ошибка при отправке запроса
+                        //console.log(data.error);
+                    });    
+
+    }
+    
     function showCover() {
         let coverDiv = document.createElement('div');
         coverDiv.id = 'cover-div';
@@ -312,17 +364,12 @@ $script = new \yii\web\JsExpression("
             buttonDel.hidden = false;
         
             floatingCirclesG.hidden = false;
-            if(type == 0){
-                fromCaption.innerHTML = 'Редактирование расхода';
-            }
-            else if(type == 1){
-                fromCaption.innerHTML = 'Редактирование дохода';
-            }
-            else
-            {
-                fromCaption.innerHTML = 'Редактрование перемещения';
-            }
+            fromCaption.innerHTML = 'Редактирование движения';
+            
             buttonAdd.onclick = null;
+            buttonDel.onclick = null;
+            
+            thisData['id'] = id;
             
             $.ajax({
                         // Метод отправки данных (тип запроса)
@@ -333,14 +380,18 @@ $script = new \yii\web\JsExpression("
                         data : {id : id}
                     }).done(function(data) {
                             if (data.error == null) {
-                                //fullData(data);     
-                                floatingCirclesG.hidden = true;                  
+                                rerenderListCats(data.categories);
+                                rerenderListSubs(data.subs);
+                                fullData(data);     
+                                                  
                             } else {
                                 showError(data);
                             }
+                            floatingCirclesG.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         console.log(data.error);
+                        floatingCirclesG.hidden = true;
                     });    
         }
         
@@ -431,11 +482,80 @@ $script = new \yii\web\JsExpression("
         }; 
         
         function fullData(data) {
-        
-            valueDate.innerHTML = data.data.date;
+            
+            let strDate = convertTimeStampWithTime(data.data.date);  
+            let curDate = new Date(strDate);
+            //curDate.setHours(curDate.getHours() + currentTimeZoneOffset); 
+            valueDate.value = curDate.toISOString().substring(0, 16);
+            thisData['date'] = data.data.date;
+            
+            valueAcc.value = data.data.AccName;
+            thisData['AccId'] = data.data.AccId;
+            thisData['AccName'] = data.data.AccName;
+            
+            if (data.data.type != '2') {
+                if (data.data.type == 0) {
+                    fromCaption.innerHTML = 'Редактирование расхода';
+                    valIsExpense.checked = true;
+                    thisData['type'] = 0;
+ 
+                    
+                }
+                else {
+                    fromCaption.innerHTML = 'Редактирование дохода';
+                    valIsProfit.checked = true;
+                    thisData['type'] = 1; 
+                };
+                
+                valueCat.value = data.data.CatName;
+                thisData['CatId'] = data.data.CatId;
+                thisData['CatName'] = data.data.CatName;
+                    
+                valueSub.value = data.data.SubName;
+                thisData['SubId'] = data.data.SubId;
+                thisData['SubName'] = data.data.SubName;
+                 
+                fieldAccTo.hidden = true;
+                fieldCat.hidden = false;
+                fieldSub.hidden = false;
+                    
+                fieldAcc.innerHTML = 'Счет';      
+            }
+            else
+            {
+                fromCaption.innerHTML = 'Редактирование перемещения';
+                valIsReplacement.checked = true;
+                thisData['type'] = 2;
+                
+                fieldAccTo.hidden = false;
+                fieldCat.hidden = true;
+                fieldSub.hidden = true;
+                
+                fieldAcc.innerHTML = 'Со счета';
+                
+                valueAccTo.value = data.data.AccToName;
+                thisData['AccToId'] = data.data.AccToId;
+                thisData['AccToName'] = data.data.AccToName;
+            };
+            
+            valueAmo.value = data.data.Amount;
+            thisData['Amount'] = data.data.Amount;
+            
+            valueCom.innerHTML = data.data.Com;
+            thisData['Com'] = data.data.Com;
             
             buttonAdd.onclick = function(e) {
                 initBtnConfirm();
+            };
+            
+            buttonDel.onclick = function(e) {
+                let ans = confirm('Удалить движение?'); 
+                        
+                if(ans == true) {
+                    deleteReg(thisData);
+                }
+                                    
+                return 1;
             };
         };
         
@@ -1081,6 +1201,25 @@ $script = new \yii\web\JsExpression("
             ('0' + (condate.getMonth()+1)).slice(-2),      // Get month and pad it with zeroes
             ('0' + condate.getDate()).slice(-2)                          // Get full year
           ].join('.');                                  // Glue the pieces together
+    }
+    
+    function convertTimeStampWithTime(timestamp) {
+          var condate = new Date(timestamp*1000);
+          
+          strDate = [
+            condate.getFullYear(),           // Get day and pad it with zeroes
+            ('0' + (condate.getMonth()+1)).slice(-2),      // Get month and pad it with zeroes
+            ('0' + condate.getDate()).slice(-2)                          // Get full year
+          ].join('-');  // Glue the pieces together
+                         
+          strDate = strDate + 'T';
+          
+          strTime = [
+            ('0' + (condate.getHours())).slice(-2),     
+            ('0' + condate.getMinutes()).slice(-2)                         
+          ].join(':');              
+                                          
+          return strDate+strTime;
     }
     
     ");

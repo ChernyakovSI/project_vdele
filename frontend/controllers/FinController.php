@@ -38,7 +38,10 @@ class FinController extends Controller
                                         'sub-edit',
                                         'sub-delete',
                                         'register',
-                                        'reg-add',],
+                                        'reg-add',
+                                        'reg-get',
+                                        'reg-edit',
+                                        'reg-delete',],
                         'controllers' => ['fin'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -1089,6 +1092,378 @@ class FinController extends Controller
 
             // Получаем данные модели из запроса
             if ($newReg['id'] != 0) {
+
+                $types = [];
+                if($data['isExpense'] == 1){
+                    $types[] = 0;
+                }
+                if($data['isProfit'] == 1){
+                    $types[] = 1;
+                }
+                if($data['isReplacement'] == 1){
+                    $types[] = 2;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user);
+                }
+                else{
+                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                }
+
+                $total = 0;
+
+                $SumFormat = [];
+
+                foreach ($transactions as $item) {
+                    if ($item['id'] != 0) {
+                        $total = $total + $item['sum'];
+                        $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+                    }
+                }
+
+                $total = Account::formatNumberToMoney($total);
+
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    'data' => $transactions,
+                    'total' => $total,
+                    'SumFormat' => $SumFormat,
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм UtlAdd работает только с AJAX"
+            ];
+        };
+
+    }
+
+    public function actionRegGet()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Устанавливаем формат ответа JSON
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            if($data['id'] == 0) {
+                return [
+                    "data" => $data,
+                    "error" => "Не передан идентификатор записи"
+                ];
+            };
+
+            $Reg = Register::getRegById($data['id']);
+
+            $dataSet = [
+                'id' => $Reg['id'],
+                'date' => $Reg['date'],
+                'type' => $Reg['id_type'],
+                'AccId' => $Reg['id_account'],
+                'AccName' => $Reg['AccName'],
+                'CatId' => $Reg['id_category'],
+                'CatName' => $Reg['CatName'],
+                'SubId' => $Reg['id_subcategory'],
+                'SubName' => $Reg['SubName'],
+                'Amount' => (float)$Reg['sum'],
+                'Com' => $Reg['comment'],
+                'AccToId' => $Reg['id_account_to'],
+                'AccToName' => $Reg['AccToName'],
+            ];
+
+            if($dataSet['type'] != 2) {
+                $dataSet['CatId'] = $Reg['id_category'];
+                $dataSet['SubId'] = $Reg['id_subcategory'];
+
+                $cats = Category::getAllCategoriesByUser($id_user, $dataSet['type']);
+
+                if($dataSet['CatId'] > 0) {
+                    $subs = Category::getAllSubsByUserAndCategory($id_user, $dataSet['CatId']);
+                }
+                else{
+                    $subs = [];
+                }
+            }
+            else{
+                $dataSet['AccToId'] = $Reg['id_account_to'];
+
+                $cats = [];
+                $subs = [];
+            };
+
+            $accounts = Account::getAllAccountsByUser($id_user);
+
+
+
+
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    'data' => $dataSet,
+                    'accounts' => $accounts,
+                    'categories' => $cats,
+                    'subs' => $subs,
+                ];
+
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм RegGet работает только с AJAX"
+            ];
+        };
+
+    }
+
+    public function actionRegEdit()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Устанавливаем формат ответа JSON
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            if($data['AccId'] == 0){
+                if($data['AccName'] == ''){
+                    return [
+                        "data" => $data,
+                        "error" => "Не заполнен счет",
+                        "element" => "Acc"
+                    ];
+                }
+                else
+                {
+                    if(Account::existsNameByUser($data['AccName'], $id_user, $data['AccId']) == true){
+                        return [
+                            "data" => $data,
+                            "error" => "Счет с таким же наименованием уже существует",
+                            "element" => "Acc"
+                        ];
+                    }
+                }
+
+                $newAccData = [
+                    'name' => $data['AccName'],
+                    'amount' => 0,
+                    'comment' => '',
+                ];
+                $newAcc = Account::add($newAccData);
+                $data['AccId'] = $newAcc['id'];
+            }
+
+            if($data['type'] != 2) {
+                if ($data['CatId'] == 0) {
+                    if ($data['CatName'] == '') {
+                        return [
+                            "data" => $data,
+                            "error" => "Не заполнена категория",
+                            "element" => "Cat"
+                        ];
+                    } else {
+                        if (Category::existsNameByUser($data['CatName'], $id_user, $data['CatId']) == true) {
+                            return [
+                                "data" => $data,
+                                "error" => "Категория с таким же названием уже существует",
+                                "element" => "Cat"
+                            ];
+                        }
+                    }
+
+                    $newCatData = [
+                        'name' => $data['CatName'],
+                    ];
+                    $newCat = Category::add($newCatData);
+                    $data['CatId'] = $newCat['id'];
+                }
+
+                if ($data['SubId'] == 0) {
+                    if ($data['SubName'] == '') {
+                        return [
+                            "data" => $data,
+                            "error" => "Не заполнена подкатегория",
+                            "element" => "Sub"
+                        ];
+                    } else {
+                        if (Category::existsNameByUser($data['SubName'], $id_user, $data['SubId']) == true) {
+                            return [
+                                "data" => $data,
+                                "error" => "Подкатегория с таким же названием уже существует",
+                                "element" => "Sub"
+                            ];
+                        }
+                    }
+
+                    $newSubData = [
+                        'name' => $data['SubName'],
+                        'id_category' => $data['CatId'],
+                    ];
+                    $newSub = Category::add($newSubData);
+                    $data['SubId'] = $newSub['id'];
+                }
+            }
+            else{
+                if($data['AccToId'] == 0){
+                    if($data['AccToName'] == ''){
+                        return [
+                            "data" => $data,
+                            "error" => "Не указано, на какой счет перенести",
+                            "element" => "AccTo"
+                        ];
+                    }
+                    else
+                    {
+                        if(Account::existsNameByUser($data['AccToName'], $id_user, $data['AccToId']) == true){
+                            return [
+                                "data" => $data,
+                                "error" => "Счет с таким же наименованием уже существует",
+                                "element" => "AccTo"
+                            ];
+                        }
+                    }
+
+                    $newAccData = [
+                        'name' => $data['AccToName'],
+                        'amount' => 0,
+                        'comment' => '',
+                    ];
+                    $newAcc = Account::add($newAccData);
+                    $data['AccToId'] = $newAcc['id'];
+                }
+                if($data['AccToId'] == $data['AccId']) {
+                    return [
+                        "data" => $data,
+                        "error" => "Необходимо выбрать разные счета для перемещения",
+                        "element" => "AccTo"
+                    ];
+                }
+            }
+
+            if($data['Amount'] == 0) {
+                return [
+                    "data" => $data,
+                    "error" => "Необходимо указать сумму",
+                    "element" => "Amo"
+                ];
+            }
+
+            if($data['type'] != 2) {
+                $dataSet = [
+                    'id_user' => $id_user,
+                    'id_category' => $data['CatId'],
+                    'id_subcategory' => $data['SubId'],
+                    'date' => $data['date'],
+                    'sum' => $data['Amount'],
+                    'comment' => $data['Com'],
+                    'id_type' => $data['type'],
+                    'id_account' => $data['AccId'],
+                ];
+            }
+            else{
+                $dataSet = [
+                    'id_user' => $id_user,
+                    'date' => $data['date'],
+                    'sum' => $data['Amount'],
+                    'comment' => $data['Com'],
+                    'id_type' => $data['type'],
+                    'id_account' => $data['AccId'],
+                    'id_account_to' => $data['AccToId'],
+                ];
+            };
+
+            $Reg = Register::edit($dataSet, $data['id']);
+
+            // Получаем данные модели из запроса
+            if ($Reg['id'] != 0) {
+
+                $types = [];
+                if($data['isExpense'] == 1){
+                    $types[] = 0;
+                }
+                if($data['isProfit'] == 1){
+                    $types[] = 1;
+                }
+                if($data['isReplacement'] == 1){
+                    $types[] = 2;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user);
+                }
+                else{
+                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                }
+
+                $total = 0;
+
+                $SumFormat = [];
+
+                foreach ($transactions as $item) {
+                    if ($item['id'] != 0) {
+                        $total = $total + $item['sum'];
+                        $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+                    }
+                }
+
+                $total = Account::formatNumberToMoney($total);
+
+                //Если всё успешно, отправляем ответ с данными
+                return [
+                    'data' => $transactions,
+                    'total' => $total,
+                    'SumFormat' => $SumFormat,
+                ];
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => $data,
+                    "error" => "Пришли некорректные данные"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "Механизм UtlAdd работает только с AJAX"
+            ];
+        };
+
+    }
+
+    public function actionRegDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Устанавливаем формат ответа JSON
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+
+            $cur_user = Yii::$app->user->identity;
+            $id_user = $cur_user->getId();
+
+            $Reg = Register::del($data['id']);
+
+            // Получаем данные модели из запроса
+            if ($Reg['id'] != 0) {
 
                 $types = [];
                 if($data['isExpense'] == 1){

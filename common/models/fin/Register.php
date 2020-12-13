@@ -100,6 +100,33 @@ class Register extends ActiveRecord
 
     }
 
+    public static function getRegById($id){
+            $query = new Query();
+            return $query->Select('Reg.`id` as id,
+                                            Reg.`id_account` as id_account,
+                                            Acc.`name` as AccName,
+                                            Reg.`id_account_to` as id_account_to,
+                                            AccTo.`name` as AccToName,
+                                            Reg.`id_category` as id_category,
+                                            Cat.`name` as CatName,
+                                            Reg.`id_subcategory` as id_subcategory,
+                                            Sub.`name` as SubName,
+                                            Reg.`date` as date,
+                                            Reg.`is_deleted` as is_deleted,
+                                            Reg.`sum` as sum,
+                                            Reg.`comment` as comment,
+                                            Reg.`id_type` as id_type
+                                            ')
+                ->from(self::tableName().' as Reg')
+
+                ->join('LEFT JOIN', Account::tableName().' as Acc', 'Acc.`id` = Reg.`id_account`')
+                ->join('LEFT JOIN', Account::tableName().' as AccTo', 'AccTo.`id` = Reg.`id_account_to`')
+                ->join('LEFT JOIN', Category::tableName().' as Cat', 'Cat.`id` = Reg.`id_category`')
+                ->join('LEFT JOIN', Category::tableName().' as Sub', 'Sub.`id` = Reg.`id_subcategory`')
+                ->where(['Reg.`id`' => $id])
+                ->one();
+    }
+
     public static function add($data){
         $newReg = new Register();
 
@@ -180,6 +207,129 @@ class Register extends ActiveRecord
         }
 
         return $newReg;
+    }
+
+    public static function edit($data, $id){
+        $Reg = static::findOne(['id' => $id]);
+
+        $lastSum = $Reg->sum;
+        $lastAcc = $Reg->id_account;
+        $lastType = $Reg->id_type;
+        $lastAccTo = $Reg->id_account_to;
+
+        $Reg->id_type = (integer)$data['id_type'];
+
+        if($data['id_type'] != 2) {
+            $Reg->id_category = (integer)$data['id_category'];
+            $Reg->id_subcategory = (integer)$data['id_subcategory'];
+        }
+        else{
+            $Reg->id_account_to = (integer)$data['id_account_to'];
+        }
+
+        $Reg->sum = (float)$data['sum'];
+        $Reg->id_account = (integer)$data['id_account'];
+
+        if(isset($data['date'])) {
+            $Reg->date = (integer)$data['date'];
+        }
+        else{
+            $Reg->date = time();
+        };
+
+        if(isset($data['updated_at'])) {
+            $Reg->updated_at = (integer)$data['updated_at'];
+        }
+        else{
+            $Reg->updated_at = time();
+        };
+
+        if(isset($data['comment'])) {
+            $Reg->comment = $data['comment'];
+        }
+        else{
+            $Reg->comment = '';
+        };
+
+        if(isset($data['is_deleted'])) {
+            if($data['is_deleted'] == 'true'){
+                $Reg->is_deleted = 1;
+            }
+            else if($data['is_deleted'] == 'false'){
+                $Reg->is_deleted = 0;
+            }
+            else{
+                $Reg->is_deleted = (integer)$data['is_deleted'];
+            }
+        };
+
+        $Reg->save();
+
+        //Откат сумм счетов
+        $Acc = Account::findOne($lastAcc);
+        if($lastType == 1){
+            $Acc->calculateAcc(-1 * $lastSum);
+        }
+        else{
+            $Acc->calculateAcc($lastSum);
+        };
+
+        if($lastAccTo > 0){
+            $AccTo = Account::findOne($lastAccTo);
+            $AccTo->calculateAcc(-1 * $lastSum);
+        }
+
+        //Обновление сумм счетов
+        $Acc = Account::findOne($Reg->id_account);
+        if($Reg->id_type == 1){
+            $Acc->calculateAcc($Reg->sum);
+        }
+        else{
+            $Acc->calculateAcc(-1 * $Reg->sum);
+        };
+
+        if($Reg->id_account_to > 0){
+            $AccTo = Account::findOne($Reg->id_account_to);
+            $AccTo->calculateAcc($Reg->sum);
+        }
+
+        return $Reg;
+    }
+
+    public static function del($id){
+        $Reg = static::findOne(['id' => $id]);
+
+        $lastSum = $Reg->sum;
+        $lastAcc = $Reg->id_account;
+        $lastType = $Reg->id_type;
+        $lastAccTo = $Reg->id_account_to;
+
+        if(isset($data['updated_at'])) {
+            $Reg->updated_at = (integer)$data['updated_at'];
+        }
+        else{
+            $Reg->updated_at = time();
+        };
+
+        $Reg->is_deleted = 1;
+
+        $Reg->save();
+
+        //Откат сумм счетов
+        $Acc = Account::findOne($lastAcc);
+        if($lastType == 1){
+            $Acc->calculateAcc(-1 * $lastSum);
+        }
+        else{
+            $Acc->calculateAcc($lastSum);
+        };
+
+        if($lastAccTo > 0){
+            $AccTo = Account::findOne($lastAccTo);
+            $AccTo->calculateAcc(-1 * $lastSum);
+        }
+
+        return $Reg;
     }
 
 }
