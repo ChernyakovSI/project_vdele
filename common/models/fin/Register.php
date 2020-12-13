@@ -330,6 +330,7 @@ class Register extends ActiveRecord
         }
 
         return $Reg;
+        //
     }
 
 }
