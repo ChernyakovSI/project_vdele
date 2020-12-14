@@ -10,6 +10,7 @@ namespace common\models\fin;
 
 use yii\db\ActiveRecord;
 use Yii;
+use yii\db\Query;
 
 class Category extends ActiveRecord
 {
@@ -142,6 +143,16 @@ class Category extends ActiveRecord
         $Cat->updated_at = time();
 
         $Cat->save();
+
+        $Cats = self::find()->where(['id_category' => $id, 'is_deleted' => 0])
+            ->all();
+
+        foreach ($Cats as $item) {
+            if ($item['id'] != 0) {
+                $item->is_deleted = 1;
+                $item->save();
+            }
+        }
 
         return $Cat;
     }

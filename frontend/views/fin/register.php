@@ -1008,6 +1008,10 @@ $script = new \yii\web\JsExpression("
             curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
             thisData['date'] = String(curDate.getTime()).substr(0, 10);
         }
+        
+        valueCom.onblur = function(event){
+            thisData['Com'] = this.innerHTML;
+        }
 
         container.style.display = 'block';
         //form.elements.text.focus();
