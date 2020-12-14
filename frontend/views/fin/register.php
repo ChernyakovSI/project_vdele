@@ -16,12 +16,101 @@ $this->title = 'Финансы: Движения';
 
 <?php
 $script = new \yii\web\JsExpression("
+    $(document).ready( function() {
+        let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
+        
+        resize();       
+    })
+");
+$this->registerJs($script, \yii\web\View::POS_READY);
+
+$script = new \yii\web\JsExpression("
     let isExpense = " .$isExpense.";
     let isProfit = " .$isProfit.";
     let isReplacement = " .$isReplacement.";
     
     let divRedComment = document.getElementById('red-comment');
     let divWrapError = null;
+    
+    function resize() {
+        let divListRegs = document.getElementById('list-register');  
+        let children = divListRegs.childNodes;
+        let divRow;
+        
+        let colDate, colAcc, colCat, colSub, colSum, colCom;
+
+        for(child in children){
+            divRow = children[child].childNodes;
+            let maxHeight = 0;
+            for(column in divRow){
+                if (divRow.length > 0){
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-date') > -1) {
+                        colDate = divRow[column]; 
+                        if (colDate.clientHeight > maxHeight){
+                            maxHeight = colDate.clientHeight;
+                        } 
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-acc') > -1) {
+                        colAcc = divRow[column];
+                        if (colAcc.clientHeight > maxHeight){
+                            maxHeight = colAcc.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-cat') > -1) {
+                        colCat = divRow[column];
+                        if (colCat.clientHeight > maxHeight){
+                            maxHeight = colCat.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-sub') > -1) {
+                        colSub = divRow[column];
+                        if (colSub.clientHeight > maxHeight){
+                            maxHeight = colSub.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-amount') > -1) {
+                        colSum = divRow[column];
+                        if (colSum.clientHeight > maxHeight){
+                            maxHeight = colSum.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('fin-reg-com') > -1) {
+                        colCom = divRow[column];
+                        if (colCom.clientHeight > maxHeight){
+                            maxHeight = colCom.clientHeight;
+                        }
+                    }
+                }
+                
+            } 
+   
+            if(colDate != undefined) {
+                colDate.style.height = maxHeight + \"px\";
+            }
+            if(colAcc != undefined) {
+                colAcc.style.height = maxHeight + \"px\";
+            }
+            if(colCat != undefined) {
+                colCat.style.height = maxHeight + \"px\";
+            }
+            if(colSub != undefined) {
+                colSub.style.height = maxHeight + \"px\";
+            }
+            if(colSum != undefined) {
+                colSum.style.height = maxHeight + \"px\";
+            }
+            if(colCom != undefined) {
+                colCom.style.height = maxHeight + \"px\";
+            }
+              
+            colDate = undefined;
+            colAcc = undefined;
+            colCat = undefined;
+            colSub = undefined;
+            colSum = undefined;
+            colCom = undefined;            
+        }  
+    }
     
     function showError(data) {
         divRedComment.hidden = false;
@@ -103,6 +192,8 @@ $script = new \yii\web\JsExpression("
             'isReplacement' : isReplacement,    
         };
         
+        floatingCirclesGMain.hidden = false;
+        
         $.ajax({
             type : 'post',
             url : '/fin/register',
@@ -110,14 +201,15 @@ $script = new \yii\web\JsExpression("
             }).done(function(data) {
                 if (data.error == null) {
                     rerender(data);                       
-            } else {
-                if (data.error != ''){
-                    console.dir(data);
+                } else {
+                    if (data.error != ''){
+                        console.dir(data);
+                    }
                 }
-            }
-        }).fail(function() {
-
-        });    
+                floatingCirclesGMain.hidden = true;
+            }).fail(function() {
+                floatingCirclesGMain.hidden = true;
+            });    
     };
     
     function minType() {
@@ -135,6 +227,7 @@ $script = new \yii\web\JsExpression("
     function addReg() {
         showFormNew(0, minType(), function(value) {
             if (value != null) {
+                floatingCirclesGMain.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -154,9 +247,11 @@ $script = new \yii\web\JsExpression("
                                     showError(data);
                                 }
                             }
+                            floatingCirclesGMain.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         //console.log(data.error);
+                        floatingCirclesGMain.hidden = true;
                     });    
             } 
         });
@@ -165,6 +260,7 @@ $script = new \yii\web\JsExpression("
     function editReg(id) {
         showFormNew(id, 0, function(value) {
             if (value != null) {
+                floatingCirclesGMain.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -184,15 +280,18 @@ $script = new \yii\web\JsExpression("
                                     showError(data);
                                 }
                             }
+                            floatingCirclesGMain.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         //console.log(data.error);
+                        floatingCirclesGMain.hidden = true;
                     });    
             } 
         });
     }; 
     
     function deleteReg(thisData) {
+                floatingCirclesGMain.hidden = false;
                 $.ajax({
                         // Метод отправки данных (тип запроса)
                         type : 'post',
@@ -207,9 +306,11 @@ $script = new \yii\web\JsExpression("
                             } else {
                                 showError(data);
                             }
+                            floatingCirclesGMain.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
                         //console.log(data.error);
+                        floatingCirclesGMain.hidden = true;
                     });    
 
     }
@@ -1185,6 +1286,8 @@ $script = new \yii\web\JsExpression("
                                     
             let divtotal = document.getElementById('total');
             divtotal.innerHTML = dataSet.total;
+            
+            resize();
         }
         else
         {
@@ -1230,8 +1333,24 @@ $script = new \yii\web\JsExpression("
 $this->registerJs($script, \yii\web\View::POS_BEGIN);
 ?>
 
-<div class="window window-border window-caption" id="caption">Движения</div>
-
+<div class="window window-border window-caption-2em caption-wrap">
+    <div class="caption-begin"><?='&nbsp;'?></div>
+    <div class="caption-text-new">Движения<div><?='&nbsp;'?></div></div>
+    <div class="caption-close-new">
+        <div id="floatingCirclesGMain" hidden>
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+        <div><?='&nbsp;'?></div>
+    </div>
+</div>
+<div class="clearfix"></div>
 <div class="submenu">
     <?php if ($isExpense == 0){ ?>
         <span class="btn-submenu btn-submenu-interactive" id="btn-expense" onclick="expense()">Расходы</span>
@@ -1256,6 +1375,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div class="url-categoryList-header window-subcaption">
                 Настройки
             </div>
+
             <div id="list-categories">
 
 
