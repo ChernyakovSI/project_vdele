@@ -1351,38 +1351,33 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     </div>
 </div>
 <div class="clearfix"></div>
-<div class="submenu">
-    <?php if ($isExpense == 0){ ?>
-        <span class="btn-submenu btn-submenu-interactive" id="btn-expense" onclick="expense()">Расходы</span>
-    <?php } else { ?>
-        <span class="btn-submenu btn-active-expense btn-submenu-interactive" id="btn-expense" onclick="expense()">Расходы</span>
-    <?php } ?>
-    <?php if ($isProfit == 0){ ?>
-        <span class="btn-submenu btn-submenu-interactive" id="btn-profit" onclick="profit()">Доходы</span>
-    <?php } else { ?>
-        <span class="btn-submenu btn-active-profit btn-submenu-interactive" id="btn-profit" onclick="profit()">Доходы</span>
-    <?php } ?>
-    <?php if ($isReplacement == 0){ ?>
-        <span class="btn-submenu btn-submenu-interactive" id="btn-replacement" onclick="trans()">Перемещения</span>
-    <?php } else { ?>
-        <span class="btn-submenu btn-active-replacement btn-submenu-interactive" id="btn-replacement" onclick="trans()">Перемещения</span>
-    <?php } ?>
-</div>
+
 
 <div class="content">
     <div class="fin-container-wrap">
-        <div class="window-border">
-            <div class="url-categoryList-header window-subcaption">
-                Настройки
-            </div>
-
-            <div id="list-categories">
-
-
-
-            </div>
+        <div class="submenu">
+            <?php if ($isExpense == 0){ ?>
+                <span class="btn-submenu btn-submenu-interactive" id="btn-expense" onclick="expense()">Расходы</span>
+            <?php } else { ?>
+                <span class="btn-submenu btn-active-expense btn-submenu-interactive" id="btn-expense" onclick="expense()">Расходы</span>
+            <?php } ?>
+            <?php if ($isProfit == 0){ ?>
+                <span class="btn-submenu btn-submenu-interactive" id="btn-profit" onclick="profit()">Доходы</span>
+            <?php } else { ?>
+                <span class="btn-submenu btn-active-profit btn-submenu-interactive" id="btn-profit" onclick="profit()">Доходы</span>
+            <?php } ?>
+            <?php if ($isReplacement == 0){ ?>
+                <span class="btn-submenu btn-submenu-interactive" id="btn-replacement" onclick="trans()">Перемещения</span>
+            <?php } else { ?>
+                <span class="btn-submenu btn-active-replacement btn-submenu-interactive" id="btn-replacement" onclick="trans()">Перемещения</span>
+            <?php } ?>
         </div>
         <div class="window window-border gap-v" id="main-window">
+            <!--<div class="window-border">
+                <div class="url-categoryList-header window-subcaption">
+                    Настройки
+                </div>
+            </div>-->
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
             <div class="clearfix gap-v"><hr class="line"></div>
             <div class="fin-reg-date table-text">

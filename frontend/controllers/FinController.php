@@ -989,6 +989,7 @@ class FinController extends Controller
 
                     $newCatData = [
                         'name' => $data['CatName'],
+                        'isProfit' => $data['type'],
                     ];
                     $newCat = Category::add($newCatData);
                     $data['CatId'] = $newCat['id'];
@@ -1014,6 +1015,7 @@ class FinController extends Controller
                     $newSubData = [
                         'name' => $data['SubName'],
                         'id_category' => $data['CatId'],
+                        'isProfit' => $data['type'],
                     ];
                     $newSub = Category::add($newSubData);
                     $data['SubId'] = $newSub['id'];
@@ -1289,6 +1291,7 @@ class FinController extends Controller
 
                     $newCatData = [
                         'name' => $data['CatName'],
+                        'isProfit' => $data['type'],
                     ];
                     $newCat = Category::add($newCatData);
                     $data['CatId'] = $newCat['id'];
@@ -1314,6 +1317,7 @@ class FinController extends Controller
                     $newSubData = [
                         'name' => $data['SubName'],
                         'id_category' => $data['CatId'],
+                        'isProfit' => $data['type'],
                     ];
                     $newSub = Category::add($newSubData);
                     $data['SubId'] = $newSub['id'];
