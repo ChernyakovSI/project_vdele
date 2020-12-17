@@ -20,6 +20,22 @@ $script = new \yii\web\JsExpression("
         let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
         
         resize();       
+        
+//        let valuePeriodFrom = document.getElementById('valuePeriodFrom');
+//        let valuePeriodTo = document.getElementById('valuePeriodTo');
+//        
+//        let nowServer = new Date();
+//        let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
+//        
+//        let strDate = convertTimeStamp(".$periodFrom.");  
+//        let curDate = new Date(strDate);
+//        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+//        valuePeriodFrom.value = curDate.toISOString().substring(0, 10);
+//        
+//        strDate = convertTimeStamp(".$periodTo.");  
+//        curDate = new Date(strDate);
+//        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+//        valuePeriodTo.value = curDate.toISOString().substring(0, 10);
     })
 ");
 $this->registerJs($script, \yii\web\View::POS_READY);
@@ -450,7 +466,7 @@ $script = new \yii\web\JsExpression("
             
             valueDate.value = nowServer.toISOString().substring(0, 16); 
             let curDate = new Date(valueDate.value); 
-            curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+            //curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
             thisData['date'] = String(curDate.getTime()).substr(0, 10);                  
                      
             floatingCirclesG.hidden = true;
@@ -586,7 +602,7 @@ $script = new \yii\web\JsExpression("
             
             let strDate = convertTimeStampWithTime(data.data.date);  
             let curDate = new Date(strDate);
-            //curDate.setHours(curDate.getHours() + currentTimeZoneOffset); 
+            curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
             valueDate.value = curDate.toISOString().substring(0, 16);
             thisData['date'] = data.data.date;
             
@@ -1106,7 +1122,7 @@ $script = new \yii\web\JsExpression("
         
         valueDate.onchange = function(event){
             let curDate = new Date(this.value); 
-            curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+            //curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
             thisData['date'] = String(curDate.getTime()).substr(0, 10);
         }
         
@@ -1373,11 +1389,15 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <?php } ?>
         </div>
         <div class="window window-border gap-v" id="main-window">
-            <!--<div class="window-border">
-                <div class="url-categoryList-header window-subcaption">
-                    Настройки
-                </div>
-            </div>-->
+<!--            <div class="half_width">-->
+<!--                <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">-->
+<!--                    <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">-->
+<!--                </div>-->
+<!--                <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">-->
+<!--                    <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="clearfix"></div>
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
             <div class="clearfix gap-v"><hr class="line"></div>
             <div class="fin-reg-date table-text">

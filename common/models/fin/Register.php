@@ -68,9 +68,8 @@ class Register extends ActiveRecord
     }*/
 
     public static function getAllRegsByUser($id_user, $beginDate = 0, $endDate = 0, $types = [0, 1, 2]){
-        if ($beginDate == 0 && $endDate == 0){
-            $query = new Query();
-            return $query->Select('Reg.`id` as id,
+        $query = new Query();
+        $body = $query->Select('Reg.`id` as id,
                                             Reg.`id_account` as id_account,
                                             Acc.`name` as AccName,
                                             Reg.`id_account_to` as id_account_to,
@@ -85,19 +84,32 @@ class Register extends ActiveRecord
                                             Reg.`comment` as comment,
                                             Reg.`id_type` as id_type
                                             ')
-                ->from(self::tableName().' as Reg')
+            ->from(self::tableName().' as Reg')
 
-                ->join('LEFT JOIN', Account::tableName().' as Acc', 'Acc.`id` = Reg.`id_account`')
-                ->join('LEFT JOIN', Account::tableName().' as AccTo', 'AccTo.`id` = Reg.`id_account_to`')
-                ->join('LEFT JOIN', Category::tableName().' as Cat', 'Cat.`id` = Reg.`id_category`')
-                ->join('LEFT JOIN', Category::tableName().' as Sub', 'Sub.`id` = Reg.`id_subcategory`')
+            ->join('LEFT JOIN', Account::tableName().' as Acc', 'Acc.`id` = Reg.`id_account`')
+            ->join('LEFT JOIN', Account::tableName().' as AccTo', 'AccTo.`id` = Reg.`id_account_to`')
+            ->join('LEFT JOIN', Category::tableName().' as Cat', 'Cat.`id` = Reg.`id_category`')
+            ->join('LEFT JOIN', Category::tableName().' as Sub', 'Sub.`id` = Reg.`id_subcategory`')
 
-                ->where(['Reg.`id_user`' => $id_user, 'Reg.`is_deleted`' => 0])
-                ->andWhere('Reg.`id_type` IN ('.implode(',',$types).')')
+            ->where(['Reg.`id_user`' => $id_user, 'Reg.`is_deleted`' => 0])
+            ->andWhere('Reg.`id_type` IN ('.implode(',',$types).')');
 
+        if ($beginDate == 0 && $endDate == 0){
+            $result = $body->orderBy('Reg.`date` DESC')->all();
+        }
+        else
+        {
+            if ($beginDate > $endDate){
+                $temp = $beginDate;
+                $beginDate = $endDate;
+                $endDate = $temp;
+            }
+            $result = $body->andWhere('Reg.`date` >= '.$beginDate)
+                ->andWhere('Reg.`date` <= '.$endDate)
                 ->orderBy('Reg.`date` DESC')->all();
         }
 
+        return $result;
     }
 
     public static function getRegById($id){

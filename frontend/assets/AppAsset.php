@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
         'css/acEdit9.css',
         'css/users5.css',
         'css/url2.css',
-        'css/fin4.css',
+        'css/fin5.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles.css'

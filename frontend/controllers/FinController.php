@@ -866,7 +866,10 @@ class FinController extends Controller
             $isReplacement = 0;
             $types[] = 0;
 
-            $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+            $periodFrom = strtotime(date('Y-m-01 00:00:00'));
+            $periodTo = strtotime(date('Y-m-t 23:59:59'));
+
+            $transactions = Register::getAllRegsByUser($id_user, $periodFrom, $periodTo, $types);
 
             $total = 0;
 
@@ -922,7 +925,9 @@ class FinController extends Controller
                 'total' => $total,
                 'accs' => $Accs,
                 'cats' => $cats,
-                'subs' => $subs
+                'subs' => $subs,
+                'periodFrom' => $periodFrom,
+                'periodTo' => $periodTo
             ]);
         }
 
