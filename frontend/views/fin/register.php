@@ -23,6 +23,9 @@ $script = new \yii\web\JsExpression("
         
         let valuePeriodFrom = document.getElementById('valuePeriodFrom');
         let valuePeriodTo = document.getElementById('valuePeriodTo');
+        let selValueAcc = document.getElementById('selValueAcc');
+        
+        let selClearAcc = document.getElementById('selClearAcc');
         
         let nowServer = new Date();
         let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
@@ -44,6 +47,16 @@ $script = new \yii\web\JsExpression("
         valuePeriodTo.onchange = function(event){     
             readTable();    
         }
+        
+        selValueAcc.onchange = function(event) {
+            readTable();   
+        };
+        
+        selClearAcc.onclick = function(e) {
+            selValueAcc.value = '';
+            
+            readTable();
+        };
     })
 ");
 $this->registerJs($script, \yii\web\View::POS_READY);
@@ -215,12 +228,16 @@ $script = new \yii\web\JsExpression("
         let curDateTo = new Date(valuePeriodTo.value);
         curDateTo.setHours(23,59,59,999);
         
+        let curSelAccName = selValueAcc.value;
+        
         value = {
             'isExpense' : isExpense,
             'isProfit' : isProfit,
             'isReplacement' : isReplacement, 
             'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
-            'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),   
+            'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),
+            'selAccId' : 0,
+            'selAccName' : curSelAccName,   
         };
         
         floatingCirclesGMain.hidden = false;
@@ -270,7 +287,7 @@ $script = new \yii\web\JsExpression("
                             if (data.error == null) {
                                 //console.dir(data);
                                 deleteForm();
-                                rerender(data)                       
+                                rerender(data);                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -303,7 +320,7 @@ $script = new \yii\web\JsExpression("
                             if (data.error == null) {
                                 //console.dir(data);
                                 deleteForm();
-                                rerender(data)                       
+                                rerender(data);                       
                             } else {
                                 // Если при обработке данных на сервере произошла ошибка
                                 //console.log(data);
@@ -434,6 +451,8 @@ $script = new \yii\web\JsExpression("
             'isReplacement' : isReplacement,
             'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
             'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),
+            'selAccId' : 0,
+            'selAccName' : '',
         };
         
         valueAcc.value = '';
@@ -689,6 +708,17 @@ $script = new \yii\web\JsExpression("
                 let ans = confirm('Удалить движение?'); 
                         
                 if(ans == true) {
+                    let curDateFrom = new Date(valuePeriodFrom.value); 
+                    let curDateTo = new Date(valuePeriodTo.value);
+                    curDateTo.setHours(23,59,59,999);
+                    
+                    let curSelAccName = selValueAcc.value;
+                    
+                    thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
+                    thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
+                    thisData['selAccId'] = 0;
+                    thisData['selAccName'] = curSelAccName;
+                
                     deleteReg(thisData);
                 }
                                     
@@ -697,6 +727,17 @@ $script = new \yii\web\JsExpression("
         };
         
         function initBtnConfirm() {
+            let curDateFrom = new Date(valuePeriodFrom.value); 
+            let curDateTo = new Date(valuePeriodTo.value);
+            curDateTo.setHours(23,59,59,999);
+            
+            let curSelAccName = selValueAcc.value;
+            
+            thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
+            thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
+            thisData['selAccId'] = 0;
+            thisData['selAccName'] = curSelAccName;   
+        
             complete(thisData);
         };
         
@@ -1333,6 +1374,9 @@ $script = new \yii\web\JsExpression("
             divInfo.innerHTML = 'Нет движений';
             
             listReg.append(divInfo);
+            
+            let divtotal = document.getElementById('total');
+            divtotal.innerHTML = dataSet.total;
         }
     }
     
@@ -1416,6 +1460,17 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">
                     <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
                 </div>
+            </div>
+            <div class="half_third">
+                <div class="caption-line-half-21">Счет:</div><div class="message-wrapper-line-half window-border">
+                    <input type="text" class="message-text-line" list="list_accounts_sel" id="selValueAcc" contentEditable />
+                    <datalist id="list_accounts_sel">
+                        <?php foreach ($accs as $account): ?>
+                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
             </div>
             <div class="clearfix"></div>
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>

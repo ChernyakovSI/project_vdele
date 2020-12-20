@@ -47,6 +47,10 @@ class Account extends ActiveRecord
         return self::find()->where(['id' => $id])->one()['name'];
     }
 
+    public static function getElemByName($name, $id_user){
+        return self::find()->where(['name' => $name, 'id_user' => $id_user, 'is_deleted' => 0])->one();
+    }
+
     public static function getAllAccountsByUser($id_user, $calc = false){
         $Accs = self::find()->where(['id_user' => $id_user, 'is_deleted' => 0])->orderBy('num')->all();
 

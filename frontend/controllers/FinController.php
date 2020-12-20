@@ -845,24 +845,41 @@ class FinController extends Controller
                 $PeriodTo = 0;
             }
 
+            $option = [];
 
-            if(count($types) == 0){
-                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+            if($data['selAccId'] == 0){
+                if($data['selAccName'] == ''){
+                    $data['selAccId'] = 0;
+                }
+                else
+                {
+                    $Elem = Account::getElemByName($data['selAccName'], $id_user);
+                    if(isset($Elem)){
+                        $data['selAccId'] = $Elem['id'];
+                    }
+                    else{
+                        $data['selAccId'] = 0;
+                    }
+                }
             }
-            else{
-                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
-            }
+
+            $option['selAccId'] = $data['selAccId'];
+
+            $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
             $total = 0;
 
             $SumFormat = [];
 
-            foreach ($transactions as $item) {
-                if ($item['id'] != 0) {
-                    $total = $total + $item['sum'];
-                    $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+            if(count($transactions)){
+                foreach ($transactions as $item) {
+                    if ($item['id'] != 0) {
+                        $total = $total + $item['sum'];
+                        $SumFormat[$item['id']] = Account::formatNumberToMoney($item['sum']);
+                    }
                 }
             }
+
 
             $total = Account::formatNumberToMoney($total);
 
@@ -1138,12 +1155,27 @@ class FinController extends Controller
                     $PeriodTo = 0;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $option = [];
+
+                if($data['selAccId'] == 0){
+                    if($data['selAccName'] == ''){
+                        $data['selAccId'] = 0;
+                    }
+                    else
+                    {
+                        $Elem = Account::getElemByName($data['selAccName'], $id_user);
+                        if(isset($Elem)){
+                            $data['selAccId'] = $Elem['id'];
+                        }
+                        else{
+                            $data['selAccId'] = 0;
+                        }
+                    }
                 }
-                else{
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
-                }
+
+                $option['selAccId'] = $data['selAccId'];
+
+                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
                 $total = 0;
 
@@ -1453,12 +1485,27 @@ class FinController extends Controller
                     $PeriodTo = 0;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $option = [];
+
+                if($data['selAccId'] == 0){
+                    if($data['selAccName'] == ''){
+                        $data['selAccId'] = 0;
+                    }
+                    else
+                    {
+                        $Elem = Account::getElemByName($data['selAccName'], $id_user);
+                        if(isset($Elem)){
+                            $data['selAccId'] = $Elem['id'];
+                        }
+                        else{
+                            $data['selAccId'] = 0;
+                        }
+                    }
                 }
-                else{
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
-                }
+
+                $option['selAccId'] = $data['selAccId'];
+
+                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
                 $total = 0;
 
@@ -1538,12 +1585,27 @@ class FinController extends Controller
                     $PeriodTo = 0;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $option = [];
+
+                if($data['selAccId'] == 0){
+                    if($data['selAccName'] == ''){
+                        $data['selAccId'] = 0;
+                    }
+                    else
+                    {
+                        $Elem = Account::getElemByName($data['selAccName'], $id_user);
+                        if(isset($Elem)){
+                            $data['selAccId'] = $Elem['id'];
+                        }
+                        else{
+                            $data['selAccId'] = 0;
+                        }
+                    }
                 }
-                else{
-                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
-                }
+
+                $option['selAccId'] = $data['selAccId'];
+
+                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
                 $total = 0;
 
