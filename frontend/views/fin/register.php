@@ -21,21 +21,29 @@ $script = new \yii\web\JsExpression("
         
         resize();       
         
-//        let valuePeriodFrom = document.getElementById('valuePeriodFrom');
-//        let valuePeriodTo = document.getElementById('valuePeriodTo');
-//        
-//        let nowServer = new Date();
-//        let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
-//        
-//        let strDate = convertTimeStamp(".$periodFrom.");  
-//        let curDate = new Date(strDate);
-//        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
-//        valuePeriodFrom.value = curDate.toISOString().substring(0, 10);
-//        
-//        strDate = convertTimeStamp(".$periodTo.");  
-//        curDate = new Date(strDate);
-//        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
-//        valuePeriodTo.value = curDate.toISOString().substring(0, 10);
+        let valuePeriodFrom = document.getElementById('valuePeriodFrom');
+        let valuePeriodTo = document.getElementById('valuePeriodTo');
+        
+        let nowServer = new Date();
+        let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
+        
+        let strDate = convertTimeStamp(".$periodFrom.");  
+        let curDate = new Date(strDate);
+        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+        valuePeriodFrom.value = curDate.toISOString().substring(0, 10);
+        
+        strDate = convertTimeStamp(".$periodTo.");  
+        curDate = new Date(strDate);
+        curDate.setHours(curDate.getHours() - currentTimeZoneOffset); 
+        valuePeriodTo.value = curDate.toISOString().substring(0, 10);
+        
+        valuePeriodFrom.onchange = function(event){     
+            readTable();    
+        }
+        
+        valuePeriodTo.onchange = function(event){     
+            readTable();    
+        }
     })
 ");
 $this->registerJs($script, \yii\web\View::POS_READY);
@@ -202,10 +210,17 @@ $script = new \yii\web\JsExpression("
     };
     
     function readTable(){
+    
+        let curDateFrom = new Date(valuePeriodFrom.value); 
+        let curDateTo = new Date(valuePeriodTo.value);
+        curDateTo.setHours(23,59,59,999);
+        
         value = {
             'isExpense' : isExpense,
             'isProfit' : isProfit,
-            'isReplacement' : isReplacement,    
+            'isReplacement' : isReplacement, 
+            'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
+            'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),   
         };
         
         floatingCirclesGMain.hidden = false;
@@ -397,6 +412,9 @@ $script = new \yii\web\JsExpression("
         divRedComment = document.getElementById('red-comment');
         divRedComment.hidden = true;
         
+        let curDateFrom = new Date(valuePeriodFrom.value); 
+        let curDateTo = new Date(valuePeriodTo.value);
+        
         let thisData = {
             'id' : 0,
             'date' : 0,
@@ -414,6 +432,8 @@ $script = new \yii\web\JsExpression("
             'isExpense' : isExpense,
             'isProfit' : isProfit,
             'isReplacement' : isReplacement,
+            'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
+            'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),
         };
         
         valueAcc.value = '';
@@ -1389,14 +1409,14 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <?php } ?>
         </div>
         <div class="window window-border gap-v" id="main-window">
-<!--            <div class="half_width">-->
-<!--                <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">-->
-<!--                    <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">-->
-<!--                </div>-->
-<!--                <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">-->
-<!--                    <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="half_third">
+                <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">
+                    <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
+                </div>
+                <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">
+                    <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
+                </div>
+            </div>
             <div class="clearfix"></div>
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
             <div class="clearfix gap-v"><hr class="line"></div>

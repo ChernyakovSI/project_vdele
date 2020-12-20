@@ -484,6 +484,11 @@
     float: left;
 }
 
+.half_third {
+    width: 33%;
+    float: left;
+}
+
 .message-wrapper-line-half {
     width: 60%;
     background-color: #f9fafb;

@@ -832,11 +832,25 @@ class FinController extends Controller
                 $types[] = 2;
             }
 
-            if(count($types) == 0){
-                $transactions = Register::getAllRegsByUser($id_user);
+            if(isset($data['selPeriodFrom'])){
+                $PeriodFrom = $data['selPeriodFrom'];
             }
             else{
-                $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                $PeriodFrom = 0;
+            }
+            if(isset($data['selPeriodTo'])){
+                $PeriodTo = $data['selPeriodTo'];
+            }
+            else{
+                $PeriodTo = 0;
+            }
+
+
+            if(count($types) == 0){
+                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+            }
+            else{
+                $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
             }
 
             $total = 0;
@@ -1111,11 +1125,24 @@ class FinController extends Controller
                     $types[] = 2;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user);
+                if(isset($data['selPeriodFrom'])){
+                    $PeriodFrom = $data['selPeriodFrom'];
                 }
                 else{
-                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                    $PeriodFrom = 0;
+                }
+                if(isset($data['selPeriodTo'])){
+                    $PeriodTo = $data['selPeriodTo'];
+                }
+                else{
+                    $PeriodTo = 0;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                }
+                else{
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
                 }
 
                 $total = 0;
@@ -1413,11 +1440,24 @@ class FinController extends Controller
                     $types[] = 2;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user);
+                if(isset($data['selPeriodFrom'])){
+                    $PeriodFrom = $data['selPeriodFrom'];
                 }
                 else{
-                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                    $PeriodFrom = 0;
+                }
+                if(isset($data['selPeriodTo'])){
+                    $PeriodTo = $data['selPeriodTo'];
+                }
+                else{
+                    $PeriodTo = 0;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                }
+                else{
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
                 }
 
                 $total = 0;
@@ -1485,11 +1525,24 @@ class FinController extends Controller
                     $types[] = 2;
                 }
 
-                if(count($types) == 0){
-                    $transactions = Register::getAllRegsByUser($id_user);
+                if(isset($data['selPeriodFrom'])){
+                    $PeriodFrom = $data['selPeriodFrom'];
                 }
                 else{
-                    $transactions = Register::getAllRegsByUser($id_user, 0, 0, $types);
+                    $PeriodFrom = 0;
+                }
+                if(isset($data['selPeriodTo'])){
+                    $PeriodTo = $data['selPeriodTo'];
+                }
+                else{
+                    $PeriodTo = 0;
+                }
+
+                if(count($types) == 0){
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo);
+                }
+                else{
+                    $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types);
                 }
 
                 $total = 0;
