@@ -1255,7 +1255,7 @@ $script = new \yii\web\JsExpression("
                 let divTextDate = document.createElement('div');
                 divTextDate.className = 'message-text-line'; 
                 
-                divTextDate.innerHTML = convertTimeStamp(data['date']);    
+                divTextDate.innerHTML = convertTimeStampVisible(data['date']);    
                                 
                 divWrapDate.append(divTextDate);
                 divMainDate.append(divWrapDate);
@@ -1389,6 +1389,16 @@ $script = new \yii\web\JsExpression("
             ('0' + condate.getDate()).slice(-2)                          // Get full year
           ].join('.');                                  // Glue the pieces together
     }
+    
+    function convertTimeStampVisible(timestamp) {
+          var condate = new Date(timestamp*1000);
+          
+          return [
+            ('0' + condate.getDate()).slice(-2),
+            ('0' + (condate.getMonth()+1)).slice(-2),              
+            condate.getFullYear()                        
+          ].join('.');                                  
+    }     
     
     function convertTimeStampWithTime(timestamp) {
           var condate = new Date(timestamp*1000);
@@ -1559,7 +1569,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
                         <div class="fin-reg-date table-text">
                             <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= date("Y.m.d", $reg['date']) ?></div>
+                                <div class="message-text-line"><?= date("d.m.Y", $reg['date']) ?></div>
                             </div>
                         </div>
                         <div class="fin-reg-acc table-text">
