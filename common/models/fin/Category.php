@@ -158,8 +158,17 @@ class Category extends ActiveRecord
     }
 
     public static function getAllCategoriesByUser($id_user, $isProfit = 0){
-        return self::find()->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_category' => 0, 'isProfit' => $isProfit])
-            ->orderBy('name')->all();
+        $body = self::find()->where(['id_user' => $id_user, 'is_deleted' => 0, 'id_category' => 0, 'isProfit' => $isProfit]);
+
+        if(gettype($isProfit) == 'integer'){
+            $body = $body->andWhere('isProfit = '.$isProfit);
+        }else{
+            $body = $body->andWhere('isProfit IN ('.implode(',',$isProfit).')');
+        }
+
+        $result = $body->orderBy('name')->all();
+
+        return $result;
     }
 
     public static function getAllSubsByUserAndCategory($id_user, $id_category){
@@ -176,5 +185,9 @@ class Category extends ActiveRecord
         };
 
         return false;
+    }
+
+    public static function getElemByName($name, $id_user){
+        return self::find()->where(['name' => $name, 'id_user' => $id_user, 'is_deleted' => 0])->one();
     }
 }

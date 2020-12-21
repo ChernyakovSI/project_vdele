@@ -862,8 +862,46 @@ class FinController extends Controller
                     }
                 }
             }
-
             $option['selAccId'] = $data['selAccId'];
+
+            if(($data['isExpense'] == 1) || ($data['isProfit'] == 1)){
+                if($data['selCatId'] == 0){
+                    if($data['selCatName'] == ''){
+                        $data['selCatId'] = 0;
+                    }
+                    else
+                    {
+                        $Elem = Category::getElemByName($data['selCatName'], $id_user);
+                        if(isset($Elem)){
+                            $data['selCatId'] = $Elem['id'];
+                        }
+                        else{
+                            $data['selCatId'] = 0;
+                        }
+                    }
+                }
+                $option['selCatId'] = $data['selCatId'];
+
+                if($data['selSubId'] == 0){
+                    if($data['selSubName'] == ''){
+                        $data['selSubId'] = 0;
+                    }
+                    else
+                    {
+                        $Elem = Category::getElemByName($data['selSubName'], $id_user);
+                        if(isset($Elem)){
+                            $data['selSubId'] = $Elem['id'];
+                        }
+                        else{
+                            $data['selSubId'] = 0;
+                        }
+                    }
+                }
+                $option['selSubId'] = $data['selSubId'];
+            }else{
+                $option['selCatId'] = 0;
+                $option['selSubId'] = 0;
+            }
 
             $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
@@ -880,13 +918,18 @@ class FinController extends Controller
                 }
             }
 
-
             $total = Account::formatNumberToMoney($total);
+
+            $cats = Category::getAllCategoriesByUser($id_user, $types);
+
+            $subs = Category::getAllSubsByUserAndCategory($id_user, $option['selCatId']);
 
             return [
                 'data' => $transactions,
                 'total' => $total,
                 'SumFormat' => $SumFormat,
+                'cats' => $cats,
+                'subs' => $subs,
             ];
 
         }
@@ -912,20 +955,6 @@ class FinController extends Controller
 
             $Accs = Account::getAllAccountsByUser($id_user);
 
-            /*$dataSet = [
-                'id_user' => $id_user,
-                'id_category' => 23,
-                'id_subcategory' => 24,
-                'date' => 1607599034938,
-                'sum' => 2500,
-                'comment' => '',
-                'id_type' => 0,
-                'id_account' => 94,
-            ];
-
-
-            $newReg = Register::add($dataSet);*/
-
 
             foreach ($Accs as $item) {
                 if ($item['id'] != 0) {
@@ -933,7 +962,11 @@ class FinController extends Controller
                 }
             }
 
-            $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
+            if($isExpense == 1 && $isProfit == 1){
+                $cats = Category::getAllCategoriesByUser($id_user, [0, 1]);
+            }else{
+                $cats = Category::getAllCategoriesByUser($id_user, $isProfit);
+            }
 
             /*if(count($cats) > 0){
                 $id_category = $cats[0]['id'];

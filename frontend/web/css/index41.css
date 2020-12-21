@@ -499,6 +499,16 @@
     margin-top: 10px;
 }
 
+.message-wrapper-line-half-70 {
+    width: 70%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
 .caption-line-half {
     width: 40%;
     padding: 8px; /* the container will keep the padding untouched */

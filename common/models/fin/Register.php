@@ -120,6 +120,14 @@ class Register extends ActiveRecord
 //               ]]);
         }
 
+        if(isset($option['selCatId']) && $option['selCatId'] > 0){
+            $body = $body->andWhere(' Reg.`id_category` = '.$option['selCatId']);
+        }
+
+        if(isset($option['selSubId']) && $option['selSubId'] > 0){
+            $body = $body->andWhere(' Reg.`id_subcategory` = '.$option['selSubId']);
+        }
+
         $result = $body->orderBy('Reg.`date` DESC')->all();
 
         return $result;

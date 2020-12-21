@@ -24,8 +24,14 @@ $script = new \yii\web\JsExpression("
         let valuePeriodFrom = document.getElementById('valuePeriodFrom');
         let valuePeriodTo = document.getElementById('valuePeriodTo');
         let selValueAcc = document.getElementById('selValueAcc');
+        let selValueCat = document.getElementById('selValueCat');
+        let selValueSub = document.getElementById('selValueSub');
         
         let selClearAcc = document.getElementById('selClearAcc');
+        let selClearCat = document.getElementById('selClearCat');
+        let selClearSub = document.getElementById('selClearSub');
+        
+        let wrapSelCats = document.getElementById('wrapSelCats');
         
         let nowServer = new Date();
         let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
@@ -54,6 +60,26 @@ $script = new \yii\web\JsExpression("
         
         selClearAcc.onclick = function(e) {
             selValueAcc.value = '';
+            
+            readTable();
+        };
+        
+        selValueCat.onchange = function(event) {
+            readTable();   
+        };
+        
+        selClearCat.onclick = function(e) {
+            selValueCat.value = '';
+            
+            readTable();
+        };
+        
+        selValueSub.onchange = function(event) {
+            readTable();   
+        };
+        
+        selClearSub.onclick = function(e) {
+            selValueSub.value = '';
             
             readTable();
         };
@@ -187,6 +213,7 @@ $script = new \yii\web\JsExpression("
             divExpense.className = 'btn-submenu btn-submenu-interactive';
         }
         
+        visiblePanels();
         readTable();
     };
     
@@ -203,6 +230,7 @@ $script = new \yii\web\JsExpression("
             divProfit.className = 'btn-submenu btn-submenu-interactive';
         }
         
+        visiblePanels();
         readTable();
     };
     
@@ -219,8 +247,20 @@ $script = new \yii\web\JsExpression("
             divReplacement.className = 'btn-submenu btn-submenu-interactive';
         }
         
+        visiblePanels();
         readTable();
     };
+    
+    function visiblePanels(){
+        if(isExpense == 1 || isProfit == 1){
+            wrapSelCats.hidden = false;
+        }
+        else
+        {
+            wrapSelCats.hidden = true;
+        }
+        
+    }
     
     function readTable(){
     
@@ -229,6 +269,8 @@ $script = new \yii\web\JsExpression("
         curDateTo.setHours(23,59,59,999);
         
         let curSelAccName = selValueAcc.value;
+        let curSelValueCat = selValueCat.value;
+        let curSelValueSub = selValueSub.value;
         
         value = {
             'isExpense' : isExpense,
@@ -237,7 +279,11 @@ $script = new \yii\web\JsExpression("
             'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
             'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),
             'selAccId' : 0,
-            'selAccName' : curSelAccName,   
+            'selAccName' : curSelAccName,
+            'selCatId' : 0,
+            'selCatName' : curSelValueCat,
+            'selSubId' : 0,
+            'selSubName' : curSelValueSub,   
         };
         
         floatingCirclesGMain.hidden = false;
@@ -1229,7 +1275,33 @@ $script = new \yii\web\JsExpression("
         let listReg = document.getElementById('list-register'); 
         listReg.innerHTML = '';
         
+        let listCatsSel = document.getElementById('list_cats_sel'); 
+        listCatsSel.innerHTML = '';
+        
+        let listSubsSel = document.getElementById('list_subs_sel'); 
+        listSubsSel.innerHTML = '';
+        
         let SumFormat = dataSet.SumFormat;
+        
+        if(dataSet.cats.length > 0){
+            dataSet.cats.forEach(function(data, i, arrData){ 
+                let divOpt = document.createElement('option');
+                divOpt.setAttribute('data-id', data['id']); 
+                divOpt.innerHTML = data['name'];          
+                                    
+                listCatsSel.append(divOpt);  
+            });
+        }
+        
+        if(dataSet.subs.length > 0){
+            dataSet.subs.forEach(function(data, i, arrData){ 
+                let divOpt = document.createElement('option');
+                divOpt.setAttribute('data-id', data['id']); 
+                divOpt.innerHTML = data['name'];          
+                                    
+                listSubsSel.append(divOpt);  
+            });
+        }
         
         if(dataSet.data.length > 0){
             dataSet.data.forEach(function(data, i, arrData){ 
@@ -1472,8 +1544,8 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                 </div>
             </div>
             <div class="half_third">
-                <div class="caption-line-half-21">Счет:</div><div class="message-wrapper-line-half window-border">
-                    <input type="text" class="message-text-line" list="list_accounts_sel" id="selValueAcc" contentEditable />
+                <div class="message-wrapper-line-half-70 window-border">
+                    <input type="text" class="message-text-line" list="list_accounts_sel" id="selValueAcc" contentEditable placeholder="Счет"/>
                     <datalist id="list_accounts_sel">
                         <?php foreach ($accs as $account): ?>
                             <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
@@ -1481,6 +1553,26 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
                     </datalist>
                 </div>
                 <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
+            </div>
+            <div class="half_third" id="wrapSelCats">
+                <div class="message-wrapper-line-half-70 window-border">
+                    <input type="text" class="message-text-line" list="list_cats_sel" id="selValueCat" contentEditable placeholder="Категория"/>
+                    <datalist id="list_cats_sel">
+                        <?php foreach ($cats as $cat): ?>
+                            <option data-id=<?= $cat['id'] ?>><?= $cat['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="selClearCat">х</div>
+                <div class="message-wrapper-line-half-70 window-border">
+                    <input type="text" class="message-text-line" list="list_subs_sel" id="selValueSub" contentEditable placeholder="Подкатегория"/>
+                    <datalist id="list_subs_sel">
+                        <?php foreach ($subs as $sub): ?>
+                            <option data-id=<?= $sub['id'] ?>><?= $sub['name'] ?></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                </div>
+                <div class="window-button-in-panel window-border gap-v-13" id="selClearSub">х</div>
             </div>
             <div class="clearfix"></div>
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
