@@ -88,36 +88,37 @@ $this->registerLinkTag([
             </div>
         </section>
         <section id="content-tab3" class="window window-border-bottom">
-            <?php
-            echo $form->field($cur_user, 'imageFile')->fileInput(['onchange' => 'loadFile(event)', 'id' => 'imageFileInput'])->label('Фото профиля:');
-            echo Html::tag('div', 'Рекомедуется загружать картинку с соотношением ширины к высоте, как 3:4'); ?>
-            <div class="content">
-                <div class="container-wrap3">
-                    <div class="window window-border avatar">
-                        <?php if((isset($path_avatar)) && ($path_avatar != '')) { ?>
-                            <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font" id="output">
-                        <?php }
-                        else {
-                            if((isset($cur_user->gender)) && ($cur_user->gender === 2)) { ?>
-                                <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font" id="output">
+            <div class="container-wrap-acEdit-withoutGrid">
+                <?php
+                echo $form->field($cur_user, 'imageFile')->fileInput(['onchange' => 'loadFile(event)', 'id' => 'imageFileInput'])->label('Фото профиля:');
+                echo Html::tag('div', 'Рекомедуется загружать картинку с соотношением ширины к высоте, как 3:4'); ?>
+                <div class="content">
+                    <div class="container-wrap3">
+                        <div class="window window-border avatar">
+                            <?php if((isset($path_avatar)) && ($path_avatar != '')) { ?>
+                                <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font" id="output">
                             <?php }
-                            else { ?>
-                                <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font" id="output">
-                            <?php }
-                        } ?>
-                    </div>
-                    <div class="window window-border main-info columnUnvis">
-                        <input type="text" value="<?= ((isset($cur_user->gender)) && ($cur_user->gender === 2)) ? '2' : '1';  ?>" id = "jsGender" hidden>
-                        <?php
+                            else {
+                                if((isset($cur_user->gender)) && ($cur_user->gender === 2)) { ?>
+                                    <img src=<?= '/data/img/avatar/avatar_default_w.jpg'; ?> class="avatar_font" id="output">
+                                <?php }
+                                else { ?>
+                                    <img src=<?= '/data/img/avatar/avatar_default.jpg'; ?> class="avatar_font" id="output">
+                                <?php }
+                            } ?>
+                        </div>
+                        <div class="window window-border main-info columnUnvis">
+                            <input type="text" value="<?= ((isset($cur_user->gender)) && ($cur_user->gender === 2)) ? '2' : '1';  ?>" id = "jsGender" hidden>
+                            <?php
                             echo $form->field($cur_user, 'pathImageFile')->Input('pathImageFile', ['id' => "jsPath"]);
-                        ?>
+                            ?>
+                        </div>
+
                     </div>
-
                 </div>
+                </br>
+                <?= Html::Button('Удалить', ['class' => 'btn btn-primary', 'onclick' => 'DeleteAvatar()']) ?>
             </div>
-            </br>
-            <?= Html::Button('Удалить', ['class' => 'btn btn-primary', 'onclick' => 'DeleteAvatar()']) ?>
-
         </section>
         <section id="content-tab4" class="window window-border-bottom">
             <div class="container-wrap-acEdit">
@@ -177,13 +178,17 @@ $this->registerLinkTag([
                 </div>
             </div>
         </section>
+
         <section id="content-tab5" class="window window-border-bottom">
-            <?php
-            echo $form->field($cur_user, 'about', [
-                'template' => '{label}{input}{hint}{error}'
-            ])->textarea(['rows' => 15, 'cols' => 25, 'class' => 'resize_vertical_only'])->label('Дополнительная информация:');
-            ?>
+            <div class="container-wrap-acEdit-withoutGrid">
+                <?php
+                echo $form->field($cur_user, 'about', [
+                    'template' => '{label}{input}{hint}{error}'
+                ])->textarea(['rows' => 15, 'cols' => 25, 'class' => 'resize_vertical_only'])->label('Дополнительная информация:');
+                ?>
+            </div>
         </section>
+
     </div>
 
     <div class="window window-border window-panel-right">

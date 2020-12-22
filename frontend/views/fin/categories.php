@@ -662,7 +662,7 @@ $this->title = 'Финансы: Категории расходов и дохо�
 
 <div class="content">
     <div class="url-container-wrap">
-        <div class="url-window-right window-border url-sidebar-left">
+        <div class="window url-window-right window-border url-sidebar-left">
             <div class="url-categoryList-header window-subcaption">
                 Категории
             </div>

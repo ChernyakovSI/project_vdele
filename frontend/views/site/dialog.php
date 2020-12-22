@@ -381,7 +381,7 @@
 
 <div class="content">
     <div class="dialog-container-wrap">
-        <div class="window-right window-border dialog-sidebar-left">
+        <div class="window window-right window-border dialog-sidebar-left">
             <div class="dialog-dialogsList-header window-subcaption">
                 Диалоги
             </div>
@@ -427,7 +427,7 @@
             <?= ($dialog_id == 0?'Выберите диалог слева...':'Диалог c '.$dialog_name) ?>
         </div>
         </a>
-        <div class="window-border dialog-main window-gray dialog-scroll" id="messager">
+        <div class="window window-border dialog-main window-gray dialog-scroll" id="messager">
             <div class="dialog-center dialog-button" id="loadMessages_Wrap"><a href="#" id="loadMessages" onclick = "loadMessages()" >Показать еще</a></div>
             <?php \yii\widgets\Pjax::begin([
                 'timeout' => 3000,

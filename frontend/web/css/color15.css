@@ -257,4 +257,37 @@ a:hover {
     cursor: pointer;
 }
 
+.hide + label {
+    color: #63271d;
+}
 
+.hide:checked + label {
+    color: #7e7e7e;
+    border-bottom: 0;
+}
+
+.hide + label:before {
+    background-color: #63271d;
+    color: #fff;
+    content: "\002B";
+    display: block;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 16px;
+    margin: 3px 5px;
+    text-align: center;
+    width: 16px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.window {
+    background-color: #efefef;/*rgba(84, 66, 58, 0.1);*/
+
+    -moz-box-shadow: 3px 3px 10px #7d8e8f;
+    -webkit-box-shadow: 3px 3px 10px #7d8e8f;
+    box-shadow: 3px 3px 10px #7d8e8f;
+}

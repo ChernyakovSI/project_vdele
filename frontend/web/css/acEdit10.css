@@ -124,6 +124,12 @@
     grid-gap: 10px;
     grid-template-columns: repeat(2, 1fr); /*repeat(12, 1fr);*/ /*repeat(2, 1fr);*/
     grid-template-rows: auto;
+    padding: 25px 0px;
+}
+
+.container-wrap-acEdit-withoutGrid {
+    height: 100%;
+    padding: 25px 25px;
 }
 
 .column1 {

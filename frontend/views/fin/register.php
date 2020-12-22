@@ -1535,76 +1535,87 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <?php } ?>
         </div>
         <div class="window window-border gap-v" id="main-window">
-            <div class="half_third">
-                <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">
-                    <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
-                </div>
-                <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">
-                    <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
+
+
+            <div class="Rollup">
+                <input class="hide" id="hd-1" type="checkbox">
+                <label for="hd-1">Настройки списка</label>
+                <div>
+                    <div class="half_third">
+                        <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">
+                            <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
+                        </div>
+                        <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">
+                            <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
+                        </div>
+                    </div>
+                    <div class="half_third">
+                        <div class="message-wrapper-line-half-70 window-border">
+                            <input type="text" class="message-text-line" list="list_accounts_sel" id="selValueAcc" contentEditable placeholder="Счет"/>
+                            <datalist id="list_accounts_sel">
+                                <?php foreach ($accs as $account): ?>
+                                    <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
+                    </div>
+                    <div class="half_third" id="wrapSelCats">
+                        <div class="message-wrapper-line-half-70 window-border">
+                            <input type="text" class="message-text-line" list="list_cats_sel" id="selValueCat" contentEditable placeholder="Категория"/>
+                            <datalist id="list_cats_sel">
+                                <?php foreach ($cats as $cat): ?>
+                                    <option data-id=<?= $cat['id'] ?>><?= $cat['name'] ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="selClearCat">х</div>
+                        <div class="message-wrapper-line-half-70 window-border">
+                            <input type="text" class="message-text-line" list="list_subs_sel" id="selValueSub" contentEditable placeholder="Подкатегория"/>
+                            <datalist id="list_subs_sel">
+                                <?php foreach ($subs as $sub): ?>
+                                    <option data-id=<?= $sub['id'] ?>><?= $sub['name'] ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="selClearSub">х</div>
+                    </div>
                 </div>
             </div>
-            <div class="half_third">
-                <div class="message-wrapper-line-half-70 window-border">
-                    <input type="text" class="message-text-line" list="list_accounts_sel" id="selValueAcc" contentEditable placeholder="Счет"/>
-                    <datalist id="list_accounts_sel">
-                        <?php foreach ($accs as $account): ?>
-                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
-            </div>
-            <div class="half_third" id="wrapSelCats">
-                <div class="message-wrapper-line-half-70 window-border">
-                    <input type="text" class="message-text-line" list="list_cats_sel" id="selValueCat" contentEditable placeholder="Категория"/>
-                    <datalist id="list_cats_sel">
-                        <?php foreach ($cats as $cat): ?>
-                            <option data-id=<?= $cat['id'] ?>><?= $cat['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="selClearCat">х</div>
-                <div class="message-wrapper-line-half-70 window-border">
-                    <input type="text" class="message-text-line" list="list_subs_sel" id="selValueSub" contentEditable placeholder="Подкатегория"/>
-                    <datalist id="list_subs_sel">
-                        <?php foreach ($subs as $sub): ?>
-                            <option data-id=<?= $sub['id'] ?>><?= $sub['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="selClearSub">х</div>
-            </div>
+
             <div class="clearfix"></div>
             <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
             <div class="clearfix gap-v"><hr class="line"></div>
-            <div class="fin-reg-date table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Дата' ?></div>
+            <div class="interactive-only">
+                <div class="fin-reg-date table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Дата' ?></div>
+                    </div>
                 </div>
-            </div>
-            <div class="fin-reg-acc table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Счет' ?></div>
+                <div class="fin-reg-acc table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Счет' ?></div>
+                    </div>
                 </div>
-            </div>
-            <div class="fin-reg-cat table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Категория' ?></div>
+                <div class="fin-reg-cat table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Категория' ?></div>
+                    </div>
                 </div>
-            </div>
-            <div class="fin-reg-sub table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Подкатегория' ?></div>
+                <div class="fin-reg-sub table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Подкатегория' ?></div>
+                    </div>
                 </div>
-            </div>
-            <div class="fin-reg-amount table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
+                <div class="fin-reg-amount table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
+                    </div>
                 </div>
-            </div>
-            <div class="fin-reg-com table-text">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line table-caption"><?= 'Примечание' ?></div>
+                <div class="fin-reg-com table-text">
+                    <div class="message-wrapper-title">
+                        <div class="message-text-line table-caption"><?= 'Примечание' ?></div>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>

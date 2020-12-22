@@ -55,7 +55,6 @@
 
 .window {
     padding: 5px;
-    background-color: rgba(84, 66, 58, 0.1);
 }
 
 .window-button-panel {
@@ -532,6 +531,7 @@
 .caption-text-new{
     width: 90%;
     float: left;
+    margin-top: -4px;
 
     text-align: center;
     font-weight: bold;
