@@ -582,6 +582,7 @@ $script = new \yii\web\JsExpression("
                         data : {id : id}
                     }).done(function(data) {
                             if (data.error == null) {
+                            
                                 rerenderListCats(data.categories);
                                 rerenderListSubs(data.subs);
                                 fullData(data);     
@@ -592,7 +593,6 @@ $script = new \yii\web\JsExpression("
                             floatingCirclesG.hidden = true;
                     }).fail(function() {
                         // Если произошла ошибка при отправке запроса
-                        console.log(data.error);
                         floatingCirclesG.hidden = true;
                     });    
         }

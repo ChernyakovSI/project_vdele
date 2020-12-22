@@ -1271,7 +1271,7 @@ class FinController extends Controller
             $dataSet = [
                 'id' => $Reg['id'],
                 'date' => $Reg['date'],
-                'type' => $Reg['id_type'],
+                'type' =>  (integer)$Reg['id_type'],
                 'AccId' => $Reg['id_account'],
                 'AccName' => $Reg['AccName'],
                 'CatId' => $Reg['id_category'],
