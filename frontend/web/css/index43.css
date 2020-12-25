@@ -598,7 +598,7 @@
 }
 
 .fin-acc-row .table-text:hover {
-    background-color: rgba(84, 66, 58, 0.06);
+    background-color: rgba(0, 0, 0, 0.01);
 }
 
 .right-text {
@@ -628,24 +628,45 @@
     text-align: center;
 }
 
+
+
 #prompt-form {
     display: inline-block;
     vertical-align: middle;
-    margin-top: 10%;
-    background-color: #E9E9E9;  /* #17191a;*/
+    /*margin-top: 10%;*/
+    background-color: #E9E9E9; /* #17191a;*/
     border: solid 2px #67544f;
     width: 1000px;
+
+    transform: translateY(-500px);
+    transition: transform 4s ease-in;
+}
+
+#prompt-form.form-on{
+    transform: translateY(100px);
+}
+
+#prompt-form.form-off {
+
 }
 
 #cover-div {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9000;
-    width: 100%;
-    height: 100%;
-    background-color: #C9C9C9;
-    opacity: 0.3;
+       position: fixed;
+       top: 0;
+       left: 0;
+       z-index: 9000;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.4);
+       transition: background 1s ease-in;
+   }
+
+#cover-div.form-on {
+
+}
+
+#cover-div.form-off {
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .redBorder  {

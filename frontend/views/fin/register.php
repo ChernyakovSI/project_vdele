@@ -331,7 +331,7 @@ $script = new \yii\web\JsExpression("
                         data : value
                     }).done(function(data) {
                             if (data.error == null) {
-                                //console.dir(data);
+                                console.dir(data);
                                 deleteForm();
                                 rerender(data);                       
                             } else {
@@ -417,11 +417,20 @@ $script = new \yii\web\JsExpression("
         document.body.style.overflowY = 'hidden';
 
         document.body.append(coverDiv);
+        //coverDiv.classList.add('form-off');
+        
+        //coverDiv.classList.add('form-on');
+        //coverDiv.classList.remove('form-off');
     }
     
     function hideCover() {
-        document.getElementById('cover-div').remove();
-        document.body.style.overflowY = '';
+        let coverDiv = document.getElementById('cover-div')
+        
+        //coverDiv.classList.remove('form-on');
+        //coverDiv.classList.add('form-off');
+    
+        coverDiv.remove();
+        document.body.style.overflowY = '';   
     }
 
     function deleteForm(){
@@ -435,6 +444,10 @@ $script = new \yii\web\JsExpression("
     function showFormNew(id, type, callback) {
         showCover();
         let form = document.getElementById('prompt-form');
+             
+        form.classList.remove('form-off');
+        form.classList.add('form-on');
+        
         let container = document.getElementById('prompt-form-container');
         let btnClose = document.getElementById('btnClose');
         let valueDate = document.getElementById('valueDate');
@@ -1283,7 +1296,7 @@ $script = new \yii\web\JsExpression("
         
         let SumFormat = dataSet.SumFormat;
         
-        if(dataSet.cats.length > 0){
+        if(dataSet.cats != null && dataSet.cats.length > 0){
             dataSet.cats.forEach(function(data, i, arrData){ 
                 let divOpt = document.createElement('option');
                 divOpt.setAttribute('data-id', data['id']); 
@@ -1293,7 +1306,7 @@ $script = new \yii\web\JsExpression("
             });
         }
         
-        if(dataSet.subs.length > 0){
+        if(dataSet.subs != null && dataSet.subs.length > 0){
             dataSet.subs.forEach(function(data, i, arrData){ 
                 let divOpt = document.createElement('option');
                 divOpt.setAttribute('data-id', data['id']); 
@@ -1721,7 +1734,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
     </div>
 
     <div id="prompt-form-container">
-        <div id="prompt-form" class="window window-border">
+        <div id="prompt-form" class="window window-border form-off">
             <div class="caption-wrap">
                 <div class="caption-begin">
                     <div id="floatingCirclesG">

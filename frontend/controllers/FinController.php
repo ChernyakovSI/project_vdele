@@ -1208,6 +1208,16 @@ class FinController extends Controller
 
                 $option['selAccId'] = $data['selAccId'];
 
+//                $periodFrom = strtotime(date('Y-m-01 00:00:00'));
+//                $periodTo = strtotime(date('Y-m-t 23:59:59'));
+
+//                return [
+//                    'data' => $PeriodFrom,
+//                    'total' => $total,
+//                    'SumFormat' => $SumFormat,
+//                ];
+
+
                 $transactions = Register::getAllRegsByUser($id_user, $PeriodFrom, $PeriodTo, $types, $option);
 
                 $total = 0;
