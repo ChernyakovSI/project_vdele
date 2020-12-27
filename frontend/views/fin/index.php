@@ -209,6 +209,10 @@ $script = new \yii\web\JsExpression("
         gID = id;
         showCover();
         let form = document.getElementById('prompt-form');
+        
+        form.classList.remove('form-off');
+        form.classList.add('form-on');
+        
         let container = document.getElementById('prompt-form-container');
         let btnClose = document.getElementById('btnClose');
         let valueAcc = document.getElementById('valueAcc');

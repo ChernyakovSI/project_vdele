@@ -290,6 +290,10 @@ $this->title = 'Финансы: Категории расходов и дохо�
     function showFormNew(id, id_category, callback) {
         showCover();
         let form = document.getElementById('prompt-form');
+        
+        form.classList.remove('form-off');
+        form.classList.add('form-on');
+        
         let container = document.getElementById('prompt-form-container');
         let btnClose = document.getElementById('btnClose');
         let valueName = document.getElementById('valueName'); 
