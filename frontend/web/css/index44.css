@@ -415,17 +415,21 @@
     clear: both;
 }
 .message-text-line {
-    min-height: 22px; /* prevent height collapsing when there is no text */
-    max-height: 97px;
-    width: 100%;
-    /*align-content: center;*/
-    outline: none;
-    overflow: hidden;
+     min-height: 22px; /* prevent height collapsing when there is no text */
+     max-height: 97px;
+     width: 100%;
+     /*align-content: center;*/
+     outline: none;
+     overflow: hidden;
 
-    text-align: left;
+     text-align: left;
 
-    border: 0px;
-    background-color: rgba(1,1,1,0);
+     border: 0px;
+     background-color: rgba(1,1,1,0);
+ }
+
+.message-text-line-num {
+    text-align: right;
 }
 
 .message-text-line-half {
@@ -639,8 +643,9 @@
     width: 1000px;
 
     transform: translateY(-500px);
-    transition: transform 4s ease-in;
+    transition: transform 0.2s ease-in;
 }
+
 
 #prompt-form.form-on{
     transform: translateY(100px);

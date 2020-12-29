@@ -13,7 +13,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site19.css',
-        'css/index43.css',
+        'css/index44.css',
         'css/color15.css',
         'css/acEdit10.css',
         'css/users5.css',
@@ -24,15 +24,26 @@ class AppAsset extends AssetBundle
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles.css'
     ];
-    public $js = [
-        //'//htmlweb.ru/geo/api.js',
-        'js/apiGeo.js',
-        //'js/geo/api.js',
-        //'js/githubusercontent.js',
-        //'js/messages.js',
-    ];
+    public $js = [];
+//    [
+//        //'//htmlweb.ru/geo/api.js',
+//        'js/apiGeo.js',
+//        //'js/geo/api.js',
+//        //'js/githubusercontent.js',
+//        //'js/messages.js',
+//    ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public function init()
+    {
+        if (\yii::$app->request->url == '/site/ac-edit') {
+            $this->js[] = 'js/apiGeo.js';
+        }
+        if (\yii::$app->request->url == '/fin/register') {
+            $this->js[] = 'js/fin/register_pos_ready.js';
+        }
+    }
 }
