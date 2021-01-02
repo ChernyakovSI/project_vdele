@@ -69,7 +69,6 @@ let thisData = {
     'selAccName' : '',
 };
 
-
 $(document).ready( function() {
     let strDate = convertTimeStamp(divParamPeriodFrom.innerHTML);
     let curDate = new Date(strDate);
@@ -564,7 +563,22 @@ function showFormNew(id, type, callback) {
 
         thisData['id'] = id;
 
-        runAjax('/fin/reg-get', {id : id}, 2, 1)
+        runAjaxForm('/fin/reg-get', {id : id}, 2, 1)
+    }
+
+    function initBtnConfirm() {
+        curDateFrom = new Date(valuePeriodFrom.value);
+        curDateTo = new Date(valuePeriodTo.value);
+        curDateTo.setHours(23,59,59,999);
+
+        let curSelAccName = selValueAcc.value;
+
+        thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
+        thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
+        thisData['selAccId'] = 0;
+        thisData['selAccName'] = curSelAccName;
+
+        complete(thisData);
     }
 
     function complete(value) {
@@ -577,6 +591,48 @@ function showFormNew(id, type, callback) {
             deleteForm();
         }
     };
+
+    function runAjaxForm(url, value, mode = 2, loader = 0, typeReq = 'post'){
+        if(loader === 0){
+            floatingCirclesGMain.hidden = false;
+        }
+        else{
+            floatingCirclesG.hidden = true;
+        }
+
+        $.ajax({
+            type : typeReq,
+            url : url,
+            data : value
+        }).done(function(data) {
+            if (data.error === null || data.error === undefined) {
+                if(mode === 2){
+                    rerenderListCats(data.categories);
+                    rerenderListSubs(data.subs);
+                    fullData(data);
+                }
+
+            } else {
+                if (data.error !== '' || data.error !== null || data.error !== undefined){
+                    if(mode === 2){
+                        showError(data);
+                    }
+                }
+            }
+
+            if(loader === 0) {
+                floatingCirclesGMain.hidden = true;
+            }else{
+                floatingCirclesG.hidden = true;
+            }
+        }).fail(function() {
+            if(loader === 0) {
+                floatingCirclesGMain.hidden = true;
+            }else{
+                floatingCirclesG.hidden = true;
+            }
+        });
+    }
 
 
     valueAmo.onchange = function(event) {
@@ -608,21 +664,6 @@ function showFormNew(id, type, callback) {
     function closeFrom() {
         complete(null);
         deleteForm();
-    }
-
-    function initBtnConfirm() {
-        curDateFrom = new Date(valuePeriodFrom.value);
-        curDateTo = new Date(valuePeriodTo.value);
-        curDateTo.setHours(23,59,59,999);
-
-        let curSelAccName = selValueAcc.value;
-
-        thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
-        thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
-        thisData['selAccId'] = 0;
-        thisData['selAccName'] = curSelAccName;
-
-        complete(thisData);
     }
 
     valueAcc.onchange = function(event) {
@@ -940,95 +981,96 @@ function showFormNew(id, type, callback) {
         thisData['Com'] = this.innerHTML;
     };
 
+    function fullData(data) {
+
+        let strDate = convertTimeStampWithTime(data.data.date);
+        let curDate = new Date(strDate);
+        curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+        valueDate.value = curDate.toISOString().substring(0, 16);
+        thisData['date'] = data.data.date;
+
+        valueAcc.value = data.data.AccName;
+        thisData['AccId'] = data.data.AccId;
+        thisData['AccName'] = data.data.AccName;
+
+        if (data.data.type !== '2') {
+            if (data.data.type === 0) {
+                fromCaption.innerHTML = 'Редактирование расхода';
+                valIsExpense.checked = true;
+                thisData['type'] = 0;
+            }
+            else {
+                fromCaption.innerHTML = 'Редактирование дохода';
+                valIsProfit.checked = true;
+                thisData['type'] = 1;
+            }
+
+            valueCat.value = data.data.CatName;
+            thisData['CatId'] = data.data.CatId;
+            thisData['CatName'] = data.data.CatName;
+
+            valueSub.value = data.data.SubName;
+            thisData['SubId'] = data.data.SubId;
+            thisData['SubName'] = data.data.SubName;
+
+            fieldAccTo.hidden = true;
+            fieldCat.hidden = false;
+            fieldSub.hidden = false;
+
+            fieldAcc.innerHTML = 'Счет';
+        }
+        else
+        {
+            fromCaption.innerHTML = 'Редактирование перемещения';
+            valIsReplacement.checked = true;
+            thisData['type'] = 2;
+
+            fieldAccTo.hidden = false;
+            fieldCat.hidden = true;
+            fieldSub.hidden = true;
+
+            fieldAcc.innerHTML = 'Со счета';
+
+            valueAccTo.value = data.data.AccToName;
+            thisData['AccToId'] = data.data.AccToId;
+            thisData['AccToName'] = data.data.AccToName;
+        };
+
+        valueAmo.value = data.data.Amount;
+        thisData['Amount'] = data.data.Amount;
+
+        valueCom.innerHTML = data.data.Com;
+        thisData['Com'] = data.data.Com;
+
+        buttonAdd.onclick = function(e) {
+            initBtnConfirm();
+        };
+
+        buttonDel.onclick = function(e) {
+            let ans = confirm('Удалить движение?');
+
+            if(ans === true) {
+                curDateFrom = new Date(valuePeriodFrom.value);
+                curDateTo = new Date(valuePeriodTo.value);
+                curDateTo.setHours(23,59,59,999);
+
+                let curSelAccName = selValueAcc.value;
+
+                thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
+                thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
+                thisData['selAccId'] = 0;
+                thisData['selAccName'] = curSelAccName;
+
+                deleteReg(thisData);
+            }
+
+            return 1;
+        };
+    }
+
     //container.style.display = 'block';
 }
 
-function fullData(data) {
-
-    let strDate = convertTimeStampWithTime(data.data.date);
-    let curDate = new Date(strDate);
-    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-    valueDate.value = curDate.toISOString().substring(0, 16);
-    thisData['date'] = data.data.date;
-
-    valueAcc.value = data.data.AccName;
-    thisData['AccId'] = data.data.AccId;
-    thisData['AccName'] = data.data.AccName;
-
-    if (data.data.type !== '2') {
-        if (data.data.type === 0) {
-            fromCaption.innerHTML = 'Редактирование расхода';
-            valIsExpense.checked = true;
-            thisData['type'] = 0;
-        }
-        else {
-            fromCaption.innerHTML = 'Редактирование дохода';
-            valIsProfit.checked = true;
-            thisData['type'] = 1;
-        }
-
-        valueCat.value = data.data.CatName;
-        thisData['CatId'] = data.data.CatId;
-        thisData['CatName'] = data.data.CatName;
-
-        valueSub.value = data.data.SubName;
-        thisData['SubId'] = data.data.SubId;
-        thisData['SubName'] = data.data.SubName;
-
-        fieldAccTo.hidden = true;
-        fieldCat.hidden = false;
-        fieldSub.hidden = false;
-
-        fieldAcc.innerHTML = 'Счет';
-    }
-    else
-    {
-        fromCaption.innerHTML = 'Редактирование перемещения';
-        valIsReplacement.checked = true;
-        thisData['type'] = 2;
-
-        fieldAccTo.hidden = false;
-        fieldCat.hidden = true;
-        fieldSub.hidden = true;
-
-        fieldAcc.innerHTML = 'Со счета';
-
-        valueAccTo.value = data.data.AccToName;
-        thisData['AccToId'] = data.data.AccToId;
-        thisData['AccToName'] = data.data.AccToName;
-    };
-
-    valueAmo.value = data.data.Amount;
-    thisData['Amount'] = data.data.Amount;
-
-    valueCom.innerHTML = data.data.Com;
-    thisData['Com'] = data.data.Com;
-
-    buttonAdd.onclick = function(e) {
-        initBtnConfirm();
-    };
-
-    buttonDel.onclick = function(e) {
-        let ans = confirm('Удалить движение?');
-
-        if(ans === true) {
-            curDateFrom = new Date(valuePeriodFrom.value);
-            curDateTo = new Date(valuePeriodTo.value);
-            curDateTo.setHours(23,59,59,999);
-
-            let curSelAccName = selValueAcc.value;
-
-            thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
-            thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
-            thisData['selAccId'] = 0;
-            thisData['selAccName'] = curSelAccName;
-
-            deleteReg(thisData);
-        }
-
-        return 1;
-    };
-}
 
 function rerenderListSubs(dataSet) {
     let listSubs = document.getElementById('list_subcategories');
