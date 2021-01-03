@@ -55,6 +55,10 @@
     margin-top: 13px;
 }
 
+.gap-v-60{
+    margin-top: 60px;
+}
+
 .url-window-right-hidden {
     width: 0px;
 }

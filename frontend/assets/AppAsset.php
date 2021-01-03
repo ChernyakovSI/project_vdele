@@ -12,13 +12,13 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site19.css',
-        'css/index44.css',
-        'css/color15.css',
+        'css/site20.css',
+        'css/index45.css',
+        'css/color16.css',
         'css/acEdit10.css',
         'css/users5.css',
         'css/url2.css',
-        'css/fin7.css',
+        'css/fin8.css',
         'css/useful1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',

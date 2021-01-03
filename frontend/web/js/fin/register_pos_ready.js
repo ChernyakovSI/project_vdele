@@ -1142,7 +1142,7 @@ function rerender(dataSet) {
             } else if(data['id_type'] === '1') {
                 divRow.className = 'fin-acc-row profit-back interactive-only';
             } else {
-                divRow.className = 'fin-acc-row white-back interactive-only';
+                divRow.className = 'fin-acc-row movement-back interactive-only';
             }
             divRow.setAttribute('id', data['id']);
             divRow.addEventListener('dblclick', function() {

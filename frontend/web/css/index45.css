@@ -601,10 +601,6 @@
     border-left: 1px solid #AAA;
 }
 
-.fin-acc-row .table-text:hover {
-    background-color: rgba(0, 0, 0, 0.01);
-}
-
 .right-text {
     text-align: right;
 }

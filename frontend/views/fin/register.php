@@ -109,8 +109,12 @@
             </div>
 
             <div class="clearfix"></div>
-            <div class="window-button window-border" id="new-reg" onclick="addReg()">Добавить</div>
-            <div class="clearfix gap-v"><hr class="line"></div>
+            <div class="window-button-panel">
+                <div class="window-button-in-panel window-border" id="new-reg" onclick="addReg()">Добавить</div>
+<!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
+            </div>
+
+            <div class="clearfix gap-v-60"><hr class="line"></div>
             <div class="interactive-only">
                 <div class="fin-reg-date table-text">
                     <div class="message-wrapper-title">
@@ -192,7 +196,7 @@
                      <?php }?>
 
                      <?php if ($reg['id_type'] == 2){ ?>
-                     <div class="fin-acc-row white-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                     <div class="fin-acc-row movement-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
                      <?php }?>
 
                         <div class="fin-reg-date table-text">

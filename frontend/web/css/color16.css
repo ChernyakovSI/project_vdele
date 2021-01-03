@@ -168,12 +168,36 @@ a:hover {
      background-color: #eeeeee;
  }
 
+.white-back:hover {
+    background-color: rgba(153, 153, 153, 0.3);;
+}
+
 .expense-back {
     background-color: rgba(153, 0, 0, 0.1);;
 }
 
+.movement-back {
+    background-color: rgba(0, 0, 153, 0.1);;
+}
+
+.movement-back:hover {
+    background-color: rgba(0, 0, 153, 0.2);;
+}
+
+.expense-back {
+    background-color: rgba(153, 0, 0, 0.1);;
+}
+
+.expense-back:hover {
+    background: rgba(153, 0, 0, 0.2);
+}
+
 .profit-back {
     background-color: rgba(0, 153, 0, 0.1);;
+}
+
+.profit-back:hover {
+    background: rgba(0, 153, 0, 0.2);
 }
 
 .active-back {
@@ -184,9 +208,9 @@ a:hover {
     background-color: rgba(200, 100, 200, 0.09);
 }
 
-.fin-acc-row:hover {
+/*.fin-acc-row:hover {
     background-color: rgba(84, 66, 58, 0.06);
-}
+}*/
 
 .btn-submenu {
     color: #848484;
