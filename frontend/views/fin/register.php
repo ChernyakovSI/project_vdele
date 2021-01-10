@@ -374,3 +374,14 @@
 
     </div>
 </div>
+
+
+        <nav class="context-menu" id="context-menu">
+            <div class="context-menu__items">
+                <div class="context-menu__item">
+                    <div class="context-menu__link" data-action="Copy">
+                        Скопировать
+                    </div>
+                </div>
+            </div>
+        </nav>

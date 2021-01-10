@@ -315,3 +315,12 @@ a:hover {
     -webkit-box-shadow: 3px 3px 10px #7d8e8f;
     box-shadow: 3px 3px 10px #7d8e8f;
 }
+
+.context-menu__items {
+    background: linear-gradient(to bottom, #f8f8fa 0%,#c8c8c7 100%);
+}
+
+.context-menu__item:hover {
+    background: linear-gradient(to bottom, #54423a 0%,#63271d 100%);
+    color: #fff;
+}

@@ -81,6 +81,245 @@ $(document).ready( function() {
     valuePeriodTo.value = curDate.toISOString().substring(0, 10);
 
     resize();
+
+    //Context Menu
+
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    //
+    // H E L P E R    F U N C T I O N S
+    // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+    function clickInsideElement( e, className ) {
+        let el = e.srcElement || e.target;
+
+        if ( el.classList.contains(className) ) {
+            return el;
+        } else {
+            while ( el = el.parentNode ) {
+                if ( el.classList && el.classList.contains(className) ) {
+                    return el;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    function getPosition(e) {
+        let posx = 0;
+        let posy = 0;
+
+        if (!e) {
+            e = window.event;
+        }
+
+        if (e.pageX || e.pageY) {
+            posx = e.pageX;
+            posy = e.pageY;
+        } else if (e.clientX || e.clientY) {
+            posx = e.clientX + document.body.scrollLeft +
+                document.documentElement.scrollLeft;
+            posy = e.clientY + document.body.scrollTop +
+                document.documentElement.scrollTop;
+        }
+
+        return {
+            x: posx,
+            y: posy
+        }
+    }
+
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    //
+    // C O R E    F U N C T I O N S
+    // ФУНКЦИИ ЯДРА
+    //
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+
+    /**
+     * Variables.
+     * Переменные.
+     */
+    let contextMenuClassName = 'context-menu';
+    let contextMenuItemClassName = 'context-menu__item';
+    let contextMenuLinkClassName  = 'context-menu__link';
+    let activeClassName = "context-menu--active";
+
+    let regItemClassName = 'fin-acc-row';
+    let regItemInContext;
+
+    let clickCoords;
+    let clickCoordsX;
+    let clickCoordsY;
+
+    let menu = document.querySelector("#context-menu");
+    let menuItems = menu.querySelectorAll(".context-menu__item");
+    let menuState = 0;
+    //Размеры меню
+    let menuWidth;
+    let menuHeight;
+    let menuPosition;
+    let menuPositionX;
+    let menuPositionY;
+
+    //Размеры окна
+    let windowWidth;
+    let windowHeight;
+
+
+
+    /**
+     * Initialise our application's code.
+     * Инициализация кода нашего приложения.
+     */
+    function init() {
+        contextListener();
+        clickListener();
+        keyupListener();
+
+        resizeListener();
+    }
+
+    function resizeListener() {
+        window.onresize = function(e) {
+            toggleMenuOff();
+        };
+    }
+
+    /**
+     * Listens for contextmenu events.
+     * Обработка события contextmenu.
+     */
+    function contextListener() {
+        document.addEventListener( "contextmenu", function(e) {
+            regItemInContext = clickInsideElement( e, regItemClassName );
+
+            if ( regItemInContext ) {
+                e.preventDefault();
+                toggleMenuOn();
+                positionMenu(e);
+            } else {
+                regItemInContext = null;
+                toggleMenuOff();
+            }
+        });
+    }
+
+    /**
+     * Listens for click events.
+     * Обработка события click.
+     */
+    function clickListener() {
+        document.addEventListener( "click", function(e) {
+            let clickElIsLink = clickInsideElement( e, contextMenuLinkClassName );
+
+            if( clickElIsLink ) {
+                e.preventDefault();
+                menuItemListener( clickElIsLink );
+            } else {
+                let button = e.which || e.button;
+                if ( button === 1 ) {
+                    toggleMenuOff();
+                }
+            }
+        });
+    }
+
+    /**
+     * Listens for keyup events.
+     * Обработка события keyup.
+     */
+    function keyupListener() {
+        window.onkeyup = function(e) {
+            if ( e.keyCode === 27 ) {
+                toggleMenuOff();
+            }
+        }
+    }
+
+    /**
+     * Turns the custom context menu on.
+     * Отображение контекстного меню.
+     */
+    function toggleMenuOn() {
+        if ( menuState !== 1 ) {
+            menuState = 1;
+            menu.classList.add(activeClassName);
+
+            //console.log(regItemInContext.getAttribute('id'));
+            menu.setAttribute('data-id', regItemInContext.getAttribute('id'))
+        }
+    }
+
+    function toggleMenuOff() {
+        if ( menuState !== 0 ) {
+            menuState = 0;
+            menu.classList.remove(activeClassName);
+        }
+    }
+
+    function positionMenu(e) {
+        clickCoords = getPosition(e);
+        clickCoordsX = clickCoords.x;
+        clickCoordsY = clickCoords.y;
+
+        menuWidth = menu.offsetWidth + 4;
+        menuHeight = menu.offsetHeight + 4;
+
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
+
+        if ( (windowWidth - clickCoordsX) < menuWidth ) {
+            menu.style.left = windowWidth - menuWidth + "px";
+        } else {
+            menu.style.left = clickCoordsX + "px";
+        }
+
+        if ( (windowHeight - clickCoordsY) < menuHeight ) {
+            menu.style.top = windowHeight - menuHeight + "px";
+        } else {
+            menu.style.top = clickCoordsY + "px";
+        }
+
+
+    }
+
+    function menuItemListener( link ) {
+        let id = regItemInContext.getAttribute("id")
+
+        console.log( "Reg ID - " +
+            id +
+            ", reg action - " + link.getAttribute("data-action"));
+        toggleMenuOff();
+
+        if(link.getAttribute("data-action") === 'Copy'){
+            copyReg(id);
+        }
+
+    }
+
+    /**
+     * Run the app.
+     * Запуск приложения.
+     */
+    init();
+
+    // let regItems = document.querySelectorAll(".fin-acc-row");
+    //
+    // for ( let i = 0, len = regItems.length; i < len; i++ ) {
+    //     let regItem = regItems[i];
+    //     contextMenuListener(regItem);
+    // }
+    //
+    // function contextMenuListener(el) {
+    //     el.addEventListener( "contextmenu", function(e) {
+    //         e.preventDefault();
+    //         toggleMenuOn();
+    //     });
+    // }
+
 });
 
 valuePeriodFrom.onchange = function(event){
@@ -403,6 +642,14 @@ function editReg(id) {
     });
 }
 
+function copyReg(id) {
+    showFormNew(id, 4, function(value) {
+        if (value !== null) {
+            runAjax('/fin/reg-add', value, 1)
+        }
+    });
+}
+
 function deleteReg(thisData) {
     runAjax('/fin/reg-delete', thisData, 1)
 }
@@ -466,6 +713,8 @@ function showFormNew(id, type, callback) {
     let fieldSub = document.getElementById('fieldSub');
     let fieldAcc = document.getElementById('fieldAcc');
 
+    let isCopy = type === 4;
+
     divRedComment = document.getElementById('red-comment');
     divRedComment.hidden = true;
 
@@ -515,6 +764,13 @@ function showFormNew(id, type, callback) {
             fieldSub.hidden = false;
 
             fieldAcc.innerHTML = 'Счет';
+
+            value = {
+                'isProfit' : thisData.isProfit,
+                'id_category' : thisData.CatId,
+            };
+
+            runAjax('/fin/categories', value, 6, 1);
         }
         else if(type === 1){
             fromCaption.innerHTML = 'Новый доход';
@@ -526,6 +782,13 @@ function showFormNew(id, type, callback) {
             fieldSub.hidden = false;
 
             fieldAcc.innerHTML = 'Счет';
+
+            value = {
+                'isProfit' : thisData.isProfit,
+                'id_category' : thisData.CatId,
+            };
+
+            runAjax('/fin/categories', value, 6, 1);
         }
         else
         {
@@ -983,24 +1246,43 @@ function showFormNew(id, type, callback) {
 
     function fullData(data) {
 
-        let strDate = convertTimeStampWithTime(data.data.date);
-        let curDate = new Date(strDate);
-        curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-        valueDate.value = curDate.toISOString().substring(0, 16);
-        thisData['date'] = data.data.date;
+        if(isCopy === false) {
+            let strDate = convertTimeStampWithTime(data.data.date);
+            let curDate = new Date(strDate);
+            curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+            valueDate.value = curDate.toISOString().substring(0, 16);
+            thisData['date'] = data.data.date;
+        } else {
+            valueDate.value = nowServer.toISOString().substring(0, 16);
+            let curDate = new Date(valueDate.value);
+            thisData['date'] = String(curDate.getTime()).substr(0, 10);
+        }
 
         valueAcc.value = data.data.AccName;
         thisData['AccId'] = data.data.AccId;
         thisData['AccName'] = data.data.AccName;
 
-        if (data.data.type !== '2') {
+        console.log(data.data.type);
+
+        if (data.data.type !== 2) {
             if (data.data.type === 0) {
-                fromCaption.innerHTML = 'Редактирование расхода';
+                if(isCopy === false) {
+                    fromCaption.innerHTML = 'Редактирование расхода';
+                }
+                else {
+                    fromCaption.innerHTML = 'Создание расхода';
+                }
+
                 valIsExpense.checked = true;
                 thisData['type'] = 0;
             }
             else {
-                fromCaption.innerHTML = 'Редактирование дохода';
+                if(isCopy === false) {
+                    fromCaption.innerHTML = 'Редактирование дохода';
+                }
+                else {
+                    fromCaption.innerHTML = 'Создание дохода';
+                }
                 valIsProfit.checked = true;
                 thisData['type'] = 1;
             }
@@ -1021,7 +1303,12 @@ function showFormNew(id, type, callback) {
         }
         else
         {
-            fromCaption.innerHTML = 'Редактирование перемещения';
+            if(isCopy === false) {
+                fromCaption.innerHTML = 'Редактирование перемещения';
+            }
+            else {
+                fromCaption.innerHTML = 'Создание перемещения';
+            }
             valIsReplacement.checked = true;
             thisData['type'] = 2;
 
@@ -1046,26 +1333,31 @@ function showFormNew(id, type, callback) {
             initBtnConfirm();
         };
 
-        buttonDel.onclick = function(e) {
-            let ans = confirm('Удалить движение?');
+        if( isCopy === false ) {
+            buttonDel.onclick = function(e) {
+                let ans = confirm('Удалить движение?');
 
-            if(ans === true) {
-                curDateFrom = new Date(valuePeriodFrom.value);
-                curDateTo = new Date(valuePeriodTo.value);
-                curDateTo.setHours(23,59,59,999);
+                if(ans === true) {
+                    curDateFrom = new Date(valuePeriodFrom.value);
+                    curDateTo = new Date(valuePeriodTo.value);
+                    curDateTo.setHours(23,59,59,999);
 
-                let curSelAccName = selValueAcc.value;
+                    let curSelAccName = selValueAcc.value;
 
-                thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
-                thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
-                thisData['selAccId'] = 0;
-                thisData['selAccName'] = curSelAccName;
+                    thisData['selPeriodFrom'] = String(curDateFrom.getTime()).substr(0, 10);
+                    thisData['selPeriodTo'] = String(curDateTo.getTime()).substr(0, 10);
+                    thisData['selAccId'] = 0;
+                    thisData['selAccName'] = curSelAccName;
 
-                deleteReg(thisData);
-            }
+                    deleteReg(thisData);
+                }
 
-            return 1;
-        };
+                return 1;
+            };
+        } else {
+            buttonDel.hidden = true;
+        }
+
     }
 
     //container.style.display = 'block';
