@@ -169,7 +169,7 @@ a:hover {
  }
 
 .white-back:hover {
-    background-color: rgba(153, 153, 153, 0.3);;
+    background-color: rgba(153, 153, 153, 0.3);
 }
 
 .expense-back {
@@ -231,6 +231,11 @@ a:hover {
 .btn-active-replacement {
     color: #5882FA;
 }
+
+.underlined-back {
+    background-color: rgba(153, 153, 153, 0.1);
+}
+
 
 
 .radio-container{

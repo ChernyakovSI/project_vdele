@@ -194,14 +194,16 @@ $(document).ready( function() {
      */
     function contextListener() {
         document.addEventListener( "contextmenu", function(e) {
-            regItemInContext = clickInsideElement( e, regItemClassName );
+            let regItemInContext1 = clickInsideElement( e, regItemClassName );
 
-            if ( regItemInContext ) {
+            if ( regItemInContext1 ) {
                 e.preventDefault();
+                toggleMenuOff();
+                regItemInContext = regItemInContext1;
                 toggleMenuOn();
                 positionMenu(e);
-            } else {
-                regItemInContext = null;
+            }
+            else {
                 toggleMenuOff();
             }
         });
@@ -213,12 +215,14 @@ $(document).ready( function() {
      */
     function clickListener() {
         document.addEventListener( "click", function(e) {
+
             let clickElIsLink = clickInsideElement( e, contextMenuLinkClassName );
 
             if( clickElIsLink ) {
                 e.preventDefault();
                 menuItemListener( clickElIsLink );
-            } else {
+            }
+            else {
                 let button = e.which || e.button;
                 if ( button === 1 ) {
                     toggleMenuOff();
@@ -235,8 +239,9 @@ $(document).ready( function() {
         window.onkeyup = function(e) {
             if ( e.keyCode === 27 ) {
                 toggleMenuOff();
+                }
             }
-        }
+
     }
 
     /**
@@ -250,6 +255,8 @@ $(document).ready( function() {
 
             //console.log(regItemInContext.getAttribute('id'));
             menu.setAttribute('data-id', regItemInContext.getAttribute('id'))
+
+            regItemInContext.classList.add('underlined-back');
         }
     }
 
@@ -257,6 +264,12 @@ $(document).ready( function() {
         if ( menuState !== 0 ) {
             menuState = 0;
             menu.classList.remove(activeClassName);
+            console.log('111')
+        }
+        if ( regItemInContext) {
+            regItemInContext.classList.remove('underlined-back');
+            regItemInContext = null;
+            console.log('222')
         }
     }
 
@@ -277,11 +290,11 @@ $(document).ready( function() {
             menu.style.left = clickCoordsX + "px";
         }
 
-        if ( (windowHeight - clickCoordsY) < menuHeight ) {
-            menu.style.top = windowHeight - menuHeight + "px";
-        } else {
+        // if ( (windowHeight - clickCoordsY) < menuHeight ) {
+        //     menu.style.top = windowHeight - menuHeight + "px";
+        // } else {
             menu.style.top = clickCoordsY + "px";
-        }
+        // }
 
 
     }
