@@ -95,4 +95,22 @@
     float: left;
 }
 
+.halfwidth {
+     width: 49%;
+     float: left;
+ }
+.halfwidth-gap {
+    width: 2%;
+    float: left;
+}
 
+.fin-reg-amount-end {
+    float: left;
+    width: 40%;
+    border-right: 1px solid #AAAAAA;
+}
+
+.fin-reg-cat-60 {
+    float: left;
+    width: 60%;
+}

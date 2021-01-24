@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
         'css/acEdit10.css',
         'css/users5.css',
         'css/url2.css',
-        'css/fin8.css',
+        'css/fin9.css',
         'css/useful1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
@@ -45,6 +45,9 @@ class AppAsset extends AssetBundle
         }
         if (\yii::$app->request->url == '/fin/register') {
             $this->js[] = 'js/fin/register_pos_ready.js';
+        }
+        if (\yii::$app->request->url == '/fin/reports') {
+            $this->js[] = 'js/fin/reports_pos_ready.js';
         }
     }
 }

@@ -14,7 +14,7 @@ $this->title = 'Финансы: Счета';
     <span class="btn-submenu btn-active">Счета</span>
     <span class="btn-submenu"><a href="/fin/categories">Категории</a></span>
     <span class="btn-submenu"><a href="/fin/register">Движения</a></span>
-    <span class="btn-submenu"><a href="#">Отчеты</a></span>
+    <span class="btn-submenu"><a href="/fin/reports">Отчеты</a></span>
 </div>
 
 <?php

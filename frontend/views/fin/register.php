@@ -17,7 +17,7 @@
     <span class="btn-submenu"><a href="/fin/accounts">Счета</a></span>
     <span class="btn-submenu"><a href="/fin/categories">Категории</a></span>
     <span class="btn-submenu btn-active">Движения</span>
-    <span class="btn-submenu"><a href="#">Отчеты</a></span>
+    <span class="btn-submenu"><a href="/fin/reports">Отчеты</a></span>
 </div>
 
 <div class="window window-border window-caption-2em caption-wrap">

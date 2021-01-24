@@ -73,6 +73,7 @@ $this->registerLinkTag([
                 ['label' => 'Счета', 'url' => ['/fin/accounts']],
                 ['label' => 'Категории', 'url' => ['/fin/categories']],
                 ['label' => 'Движения', 'url' => ['/fin/register']],
+                ['label' => 'Отчеты', 'url' => ['/fin/reports']],
             ]];
             $menuItems[] = ['label' => 'Контакты'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
                     ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
@@ -153,7 +154,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.2)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.2.1)</p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>

@@ -11,6 +11,7 @@ namespace frontend\controllers;
 use common\models\fin\Account;
 use common\models\fin\Category;
 use common\models\fin\Register;
+use common\models\fin\Reports;
 use yii\web\Controller;
 use Yii;
 use yii\filters\AccessControl;
@@ -41,7 +42,8 @@ class FinController extends Controller
                                         'reg-add',
                                         'reg-get',
                                         'reg-edit',
-                                        'reg-delete',],
+                                        'reg-delete',
+                                        'reports',],
                         'controllers' => ['fin'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -1683,6 +1685,105 @@ class FinController extends Controller
                 "error" => "Механизм UtlAdd работает только с AJAX"
             ];
         };
+
+    }
+
+    //--REGISTER--------------------------------------------------------------------------
+
+    public function actionReports()
+    {
+        $cur_user = Yii::$app->user->identity;
+        $id_user = $cur_user->getId();
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $data = Yii::$app->request->post();
+
+            if(isset($data['selPeriodFrom'])){
+                $PeriodFrom = $data['selPeriodFrom'];
+            }
+            else{
+                $PeriodFrom = 0;
+            }
+            if(isset($data['selPeriodTo'])){
+                $PeriodTo = $data['selPeriodTo'];
+            }
+            else{
+                $PeriodTo = 0;
+            }
+
+            $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+            $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+
+            $totalProf = 0;
+            $totalExp = 0;
+
+            $SumFormatProf = [];
+            $SumFormatExp = [];
+
+            foreach ($resultsExp as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExp = $totalExp + $item['sum'];
+                    $SumFormatExp[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                }
+            }
+            foreach ($resultsProf as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProf = $totalProf + $item['sum'];
+                    $SumFormatProf[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                }
+            }
+
+            $totalProf = Account::formatNumberToMoney($totalProf);
+            $totalExp = Account::formatNumberToMoney($totalExp);
+
+            return [
+                'dataExp' => $resultsExp,
+                'dataProf' => $resultsProf,
+                'totalExp' => $totalExp,
+                'totalProf' => $totalProf,
+                'SumFormatExp' => $SumFormatExp,
+                'SumFormatProf' => $SumFormatProf,
+            ];
+
+        }
+        else{
+
+            $periodFrom = strtotime(date('Y-m-01 00:00:00'));
+            $periodTo = strtotime(date('Y-m-t 23:59:59'));
+
+            $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $periodFrom, $periodTo);
+            $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $periodFrom, $periodTo);
+
+//            echo '<pre>';
+//            var_dump($results);
+//            exit();
+
+            $totalProf = 0;
+            $totalExp = 0;
+
+            foreach ($resultsExp as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExp = $totalExp + $item['sum'];
+                }
+            }
+            foreach ($resultsProf as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProf = $totalProf + $item['sum'];
+                }
+            }
+
+            return $this->render('reports', [
+                'id_user' => $id_user,
+                'resultsProf' => $resultsProf,
+                'resultsExp' => $resultsExp,
+                'totalProf' => $totalProf,
+                'totalExp' => $totalExp,
+                'periodFrom' => $periodFrom,
+                'periodTo' => $periodTo
+            ]);
+        }
 
     }
 
