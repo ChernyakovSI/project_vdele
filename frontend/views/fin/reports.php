@@ -42,7 +42,7 @@
 <div class="content">
     <div class="fin-container-wrap">
         <div class="submenu">
-            <?php if ($typeReport == 0){ ?>
+            <?php if ($typeReport === 0){ ?>
                 <span class="btn-submenu btn-submenu-interactive" id="btn-expense">Расходы/Доходы</span>
             <?php } else { ?>
                 <span class="btn-submenu btn-active-expense btn-submenu-interactive" id="btn-expense">Расходы/Доходы</span>

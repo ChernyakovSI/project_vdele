@@ -1781,7 +1781,8 @@ class FinController extends Controller
                 'totalProf' => $totalProf,
                 'totalExp' => $totalExp,
                 'periodFrom' => $periodFrom,
-                'periodTo' => $periodTo
+                'periodTo' => $periodTo,
+                'typeReport' => 0
             ]);
         }
 
