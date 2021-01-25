@@ -1735,14 +1735,20 @@ class FinController extends Controller
                 }
             }
 
+            $totalDelta = $totalProf - $totalExp;
+
             $totalProf = Account::formatNumberToMoney($totalProf);
             $totalExp = Account::formatNumberToMoney($totalExp);
+            $totalDelta = Account::formatNumberToMoney($totalDelta);
 
             return [
+                'periodFrom' => $PeriodFrom,
+                'periodTo' => $PeriodTo,
                 'dataExp' => $resultsExp,
                 'dataProf' => $resultsProf,
                 'totalExp' => $totalExp,
                 'totalProf' => $totalProf,
+                'totalDelta' => $totalDelta,
                 'SumFormatExp' => $SumFormatExp,
                 'SumFormatProf' => $SumFormatProf,
             ];
@@ -1774,6 +1780,8 @@ class FinController extends Controller
                 }
             }
 
+            $totalDelta = $totalProf - $totalExp;
+
             return $this->render('reports', [
                 'id_user' => $id_user,
                 'resultsProf' => $resultsProf,
@@ -1782,7 +1790,8 @@ class FinController extends Controller
                 'totalExp' => $totalExp,
                 'periodFrom' => $periodFrom,
                 'periodTo' => $periodTo,
-                'typeReport' => 0
+                'typeReport' => 0,
+                'totalDelta' => $totalDelta
             ]);
         }
 

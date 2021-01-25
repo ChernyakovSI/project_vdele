@@ -107,4 +107,8 @@ class Reports
 
         return $result;
     }
+
+    public static function timestampToDateString($timestamp) {
+        return date('m.d.Y', $timestamp);
+    }
 }

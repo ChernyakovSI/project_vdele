@@ -7,6 +7,10 @@ let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
 let valuePeriodFrom = document.getElementById('valuePeriodFrom');
 let valuePeriodTo = document.getElementById('valuePeriodTo');
 
+let settingsPeriodFrom = document.querySelector('#settingsPeriodFrom');
+let settingsPeriodTo = document.querySelector('#settingsPeriodTo');
+let spanDelta = document.querySelector('#delta');
+
 let nowServer = new Date();
 let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
 nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
@@ -267,4 +271,19 @@ function rerender(dataSet) {
 
     let divTotalProf = document.getElementById('totalProf');
     divTotalProf.innerHTML = dataSet.totalProf;
+
+    settingsPeriodFrom.innerHTML = convertTimeStampVisible(dataSet.periodFrom);
+    settingsPeriodTo.innerHTML = convertTimeStampVisible(dataSet.periodTo);
+
+    spanDelta.innerHTML = dataSet.totalDelta;
 };
+
+function convertTimeStampVisible(timestamp) {
+    let condate = new Date(timestamp*1000);
+
+    return [
+        ('0' + condate.getDate()).slice(-2),
+        ('0' + (condate.getMonth()+1)).slice(-2),
+        condate.getFullYear()
+    ].join('.');
+}

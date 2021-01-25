@@ -1,6 +1,7 @@
 <?php
 
     use common\models\fin\Account;
+    use common\models\fin\Reports;
 
     //$this->registerJsFile('@web/js/fin/reports_pos_ready.js', ['position' => \yii\web\View::POS_READY]);
 
@@ -53,7 +54,7 @@
 
             <div class="Rollup">
                 <input class="hide" id="hd-1" type="checkbox">
-                <label for="hd-1">Настройки отчета</label>
+                <label for="hd-1">Настройки отчета: период с <span id="settingsPeriodFrom"><?= Reports::timestampToDateString($periodFrom) ?></span> по <span id="settingsPeriodTo"><?= Reports::timestampToDateString($periodTo) ?></span></label>
                 <div>
                     <div class="half_third">
                         <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">
@@ -70,12 +71,17 @@
 
                     </div>
                 </div>
+
+            </div>
+
+            <div class="text-size">
+                Прибыль: <span id="delta"><?= Account::formatNumberToMoney($totalDelta) ?></span>
             </div>
 
             <div class="halfwidth-wrapper">
                 <div class="halfwidth">
 
-                    <div  class="text-font text-center">
+                    <div  class="text-font-5 text-center">
                         Расходы
                     </div>
                     <div class="clearfix"><hr class="line"></div>
@@ -121,7 +127,7 @@
                     <div class="clearfix"><hr class="line"></div>
                     <div id="list-expenses">
                         <?php if (count($resultsExp) == 0){ ?>
-                            <div id="infoExp" class="text-font text-center margin-v20">
+                            <div id="infoExp" class="text-font-5 text-center margin-v20">
                                 Нет данных
                             </div>
                         <?php } else {  foreach ($resultsExp as $res): ?>
@@ -153,7 +159,7 @@
                 <div class="halfwidth-gap">&nbsp;</div>
                 <div class="halfwidth">
 
-                    <div  class="text-font text-center">
+                    <div  class="text-font-5 text-center">
                         Доходы
                     </div>
                     <div class="clearfix"><hr class="line"></div>
@@ -200,7 +206,7 @@
                     <div class="clearfix"><hr class="line"></div>
                     <div id="list-profits">
                         <?php if (count($resultsProf) == 0){ ?>
-                            <div id="infoProf" class="text-font text-center margin-v20">
+                            <div id="infoProf" class="text-font-5 text-center margin-v20">
                                 Нет данных
                             </div>
                         <?php } else {  foreach ($resultsProf as $res): ?>
