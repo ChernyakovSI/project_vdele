@@ -507,19 +507,12 @@ class User extends ActiveRecord implements IdentityInterface
         $subject = "=?utf-8?B?".base64_encode($subject)."?=";
 
         //Составляем тело сообщения
-        $message = 'Здравствуйте! <br/> <br/> Сегодня '.date("d.m.Y", time()).', кем-то была произведена 
+        $message = 'Здравствуйте! <br/> <br/> Сегодня, '.date("d.m.Y", time()).', была произведена 
             регистрация на сайте <a href="'.Yii::$app->params['doman'].'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. 
             Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: 
             <a href="'.Yii::$app->params['doman'].'activation/?token='.$this->email_token.'&email='.$this->email.'">'.'
             Подтвердите регистрацию'.'</a> или скопируйте этот URL в адресную строку браузера: '
             .Yii::$app->params['doman'].'activation/?token='.$this->email_token.'&email='.$this->email.' 
-            <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо.';
-
-        $message = 'Здравствуйте! <br/> <br/> Сегодня, '.date("d.m.Y", time()).', была произведена 
-            регистрация на сайте <a href="'.Yii::$app->params['doman'].'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. 
-            Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: 
-            <a href="'.Yii::$app->params['doman'].'activation/?token='.$this->email_token.'&email='.$this->email.'">'.'
-            Подтвердите регистрацию'.'</a> 
             <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо.';
 
         //Составляем дополнительные заголовки для почтового сервиса mail.ru
