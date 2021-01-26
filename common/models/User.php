@@ -515,6 +515,13 @@ class User extends ActiveRecord implements IdentityInterface
             .Yii::$app->params['doman'].'activation/?token='.$this->email_token.'&email='.$this->email.' 
             <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо.';
 
+        $message = 'Здравствуйте! <br/> <br/> Сегодня, '.date("d.m.Y", time()).', была произведена 
+            регистрация на сайте <a href="'.Yii::$app->params['doman'].'">'.$_SERVER['HTTP_HOST'].'</a> используя Ваш email. 
+            Если это были Вы, то, пожалуйста, подтвердите адрес вашей электронной почты, перейдя по этой ссылке: 
+            <a href="'.Yii::$app->params['doman'].'activation/?token='.$this->email_token.'&email='.$this->email.'">'.'
+            Подтвердите регистрацию'.'</a> 
+            <br/> <br/> В противном случае, если это были не Вы, то, просто игнорируйте это письмо.';
+
         //Составляем дополнительные заголовки для почтового сервиса mail.ru
         //Переменная $email_admin, объявлена в файле dbconnect.php
         //$headers = 'FROM: '.Yii::$app->params['adminEmail'].'\r\nReply-to: '.Yii::$app->params['adminEmail'].'\r\nContent-type: text/html; charset=utf-8\r\n';
