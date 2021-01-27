@@ -65,7 +65,10 @@
                         </div>
                     </div>
                     <div class="half_third">
-
+                        <div class="gap-v-13">
+                            <input type="checkbox" id="setVisibleSub" class="custom-checkbox" onclick="setVisibleSub()">
+                            <label for="setVisibleSub" class="interactive-only">Показать подкатегории</label>
+                        </div>
                     </div>
                     <div class="half_third">
 
@@ -85,43 +88,40 @@
                         Расходы
                     </div>
                     <div class="clearfix"><hr class="line"></div>
-                    <div class="interactive-only">
-                        <div class="fin-reg-cat-60 table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line table-caption"><?= 'Категория' ?></div>
+                    <div id="header-expenses">
+                        <div class="interactive-only">
+                            <div id="expenses-colname-cat" class="fin-reg-cat-60 table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line table-caption"><?= 'Категория' ?></div>
+                                </div>
                             </div>
-                        </div>
-                        <!--<div class="fin-reg-sub table-text">
-                    <div class="message-wrapper-title">
-                        <div class="message-text-line table-caption"><?= ''//'Подкатегория' ?></div>
-                    </div>
-                </div>-->
-                        <div class="fin-reg-amount-end table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
+                            <div id="expenses-colname-sub" class="table-text">
 
-                    <div class="">
-                        <div class="fin-reg-cat-60 table-text brown-back">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= '' ?></div>
+                            </div>
+                            <div id="expenses-colname-amo" class="fin-reg-amount-end table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
+                                </div>
                             </div>
                         </div>
-                        <!--<div class="fin-reg-sub table-text brown-back">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line"><?= '' ?></div>
-                </div>
-            </div>-->
-                        <div class="fin-reg-amount-end table-text brown-back">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line right-text" id="totalExp"><?= Account::formatNumberToMoney($totalExp) ?></div>
+                        <div class="clearfix"></div>
+
+                        <div class="">
+                            <div id="expenses-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= '' ?></div>
+                                </div>
+                            </div>
+                            <div id="expenses-coltotal-sub" class="table-text brown-back">
+
+                            </div>
+                            <div id="expenses-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line right-text" id="totalExp"><?= Account::formatNumberToMoney($totalExp) ?></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
 
 
                     <div class="clearfix"><hr class="line"></div>
@@ -138,11 +138,6 @@
                                         <div class="message-text-line"><?= $res['CatName'] ?></div>
                                     </div>
                                 </div>
-                                <!--<div class="fin-reg-sub table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line"><?= ''//$res['SubName'] ?></div>
-                                    </div>
-                                </div>-->
                                 <div class="fin-reg-amount-end table-text">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line right-text"><?= Account::formatNumberToMoney($res['sum']) ?></div>
@@ -165,17 +160,15 @@
                     <div class="clearfix"><hr class="line"></div>
 
                     <div class="interactive-only">
-                        <div class="fin-reg-cat-60 table-text">
+                        <div id="profits-colname-cat" class="fin-reg-cat-60 table-text">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= 'Категория' ?></div>
                             </div>
                         </div>
-                        <!--<div class="fin-reg-sub table-text">
-                    <div class="message-wrapper-title">
-                        <div class="message-text-line table-caption"><?= ''//'Подкатегория' ?></div>
-                    </div>
-                </div>-->
-                        <div class="fin-reg-amount-end table-text">
+                        <div id="profits-colname-sub" class="table-text">
+
+                        </div>
+                        <div id="profits-colname-amo" class="fin-reg-amount-end table-text">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
                             </div>
@@ -184,17 +177,15 @@
                     <div class="clearfix"></div>
 
                     <div class="">
-                        <div class="fin-reg-cat-60 table-text brown-back">
+                        <div id="profits-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line"><?= '' ?></div>
                             </div>
                         </div>
-                        <!--<div class="fin-reg-sub table-text brown-back">
-                <div class="message-wrapper-title">
-                    <div class="message-text-line"><?= '' ?></div>
-                </div>
-            </div>-->
-                        <div class="fin-reg-amount-end table-text brown-back">
+                        <div id="profits-coltotal-sub" class="table-text brown-back">
+
+                        </div>
+                        <div id="profits-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line right-text" id="totalProf"><?= Account::formatNumberToMoney($totalProf) ?></div>
                             </div>

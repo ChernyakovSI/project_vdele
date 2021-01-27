@@ -1713,8 +1713,21 @@ class FinController extends Controller
                 $PeriodTo = 0;
             }
 
-            $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $PeriodFrom, $PeriodTo);
-            $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+            if(isset($data['is_sub'])){
+                $is_sub = $data['is_sub'] === 'true';
+            }
+            else{
+                $is_sub = 0;
+            }
+
+            if($is_sub === false) {
+                $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+            }
+            else {
+                $resultsProf = Reports::getTotalByProfitSubsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $resultsExp = Reports::getTotalByExpenceSubsByUser($id_user, $PeriodFrom, $PeriodTo);
+            }
 
             $totalProf = 0;
             $totalExp = 0;
@@ -1725,13 +1738,21 @@ class FinController extends Controller
             foreach ($resultsExp as $item) {
                 if ($item['id_category'] != 0) {
                     $totalExp = $totalExp + $item['sum'];
-                    $SumFormatExp[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    if($is_sub === false) {
+                        $SumFormatExp[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    }else{
+                        $SumFormatExp[$item['id_subcategory']] = Account::formatNumberToMoney($item['sum']);
+                    }
                 }
             }
             foreach ($resultsProf as $item) {
                 if ($item['id_category'] != 0) {
                     $totalProf = $totalProf + $item['sum'];
-                    $SumFormatProf[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    if($is_sub === false) {
+                        $SumFormatProf[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    }else{
+                        $SumFormatProf[$item['id_subcategory']] = Account::formatNumberToMoney($item['sum']);
+                    }
                 }
             }
 

@@ -114,3 +114,14 @@
     float: left;
     width: 60%;
 }
+
+.fin-reg-amount-end-sub {
+    float: left;
+    width: 20%;
+    border-right: 1px solid #AAAAAA;
+}
+
+.fin-reg-cat-40 {
+    float: left;
+    width: 40%;
+}
