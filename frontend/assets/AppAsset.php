@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
         'css/useful1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
-        'css/floatingCircles.css',
+        'css/floatingCircles1.css',
         'css/contextMenu.css'
     ];
     public $js = [];

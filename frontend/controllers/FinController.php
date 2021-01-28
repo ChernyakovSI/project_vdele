@@ -1720,13 +1720,59 @@ class FinController extends Controller
                 $is_sub = 0;
             }
 
+            $optionE = [];
+            if(isset($data['sortCatE'])){
+                $sortCat = (integer)$data['sortCatE'];
+            }
+            else{
+                $sortCat = 0;
+            }
+            $optionE['sortCat'] = $sortCat;
+            if(isset($data['sortSubE'])){
+                $sortSub = (integer)$data['sortSubE'];
+            }
+            else{
+                $sortSub = 0;
+            }
+            $optionE['sortSub'] = $sortSub;
+            if(isset($data['sortAmoE'])){
+                $sortAmo = (integer)$data['sortAmoE'];
+            }
+            else{
+                $sortAmo = 0;
+            }
+            $optionE['sortAmo'] = $sortAmo;
+
+            $optionP = [];
+            if(isset($data['sortCatP'])){
+                $sortCat = (integer)$data['sortCatP'];
+            }
+            else{
+                $sortCat = 0;
+            }
+            $optionP['sortCat'] = $sortCat;
+            if(isset($data['sortSubP'])){
+                $sortSub = (integer)$data['sortSubP'];
+            }
+            else{
+                $sortSub = 0;
+            }
+            $optionP['sortSub'] = $sortSub;
+            if(isset($data['sortAmoP'])){
+                $sortAmo = (integer)$data['sortAmoP'];
+            }
+            else{
+                $sortAmo = 0;
+            }
+            $optionP['sortAmo'] = $sortAmo;
+
             if($is_sub === false) {
-                $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $PeriodFrom, $PeriodTo);
-                $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $resultsProf = Reports::getTotalByProfitCatsByUser($id_user, $PeriodFrom, $PeriodTo, $optionP);
+                $resultsExp = Reports::getTotalByExpenceCatsByUser($id_user, $PeriodFrom, $PeriodTo, $optionE);
             }
             else {
-                $resultsProf = Reports::getTotalByProfitSubsByUser($id_user, $PeriodFrom, $PeriodTo);
-                $resultsExp = Reports::getTotalByExpenceSubsByUser($id_user, $PeriodFrom, $PeriodTo);
+                $resultsProf = Reports::getTotalByProfitSubsByUser($id_user, $PeriodFrom, $PeriodTo, $optionP);
+                $resultsExp = Reports::getTotalByExpenceSubsByUser($id_user, $PeriodFrom, $PeriodTo, $optionE);
             }
 
             $totalProf = 0;

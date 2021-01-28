@@ -15,6 +15,27 @@ let nowServer = new Date();
 let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
 nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
 
+let exColnameCat = document.getElementById('expenses-colname-cat');
+let exColnameAmo = document.getElementById('expenses-colname-amo');
+let exColtotalCat = document.getElementById('expenses-coltotal-cat');
+let exColtotalAmo = document.getElementById('expenses-coltotal-amo');
+let exColnameSub = document.getElementById('expenses-colname-sub');
+let exColtotalSub = document.getElementById('expenses-coltotal-sub');
+
+let prColnameCat = document.getElementById('profits-colname-cat');
+let prColnameAmo = document.getElementById('profits-colname-amo');
+let prColtotalCat = document.getElementById('profits-coltotal-cat');
+let prColtotalAmo = document.getElementById('profits-coltotal-amo');
+let prColnameSub = document.getElementById('profits-colname-sub');
+let prColtotalSub = document.getElementById('profits-coltotal-sub');
+
+let sortCatE = 0;
+let sortSubE = 0;
+let sortAmoE = 0;
+let sortCatP = 0;
+let sortSubP = 0;
+let sortAmoP = 0;
+
 let chkSub = document.getElementById('setVisibleSub');
 
 let curDateFrom = new Date(valuePeriodFrom.value);
@@ -88,6 +109,84 @@ chkSub.onchange = function(event){
     readTable();
 };
 
+exColnameAmo.onclick = function(event){
+    sortCatE = 0;
+    sortSubE = 0;
+    if (sortAmoE === 0) {
+        sortAmoE = 1;
+    }
+    else {
+        sortAmoE = -1 * sortAmoE;
+    }
+
+    readTable();
+};
+
+prColnameAmo.onclick = function(event){
+    sortCatP = 0;
+    sortSubP = 0;
+    if (sortAmoP === 0) {
+        sortAmoP = 1;
+    }
+    else {
+        sortAmoP = -1 * sortAmoP;
+    }
+
+    readTable();
+};
+
+exColnameCat.onclick = function(event){
+    sortAmoE = 0;
+    sortSubE = 0;
+    if (sortCatE === 0) {
+        sortCatE = 1;
+    }
+    else {
+        sortCatE = -1 * sortCatE;
+    }
+
+    readTable();
+};
+
+prColnameCat.onclick = function(event){
+    sortAmoP = 0;
+    sortSubP = 0;
+    if (sortCatP === 0) {
+        sortCatP = 1;
+    }
+    else {
+        sortCatP = -1 * sortCatP;
+    }
+
+    readTable();
+};
+
+exColnameSub.onclick = function(event){
+    sortCatE = 0;
+    sortAmoE = 0;
+    if (sortSubE === 0) {
+        sortSubE = 1;
+    }
+    else {
+        sortSubE = -1 * sortSubE;
+    }
+
+    readTable();
+};
+
+prColnameSub.onclick = function(event){
+    sortCatP = 0;
+    sortAmoP = 0;
+    if (sortSubP === 0) {
+        sortSubP = 1;
+    }
+    else {
+        sortSubP = -1 * sortSubP;
+    }
+
+    readTable();
+};
+
 function readTable(){
 
     curDateFrom = new Date(valuePeriodFrom.value);
@@ -97,7 +196,13 @@ function readTable(){
     thisData = {
         'selPeriodFrom' : String(curDateFrom.getTime()).substr(0, 10),
         'selPeriodTo' : String(curDateTo.getTime()).substr(0, 10),
-        'is_sub' : chkSub.checked
+        'is_sub' : chkSub.checked,
+        'sortCatE' : sortCatE,
+        'sortSubE' : sortSubE,
+        'sortAmoE' : sortAmoE,
+        'sortCatP' : sortCatP,
+        'sortSubP' : sortSubP,
+        'sortAmoP' : sortAmoP,
     };
 
     runAjax('/fin/reports', thisData)
@@ -108,14 +213,6 @@ function rerender(dataSet) {
     listExp.innerHTML = '';
 
     let SumFormatExp = dataSet.SumFormatExp;
-
-    let exColnameCat = document.getElementById('expenses-colname-cat');
-    let exColnameAmo = document.getElementById('expenses-colname-amo');
-    let exColtotalCat = document.getElementById('expenses-coltotal-cat');
-    let exColtotalAmo = document.getElementById('expenses-coltotal-amo');
-
-    let exColnameSub = document.getElementById('expenses-colname-sub');
-    let exColtotalSub = document.getElementById('expenses-coltotal-sub');
 
     exColnameCat.classList.remove('fin-reg-cat-60');
     exColnameCat.classList.remove('fin-reg-cat-40');
@@ -141,7 +238,18 @@ function rerender(dataSet) {
         divWrapSubName.className = 'message-wrapper-title';
         let divTextSubName = document.createElement('div');
         divTextSubName.className = 'message-text-line table-caption';
-        divTextSubName.innerHTML = 'Подкатегория';
+        if (sortSubE === 0) {
+            divTextSubName.innerHTML = 'Подкатегория';
+        }
+        else {
+            if (sortSubE === -1) {
+                divTextSubName.innerHTML = 'Подкатегория &darr;';
+            }
+            else {
+                divTextSubName.innerHTML = 'Подкатегория &uarr;';
+            }
+        }
+
         divWrapSubName.append(divTextSubName);
         exColnameSub.append(divWrapSubName);
 
@@ -166,15 +274,30 @@ function rerender(dataSet) {
         exColtotalSub.classList.remove('fin-reg-cat-40');
     }
 
+    if (sortCatE === 0) {
+        exColnameCat.children[0].children[0].innerHTML = 'Категория';
+    }
+    else {
+        if (sortCatE === -1) {
+            exColnameCat.children[0].children[0].innerHTML = 'Категория &darr;';
+        }
+        else {
+            exColnameCat.children[0].children[0].innerHTML = 'Категория &uarr;';
+        }
+    }
+    if (sortAmoE === 0) {
+        exColnameAmo.children[0].children[0].innerHTML = 'Сумма';
+    }
+    else {
+        if (sortAmoE === -1) {
+            exColnameAmo.children[0].children[0].innerHTML = 'Сумма &darr;';
+        }
+        else {
+            exColnameAmo.children[0].children[0].innerHTML = 'Сумма &uarr;';
+        }
+    }
+
     // Заголовки доходов
-
-    let prColnameCat = document.getElementById('profits-colname-cat');
-    let prColnameAmo = document.getElementById('profits-colname-amo');
-    let prColtotalCat = document.getElementById('profits-coltotal-cat');
-    let prColtotalAmo = document.getElementById('profits-coltotal-amo');
-
-    let prColnameSub = document.getElementById('profits-colname-sub');
-    let prColtotalSub = document.getElementById('profits-coltotal-sub');
 
     prColnameCat.classList.remove('fin-reg-cat-60');
     prColnameCat.classList.remove('fin-reg-cat-40');
@@ -200,7 +323,17 @@ function rerender(dataSet) {
         prdivWrapSubName.className = 'message-wrapper-title';
         let prdivTextSubName = document.createElement('div');
         prdivTextSubName.className = 'message-text-line table-caption';
-        prdivTextSubName.innerHTML = 'Подкатегория';
+        if (sortSubP === 0) {
+            prdivTextSubName.innerHTML = 'Подкатегория';
+        }
+        else {
+            if (sortSubP === -1) {
+                prdivTextSubName.innerHTML = 'Подкатегория &darr;';
+            }
+            else {
+                prdivTextSubName.innerHTML = 'Подкатегория &uarr;';
+            }
+        }
         prdivWrapSubName.append(prdivTextSubName);
         prColnameSub.append(prdivWrapSubName);
 
@@ -223,6 +356,28 @@ function rerender(dataSet) {
         prColnameSub.classList.remove('fin-reg-cat-40');
         prColtotalSub.innerHTML = '';
         prColtotalSub.classList.remove('fin-reg-cat-40');
+    }
+    if (sortCatP === 0) {
+        prColnameCat.children[0].children[0].innerHTML = 'Категория';
+    }
+    else {
+        if (sortCatP === -1) {
+            prColnameCat.children[0].children[0].innerHTML = 'Категория &darr;';
+        }
+        else {
+            prColnameCat.children[0].children[0].innerHTML = 'Категория &uarr;';
+        }
+    }
+    if (sortAmoP === 0) {
+        prColnameAmo.children[0].children[0].innerHTML = 'Сумма';
+    }
+    else {
+        if (sortAmoP === -1) {
+            prColnameAmo.children[0].children[0].innerHTML = 'Сумма &darr;';
+        }
+        else {
+            prColnameAmo.children[0].children[0].innerHTML = 'Сумма &uarr;';
+        }
     }
 
     if(dataSet.dataExp.length > 0){
@@ -417,6 +572,8 @@ function rerender(dataSet) {
     settingsPeriodTo.innerHTML = convertTimeStampVisible(dataSet.periodTo);
 
     spanDelta.innerHTML = dataSet.totalDelta;
+
+    resize();
 };
 
 function convertTimeStampVisible(timestamp) {
@@ -427,4 +584,55 @@ function convertTimeStampVisible(timestamp) {
         ('0' + (condate.getMonth()+1)).slice(-2),
         condate.getFullYear()
     ].join('.');
+}
+
+function resize() {
+    let list = document.getElementById('list-expenses');
+    resizeTable(list);
+
+    list = document.getElementById('list-profits');
+    resizeTable(list);
+}
+
+function resizeTable(list) {
+    let children = list.childNodes;
+    let divRow;
+
+    let colName;
+
+    for(child in children){
+        divRow = children[child].childNodes;
+        let maxHeight = 0;
+        for(column in divRow){
+            if (divRow.length > 0){
+                if(divRow[column].nodeName === 'DIV' &
+                    ((' ' + divRow[column].className + ' ').indexOf('fin-reg-cat-40') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-cat-60') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-amount-end-sub') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-amount-end') > -1
+                    )) {
+                    colName = divRow[column];
+                    if (colName.clientHeight > maxHeight){
+                        maxHeight = colName.clientHeight;
+                    }
+                }
+            }
+        }
+
+        for(column in divRow){
+            if (divRow.length > 0){
+                if(divRow[column].nodeName === 'DIV' &
+                    ((' ' + divRow[column].className + ' ').indexOf('fin-reg-cat-40') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-cat-60') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-amount-end-sub') > -1 ||
+                        (' ' + divRow[column].className + ' ').indexOf('fin-reg-amount-end') > -1
+                    )) {
+                    colName = divRow[column];
+                    colName.style.height = maxHeight + 'px';
+                }
+            }
+        }
+
+        colName = undefined;
+    }
 }

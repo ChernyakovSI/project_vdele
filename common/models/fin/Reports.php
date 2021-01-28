@@ -12,7 +12,7 @@ use yii\db\Query;
 
 class Reports
 {
-    public static function getTotalByExpenceCatsByUser($id_user, $beginDate = 0, $endDate = 0){
+    public static function getTotalByExpenceCatsByUser($id_user, $beginDate = 0, $endDate = 0, $option = []){
         $query = new Query();
         $body = $query->Select('Reg.`id_category` as id_category,
                                             Cat.`name` as CatName,
@@ -38,12 +38,39 @@ class Reports
 
         $body = $body->groupBy(['id_category', 'CatName']);
 
-        $result = $body->orderBy('CatName')->all();
+        $strOrder = '';
+        $separator = '';
+        if(isset($option['sortCat'])) {
+            if($option['sortCat'] === 1) {
+                $strOrder = $strOrder.$separator.'CatName';
+                $separator = ', ';
+            }
+            if($option['sortCat'] === -1) {
+                $strOrder = $strOrder.$separator.'CatName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortAmo'])) {
+            if($option['sortAmo'] === 1) {
+                $strOrder = $strOrder.$separator.'sum';
+                $separator = ', ';
+            }
+            if($option['sortAmo'] === -1) {
+                $strOrder = $strOrder.$separator.'sum DESC';
+                $separator = ', ';
+            }
+        }
+        if($strOrder === '') {
+            $result = $body->orderBy('CatName')->all();
+        }
+        else {
+            $result = $body->orderBy($strOrder)->all();
+        }
 
         return $result;
     }
 
-    public static function getTotalByProfitCatsByUser($id_user, $beginDate = 0, $endDate = 0){
+    public static function getTotalByProfitCatsByUser($id_user, $beginDate = 0, $endDate = 0, $option = []){
         $query = new Query();
         $body = $query->Select('Reg.`id_category` as id_category,
                                             Cat.`name` as CatName,
@@ -69,12 +96,40 @@ class Reports
 
         $body = $body->groupBy(['id_category', 'CatName']);
 
-        $result = $body->orderBy('CatName')->all();
+        //$result = $body->orderBy('CatName')->all();
+        $strOrder = '';
+        $separator = '';
+        if(isset($option['sortCat'])) {
+            if($option['sortCat'] === 1) {
+                $strOrder = $strOrder.$separator.'CatName';
+                $separator = ', ';
+            }
+            if($option['sortCat'] === -1) {
+                $strOrder = $strOrder.$separator.'CatName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortAmo'])) {
+            if($option['sortAmo'] === 1) {
+                $strOrder = $strOrder.$separator.'sum';
+                $separator = ', ';
+            }
+            if($option['sortAmo'] === -1) {
+                $strOrder = $strOrder.$separator.'sum DESC';
+                $separator = ', ';
+            }
+        }
+        if($strOrder === '') {
+            $result = $body->orderBy('CatName')->all();
+        }
+        else {
+            $result = $body->orderBy($strOrder)->all();
+        }
 
         return $result;
     }
 
-    public static function getTotalByExpenceSubsByUser($id_user, $beginDate = 0, $endDate = 0){
+    public static function getTotalByExpenceSubsByUser($id_user, $beginDate = 0, $endDate = 0, $option = []){
         $query = new Query();
         $body = $query->Select('Reg.`id_category` as id_category,
                                             Cat.`name` as CatName,
@@ -104,12 +159,50 @@ class Reports
         $body = $body->groupBy(['id_category', 'CatName', 'id_subcategory', 'SubName']);
 
 
-        $result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        //$result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        $strOrder = '';
+        $separator = '';
+        if(isset($option['sortCat'])) {
+            if($option['sortCat'] === 1) {
+                $strOrder = $strOrder.$separator.'CatName';
+                $separator = ', ';
+            }
+            if($option['sortCat'] === -1) {
+                $strOrder = $strOrder.$separator.'CatName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortSub'])) {
+            if($option['sortSub'] === 1) {
+                $strOrder = $strOrder.$separator.'SubName';
+                $separator = ', ';
+            }
+            if($option['sortSub'] === -1) {
+                $strOrder = $strOrder.$separator.'SubName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortAmo'])) {
+            if($option['sortAmo'] === 1) {
+                $strOrder = $strOrder.$separator.'sum';
+                $separator = ', ';
+            }
+            if($option['sortAmo'] === -1) {
+                $strOrder = $strOrder.$separator.'sum DESC';
+                $separator = ', ';
+            }
+        }
+        if($strOrder === '') {
+            $result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        }
+        else {
+            $result = $body->orderBy($strOrder)->all();
+        }
 
         return $result;
     }
 
-    public static function getTotalByProfitSubsByUser($id_user, $beginDate = 0, $endDate = 0){
+    public static function getTotalByProfitSubsByUser($id_user, $beginDate = 0, $endDate = 0, $option = []){
         $query = new Query();
         $body = $query->Select('Reg.`id_category` as id_category,
                                             Cat.`name` as CatName,
@@ -139,7 +232,45 @@ class Reports
         $body = $body->groupBy(['id_category', 'CatName', 'id_subcategory', 'SubName']);
 
 
-        $result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        //$result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        $strOrder = '';
+        $separator = '';
+        if(isset($option['sortCat'])) {
+            if($option['sortCat'] === 1) {
+                $strOrder = $strOrder.$separator.'CatName';
+                $separator = ', ';
+            }
+            if($option['sortCat'] === -1) {
+                $strOrder = $strOrder.$separator.'CatName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortSub'])) {
+            if($option['sortSub'] === 1) {
+                $strOrder = $strOrder.$separator.'SubName';
+                $separator = ', ';
+            }
+            if($option['sortSub'] === -1) {
+                $strOrder = $strOrder.$separator.'SubName DESC';
+                $separator = ', ';
+            }
+        }
+        if(isset($option['sortAmo'])) {
+            if($option['sortAmo'] === 1) {
+                $strOrder = $strOrder.$separator.'sum';
+                $separator = ', ';
+            }
+            if($option['sortAmo'] === -1) {
+                $strOrder = $strOrder.$separator.'sum DESC';
+                $separator = ', ';
+            }
+        }
+        if($strOrder === '') {
+            $result = $body->orderBy('Cat.`name`, Sub.`name`')->all();
+        }
+        else {
+            $result = $body->orderBy($strOrder)->all();
+        }
 
         return $result;
     }
