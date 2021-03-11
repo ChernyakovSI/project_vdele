@@ -187,6 +187,13 @@ $isFilled = false;
                         </div>
                     </a>
                 <?php } ?>
+                <a href="/foto?id=<?= $user->getId() ?>">
+                    <div class="subwindow button-item">
+
+                        <hr/>Фотографии<hr/>
+
+                    </div>
+                </a>
             </div>
         </div>
 

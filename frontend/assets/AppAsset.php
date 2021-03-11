@@ -11,6 +11,9 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
+
+    //public $dataUrl = '@web';
+
     public $css = [
         'css/site21.css',
         'css/index46.css',
@@ -22,8 +25,9 @@ class AppAsset extends AssetBundle
         'css/useful1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
-        'css/floatingCircles1.css',
-        'css/contextMenu.css'
+        'css/floatingCircles2.css',
+        'css/contextMenu.css',
+        'css/foto.css'
     ];
     public $js = [];
 //    [
@@ -48,6 +52,9 @@ class AppAsset extends AssetBundle
         }
         if (\yii::$app->request->url == '/fin/reports') {
             $this->js[] = 'js/fin/reports_pos_ready.js';
+        }
+        if (mb_substr(\yii::$app->request->url, 0, 5) == '/foto') {
+            $this->js[] = 'js/fotos.js';
         }
     }
 }

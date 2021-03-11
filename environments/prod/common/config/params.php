@@ -7,5 +7,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'doman' => 'http://yavdele.net/',
     'domanName' => 'yavdele.net',
+
+    'dataUrl' => './data/'
 ];
 

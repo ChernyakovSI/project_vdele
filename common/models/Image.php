@@ -9,9 +9,13 @@
 namespace common\models;
 
 use yii\db\ActiveRecord;
+use yii\db\Query;
+use Yii;
 
 class Image extends ActiveRecord
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -28,6 +32,7 @@ class Image extends ActiveRecord
         return [
             [['id', 'id_album', 'created_at', 'updated_at', 'num', 'id_user'], 'integer'],
             [['src', 'description'], 'safe'],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -110,5 +115,82 @@ class Image extends ActiveRecord
         {
             return '';
         }
+    }
+
+    public static function getAllImagePathsForUserAndAlbum($id_user, $id_album)
+    {
+        $query = new Query();
+        $body = $query->Select('Img.`id` as id,
+                                            Img.`description` as description,
+                                            Img.`id_album` as id_album,
+                                            Img.`created_at` as created_at,
+                                            Img.`updated_at` as updated_at,
+                                            Img.`num` as num,
+                                            Img.`id_user` as id_user,
+                                            Img.`src` as src
+                                            ')
+            ->from(self::tableName().' as Img')
+            ->where(['Img.`id_user`' => $id_user, 'Img.`id_album`' => $id_album, 'Img.`is_deleted`' => 0]);
+
+        $result = $body->orderBy('Img.`created_at` DESC')->all();
+
+        return $result;
+    }
+
+    public function upload($file, $id_album = 1)
+    {
+        $this->imageFile = $file;
+
+        $id_user = Yii::$app->user->identity->getId();
+        $num = $this->getNextNumForUser($id_user, $id_album);
+
+        if(isset($this->imageFile)) {
+            $extension = $this->getExtension($this->imageFile['name']);
+            $src = ''.$id_user.'_'.$id_album.'_'.$num. '.' . $extension;
+
+            $pathName = $this->getPathForAlbum($id_album);
+
+            $pathData = Yii::$app->params['dataUrl'];
+
+            $fullPath = $pathData.'img/'.$pathName.$src;
+
+            if (move_uploaded_file($this->imageFile['tmp_name'], $fullPath)) {
+                // Далее можно сохранить название файла в БД и т.п.
+                $this->addImage($id_user, $id_album, $num, $src);
+            }
+        }
+        else
+        {
+            $fullPath = '';
+        }
+
+        return $fullPath;
+
+    }
+
+    public function getExtension($filename) {
+        return end(explode(".", $filename));
+        //return pathinfo($filename);
+    }
+
+    public function getPathForAlbum($id_album) {
+        if ($id_album === 0) {
+            return 'avatar/';
+        }
+        elseif ($id_album === 1) {
+            return 'main/';
+        }
+        else {
+            return 'error/';
+        }
+    }
+
+
+    //Не используется
+    public static function getImageURL($name, $id_album){
+        $image = new Image();
+        $pathName = $image->getPathForAlbum($id_album);
+        $file = file_get_contents(Yii::$app->params['doman'].Yii::$app->params['dataUrl'].'img/'.$pathName.$name, true);
+        return $file;
     }
 }

@@ -85,7 +85,9 @@ class SiteController extends Controller
                                     'dialog',
                                     'dialog-send',
                                     'dialog-delete',
-                                    'dialog-get-messages'],
+                                    'dialog-get-messages',
+                                    'foto',
+                                    'foto-load'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -642,5 +644,67 @@ class SiteController extends Controller
                 "error" => "Механизм dialog-get-messages работает только с AJAX"
             ];
         }
+    }
+
+
+    public function actionFoto()
+    {
+        $cur_user = Yii::$app->user->identity;
+        if (!empty($_GET['id'])) {
+            $id_user = $_GET['id'];
+        }
+        else{
+            $id_user = $cur_user->getId();
+        }
+        //$cur_user = User::findIdentity($user_id);
+
+        $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 1);
+
+        /*echo '<pre>';
+        var_dump($allPaths);
+        exit();
+*/
+        return $this->render('fotoalbum', [
+                'user_id' => $id_user,
+                'allPaths' => $allPaths
+        ]);
+
+    }
+
+    public function actionFotoLoad()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                //$data = Yii::$app->request->post();
+
+                $file = $_FILES['file'];
+
+                $image = new Image();
+                $path = $image->upload($file, 1);
+
+                $cur_user = Yii::$app->user->identity;
+                $id_user = $cur_user->getId();
+                $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 1);
+
+                $pathFotos = Yii::$app->params['dataUrl'].'img/main/';
+
+                return [
+                    'newPath' => $path,
+                    'error' => '',
+                    'allPaths' => $allPaths,
+                    'pathFotos' => $pathFotos
+                ];
+            }
+
+        }
+
+        return [
+            'newPaths' => [],
+            'error' => 'error'
+        ];
     }
 }

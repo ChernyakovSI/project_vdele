@@ -185,3 +185,47 @@
         background-color:rgb(201,201,201);
     }
 }
+
+/*Элемент загрузки фотографий input file*/
+
+.foto-input .form-group {
+    padding:1em;
+    margin:1em
+}
+
+.foto-input input[type=file] {
+    outline:0;
+    opacity:0;
+    pointer-events:none;
+    user-select:none
+}
+
+.foto-input .label {
+    width:120px;
+    border:2px dashed grey;
+    border-radius:5px;
+    display:block;
+    padding:1.2em;
+    transition:border 300ms ease;
+    cursor:pointer;
+    text-align:center
+}
+
+.foto-input .label i {
+    display:block;
+    font-size:42px;
+    padding-bottom:16px
+}
+
+.foto-input .label i,.foto-input .label .title {
+    color:grey;
+    transition:200ms color
+}
+
+.foto-input .label:hover {
+    border:2px solid #000
+}
+
+.foto-input .label:hover i,.foto-input .label:hover .title {
+    color:#000
+}
