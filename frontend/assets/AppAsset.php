@@ -55,6 +55,9 @@ class AppAsset extends AssetBundle
         }
         if (mb_substr(\yii::$app->request->url, 0, 5) == '/foto') {
             $this->js[] = 'js/fotos.js';
+
+            $this->js[] = 'js/lightbox.js';
+            $this->css[] = 'css/lightbox.css';
         }
     }
 }

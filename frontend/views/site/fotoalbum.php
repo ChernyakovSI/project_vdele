@@ -54,7 +54,8 @@ $this->title = 'Фотоальбом';
                         <div class="window window-border flex-item"><img src="/data/img/main/7_1_6.jpg" class="img-wrap"></div>
                         <div class="window window-border flex-item"><img src="/data/img/main/7_1_7.jpg" class="img-wrap"></div>-->
                     <?php } else { foreach ($allPaths as $foto): ?>
-                        <div class="window window-border flex-item"><img src="<?= Yii::$app->params['dataUrl'].'img/main/'.$foto['src'] ?>" class="img-wrap"></div>
+                        <?php $curPath = Yii::$app->params['dataUrl'].'img/main/'.$foto['src']; ?>
+                        <div class="window window-border flex-item"><a href="<?= $curPath ?>" data-lightbox="roadtrip"><img src="<?= $curPath ?>" class="img-wrap"></a></div>
                     <?php endforeach; } ?>
                 </div>
             </div>
