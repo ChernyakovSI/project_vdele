@@ -154,10 +154,10 @@ class Image extends ActiveRecord
 
             $fullPath = $pathData.'img/'.$pathName.$src;
 
-            //if (move_uploaded_file($this->imageFile['tmp_name'], $fullPath)) {
+            if (move_uploaded_file($this->imageFile['tmp_name'], $fullPath)) {
                 // Далее можно сохранить название файла в БД и т.п.
-            //    $this->addImage($id_user, $id_album, $num, $src);
-            //}
+                $this->addImage($id_user, $id_album, $num, $src);
+            }
         }
         else
         {
