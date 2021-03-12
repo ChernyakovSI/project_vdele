@@ -27,6 +27,12 @@
     overflow: hidden;
 }
 
+.flex-item-b16 {
+    position: relative;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
 .flex-item.removing {
     transform: scale(0);
     transition: transform .3s;

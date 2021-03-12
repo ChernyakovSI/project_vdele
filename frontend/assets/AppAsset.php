@@ -19,7 +19,7 @@ class AppAsset extends AssetBundle
         'css/index46.css',
         'css/color18.css',
         'css/acEdit10.css',
-        'css/users5.css',
+        'css/users6.css',
         'css/url2.css',
         'css/fin10.css',
         'css/useful1.css',
@@ -27,7 +27,7 @@ class AppAsset extends AssetBundle
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles2.css',
         'css/contextMenu.css',
-        'css/foto.css'
+        'css/foto1.css'
     ];
     public $js = [];
 //    [

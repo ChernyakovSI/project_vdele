@@ -19,11 +19,11 @@ $this->title = 'Пользователи';
         'maxButtonCount' => 8,
         'disabledPageCssClass' => 'disabled',]) ?></div>
 
-    <div class="content">
+    <div class="content flex">
         <?php $imageClass = new Image();
         foreach ($users as $user): ?>
 
-            <div class="users-container-wrap window window-border">
+            <div class="users-container-wrap window window-border flex-item-b16">
                 <a href="/?id=<?= $user->getId() ?>">
                 <div class="users-avatar">
                     <div class="img-wrap-user">

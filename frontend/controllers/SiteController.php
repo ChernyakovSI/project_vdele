@@ -395,7 +395,7 @@ class SiteController extends Controller
         $query = User::find();
 
         $pagination = new Pagination([
-            'defaultPageSize' => 5,
+            'defaultPageSize' => 10,
             'totalCount' => $query->count(),
         ]);
 
