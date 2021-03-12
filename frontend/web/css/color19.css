@@ -329,3 +329,7 @@ a:hover {
     background: linear-gradient(to bottom, #54423a 0%,#63271d 100%);
     color: #fff;
 }
+
+.window-colored {
+    box-shadow: 0 0 10px 10px #8A2908;
+}

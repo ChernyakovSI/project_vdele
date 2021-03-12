@@ -21,6 +21,11 @@ $this->title = 'Фотоальбом';
                 </a>
             </div>
 
+            <div id="panel-colored" class="window window-border window-caption-full window-button-panel FIO-foto">
+                <div class="window-button-in-panel window-border" id="button-remove">Удалить</div>
+                <div class="window-button-in-panel window-border" id="button-cancel">Отменить</div>
+            </div>
+
             <div class="window window-border main-info-foto">
                 <div class="flex" id="list-fotos">
                     <?php if($user_id == Yii::$app->user->identity->getId()) { ?>
@@ -55,7 +60,7 @@ $this->title = 'Фотоальбом';
                         <div class="window window-border flex-item"><img src="/data/img/main/7_1_7.jpg" class="img-wrap"></div>-->
                     <?php } else { foreach ($allPaths as $foto): ?>
                         <?php $curPath = Yii::$app->params['dataUrl'].'img/main/'.$foto['src']; ?>
-                        <div class="window window-border flex-item"><a href="<?= $curPath ?>" data-lightbox="roadtrip"><img src="<?= $curPath ?>" class="img-wrap"></a></div>
+                        <div class="window window-border flex-item foto-item"><a href="<?= $curPath ?>" data-lightbox="roadtrip"><img src="<?= $curPath ?>" class="img-wrap"></a></div>
                     <?php endforeach; } ?>
                 </div>
             </div>

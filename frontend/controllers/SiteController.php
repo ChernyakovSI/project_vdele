@@ -87,7 +87,8 @@ class SiteController extends Controller
                                     'dialog-delete',
                                     'dialog-get-messages',
                                     'foto',
-                                    'foto-load'],
+                                    'foto-load',
+                                    'foto-delete'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -707,4 +708,49 @@ class SiteController extends Controller
             'error' => 'error'
         ];
     }
+
+    public function actionFotoDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+
+                $image = new Image();
+
+                foreach ($data['sources'] as $item) {
+                    if ($item !== '') {
+                        $thisImage = $image->findImageBySrc($item);
+
+                        $image->replaceFileToDeleted($thisImage['id']);
+
+                    }
+                }
+
+                $cur_user = Yii::$app->user->identity;
+                $id_user = $cur_user->getId();
+                $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 1);
+
+                $pathFotos = Yii::$app->params['dataUrl'].'img/main/';
+
+                return [
+                    'error' => '',
+                    'allPaths' => $allPaths,
+                    'pathFotos' => $pathFotos
+                ];
+            }
+
+        }
+
+        return [
+            'newPaths' => [],
+            'error' => 'error'
+        ];
+    }
+
+
+
 }

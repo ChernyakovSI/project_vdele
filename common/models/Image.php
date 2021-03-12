@@ -168,6 +168,70 @@ class Image extends ActiveRecord
 
     }
 
+    public function findImageBySrc($src, $id_album = 1) {
+        $pathName = $this->getPathForAlbum($id_album);
+        $fullPath = Yii::$app->params['dataUrl'].'img/'.$pathName;
+
+        $src = str_ireplace($fullPath, '', $src);
+
+        $query = new Query();
+        $body = $query->Select('Img.`id` as id,
+                                            Img.`description` as description,
+                                            Img.`id_album` as id_album,
+                                            Img.`created_at` as created_at,
+                                            Img.`updated_at` as updated_at,
+                                            Img.`num` as num,
+                                            Img.`id_user` as id_user,
+                                            Img.`src` as src
+                                            ')
+            ->from(self::tableName().' as Img')
+            ->where(['Img.`src`' => $src]);
+
+        $result = $body->one();
+
+        return $result;
+    }
+
+    public function replaceFileToDeleted($id, $id_album = 1) {
+
+        $id = (int)$id;
+        if($id === 0){
+            return false;
+        }
+
+        $image = Image::find()->where(['id' => $id])->one();
+
+        $pathName = $this->getPathForAlbum($id_album);
+
+        $pathData = Yii::$app->params['dataUrl'];
+
+        $fullPath = $pathData.'img/'.$pathName.$image->src;
+        $fullPathDeleted = $pathData.'img/deleted/'.$pathName.$image->src;
+
+        if (rename($fullPath, $fullPathDeleted)) {
+            // Далее можно сохранить название файла в БД и т.п.
+            return $this->deleteImage($id);
+        }
+        else{
+            return [$fullPath, $fullPathDeleted];
+        }
+
+    }
+
+    public function deleteImage($id) {
+
+        if($id === 0){
+            return false;
+        }
+
+        $image = Image::find()->where(['id' => $id])->one();
+        $image->is_deleted = 1;
+        $image->updated_at = time();
+        $image->save();
+
+        return true;
+    }
+
     public function getExtension($filename) {
         $arrPath = explode(".", $filename);
         $lenPath = count($arrPath);

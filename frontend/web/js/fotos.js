@@ -10,6 +10,127 @@ let floatingCirclesG = document.getElementById('floatingCirclesG');
 
 let allFiles = [];
 
+let clickTime;
+let modeColored = 0;
+
+let fotoItems = document.getElementsByClassName('foto-item');
+let panelColored = document.getElementById('panel-colored');
+let btnRemoveFotos = document.getElementById('button-remove');
+let btnCancel = document.getElementById('button-cancel');
+
+let arrDeleting = [];
+
+$(document).ready( function() {
+    panelColored.hidden = true;
+
+    arrFotos = Array.from(fotoItems);
+    arrFotos.forEach(function(item, i, arr) {
+        item.onmousedown = function(e) {
+            if(modeColored === 0) {
+                clickTime = setTimeout(function(){
+                    deleteLightBox();
+                    modeColored = 1;
+                    panelColored.hidden = false;
+                    item.classList.add('window-colored');
+
+                    arrDeleting.push(item);
+                }, 1000);
+            }
+
+            if (modeColored === 1) {
+
+                if(item.classList.contains('window-colored')) {
+                    item.classList.remove('window-colored');
+                    arrDeleting = arrDeleting.filter(function(elem) {
+                        return elem !== item
+                    })
+                }
+                else {
+                    item.classList.add('window-colored');
+                    arrDeleting.push(item);
+                }
+            }
+
+        };
+
+        item.onmouseup = function(e) {
+            clearTimeout(clickTime);
+        };
+    })
+
+});
+
+function deleteLightBox() {
+    arrFotos = Array.from(fotoItems);
+    arrFotos.forEach(function(item, i, arr) {
+        let children = item.childNodes;
+
+        for(child in children){
+            if(children[child].nodeName === 'A') {
+                if(children[child].hasAttribute('data-lightbox')) {
+                    children[child].removeAttribute('data-lightbox');
+                    children[child].setAttribute('data-href', children[child].getAttribute('href'));
+                    children[child].setAttribute('href', '#');
+                }
+            }
+        }
+    });
+}
+
+function returnLightBox() {
+    arrFotos = Array.from(fotoItems);
+    arrFotos.forEach(function(item, i, arr) {
+        let children = item.childNodes;
+
+        for(child in children){
+            if(children[child].nodeName === 'A') {
+                if (children[child].hasAttribute('data-lightbox') === false) {
+                    children[child].setAttribute('data-lightbox', 'roadtrip');
+                    children[child].setAttribute('href',  children[child].getAttribute('data-href'));
+                    children[child].removeAttribute('data-href');
+                }
+            }
+        }
+
+        if(item.classList.contains('window-colored')) {
+            item.classList.remove('window-colored');
+        }
+    });
+}
+
+btnCancel.onclick = function(e) {
+    modeColored = 0;
+    panelColored.hidden = true;
+    returnLightBox();
+};
+
+btnRemoveFotos.onclick = function(e) {
+    arrSrc = [];
+    arrDeleting.forEach(function(item, i, arr) {
+        let children = item.childNodes;
+
+        for(child in children){
+            if(children[child].nodeName === 'A') {
+                if (children[child].hasAttribute('data-href') === true) {
+                    arrSrc.push(children[child].getAttribute('data-href'));
+                }
+            }
+        }
+    });
+
+    if(arrSrc.length > 0) {
+        value = {
+            'sources' : arrSrc,
+        };
+
+        runAjax('/foto-delete', value, 2);
+    }
+
+    modeColored = 0;
+    panelColored.hidden = true;
+    returnLightBox();
+};
+
 function bytesToSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes === 0)
@@ -99,63 +220,89 @@ function handleFiles(files) {
 function runAjax(url, value, mode = 1, typeReq = 'post'){
     floatingCirclesG.hidden = false;
 
-    //value = {'files' : []};
-    //console.dir(value);
-    form = document.getElementById('form');
-    form.files = value.files;
+    if(mode === 1) {
+        form = document.getElementById('form');
+        form.files = value.files;
 
-    let formData = new FormData();
-    formData.append('section', 'general');
-    formData.append('action', 'previewImg');
-// Attach file
-    let FilesForLoad = [];
-    qLoaded = 0;
-    for (let i = 0; i < fotos.files.length; i++) {
-        formData.append('file', fotos.files[i]);
-        //formData.append('extension', fotos.files[i].extension);
-        //console.log(fotos.files[i]);
+        let formData = new FormData();
+        formData.append('section', 'general');
+        formData.append('action', 'previewImg');
+        qLoaded = 0;
+        for (let i = 0; i < fotos.files.length; i++) {
+            formData.append('file', fotos.files[i]);
+            //formData.append('extension', fotos.files[i].extension);
+            //console.log(fotos.files[i]);
 
+            $.ajax({
+                type : typeReq,
+                url : url,
+                data : formData, // form
+                contentType: false,
+                processData: false,
+                cache: false,
+            }).done(function(data) {
+                //console.dir(data);
+                qLoaded = qLoaded + 1;
+
+                if (data.error === null || data.error === undefined) {
+                    if(mode === 1){
+
+                    }
+
+                } else {
+                    if (data.error !== '' || data.error !== null || data.error !== undefined){
+                        if(mode === 1){
+                            //showError(data);
+                        }
+                    }
+                }
+
+                if (qLoaded === fotos.files.length){
+                    afterLoadingFotos(data);
+                    floatingCirclesG.hidden = true;
+
+                    //console.log('Загружено');
+                }
+
+            }).fail(function() {
+                qLoaded = qLoaded + 1;
+
+                if (qLoaded === fotos.files.length){
+                    afterLoadingFotos();
+                    floatingCirclesG.hidden = true;
+                    //console.log('Загружено');
+                }
+            });
+        }
+    }
+    else {
         $.ajax({
             type : typeReq,
             url : url,
-            data : formData, // form
-            contentType: false,
-            processData: false,
-            cache: false,
+            data : value, // array
         }).done(function(data) {
-            //console.dir(data);
-            qLoaded = qLoaded + 1;
 
-            if (data.error === null || data.error === undefined) {
-                if(mode === 1){
-
+            console.dir(data);
+            if (data.error === null || data.error === undefined || data.error === '') {
+                if(mode === 2){
+                    rerender(data);
+                    floatingCirclesG.hidden = true;
                 }
 
             } else {
                 if (data.error !== '' || data.error !== null || data.error !== undefined){
-                    if(mode === 1){
+                    if(mode === 2){
                         //showError(data);
+                        floatingCirclesG.hidden = true;
                     }
                 }
             }
 
-            if (qLoaded === fotos.files.length){
-                afterLoadingFotos(data);
-                floatingCirclesG.hidden = true;
-
-                //console.log('Загружено');
-            }
-
         }).fail(function() {
-            qLoaded = qLoaded + 1;
 
-            if (qLoaded === fotos.files.length){
-                afterLoadingFotos();
-                floatingCirclesG.hidden = true;
-                //console.log('Загружено');
-            }
         });
     }
+
 }
 
 function afterLoadingFotos(data = undefined) {
@@ -267,23 +414,66 @@ function rerender(dataSet) {
     let listFoto = document.getElementById('list-fotos');
     let children = listFoto.childNodes;
 
+    arrElemsForDel = [];
     for(child in children){
-        if(children[child].nodeName === 'DIV' & (' ' + children[child].className + ' ').indexOf('add-img') === -1) {
-            children[child].remove();
+        if((children[child].nodeName === 'DIV') & ((' ' + children[child].className + ' ').indexOf('add-img') === -1)) {
+            console.log('удален');
+            arrElemsForDel.push(children[child]);
         }
     }
+    arrElemsForDel.forEach(function(data, i, arrData){
+        data.remove();
+    });
 
+    console.log(dataSet.allPaths.length);
     if(dataSet.allPaths.length > 0){
         dataSet.allPaths.forEach(function(data, i, arrData){
             let divElem = document.createElement('div');
-            divElem.className = 'window window-border flex-item';
+            divElem.className = 'window window-border flex-item foto-item';
+
+            let aFoto = document.createElement('a');
+            aFoto.setAttribute('href', dataSet.pathFotos + data['src']);
+            aFoto.setAttribute('data-lightbox', 'roadtrip');
 
             let imgFoto = document.createElement('img');
             imgFoto.className = 'img-wrap';
             imgFoto.setAttribute('src', dataSet.pathFotos + data['src']);
 
-            divElem.append(imgFoto);
+            aFoto.append(imgFoto);
+            divElem.append(aFoto);
             listFoto.append(divElem);
+
+            divElem.onmousedown = function(e) {
+                if(modeColored === 0) {
+                    clickTime = setTimeout(function(){
+                        deleteLightBox();
+                        modeColored = 1;
+                        panelColored.hidden = false;
+                        divElem.classList.add('window-colored');
+
+                        arrDeleting.push(divElem);
+                    }, 1000);
+                }
+
+                if (modeColored === 1) {
+
+                    if(divElem.classList.contains('window-colored')) {
+                        divElem.classList.remove('window-colored');
+                        arrDeleting = arrDeleting.filter(function(elem) {
+                            return elem !== divElem
+                        })
+                    }
+                    else {
+                        divElem.classList.add('window-colored');
+                        arrDeleting.push(divElem);
+                    }
+                }
+
+            };
+
+            divElem.onmouseup = function(e) {
+                clearTimeout(clickTime);
+            };
         });
     }
     else
