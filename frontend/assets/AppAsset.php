@@ -59,5 +59,9 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/lightbox.js';
             $this->css[] = 'css/lightbox.css';
         }
+        if ((mb_substr(\yii::$app->request->url, 0, 2) == '/?') || (\yii::$app->request->url == '/')) {
+            $this->js[] = 'js/lightbox.js';
+            $this->css[] = 'css/lightbox.css';
+        }
     }
 }

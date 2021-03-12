@@ -18,7 +18,8 @@ $isFilled = false;
     <div class="container-wrap">
         <div class="window window-border avatar">
             <?php if((isset($path_avatar)) && ($path_avatar != '')) { ?>
-                <img src=<?= '/data/img/avatar/'.$path_avatar; ?> class="avatar_font">
+                <?php $pathAva = Yii::$app->params['dataUrl'].'img/avatar/'.$path_avatar; ?>
+                <a href="<?= $pathAva ?>" data-lightbox="avatar" data-title=""><img src=<?= $pathAva ?> class="avatar_font"></a>
             <?php }
             else {
                 if((isset($user->gender)) && ($user->gender === 2)) { ?>
