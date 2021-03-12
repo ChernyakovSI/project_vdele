@@ -150,7 +150,8 @@ class Image extends ActiveRecord
 
             $pathName = $this->getPathForAlbum($id_album);
 
-            $pathData = Yii::$app->params['dataUrl'];
+            //$pathData = Yii::$app->params['dataUrl'];
+            $pathData = 'https://yavdele.net/';
 
             $fullPath = $pathData.'img/'.$pathName.$src;
 

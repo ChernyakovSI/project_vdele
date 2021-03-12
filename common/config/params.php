@@ -5,7 +5,9 @@ return [
     'supportEmail' => 'yavdele@list.ru',
     'robotEmail' => 'robot@yavdele.net',
     'user.passwordResetTokenExpire' => 3600,
-    'doman' => 'http://yavdele.net/',
+    'doman' => 'https://yavdele.net/',
     'domanName' => 'yavdele.net',
+
+    'dataUrl' => './data/'
 ];
 
