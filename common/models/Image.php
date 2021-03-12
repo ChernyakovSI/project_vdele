@@ -150,8 +150,7 @@ class Image extends ActiveRecord
 
             $pathName = $this->getPathForAlbum($id_album);
 
-            //$pathData = Yii::$app->params['dataUrl'];
-            $pathData = 'https://yavdele.net/';
+            $pathData = Yii::$app->params['dataUrl'];
 
             $fullPath = $pathData.'img/'.$pathName.$src;
 
@@ -170,7 +169,16 @@ class Image extends ActiveRecord
     }
 
     public function getExtension($filename) {
-        return end(explode(".", $filename));
+        $arrPath = explode(".", $filename);
+        $lenPath = count($arrPath);
+        if ($lenPath > 0) {
+            return $arrPath[$lenPath-1];
+        }
+        else {
+            return '';
+        }
+
+        //return end(explode(".", $filename));
         //return pathinfo($filename);
     }
 

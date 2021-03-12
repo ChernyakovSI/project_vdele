@@ -123,7 +123,7 @@ function runAjax(url, value, mode = 1, typeReq = 'post'){
             processData: false,
             cache: false,
         }).done(function(data) {
-            console.dir(data);
+            //console.dir(data);
             qLoaded = qLoaded + 1;
 
             if (data.error === null || data.error === undefined) {
