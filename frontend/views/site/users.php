@@ -20,7 +20,8 @@ $this->title = 'Пользователи';
         'disabledPageCssClass' => 'disabled',]) ?></div>
 
     <div class="content">
-        <?php foreach ($users as $user): ?>
+        <?php $imageClass = new Image();
+        foreach ($users as $user): ?>
 
             <div class="users-container-wrap window window-border">
                 <a href="/?id=<?= $user->getId() ?>">
@@ -51,10 +52,15 @@ $this->title = 'Пользователи';
                         <div class="subwindow unactive">
                             <?= Html::encode("{$user->getTimeLastActivity()}") ?>
                         </div>
-                        <?php if($user->getId() != Yii::$app->user->identity->getId()) { ?>
                         <div></br></div>
+                        <?php if($user->getId() != Yii::$app->user->identity->getId()) { ?>
                         <div class="subwindow">
                             <a href="/dialog?id=<?= $user->getId() ?>">Написать</a>
+                        </div>
+                        <?php } ?>
+                        <?php if($imageClass->getPathOfLastPicture($user->getId(), 1) > 0 ) { ?>
+                        <div class="subwindow">
+                            <a href="/foto?id=<?= $user->getId() ?>">Фотоальбом</a>
                         </div>
                         <?php } ?>
                     </div>
