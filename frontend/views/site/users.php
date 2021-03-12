@@ -58,7 +58,7 @@ $this->title = 'Пользователи';
                             <a href="/dialog?id=<?= $user->getId() ?>">Написать</a>
                         </div>
                         <?php } ?>
-                        <?php if($imageClass->getPathOfLastPicture($user->getId(), 1) > 0 ) { ?>
+                        <?php if(($imageClass->hasFotos($user->getId(), 1) > 0) || ($user->getId() === Yii::$app->user->identity->getId()) ) { ?>
                         <div class="subwindow">
                             <a href="/foto?id=<?= $user->getId() ?>">Фотоальбом</a>
                         </div>

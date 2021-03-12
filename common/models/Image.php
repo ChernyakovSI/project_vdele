@@ -202,4 +202,17 @@ class Image extends ActiveRecord
         $file = file_get_contents(Yii::$app->params['doman'].Yii::$app->params['dataUrl'].'img/'.$pathName.$name, true);
         return $file;
     }
+
+    public function hasFotos($id_user, $id_album = 0)
+    {
+        $num = Image::find()->select('max(num)')->where(['id_user' => $id_user, 'id_album' => $id_album, 'is_deleted' => 0])->scalar();
+
+        if (isset($num)) {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }
