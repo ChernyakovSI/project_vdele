@@ -216,6 +216,7 @@ function showFormNew(callback) {
 
 
     buttonAdd.onclick = function(e) {
+        this.hidden = true;
         initBtnConfirm();
     };
 
