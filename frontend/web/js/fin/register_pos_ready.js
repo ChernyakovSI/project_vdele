@@ -957,7 +957,7 @@ function showFormNew(id, type, callback) {
         let children = divList.childNodes;
 
         for(column in children){
-            if(children[column].nodeName === 'OPTION' && children[column].innerHTML === nameAcc) {
+            if(children[column].nodeName === 'OPTION' && children[column].innerText === nameAcc) {
                 idAcc = children[column].getAttribute('data-id');
                 break;
             }
@@ -1010,7 +1010,7 @@ function showFormNew(id, type, callback) {
         let children = divList.childNodes;
 
         for(column in children){
-            if(children[column].nodeName === 'OPTION' && children[column].innerHTML === nameAcc) {
+            if(children[column].nodeName === 'OPTION' && children[column].innerText === nameAcc) {
                 idAcc = children[column].getAttribute('data-id');
                 break;
             }
@@ -1063,7 +1063,7 @@ function showFormNew(id, type, callback) {
         let children = divList.childNodes;
 
         for(column in children){
-            if(children[column].nodeName === 'OPTION' && children[column].innerHTML === nameCat) {
+            if(children[column].nodeName === 'OPTION' && children[column].innerText === nameCat) {
                 idCat = children[column].getAttribute('data-id');
                 break;
             }
@@ -1131,7 +1131,7 @@ function showFormNew(id, type, callback) {
         let children = divList.childNodes;
 
         for(column in children){
-            if(children[column].nodeName === 'OPTION' && children[column].innerHTML === nameSub) {
+            if(children[column].nodeName === 'OPTION' && children[column].innerText === nameSub) {
                 idSub = children[column].getAttribute('data-id');
                 break;
             }
