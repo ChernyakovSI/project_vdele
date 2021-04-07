@@ -105,6 +105,15 @@
                             if(defclass!=null) obj.options[j].className=defclass[1];
                         }else obj.options[j] = new Option('ОШИБКА!', '' );
                     }
+                    if(obj.options.length > 0) {
+                        obj.classList.remove('hideSelectList');
+                    }
+                    else {
+                        obj.classList.add('hideSelectList');
+                    }
+                }
+                else {
+                    obj.classList.add('hideSelectList');
                 }}
         }else if(typeof(data)=='object' && obj.tagName=='A'){
             //console.log('data=',data, ', obj=',obj);

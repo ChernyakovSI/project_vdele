@@ -737,8 +737,8 @@ $this->title = 'Финансы: Категории расходов и дохо�
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="red-comment" id="red-comment"></div>
-            <div class="window-button-panel">
+            <div class="red-comment window-m-t-9" id="red-comment"></div>
+            <div class="window-button-panel window-m-t-9">
                 <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
                 <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
             </div>

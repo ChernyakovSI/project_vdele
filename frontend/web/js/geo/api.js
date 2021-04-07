@@ -37,6 +37,20 @@ var _geo={/* скрипт скачан с htmlweb.ru/geo/ */
             addEvent(e, 'change',function(){_geo.o_city.value=_geo.city_name=this.options[this.selectedIndex].text;_geo.city_id=this.options[this.selectedIndex].value;});
             addEvent(e, 'keyup',_geo.PressKey2);
             addEvent(_geo.o_select, 'dblclick', _geo.Choice);
+
+
+            //Chern
+            if(_geo.o_select.options.length > 0) {
+                _geo.o_select.classList.remove('hideSelectList');
+                e.setAttribute('size',5);
+                e.style.height='auto';
+            }
+            else {
+                _geo.o_select.classList.add('hideSelectList');
+                e.setAttribute('size',0);
+                e.style.height='0';
+            }
+
             document.body.appendChild(e);
         }
 
@@ -52,6 +66,11 @@ var _geo={/* скрипт скачан с htmlweb.ru/geo/ */
         _geo.o_city.focus();
         _geo.o_city.select();
         _geo.o_select.style.visibility = 'hidden'; // спрячем select
+
+        //Chern
+        g.classList.add('hideSelectList');
+        g.setAttribute('size',0);
+        g.style.height='0';
     },
 
     PressKey2:function(e){ // вызывается при нажатии клавиши в select
@@ -65,6 +84,11 @@ var _geo={/* скрипт скачан с htmlweb.ru/geo/ */
         if(e.keyCode==38&&t.selectedIndex==0){ // Up
             _geo.o_city.focus();
             _geo.o_select.style.visibility = 'hidden'; // спрячем select
+            //Chern
+                _geo.o_select.classList.add('hideSelectList');
+                _geo.o_select.setAttribute('size',0);
+                _geo.o_select.style.height='0';
+
         }
     },
 
@@ -96,6 +120,10 @@ var _geo={/* скрипт скачан с htmlweb.ru/geo/ */
         if(_geo.timer){clearTimeout(_geo.timer);_geo.timer=0;}
         if(_geo.city_name.length<3){
             g.style.visibility = 'hidden'; // спрячем select
+            //Chern
+            g.classList.add('hideSelectList');
+            g.setAttribute('size',0);
+            gstyle.height='0';
             return;}
         _geo.timer=window.setTimeout('_geo.Load()',1000);  // загружаю через 1 секунду после последнего нажатия клавиши
     },
@@ -105,6 +133,10 @@ var _geo={/* скрипт скачан с htmlweb.ru/geo/ */
         _geo.o_select.options.length=0;
         ajaxLoad(_geo.o_select, '//htmlweb.ru/geo/api.php?city_name='+_geo.city_name+'&api_key='+_API);
         _geo.o_select.style.visibility='visible';
+        //Chern
+        g.classList.remove('hideSelectList');
+        g.setAttribute('size',5);
+        _geo.o_select.style.height='auto';
     },
 
 

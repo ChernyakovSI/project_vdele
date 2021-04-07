@@ -1,23 +1,23 @@
 /* Базовый контейнер табов */
-.tabs {
-    min-width: 320px;
+/*.tabs {
+    min-width: 320px;*/
     /*max-width: 800px;*/
-    padding: 0px;
+/*    padding: 0px;
     margin: 0 auto;
-}
+}*/
 /* Стили секций с содержанием */
-.tabs>section {
-    display: none;
+/*.tabs>section {
+    display: none;*/
     /*padding: 15px;
-    background: #fff;
+/*    background: #fff;
     border: 1px solid #ddd;*/
-}
+/*}
 .tabs>section>p {
     margin: 0 0 5px;
     line-height: 1.5;
     color: #383838;
     /* прикрутим анимацию */
-    -webkit-animation-duration: 1s;
+/*    -webkit-animation-duration: 1s;
     animation-duration: 1s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
@@ -26,7 +26,7 @@
 }
 /* Описываем анимацию свойства opacity */
 
-@-webkit-keyframes fadeIn {
+/*@-webkit-keyframes fadeIn {
     from {
         opacity: 0;
     }
@@ -43,12 +43,12 @@
     }
 }
 /* Прячем чекбоксы */
-.tabs>input {
+/*.tabs>input {
     display: none;
     position: absolute;
 }
 /* Стили переключателей вкладок (табов) */
-.tabs>label {
+/*.tabs>label {
     display: inline-block;
     margin: 0 0 -1px;
     font-weight: 600;
@@ -56,7 +56,7 @@
     background-color: rgba(84, 66, 58, 0.2)
 }
 /* Шрифт-иконки от Font Awesome в формате Unicode */
-.tabs>label:before {
+/*.tabs>label:before {
     font-family: fontawesome;
     font-weight: normal;
     margin-right: 10px;
@@ -78,19 +78,19 @@
 }
 /* Изменения стиля переключателей вкладок при наведении */
 
-.tabs>label:hover {
+/*.tabs>label:hover {
     color: #888;
     cursor: pointer;
 }
 /* Стили для активной вкладки */
-.tabs>input:checked+label {
+/*.tabs>input:checked+label {
     color: #555;
     /*border-top: 1px solid #009933;*/
-    border-bottom: 0px solid rgba(84, 66, 58, 0.1);
+/*    border-bottom: 0px solid rgba(84, 66, 58, 0.1);
     background: rgba(84, 66, 58, 0.1);
 }
 /* Активация секций с помощью псевдокласса :checked */
-#tab1:checked~#content-tab1, #tab2:checked~#content-tab2, #tab3:checked~#content-tab3, #tab4:checked~#content-tab4,
+/*#tab1:checked~#content-tab1, #tab2:checked~#content-tab2, #tab3:checked~#content-tab3, #tab4:checked~#content-tab4,
 #tab5:checked~#content-tab5 {
     display: block;
 }
@@ -98,7 +98,7 @@
 * и оставляем иконки на малых экранах
 */
 
-@media screen and (max-width: 680px) {
+/*@media screen and (max-width: 680px) {
     .tabs>label {
         font-size: 0;
     }
@@ -110,7 +110,7 @@
 /* Изменяем внутренние отступы
 *  переключателей для малых экранов
 */
-@media screen and (max-width: 400px) {
+/*@media screen and (max-width: 400px) {
     .tabs>label {
         padding: 15px;
     }
@@ -164,9 +164,15 @@
     border: 1px solid #C0C0C0; /* Белая рамка */
     padding: 15px;
     margin-bottom: 15px;
+    contain: content;
 }
 
 .resize_vertical_only {
     width: 100%;
     resize: vertical;
+}
+
+.hideSelectList {
+    height: 0;
+    border-width: 0;
 }

@@ -21,10 +21,8 @@
 </div>
 
 <div class="window window-border window-caption-2em caption-wrap">
-    <div class="caption-begin"><?='&nbsp;'?></div>
-    <div class="caption-text-new">Движения<div><?='&nbsp;'?></div></div>
-    <div class="caption-close-new">
-        <div id="floatingCirclesGMain" hidden>
+    <div class="caption-begin">
+        <div id="floatingCirclesGMain" class="window-m-t--9" hidden>
             <div class="f_circleG" id="frotateG_01"></div>
             <div class="f_circleG" id="frotateG_02"></div>
             <div class="f_circleG" id="frotateG_03"></div>
@@ -34,6 +32,10 @@
             <div class="f_circleG" id="frotateG_07"></div>
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
+        <?='&nbsp;'?>
+    </div>
+    <div class="caption-text-new">Движения<div><?='&nbsp;'?></div></div>
+    <div class="caption-close-new">
         <div><?='&nbsp;'?></div>
     </div>
 </div>
@@ -252,8 +254,8 @@
     <div id="prompt-form-container">
         <div id="prompt-form" class="window window-border form-off">
             <div class="caption-wrap">
-                <div class="caption-begin">
-                    <div id="floatingCirclesG">
+                <div class="caption-begin window-m-t--9">
+                    <div id="floatingCirclesG" hidden>
                         <div class="f_circleG" id="frotateG_01"></div>
                         <div class="f_circleG" id="frotateG_02"></div>
                         <div class="f_circleG" id="frotateG_03"></div>
@@ -365,8 +367,8 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="red-comment" id="red-comment"></div>
-            <div class="window-button-panel">
+            <div class="red-comment window-m-t-9" id="red-comment"></div>
+            <div class="window-button-panel window-m-t-9">
                 <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
                 <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
             </div>

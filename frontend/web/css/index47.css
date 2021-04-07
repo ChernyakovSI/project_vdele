@@ -55,6 +55,7 @@
 
 .window {
     padding: 5px;
+    contain: content;
 }
 
 .window-button-panel {
@@ -64,7 +65,7 @@
     margin-left: auto;
     margin-right: auto;
 
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .window-button-in-panel {
@@ -99,6 +100,21 @@
 
     box-shadow: 0 6px 16px 0 rgba(0,0,0,.3);
     transform: translateY(-1px);
+}
+
+.window-h-50 { /*Панель кнопок*/
+     height: 50px;
+ }
+
+.window-h-35 { /*Заголовок*/
+    height: 35px;
+}
+.window-m-t-9 {
+     margin-top: 9px;
+ }
+
+.window-m-t--9 {
+    margin-top: -9px;
 }
 
 .window-button {
@@ -381,6 +397,18 @@
     overflow: hidden;
 }
 
+.message-text-multistring {
+    width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    outline: none;
+
+    text-align: left;
+
+    border: 0;
+    background-color: rgba(1,1,1,0);
+}
+
 .message-wrapper {
     width: 92%;
     background-color: #f9fafb;
@@ -411,7 +439,7 @@
 }
 
 .button-item:hover {
-    background-color: rgba(84, 66, 58, 0.01);
+    background-color: rgba(84, 66, 58, 0.05);
 }
 
 .clearfix {
@@ -427,7 +455,7 @@
 
      text-align: left;
 
-     border: 0px;
+     border: 0;
      background-color: rgba(1,1,1,0);
  }
 
@@ -449,16 +477,6 @@
     background-color: rgba(1,1,1,0);
 
     float: left;
-}
-
-.message-wrapper-line {
-    width: 80%;
-    background-color: #f9fafb;
-    padding: 8px; /* the container will keep the padding untouched */
-    max-height: 145px; /* added padding to the height of the .message-text */
-    float: left;
-
-    margin-top: 10px;
 }
 
 .message-wrapper-title {
@@ -485,6 +503,22 @@
     margin-top: 10px;
 }
 
+.caption-line-left-15 {
+    width: 15%;
+    text-align: left;
+}
+
+.caption-line-left-full {
+    width: 100%;
+    text-align: left;
+}
+
+.caption-line-gen {
+    padding: 8px;
+    float: left;
+    /*margin-top: 10px;*/
+}
+
 .half_width {
     width: 50%;
     float: left;
@@ -493,6 +527,44 @@
 .half_third {
     width: 33%;
     float: left;
+}
+
+.message-wrapper-line {
+    width: 80%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
+.message-wrapper-line-full {
+    width: 100%;
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
+.new-message-wrapper {
+    background-color: #f9fafb;
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+}
+
+.new-message-wrapper-line {
+    max-height: 145px; /* added padding to the height of the .message-text */
+}
+
+.multistring-min-25 {
+    min-height: 25em; /* added padding to the height of the .message-text */
+}
+
+.width-full {
+    width: 100%;
 }
 
 .message-wrapper-line-half {
@@ -526,13 +598,13 @@
 
 .caption-text{
     width: 90%;
-    padding: 8px; /* the container will keep the padding untouched */
+    /*padding: 8px; *//* the container will keep the padding untouched */
     float: left;
 
     text-align: center;
     font-weight: bold;
 
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .caption-text-new{
@@ -682,7 +754,7 @@
 }
 
 .red-comment{
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     color: red;
     text-align: center;
     width: 100%;
@@ -753,4 +825,9 @@ label {
 
 .height-5em {
     height: 5em;
+}
+
+.hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

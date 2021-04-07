@@ -2,7 +2,7 @@
     position:relative;
     width:42px;
     height:42px;
-    margin:auto;
+    /*margin:auto;*/
     transform:scale(0.6);
     -o-transform:scale(0.6);
     -ms-transform:scale(0.6);
@@ -14,7 +14,7 @@
     position:relative;
     width:37px;
     height:37px;
-    margin:auto;
+    /*margin:auto;*/
     transform:scale(0.6);
     -o-transform:scale(0.6);
     -ms-transform:scale(0.6);

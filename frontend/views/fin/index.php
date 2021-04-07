@@ -714,9 +714,8 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
 ?>
 <div class="window window-border window-caption-2em caption-wrap">
-    <div class="caption-text-new">Счета<div><?='&nbsp;'?></div></div>
-    <div class="caption-close-new">
-        <div id="floatingCirclesGMain" hidden>
+    <div class="caption-begin">
+        <div id="floatingCirclesGMain" class="window-m-t--9" hidden>
             <div class="f_circleG" id="frotateG_01"></div>
             <div class="f_circleG" id="frotateG_02"></div>
             <div class="f_circleG" id="frotateG_03"></div>
@@ -726,6 +725,10 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div class="f_circleG" id="frotateG_07"></div>
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
+        <?='&nbsp;'?>
+    </div>
+    <div class="caption-text-new">Счета<div><?='&nbsp;'?></div></div>
+    <div class="caption-close-new">
         <div><?='&nbsp;'?></div>
     </div>
 

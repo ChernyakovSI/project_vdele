@@ -179,11 +179,20 @@ $isFilled = false;
 
         <div class="window window-border button-panel">
             <div class="full-width full-height window-subcaption">
+                <?php if($cur_user_id == $user->getId()) { ?>
+                    <a href="/site/ac-edit">
+                        <div class="subwindow button-item">
+
+                            <hr class="hr"/>Редактировать профиль<hr class="hr"/>
+
+                        </div>
+                    </a>
+                <?php } ?>
                 <?php if($cur_user_id != $user->getId()) { ?>
                     <a href="/dialog?id=<?= $user->getId() ?>">
                         <div class="subwindow button-item">
 
-                        <hr/>Написать<hr/>
+                        <hr class="hr"/>Написать<hr class="hr"/>
 
                         </div>
                     </a>
@@ -191,7 +200,7 @@ $isFilled = false;
                 <a href="/foto?id=<?= $user->getId() ?>">
                     <div class="subwindow button-item">
 
-                        <hr/>Фотографии<hr/>
+                        <hr class="hr"/>Фотографии<hr class="hr"/>
 
                     </div>
                 </a>

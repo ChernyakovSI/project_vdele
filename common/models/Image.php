@@ -11,6 +11,7 @@ namespace common\models;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use Yii;
+use common\models\User;
 
 class Image extends ActiveRecord
 {
@@ -98,6 +99,9 @@ class Image extends ActiveRecord
 
     public function getPathAvatarForUser($id_user)
     {
+        return User::getAvatarName($id_user);
+
+        /*
         $num = Image::find()->select('max(num)')->where(['id_user' => $id_user, 'id_album' => 0])->scalar();
         $num = (int)$num;
 
@@ -114,7 +118,7 @@ class Image extends ActiveRecord
         else
         {
             return '';
-        }
+        }*/
     }
 
     public static function getAllImagePathsForUserAndAlbum($id_user, $id_album)
@@ -168,9 +172,11 @@ class Image extends ActiveRecord
 
     }
 
-    public function findImageBySrc($src, $id_album = 1) {
+    public function findImageBySrc($src, $id_album = 1, $fullPath = '') {
         $pathName = $this->getPathForAlbum($id_album);
-        $fullPath = Yii::$app->params['dataUrl'].'img/'.$pathName;
+        if($fullPath === '') {
+            $fullPath = Yii::$app->params['dataUrl'].'img/'.$pathName;
+        }
 
         $src = str_ireplace($fullPath, '', $src);
 
@@ -190,6 +196,26 @@ class Image extends ActiveRecord
         $result = $body->one();
 
         return $result;
+    }
+
+    public static function getImageIdBySrc($src, $id_album = 0) {
+        $query = new Query();
+        $body = $query->Select('Img.`id` as id')
+            ->from(self::tableName().' as Img')
+            ->where(['Img.`src`' => $src, 'Img.`is_deleted`' => 0]);
+
+        $result = $body->one();
+
+        if(isset($result)){
+            if(isset($result['id'])){
+                return $result['id'];
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+
     }
 
     public function replaceFileToDeleted($id, $id_album = 1) {
@@ -244,6 +270,17 @@ class Image extends ActiveRecord
 
         //return end(explode(".", $filename));
         //return pathinfo($filename);
+    }
+
+    public static function getFileName($fullName, $separator = '/') {
+        $arrPath = explode($separator, $fullName);
+        $lenPath = count($arrPath);
+        if ($lenPath > 0) {
+            return $arrPath[$lenPath-1];
+        }
+        else {
+            return '';
+        }
     }
 
     public function getPathForAlbum($id_album) {

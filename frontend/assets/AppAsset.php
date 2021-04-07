@@ -16,16 +16,16 @@ class AppAsset extends AssetBundle
 
     public $css = [
         'css/site21.css',
-        'css/index46.css',
-        'css/color19.css',
-        'css/acEdit10.css',
+        'css/index47.css',
+        'css/color20.css',
+        'css/acEdit11.css',
         'css/users6.css',
         'css/url2.css',
         'css/fin10.css',
         'css/useful1.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
-        'css/floatingCircles2.css',
+        'css/floatingCircles3.css',
         'css/contextMenu.css',
         'css/foto1.css'
     ];
@@ -46,6 +46,7 @@ class AppAsset extends AssetBundle
     {
         if (\yii::$app->request->url == '/site/ac-edit') {
             $this->js[] = 'js/apiGeo.js';
+            $this->js[] = 'js/profile/ac-edit_pos_ready.js';
         }
         if (\yii::$app->request->url == '/fin/register') {
             $this->js[] = 'js/fin/register_pos_ready.js';

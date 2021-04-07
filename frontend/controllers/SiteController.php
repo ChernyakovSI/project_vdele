@@ -79,6 +79,7 @@ class SiteController extends Controller
                     ],*/
                     [
                         'actions' => ['logout', 'ac-edit',
+                                    'ac-edit-save',
                                     'ac-add-city',
                                     'send-confirm-letter',
                                     'users',
@@ -88,7 +89,9 @@ class SiteController extends Controller
                                     'dialog-get-messages',
                                     'foto',
                                     'foto-load',
-                                    'foto-delete'],
+                                    'foto-delete',
+                                    'avatar-load',
+                                    'avatar-delete'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -315,7 +318,9 @@ class SiteController extends Controller
             $cur_user = User::findIdentity($user_id);
 
             $image = new Image();
-            $path_avatar = $image->getPathAvatarForUser($user_id);
+            $path_avatar = $cur_user->getAvatarName($user_id);//$image->getPathAvatarForUser($user_id);
+
+            $allPaths = Image::getAllImagePathsForUserAndAlbum($user_id, 0);
 
 
             if (Yii::$app->request->isPost) {
@@ -360,14 +365,55 @@ class SiteController extends Controller
 
             $city = City::findById($cur_user->id_city);
 
+            $dateOfBirth = $cur_user->date_of_birth; //strtotime(date('Y-m-d 00:00:00', $cur_user->date_of_birth));
+
             return $this->render('ac-edit', [
                 'cur_user' => $cur_user,
                 'city' => $city,
                 'path_avatar' => $path_avatar,
+                'tab' => 1,
+                'dateOfBirth' => $dateOfBirth,
+                'allPaths' => $allPaths,
             ]);
         }
         else {
             return $this->render('index');
+        }
+    }
+
+    public function actionAcEditSave(){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $error = '';
+            $result = false;
+
+            $data = Yii::$app->request->post();
+
+            $user_id = Yii::$app->user->identity->getId();
+            $cur_user = User::findIdentity($user_id);
+
+//            $result = User::edit($data, $user_id);
+//            return [
+//                'result' => $result,
+//                'error' => $error,
+//            ];
+
+            if (User::edit($data, $user_id)) {
+                $result = true;
+                //Yii::$app->session->setFlash('success', 'Изменения сохранены');
+                //actionIndex();
+
+            } else {
+                $error = 'Не удалось записать изменения';
+                //Yii::$app->session->setFlash('error', $error);
+            }
+
+            return [
+                'result' => $result,
+                'error' => $error,
+            ];
+
         }
     }
 
@@ -709,6 +755,43 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionAvatarLoad()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                //$data = Yii::$app->request->post();
+
+                $file = $_FILES['file'];
+
+                $image = new Image();
+                $path = $image->upload($file, 0);
+
+                $cur_user = Yii::$app->user->identity;
+                $id_user = $cur_user->getId();
+                $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 0);
+
+                $pathFotos = Yii::$app->params['doman'].'data/img/avatar/';
+
+                return [
+                    'newPath' => $path,
+                    'error' => '',
+                    'allPaths' => $allPaths,
+                    'pathFotos' => $pathFotos
+                ];
+            }
+
+        }
+
+        return [
+            'newPaths' => [],
+            'error' => 'error'
+        ];
+    }
+
     public function actionFotoDelete()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -735,6 +818,48 @@ class SiteController extends Controller
                 $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 1);
 
                 $pathFotos = Yii::$app->params['dataUrl'].'img/main/';
+
+                return [
+                    'error' => '',
+                    'allPaths' => $allPaths,
+                    'pathFotos' => $pathFotos
+                ];
+            }
+
+        }
+
+        return [
+            'newPaths' => [],
+            'error' => 'error'
+        ];
+    }
+
+    public function actionAvatarDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+
+                $image = new Image();
+
+                $pathFotos = Yii::$app->params['doman'].'data/img/avatar/';
+
+                foreach ($data['sources'] as $item) {
+                    if ($item !== '') {
+                        $thisImage = $image->findImageBySrc($item, 0, $pathFotos);
+
+                        $image->replaceFileToDeleted($thisImage['id'], 0);
+
+                    }
+                }
+
+                $cur_user = Yii::$app->user->identity;
+                $id_user = $cur_user->getId();
+                $allPaths = Image::getAllImagePathsForUserAndAlbum($id_user, 0);
 
                 return [
                     'error' => '',

@@ -10,6 +10,7 @@ use yii\web\UploadedFile;
 use yii\helpers\Html;
 use common\models\Image;
 use DateTime;
+use yii\db\Query;
 
 /**
  * User model
@@ -83,7 +84,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['id', 'status', 'id_role', 'created_at', 'updated_at', 'gender'], 'integer'],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'surname', 'middlename',
-                'phone', 'url_vk', 'url_fb', 'url_ok', 'url_in', 'url_www', 'skype', 'icq', 'about'], 'safe'],
+                'phone', 'url_vk', 'url_fb', 'url_ok', 'url_in', 'url_www', 'skype', 'icq', 'about', 'path_avatar', 'telegram'], 'safe'],
             [['imageFile'], 'file', 'extensions' => 'png, jpg'],
         ];
     }
@@ -117,6 +118,9 @@ class User extends ActiveRecord implements IdentityInterface
             'about' => 'Дополнительная информация',
 
             'imageFile' => 'Фото профиля',
+
+            'path_avatar' => 'Имя аватарки',
+            'telegram' => 'Телеграм',
         );
     }
 
@@ -321,6 +325,38 @@ class User extends ActiveRecord implements IdentityInterface
             return '';
         }
     }
+
+    public static function getAvatarName($user_id)
+    {
+        $query = new Query();
+        $body = $query->Select('Img.`src` as src,
+                                        User.`gender` as gender')
+            ->from(self::tableName().' as User')
+
+            ->join('LEFT JOIN', Image::tableName().' as Img', 'User.`image_id` = Img.`id` AND Img.`is_deleted` = 0')
+
+            ->where(['User.`id`' => $user_id]);
+
+        $result = $body->all();
+
+        if(isset($result) && count($result) > 0) {
+            if(isset($result[0]['src']) && $result[0]['src'] !== ''){
+                return $result[0]['src'];
+            }
+            else {
+                if($result[0]['gender'] == 2) {
+                    return 'avatar_default_w.jpg';
+                }
+                else{
+                    return 'avatar_default.jpg';
+                }
+            }
+        }
+        else {
+            return '';
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -626,6 +662,53 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return $url;
+    }
+
+    public static function edit($data, $id){
+        $User = static::findOne(['id' => $id]);
+
+        $User->surname = $data['surname'];//(integer)$data['id_type'];
+        $User->name = $data['name'];
+        $User->middlename = $data['middlename'];
+
+        $User->gender = (integer)$data['gender'];
+
+        $User->date_of_birth = (integer)$data['date_of_birth'];//->getTimestamp();
+
+        $User->id_city = (integer)$data['id_city'];
+        $User->email = $data['email'];
+        $User->phone = $data['phone'];
+
+        $User->url_vk = $data['url_vk'];
+        $User->url_fb = $data['url_fb'];
+        $User->url_ok = $data['url_ok'];
+        $User->url_in = $data['url_in'];
+        $User->url_www = $data['url_www'];
+
+        $User->telegram = $data['telegram'];
+        $User->skype = $data['skype'];
+        $User->icq = $data['icq'];
+
+        $User->about = $data['about'];
+
+        $src = Image::getFileName($data['avatarName']);
+        $image_id = Image::getImageIdBySrc($src);
+        $User->image_id = $image_id;
+
+        $User->about = $data['about'];
+
+        if(isset($data['updated_at'])) {
+            $User->updated_at = (integer)$data['updated_at'];
+        }
+        else{
+            $User->updated_at = time();
+        };
+
+        //return $User;
+
+        $User->save();
+
+        return true;
     }
 }
 

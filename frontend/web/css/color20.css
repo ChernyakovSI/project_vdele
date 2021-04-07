@@ -333,3 +333,7 @@ a:hover {
 .window-colored {
     box-shadow: 0 0 10px 10px #8A2908;
 }
+
+.window-colored-green {
+    box-shadow: 0 0 10px 10px #2E8B57;
+}
