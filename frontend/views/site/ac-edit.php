@@ -206,7 +206,7 @@ $this->registerLinkTag([
                     <div class="caption">Мессенджеры</div>
                     <div class="wrap_text">
                         <div class="caption-line-gen caption-line-left-15" id="fieldTelegram">Telegram:</div><div class="message-wrapper-line window-border" id="valueTelegramWrap">
-                            <input type="text" class="message-text-line" id="valueTelegram" value="<?= $cur_user->telegram ?>" contentEditable />
+                            <input type="text" class="message-text-line" id="valueTelegram" value="<?= $cur_user->telegram ?>" placeholder="@username" contentEditable />
                         </div>
                         <div class="caption-line-gen caption-line-left-15" id="fieldSkype">Skype:</div><div class="message-wrapper-line window-border" id="valueSkypeWrap">
                             <input type="text" class="message-text-line" id="valueSkype" value="<?= $cur_user->skype ?>" contentEditable />

@@ -134,6 +134,17 @@ $isFilled = false;
                             </div>
                         </div>
                     <?php }
+                    if($user->telegram <> '') {
+                        $isFilled = true; ?>
+                        <div class="container-wrap-2colomns">
+                            <div class="wrap2-column1">
+                                <label>Telegram:</label>
+                            </div>
+                            <div class="wrap2-column2">
+                                <u><a href="<?= User::wrapURL($user->telegram, 'https://xn--80affa3aj0al.xn--80asehdb/#/im?p=@') ?>" target="_blank"> <?= $user->telegram ?> </a></u>
+                            </div>
+                        </div>
+                    <?php }
                     if($user->skype <> '') {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
