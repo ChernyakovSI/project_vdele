@@ -15,9 +15,9 @@ class AppAsset extends AssetBundle
     //public $dataUrl = '@web';
 
     public $css = [
-        'css/site21.css',
+        'css/site22.css',
         'css/index47.css',
-        'css/color20.css',
+        'css/color21.css',
         'css/acEdit11.css',
         'css/users6.css',
         'css/url2.css',
@@ -27,7 +27,8 @@ class AppAsset extends AssetBundle
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles3.css',
         'css/contextMenu.css',
-        'css/foto1.css'
+        'css/foto1.css',
+        'css/slider.css'
     ];
     public $js = [];
 //    [

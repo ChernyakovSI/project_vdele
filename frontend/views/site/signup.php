@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'passwordAgain')->passwordInput() ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('Зарегистрироваться', ['class' => 'window-button-in-panel window-border', 'name' => 'signup-button']) ?>
                 </div>
 
                 <?php //echo $form->errorSummary($model);?>

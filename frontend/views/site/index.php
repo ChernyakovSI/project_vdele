@@ -11,48 +11,191 @@ $this->title = 'Я в деле';
     </div>-->
     <div class="window window-border">
         <div class="text-font text-center text-bold">
-            Добро пожаловать в сообщество "Я в деле" !
+            Платформа "Я в деле"
         </div>
         <div class="text-font text-justify">
-            &nbsp;&nbsp;&nbsp;&nbsp;Создаем пространство, в котором все благоприятствует достижению
-            ваших целей.
+            &nbsp;&nbsp;&nbsp;&nbsp;"Я в деле" - это цифровое пространство для комфортного хранения информации, учета и
+            анализа данных в 8 основных сферах жизни. Сайт создан для людей, которые хотят привнести структуру и
+            порядок в свою жизнь, держать важные направления деятельности под контролем и сохранять баланс во всем.
+            <br>
             <br>
             &nbsp;(Платформа не адаптирована под мобильные устройства)
             <br>
             <br>
-            &nbsp;Доступная функциональность:
+            &nbsp;Основные сферы жизни, на котором реализуется философия сайта:
+            <div class="slider-wrapper">
+                <input type="radio" name="point" id="slide1" checked>
+                <input type="radio" name="point" id="slide2">
+                <input type="radio" name="point" id="slide3">
+                <input type="radio" name="point" id="slide4">
+                <input type="radio" name="point" id="slide5">
+                <input type="radio" name="point" id="slide6">
+                <input type="radio" name="point" id="slide7">
+                <input type="radio" name="point" id="slide8">
+                <div class="slider">
+                    <div class="slides slide1 window-border col-back-inn">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/inn-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>1. Личностная сфера.</div>
+                                <div>- формирование характера и полезных привычек. Личностный рост
+                                    <br>
+                                   - порядок и структура в себе, в окружающем пространстве, в делах
+                                    <br>
+                                    - ведение ежедневника, контроль и планирование
+                                    <br>
+                                    - личный кодекс жизни (конституция)
+                                    <br>
+                                    - поддержание дисциплины
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide2 window-border col-back-fin">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/fin-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>2. Финансовая сфера.</div>
+                                <div>- финансовая грамотность
+                                    <br>
+                                    - учет и анализ доходов и расходов
+                                    <br>
+                                    - здоровая экономия
+                                    <br>
+                                    - создание и реализация накоплений
+                                    <br>
+                                    - инвестирование и преумножение капитала
+                                    <br>
+                                    - стратегия пути к финансовой свободе</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide3 window-border col-back-hea">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/hea-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>3. Сфера здоровья и тела.</div>
+                                <div>- профилактика заболеваний и регулярные проверки здоровья
+                                    <br>
+                                    - своеврменное лечение
+                                    <br>
+                                    - здоровый образ жизни (гигиена, правильное питание, здоровый сон, спорт)
+                                    <br>
+                                    - развитие выносливости, гибкости и/или силы
+                                    <br>
+                                    - красота и эстетика тела</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide4 window-border col-back-rel">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/rel-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>4. Социально-эмоциональная сфера.</div>
+                                <div>- получение важных эмоций в общении с окружающими людьми
+                                    <br>
+                                    - построение близких, доверительных отношений
+                                    <br>
+                                    - семья, друзья, партнеры, полезные контакты
+                                    <br>
+                                    - навыки коммуникации, "Выиграл-Выиграл", лидерские навыки, активное слушание, эмпатия
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide5 window-border col-back-edu">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/edu-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>5. Образовательная сфера</div>
+                                <div>- регулярное чтение книг
+                                    <br>
+                                    - постоянное познание нового и развитие любознательности
+                                    <br>
+                                    - совершенствование имеющихся навыков
+                                    <br>
+                                    - изобретение и открытие чего-либо авторского, уникального</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide6 window-border col-back-rea">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/rea-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>6. Cфера самореализации.</div>
+                                <div>- формирование и реализация своей миссии
+                                    <br>
+                                - дать миру что-то уникальное, оставить свой след
+                                    <br>
+                                - заниматься тем, что нравится и быть полезным
+                                    <br>
+                                - быть лучшим в своем деле, стремиться к этому
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide7 window-border col-back-psy">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/psy-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>7. Духовная сфера.</div>
+                                <div>- Понимание себя
+                                    <br>
+                                    - осознанная жизнь
+                                    <br>
+                                    - вера и понимание своего источника силы
+                                    <br>
+                                    - преодоление сложностей и жизненных испытаний
+                                    <br>
+                                    - состояние внутреннего счастья и любви</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slides slide8 window-border col-back-tra">
+                        <div class="grid-slider">
+                            <div class="item-foto"><img src="/data/img/tech/tra-intro.jpg" style="width: 350px"></div>
+                            <div class="text-font item-text">
+                                <div>8. Сфера отдыха и путешествий</div>
+                                - мечты
+                                <br>
+                                - любимое занятие
+                                <br>
+                                - путешествия
+                                <br>
+                                - другие культуры
+                                <br>
+                                - новые ощущения и опыт
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <label for="slide1"></label>
+                    <label for="slide2"></label>
+                    <label for="slide3"></label>
+                    <label for="slide4"></label>
+                    <label for="slide5"></label>
+                    <label for="slide6"></label>
+                    <label for="slide7"></label>
+                    <label for="slide8"></label>
+                </div>
+            </div>
+   &nbsp;
             <br>
-            &nbsp;&nbsp;- учет финансов
             <br>
-            &nbsp;&nbsp;- сохранение веб-ссылок по категориям, с описанием и быстрым переходом по ним.
-            <br>
-            <br>
-            &nbsp;Планируется создание систем:
-            <br>
-            &nbsp;&nbsp;- сохранение написания иностранных слов и их перевода, механизм проверки запоминания перевода,
-            <br>
-            &nbsp;&nbsp;- создание стратегии преумножения капитала,
-            <br>
-            &nbsp;&nbsp;- достижение целей по сферам жизни,
-            <br>
-            &nbsp;&nbsp;- учета задач и списка дел со сроками и приоритетами,
-            <br>
-            &nbsp;&nbsp;- создание напоминаний о мечтах и важных событиях,
-            <br>
-            &nbsp;&nbsp;- ведения записей, текстовых отчетов, планов с привязкой к датам (Блог)
-            <br>
-            &nbsp; Все это планируется как для индивидуальных пользователей, так и в последствии для команд.
-            <br>
-            <br>
-            &nbsp;Сейчас на сайте можно вести личные переписки. Я буду рад услышать вашу обратную связь, все имеющиеся проблемы в работе сайта, а также ваши пожелания в том, что в приоритете стоит реализовывать и какие еще функциональности вам были бы интересны.
+            &nbsp; Буду рад услышать Вашу обратную связь, все имеющиеся проблемы в работе сайта, а также Ваши пожелания в том,
+            что в приоритете стоит реализовывать и какие еще функциональности Вам были бы интересны. Навык осознанного
+            отдавания
             <!--<br>
             <br>
             - Ознакомиться с презентацией проекта можно <u><a href="https://vk.cc/9tVs05" target="_blank">здесь</a></u>.-->
         </div>
         <div class="text-font text-right">
-            <br>
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;Решайся и присоединяйся!
+            <div class="window-button-panel">
+               <a href="/login"><div class="window-button-in-panel window-border">Решайся и присоединяйся!</div></a>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </div>
 

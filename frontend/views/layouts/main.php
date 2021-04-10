@@ -42,7 +42,7 @@ $this->registerLinkTag([
         //'brandLabel' => Yii::$app->name,
         //'brandLabel' => Html::img('../img/logo.png', ['alt' => Yii::$app->name]),//'<img src="../../../../resources/images/general/logo.png" style="display:inline; vertical-align: top; height:32px;"/>Yii::$app->name',
         'brandLabel' => Html::img(Yii::$app->params['doman'].'img/logo.png', ['alt' => Yii::$app->name, 'class' => 'logo-pic']), // style="display:inline; vertical-align: top; height:103px;"/>',  //../../../../resources/images/general/logo.png
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => '/intro',//Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default navbar-fixed-top',
         ],
@@ -154,7 +154,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.4.2)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.5.1)</p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>

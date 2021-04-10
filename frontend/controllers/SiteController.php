@@ -91,7 +91,8 @@ class SiteController extends Controller
                                     'foto-load',
                                     'foto-delete',
                                     'avatar-load',
-                                    'avatar-delete'],
+                                    'avatar-delete',
+                                    'intro'],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -202,6 +203,13 @@ class SiteController extends Controller
             'dataProvider' => $dataProvider,
         ]
         );*/
+    }
+
+    public function actionIntro()
+    {
+
+        return $this->render('index');
+
     }
 
     /**

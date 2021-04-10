@@ -28,9 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div style="color:#999;margin:1em 0">
                     Если вы забыли ваш пароль, вы можете <?= Html::a('сбросить его', ['site/request-password-reset']) ?>.
                 </div>
+                <div style="color:#999;margin:1em 0">
+                    Если вы никогда не являтесь пользователем сайта, вы можете <?= Html::a('зарегистрироваться', ['/signup']) ?>.
+                </div>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Войти', ['class' => 'window-button-in-panel window-border', 'name' => 'login-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

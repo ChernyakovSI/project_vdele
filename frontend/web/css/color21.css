@@ -337,3 +337,35 @@ a:hover {
 .window-colored-green {
     box-shadow: 0 0 10px 10px #2E8B57;
 }
+
+.col-back-inn {
+    background: linear-gradient(45deg, rgba(102, 51, 0, 0.7), rgba(102, 51, 0, 0.2));
+}
+
+.col-back-fin {
+    background: linear-gradient(45deg, rgba(255, 204, 51, 0.7), rgba(255, 204, 51, 0.2));
+}
+
+.col-back-hea {
+    background: linear-gradient(45deg, rgba(0, 153, 51, 0.7), rgba(0, 153, 51, 0.2));
+}
+
+.col-back-rel {
+    background: linear-gradient(45deg, rgba(255, 51, 51, 0.7), rgba(255, 51, 51, 0.2));
+}
+
+.col-back-edu {
+    background: linear-gradient(45deg, rgba(0, 102, 204, 0.7), rgba(0, 102, 204, 0.2));
+}
+
+.col-back-rea {
+    background: linear-gradient(45deg, rgba(102, 102, 102, 0.7), rgba(102, 102, 102, 0.2));
+}
+
+.col-back-psy {
+    background: linear-gradient(45deg, rgba(153, 102, 204, 0.7), rgba(153, 102, 204, 0.2));
+}
+
+.col-back-tra {
+    background: linear-gradient(45deg, rgba(153, 204, 255, 0.7), rgba(153, 204, 255, 0.2));
+}
