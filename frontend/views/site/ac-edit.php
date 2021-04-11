@@ -185,7 +185,7 @@ $this->registerLinkTag([
                     <div class="caption">Основные</div>
                     <div class="wrap_text">
                         <div class="caption-line-gen caption-line-left-15" id="fieldCity">Город:</div><div class="message-wrapper-line window-border" id="valueCityWrap">
-                            <input type="text" autocomplete="off" name="test" class="message-text-line" id="city" value="<?= $city->name ?>" placeholder="Начните вводить название" onfocus="_geo.f_Choice=CityChoice;_geo.init(this);" contentEditable />
+                            <input type="text" autocomplete="off" name="test" class="message-text-line" id="city" value="<?= (isset($city) ? $city->name : '') ?>" placeholder="Начните вводить название" onfocus="_geo.f_Choice=CityChoice;_geo.init(this);" contentEditable />
                         </div>
                         <div class="caption-line-gen caption-line-left-15" id="fieldEmail">Email:</div><div class="message-wrapper-line window-border" id="valueEmailWrap">
                             <input type="text" class="message-text-line" id="valueEmail" value="<?= $cur_user->email ?>" contentEditable />
