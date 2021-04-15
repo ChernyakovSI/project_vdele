@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color21.css',
+        'css/color22.css',
         'css/acEdit11.css',
         'css/users6.css',
         'css/url2.css',
@@ -51,6 +51,9 @@ class AppAsset extends AssetBundle
         }
         if (\yii::$app->request->url == '/fin/register') {
             $this->js[] = 'js/fin/register_pos_ready.js';
+        }
+        if (\yii::$app->request->url == '/fin/accounts') {
+            $this->js[] = 'js/fin/index_pos_ready.js';
         }
         if (\yii::$app->request->url == '/fin/reports') {
             $this->js[] = 'js/fin/reports_pos_ready.js';

@@ -250,34 +250,35 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div id="prompt-form-container">
-        <div id="prompt-form" class="window window-border form-off">
-            <div class="caption-wrap">
-                <div class="caption-begin window-m-t--9">
-                    <div id="floatingCirclesG" hidden>
-                        <div class="f_circleG" id="frotateG_01"></div>
-                        <div class="f_circleG" id="frotateG_02"></div>
-                        <div class="f_circleG" id="frotateG_03"></div>
-                        <div class="f_circleG" id="frotateG_04"></div>
-                        <div class="f_circleG" id="frotateG_05"></div>
-                        <div class="f_circleG" id="frotateG_06"></div>
-                        <div class="f_circleG" id="frotateG_07"></div>
-                        <div class="f_circleG" id="frotateG_08"></div>
+        <div id="prompt-form-container">
+            <div id="prompt-form" class="window window-border form-off">
+                <div class="caption-wrap">
+                    <div class="caption-begin window-m-t--9">
+                        <div id="floatingCirclesG" hidden>
+                            <div class="f_circleG" id="frotateG_01"></div>
+                            <div class="f_circleG" id="frotateG_02"></div>
+                            <div class="f_circleG" id="frotateG_03"></div>
+                            <div class="f_circleG" id="frotateG_04"></div>
+                            <div class="f_circleG" id="frotateG_05"></div>
+                            <div class="f_circleG" id="frotateG_06"></div>
+                            <div class="f_circleG" id="frotateG_07"></div>
+                            <div class="f_circleG" id="frotateG_08"></div>
+                        </div>
+                        <div><?='&nbsp;'?></div>
                     </div>
-                    <div><?='&nbsp;'?></div>
+                    <div class="caption-text" id="form-caption">Новое движение</div>
+                    <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
                 </div>
-                <div class="caption-text" id="form-caption">Новое движение</div>
-                <div class="caption-close" id="btnClose"><i class="fa fa-times interactive symbol_style" aria-hidden="true"></i></div>
-            </div>
-            <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
-            <div class="half_width">
-                <div class="caption-line-half-20">Дата:</div><div class="message-wrapper-line-half window-border">
-                    <input type="datetime-local" class="message-text-line" contentEditable id="valueDate">
+                <div class="half_width">
+                    <div class="caption-line-half-20">Дата:</div><div class="message-wrapper-line-half window-border">
+                        <input type="datetime-local" class="message-text-line" contentEditable id="valueDate">
+                    </div>
                 </div>
-            </div>
-            <div class="half_width">
+                <div class="half_width">
 
                     <div class="radio-container">
                         <div class="form-item radio-btn nth-3">
@@ -300,82 +301,81 @@
                         <option value="2">Перемещение</option>
                     </select>-->
 
-            </div>
-            <div class="clearfix"></div>
-            <div>
-                <div class="caption-line-10" id="fieldAcc">Счет:</div><div class="message-wrapper-line-half window-border" id="valueAccWrap">
-                    <input type="text" class="message-text-line" list="list_accounts" id="valueAcc" contentEditable />
-                    <datalist id="list_accounts">
-                        <?php foreach ($accs as $account): ?>
-                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
                 </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearAcc">х</div>
-                <div class="caption-line-left" id="textAcc"></div>
-            </div>
-            <div class="clearfix"></div>
-            <div hidden="hidden" id="fieldAccTo">
-                <div class="caption-line-10">На счет:</div><div class="message-wrapper-line-half window-border" id="valueAccToWrap">
-                    <input type="text" class="message-text-line" list="list_accountsTo" id="valueAccTo" contentEditable />
-                    <datalist id="list_accountsTo">
-                        <?php foreach ($accs as $account): ?>
-                            <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="caption-line-10" id="fieldAcc">Счет:</div><div class="message-wrapper-line-half window-border" id="valueAccWrap">
+                        <input type="text" class="message-text-line" list="list_accounts" id="valueAcc" contentEditable />
+                        <datalist id="list_accounts">
+                            <?php foreach ($accs as $account): ?>
+                                <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearAcc">х</div>
+                    <div class="caption-line-left" id="textAcc"></div>
                 </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearAccTo">х</div>
-                <div class="caption-line-left" id="textAccTo"></div>
-            </div>
-            <div class="clearfix"></div>
-            <div id="fieldCat">
-                <div class="caption-line-10">Категория:</div><div class="message-wrapper-line-half window-border" id="valueCatWrap">
-                    <input type="text" class="message-text-line" list="list_categories" id="valueCat" contentEditable />
-                    <datalist id="list_categories">
-                        <?php foreach ($cats as $category): ?>
-                            <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
+                <div class="clearfix"></div>
+                <div hidden="hidden" id="fieldAccTo">
+                    <div class="caption-line-10">На счет:</div><div class="message-wrapper-line-half window-border" id="valueAccToWrap">
+                        <input type="text" class="message-text-line" list="list_accountsTo" id="valueAccTo" contentEditable />
+                        <datalist id="list_accountsTo">
+                            <?php foreach ($accs as $account): ?>
+                                <option data-id=<?= $account['id'] ?>><?= $account['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearAccTo">х</div>
+                    <div class="caption-line-left" id="textAccTo"></div>
                 </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearCat">х</div>
-                <div class="caption-line-left" id="textCat"></div>
-            </div>
-            <div class="clearfix"></div>
-            <div id="fieldSub">
-                <div class="caption-line-10">Подкатегория:</div><div class="message-wrapper-line-half window-border" id="valueSubWrap">
-                    <input type="text" class="message-text-line" list="list_subcategories" id="valueSub" contentEditable />
-                    <datalist id="list_subcategories">
-                        <?php foreach ($subs as $category): ?>
-                            <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
+                <div class="clearfix"></div>
+                <div id="fieldCat">
+                    <div class="caption-line-10">Категория:</div><div class="message-wrapper-line-half window-border" id="valueCatWrap">
+                        <input type="text" class="message-text-line" list="list_categories" id="valueCat" contentEditable />
+                        <datalist id="list_categories">
+                            <?php foreach ($cats as $category): ?>
+                                <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearCat">х</div>
+                    <div class="caption-line-left" id="textCat"></div>
                 </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearSub">х</div>
-                <div class="caption-line-left" id="textSub"></div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="half_width">
-                <div class="caption-line-half-20">Сумма:</div><div class="message-wrapper-line-half window-border" id="valueAmoWrap">
-                    <!--<div class="message-text-line" contentEditable id="valueAmo" >0</div>-->
-                    <input type="number" class="message-text-line" id="valueAmo" step="0.01" contentEditable />
+                <div class="clearfix"></div>
+                <div id="fieldSub">
+                    <div class="caption-line-10">Подкатегория:</div><div class="message-wrapper-line-half window-border" id="valueSubWrap">
+                        <input type="text" class="message-text-line" list="list_subcategories" id="valueSub" contentEditable />
+                        <datalist id="list_subcategories">
+                            <?php foreach ($subs as $category): ?>
+                                <option data-id=<?= $category['id'] ?>><?= $category['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearSub">х</div>
+                    <div class="caption-line-left" id="textSub"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="half_width">
+                    <div class="caption-line-half-20">Сумма:</div><div class="message-wrapper-line-half window-border" id="valueAmoWrap">
+                        <!--<div class="message-text-line" contentEditable id="valueAmo" >0</div>-->
+                        <input type="number" class="message-text-line" id="valueAmo" step="0.01" contentEditable />
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="caption-line-10">Примечание:</div><div class="message-wrapper-line window-border">
+                        <div class="message-text-line" contentEditable id="valueCom" ></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="red-comment window-m-t-9" id="red-comment"></div>
+                <div class="window-button-panel window-m-t-9">
+                    <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
+                    <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
                 </div>
             </div>
-            <div class="clearfix"></div>
-            <div>
-                <div class="caption-line-10">Примечание:</div><div class="message-wrapper-line window-border">
-                    <div class="message-text-line" contentEditable id="valueCom" ></div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="red-comment window-m-t-9" id="red-comment"></div>
-            <div class="window-button-panel window-m-t-9">
-                <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
-                <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
-            </div>
-        </div>
 
-    </div>
-</div>
+        </div>
 
 
         <nav class="context-menu" id="context-menu">
