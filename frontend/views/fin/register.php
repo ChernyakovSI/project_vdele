@@ -189,15 +189,15 @@ $this->title = 'Финансы: Движения';
                 <?php } else {  foreach ($transactions as $reg): ?>
                 <?php if ($reg['id_type'] == 0){ ?>
                 <div class="fin-acc-row expense-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
-                    <?php }?>
+                <?php }?>
 
-                    <?php if ($reg['id_type'] == 1){ ?>
-                    <div class="fin-acc-row profit-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
-                        <?php }?>
+                <?php if ($reg['id_type'] == 1){ ?>
+                <div class="fin-acc-row profit-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                <?php }?>
 
-                        <?php if ($reg['id_type'] == 2){ ?>
-                        <div class="fin-acc-row movement-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
-                            <?php }?>
+                <?php if ($reg['id_type'] == 2){ ?>
+                <div class="fin-acc-row movement-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                <?php }?>
 
                             <div class="fin-reg-date table-text">
                                 <div class="message-wrapper-title">
@@ -366,7 +366,7 @@ $this->title = 'Финансы: Движения';
                     </div>
                     <div class="clearfix"></div>
                     <div class="red-comment" id="red-comment"></div>
-                    <div class="window-button-panel">
+                    <div class="window-button-panel window-m-t-9">
                         <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
                         <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
                     </div>

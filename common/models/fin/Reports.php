@@ -276,6 +276,6 @@ class Reports
     }
 
     public static function timestampToDateString($timestamp) {
-        return date('m.d.Y', $timestamp);
+        return date('d.m.Y', $timestamp);
     }
 }
