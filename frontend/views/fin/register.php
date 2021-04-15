@@ -1,12 +1,12 @@
 <?php
-    use yii\helpers\Html;
-    use common\models\fin\Account;
+use yii\helpers\Html;
+use common\models\fin\Account;
 
-    $this->registerJsFile('@web/js/fin/register_pos_begin.js', ['position' => \yii\web\View::POS_BEGIN]);
-    $this->registerJsFile('@web/js/fin/register_pos_ready.js', ['position' => \yii\web\View::POS_READY]);
+$this->registerJsFile('@web/js/fin/register_pos_begin.js', ['position' => \yii\web\View::POS_BEGIN]);
+$this->registerJsFile('@web/js/fin/register_pos_ready.js', ['position' => \yii\web\View::POS_READY]);
 
-    $this->title = 'Финансы: Движения';
-    //$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Финансы: Движения';
+//$this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
@@ -21,8 +21,10 @@
 </div>
 
 <div class="window window-border window-caption-2em caption-wrap">
-    <div class="caption-begin">
-        <div id="floatingCirclesGMain" class="window-m-t--9" hidden>
+    <div class="caption-begin"><?='&nbsp;'?></div>
+    <div class="caption-text-new">Движения<div><?='&nbsp;'?></div></div>
+    <div class="caption-close-new">
+        <div id="floatingCirclesGMain" hidden>
             <div class="f_circleG" id="frotateG_01"></div>
             <div class="f_circleG" id="frotateG_02"></div>
             <div class="f_circleG" id="frotateG_03"></div>
@@ -32,10 +34,6 @@
             <div class="f_circleG" id="frotateG_07"></div>
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
-        <?='&nbsp;'?>
-    </div>
-    <div class="caption-text-new">Движения<div><?='&nbsp;'?></div></div>
-    <div class="caption-close-new">
         <div><?='&nbsp;'?></div>
     </div>
 </div>
@@ -113,7 +111,7 @@
             <div class="clearfix"></div>
             <div class="window-button-panel">
                 <div class="window-button-in-panel window-border" id="new-reg" onclick="addReg()">Добавить</div>
-<!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
+                <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
             </div>
 
             <div class="clearfix gap-v-60"><hr class="line"></div>
@@ -189,73 +187,73 @@
                         Нет движений
                     </div>
                 <?php } else {  foreach ($transactions as $reg): ?>
-                    <?php if ($reg['id_type'] == 0){ ?>
-                    <div class="fin-acc-row expense-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                <?php if ($reg['id_type'] == 0){ ?>
+                <div class="fin-acc-row expense-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
                     <?php }?>
 
-                     <?php if ($reg['id_type'] == 1){ ?>
-                     <div class="fin-acc-row profit-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
-                     <?php }?>
-
-                     <?php if ($reg['id_type'] == 2){ ?>
-                     <div class="fin-acc-row movement-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
-                     <?php }?>
-
-                        <div class="fin-reg-date table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= date("d.m.Y", $reg['date']) ?></div>
-                            </div>
-                        </div>
-                        <div class="fin-reg-acc table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= $reg['AccName'] ?></div>
-                            </div>
-                        </div>
-                        <?php if ($reg['id_type'] == 2){ ?>
-                            <div class="fin-reg-cat table-text">
-                                <div class="message-wrapper-title">
-                                    <div class="message-text-line"><?= $reg['AccToName'] ?></div>
-                                </div>
-                            </div>
-                            <div class="fin-reg-sub table-text">
-                                <div class="message-wrapper-title">
-                                    <div class="message-text-line"><?= '' ?></div>
-                                </div>
-                            </div>
-                        <?php } else {?>
-                            <div class="fin-reg-cat table-text">
-                                <div class="message-wrapper-title">
-                                    <div class="message-text-line"><?= $reg['CatName'] ?></div>
-                                </div>
-                            </div>
-                            <div class="fin-reg-sub table-text">
-                                <div class="message-wrapper-title">
-                                    <div class="message-text-line"><?= $reg['SubName'] ?></div>
-                                </div>
-                            </div>
+                    <?php if ($reg['id_type'] == 1){ ?>
+                    <div class="fin-acc-row profit-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
                         <?php }?>
-                        <div class="fin-reg-amount table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line right-text"><?= Account::formatNumberToMoney($reg['sum']) ?></div>
+
+                        <?php if ($reg['id_type'] == 2){ ?>
+                        <div class="fin-acc-row movement-back interactive-only" ondblclick="editReg(<?= $reg['id'] ?>)" id="<?= $reg['id'] ?>">
+                            <?php }?>
+
+                            <div class="fin-reg-date table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= date("d.m.Y", $reg['date']) ?></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="fin-reg-com table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= $reg['comment'] ?></div>
+                            <div class="fin-reg-acc table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= $reg['AccName'] ?></div>
+                                </div>
                             </div>
+                            <?php if ($reg['id_type'] == 2){ ?>
+                                <div class="fin-reg-cat table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line"><?= $reg['AccToName'] ?></div>
+                                    </div>
+                                </div>
+                                <div class="fin-reg-sub table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line"><?= '' ?></div>
+                                    </div>
+                                </div>
+                            <?php } else {?>
+                                <div class="fin-reg-cat table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line"><?= $reg['CatName'] ?></div>
+                                    </div>
+                                </div>
+                                <div class="fin-reg-sub table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line"><?= $reg['SubName'] ?></div>
+                                    </div>
+                                </div>
+                            <?php }?>
+                            <div class="fin-reg-amount table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line right-text"><?= Account::formatNumberToMoney($reg['sum']) ?></div>
+                                </div>
+                            </div>
+                            <div class="fin-reg-com table-text">
+                                <div class="message-wrapper-title">
+                                    <div class="message-text-line"><?= $reg['comment'] ?></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"><hr class="line"></div>
                         </div>
-                        <div class="clearfix"><hr class="line"></div>
+                        <?php endforeach; } ?>
                     </div>
-                <?php endforeach; } ?>
+                </div>
             </div>
-        </div>
-    </div>
 
             <div id="prompt-form-container">
                 <div id="prompt-form" class="window window-border form-off">
                     <div class="caption-wrap">
-                        <div class="caption-begin window-m-t--9">
-                            <div id="floatingCirclesG" hidden>
+                        <div class="caption-begin">
+                            <div id="floatingCirclesG">
                                 <div class="f_circleG" id="frotateG_01"></div>
                                 <div class="f_circleG" id="frotateG_02"></div>
                                 <div class="f_circleG" id="frotateG_03"></div>
@@ -367,17 +365,15 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="red-comment window-m-t-9" id="red-comment"></div>
-                    <div class="window-button-panel window-m-t-9">
+                    <div class="red-comment" id="red-comment"></div>
+                    <div class="window-button-panel">
                         <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
                         <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
                     </div>
                 </div>
 
             </div>
-</div>
-
-
+        </div>
 
 
         <nav class="context-menu" id="context-menu">
