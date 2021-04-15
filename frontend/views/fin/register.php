@@ -20,6 +20,8 @@
     <span class="btn-submenu"><a href="/fin/reports">Отчеты</a></span>
 </div>
 
+<div></div>
+
 <div class="window window-border window-caption-2em caption-wrap">
     <div class="caption-begin">
         <div id="floatingCirclesGMain" class="window-m-t--9" hidden>
