@@ -50,9 +50,11 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/profile/ac-edit_pos_ready.js';
         }
         if (\yii::$app->request->url == '/fin/register') {
+            $this->js[] = 'js/fin/register_pos_begin.js';
             $this->js[] = 'js/fin/register_pos_ready.js';
         }
         if (\yii::$app->request->url == '/fin/accounts') {
+            $this->js[] = 'js/fin/index_pos_begin.js';
             $this->js[] = 'js/fin/index_pos_ready.js';
         }
         if (\yii::$app->request->url == '/fin/reports') {
