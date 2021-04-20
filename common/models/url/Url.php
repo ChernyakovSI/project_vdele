@@ -58,9 +58,9 @@ class Url extends ActiveRecord
     public static function add($data){
         $newUrl = new Url();
 
-        $newUrl->name = $data['name'];
-        $newUrl->url = $data['url'];
-        $newUrl->comment = $data['comment'];
+        $newUrl->name = strip_tags($data['name']);
+        $newUrl->url = strip_tags($data['url']);
+        $newUrl->comment = strip_tags($data['comment']);
 
         if(isset($data['created_at'])) {
             $newUrl->created_at = $data['created_at'];
@@ -112,9 +112,9 @@ class Url extends ActiveRecord
     public static function edit($id, $data){
         $url = static::findOne(['id' => $id]);
 
-        $url->name = $data['name'];
-        $url->url = $data['url'];
-        $url->comment = $data['comment'];
+        $url->name = strip_tags($data['name']);
+        $url->url = strip_tags($data['url']);
+        $url->comment = strip_tags($data['comment']);
 
         if(isset($data['updated_at'])) {
             $url->updated_at = $data['updated_at'];

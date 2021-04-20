@@ -424,7 +424,7 @@ class FinController extends Controller
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
-            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
+            if(Category::existsNameByUser($data['name'], $id_user, 0, 0) == true){
                 return [
                     "data" => $data,
                     "error" => "Категория с таким же названием уже существует",
@@ -488,7 +488,7 @@ class FinController extends Controller
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
-            if(Category::existsNameByUser($data['name'], $id_user, $data['id']) == true){
+            if(Category::existsNameByUser($data['name'], $id_user, $data['id'], 0) == true){
                 return [
                     "data" => $data,
                     "error" => "Категория с таким же названием уже существует",
@@ -650,7 +650,7 @@ class FinController extends Controller
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
-            if(Category::existsNameByUser($data['name'], $id_user, 0) == true){
+            if(Category::existsNameByUser($data['name'], $id_user, 0, $data['id_category']) == true){
                 return [
                     "data" => $data,
                     "error" => "Категория с таким же названием уже существует",
@@ -714,7 +714,7 @@ class FinController extends Controller
             $cur_user = Yii::$app->user->identity;
             $id_user = $cur_user->getId();
 
-            if(Category::existsNameByUser($data['name'], $id_user, $data['id']) == true){
+            if(Category::existsNameByUser($data['name'], $id_user, $data['id'], $data['id_category']) == true){
                 return [
                     "data" => $data,
                     "error" => "Категория с таким же названием уже существует",
@@ -1049,7 +1049,7 @@ class FinController extends Controller
                             "element" => "Cat"
                         ];
                     } else {
-                        if (Category::existsNameByUser($data['CatName'], $id_user, 0) == true) {
+                        if (Category::existsNameByUser($data['CatName'], $id_user, 0, 0) == true) {
                             return [
                                 "data" => $data,
                                 "error" => "Категория с таким же названием уже существует",
@@ -1074,7 +1074,7 @@ class FinController extends Controller
                             "element" => "Sub"
                         ];
                     } else {
-                        if (Category::existsNameByUser($data['SubName'], $id_user, 0) == true) {
+                        if (Category::existsNameByUser($data['SubName'], $id_user, 0, $data['CatId']) == true) {
                             return [
                                 "data" => $data,
                                 "error" => "Подкатегория с таким же названием уже существует",
@@ -1389,7 +1389,7 @@ class FinController extends Controller
                             "element" => "Cat"
                         ];
                     } else {
-                        if (Category::existsNameByUser($data['CatName'], $id_user, $data['CatId']) == true) {
+                        if (Category::existsNameByUser($data['CatName'], $id_user, $data['CatId'], 0) == true) {
                             return [
                                 "data" => $data,
                                 "error" => "Категория с таким же названием уже существует",
@@ -1414,7 +1414,7 @@ class FinController extends Controller
                             "element" => "Sub"
                         ];
                     } else {
-                        if (Category::existsNameByUser($data['SubName'], $id_user, $data['SubId']) == true) {
+                        if (Category::existsNameByUser($data['SubName'], $id_user, $data['SubId'], $data['CatId']) == true) {
                             return [
                                 "data" => $data,
                                 "error" => "Подкатегория с таким же названием уже существует",

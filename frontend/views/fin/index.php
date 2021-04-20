@@ -49,7 +49,11 @@ $this->registerJsFile('@web/js/fin/index_pos_ready.js', ['position' => \yii\web\
     <div id="paramMaxNum" hidden="hidden"><?= $maxNum ?></div>
 
 <div id="general">
-    <div class="clearfix"><hr class="line"></div>
+
+    <div class="clearfix"></div>
+    <div class="window-button window-border" id="button-new" onclick="addAcc()">Добавить</div>
+
+    <div class="clearfix window-m-t-9"><hr class="line"></div>
 
     <div class="fin-acc-name table-text">
         <div class="message-wrapper-title">
@@ -133,9 +137,6 @@ $this->registerJsFile('@web/js/fin/index_pos_ready.js', ['position' => \yii\web\
 
         <?php endforeach; } ?>
     </div>
-
-    <div class="clearfix"></div>
-    <div class="window-button window-border" id="button-new" onclick="addAcc()">Добавить</div>
 
 
     <div class="height-5em">

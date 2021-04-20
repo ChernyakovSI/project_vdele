@@ -205,7 +205,7 @@ class Register extends ActiveRecord
         };
 
         if(isset($data['comment'])) {
-            $newReg->comment = $data['comment'];
+            $newReg->comment = strip_tags($data['comment']);
         }
         else{
             $newReg->comment = '';
@@ -278,7 +278,7 @@ class Register extends ActiveRecord
         };
 
         if(isset($data['comment'])) {
-            $Reg->comment = $data['comment'];
+            $Reg->comment = strip_tags($data['comment']);
         }
         else{
             $Reg->comment = '';

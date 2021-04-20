@@ -12,7 +12,7 @@
 
 .url-main {
     grid-area: url-main ;
-    height: 77vh;
+    min-height: 77vh;
 }
 
 .url-col-category {

@@ -86,7 +86,7 @@ class Account extends ActiveRecord
 
         $newAcc->name = $data['name'];
         $newAcc->amount = (float)$data['amount'];
-        $newAcc->comment = $data['comment'];
+        $newAcc->comment = strip_tags($data['comment']);
 
         $newAcc->sum = (float)$data['amount'];
 
@@ -146,7 +146,7 @@ class Account extends ActiveRecord
 
         $Acc->name = $data['name'];
         $Acc->amount = $amount;
-        $Acc->comment = $data['comment'];
+        $Acc->comment = strip_tags($data['comment']);
 
         $Acc->sum = static::recalculateAcc($id, $amount, $id_user);
 

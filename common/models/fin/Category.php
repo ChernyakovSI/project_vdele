@@ -41,7 +41,7 @@ class Category extends ActiveRecord
     public static function add($data){
         $newCat = new Category();
 
-        $newCat->name = $data['name'];
+        $newCat->name = strip_tags($data['name']);
 
         if(isset($data['created_at'])) {
             $newCat->created_at = $data['created_at'];
@@ -93,7 +93,7 @@ class Category extends ActiveRecord
     public static function edit($id, $data){
         $Cat = static::findOne(['id' => $id]);
 
-        $Cat->name = $data['name'];
+        $Cat->name = strip_tags($data['name']);
 
         if(isset($data['updated_at'])) {
             $Cat->updated_at = $data['updated_at'];
@@ -176,8 +176,8 @@ class Category extends ActiveRecord
             ->orderBy('name')->all();
     }
 
-    public static function existsNameByUser($name, $id_user, $id){
-        $amounts = self::find()->select('id')->where(['id_user' => $id_user, 'name' => $name, 'is_deleted' => 0])
+    public static function existsNameByUser($name, $id_user, $id, $id_category){
+        $amounts = self::find()->select('id')->where(['id_user' => $id_user, 'name' => $name, 'is_deleted' => 0, 'id_category' => $id_category])
             ->andWhere('not id = '.$id)->all();
 
         if(count($amounts) > 0) {

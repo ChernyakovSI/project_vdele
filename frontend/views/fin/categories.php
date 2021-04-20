@@ -670,7 +670,10 @@ $this->title = 'Финансы: Категории расходов и дохо�
             <div class="url-categoryList-header window-subcaption">
                 Категории
             </div>
-            <div class="clearfix"><hr class="line"></div>
+
+            <div class="window-button window-border" id="new-category" onclick="addCategory()">Добавить</div>
+
+            <div class="clearfix window-m-t-9"><hr class="line"></div>
             <div id="list-categories">
 
                 <?php foreach ($categories as $category): ?>
@@ -686,12 +689,13 @@ $this->title = 'Финансы: Категории расходов и дохо�
                 <?php endforeach; ?>
 
             </div>
-
-            <div class="window-button window-border" id="new-category" onclick="addCategory()">Добавить</div>
         </div>
         <div class="window window-border fin-main-submenu" id="main-window">
 
-            <div id="list-subcategories">
+            <div class="window-button window-border" hidden="hidden" id="new-sub" onclick="addSub()">Добавить</div>
+            <div class="clearfix"></div>
+
+            <div id="list-subcategories" class="window-m-t-9">
                 <?php if (count($categories) == 0){ ?>
                     <div id="info" class="text-font text-center margin-v20">
                         У вас пока нет ни одной категории.
@@ -705,8 +709,6 @@ $this->title = 'Финансы: Категории расходов и дохо�
                 <?php } ?>
             </div>
 
-            <div class="clearfix"></div>
-            <div class="window-button window-border" hidden="hidden" id="new-sub" onclick="addSub()">Добавить</div>
         </div>
     </div>
 

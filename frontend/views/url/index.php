@@ -665,7 +665,10 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             <div class="url-categoryList-header window-subcaption">
                 Категории
             </div>
-            <div class="clearfix"><hr class="line"></div>
+
+            <div class="window-button window-border" id="new-category" onclick="addCategory()">Добавить</div>
+
+            <div class="window-m-t-9"><hr class="line"></div>
             <div class="fin-acc-row active-back interactive-only" onclick="fullUrl(0)" id="0">
                 <div class="url-col-category table-text">
                     <div class="message-wrapper-title">
@@ -690,11 +693,15 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
             </div>
 
-            <div class="window-button window-border" id="new-category" onclick="addCategory()">Добавить</div>
+
         </div>
         <div class="window window-border url-main" id="main-window">
 
-            <div id="list-urls">
+            <div class="clearfix"></div>
+            <div class="window-button window-border" id="new-url" onclick="addUrl()">Добавить</div>
+
+
+            <div id="list-urls" class="window-m-t-9">
                 <?php if (count($urls) == 0) { ?>
                     <div id="info" class="text-font text-center margin-v20">
                         У вас пока нет ни одной веб-ссылки.
@@ -730,9 +737,6 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
 
                     <?php endforeach; } ?>
             </div>
-
-            <div class="clearfix"></div>
-            <div class="window-button window-border" id="new-url" onclick="addUrl()">Добавить</div>
         </div>
     </div>
 
@@ -780,7 +784,7 @@ $this->registerJs($script, \yii\web\View::POS_BEGIN);
             </div>
             <div class="clearfix"></div>
             <div class="red-comment" id="red-comment"></div>
-            <div class="window-button-panel">
+            <div class="window-button-panel window-m-t-9">
                 <div class="window-button-in-panel window-border" id="button-add">Подтвердить</div>
                 <div class="window-button-in-panel window-border" id="button-del">Удалить</div>
             </div>

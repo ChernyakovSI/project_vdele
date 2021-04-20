@@ -667,35 +667,33 @@ class User extends ActiveRecord implements IdentityInterface
     public static function edit($data, $id){
         $User = static::findOne(['id' => $id]);
 
-        $User->surname = $data['surname'];//(integer)$data['id_type'];
-        $User->name = $data['name'];
-        $User->middlename = $data['middlename'];
+        $User->surname = strip_tags($data['surname']);//(integer)$data['id_type'];
+        $User->name = strip_tags($data['name']);
+        $User->middlename = strip_tags($data['middlename']);
 
         $User->gender = (integer)$data['gender'];
 
         $User->date_of_birth = (integer)$data['date_of_birth'];//->getTimestamp();
 
         $User->id_city = (integer)$data['id_city'];
-        $User->email = $data['email'];
-        $User->phone = $data['phone'];
+        $User->email = strip_tags($data['email']);
+        $User->phone = strip_tags($data['phone']);
 
-        $User->url_vk = $data['url_vk'];
-        $User->url_fb = $data['url_fb'];
-        $User->url_ok = $data['url_ok'];
-        $User->url_in = $data['url_in'];
-        $User->url_www = $data['url_www'];
+        $User->url_vk = strip_tags($data['url_vk']);
+        $User->url_fb = strip_tags($data['url_fb']);
+        $User->url_ok = strip_tags($data['url_ok']);
+        $User->url_in = strip_tags($data['url_in']);
+        $User->url_www = strip_tags($data['url_www']);
 
-        $User->telegram = $data['telegram'];
-        $User->skype = $data['skype'];
-        $User->icq = $data['icq'];
+        $User->telegram = strip_tags($data['telegram']);
+        $User->skype = strip_tags($data['skype']);
+        $User->icq = strip_tags($data['icq']);
 
-        $User->about = $data['about'];
+        $User->about = strip_tags($data['about']);
 
         $src = Image::getFileName($data['avatarName']);
         $image_id = Image::getImageIdBySrc($src);
         $User->image_id = $image_id;
-
-        $User->about = $data['about'];
 
         if(isset($data['updated_at'])) {
             $User->updated_at = (integer)$data['updated_at'];
