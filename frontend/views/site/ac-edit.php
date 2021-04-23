@@ -113,7 +113,7 @@ $this->registerLinkTag([
                 <div class="window-button-in-panel window-border" id="button-cancel">Отменить</div>
             </div>
 
-            <div class="users-container-wrap window window-border flex-item-b16">
+            <div class="userAvatar-container-wrap window window-border flex-item-b16">
                 <div id="paramDomain" hidden="hidden"><?=  Yii::$app->params['domain'] ?></div>
                 <div class="users-avatar">
                     <div class="img-wrap-user">

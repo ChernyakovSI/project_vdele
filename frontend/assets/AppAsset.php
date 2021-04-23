@@ -19,7 +19,7 @@ class AppAsset extends AssetBundle
         'css/index47.css',
         'css/color22.css',
         'css/acEdit11.css',
-        'css/users7.css',
+        'css/users8.css',
         'css/url3.css',
         'css/fin10.css',
         'css/useful1.css',

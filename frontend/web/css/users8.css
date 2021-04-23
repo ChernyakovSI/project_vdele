@@ -10,6 +10,17 @@
     padding: 14px;
 }
 
+.userAvatar-container-wrap {
+    height: 180px;
+    min-width: 550px;
+    display: grid;
+    grid-gap: 45px;
+    grid-template-columns: 150px repeat(1, 1fr);
+    grid-template-rows: auto;
+
+    padding: 14px;
+}
+
 /*.users-container-wrap:not(:first-child) {
     margin-top: 20px;
 }*/
