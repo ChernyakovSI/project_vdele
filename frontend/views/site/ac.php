@@ -167,7 +167,7 @@ $isFilled = false;
                             </div>
                         </div>
                     <?php }
-                    if(count(userTags) > 0) {
+                    if(count($userTags) > 0) {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
