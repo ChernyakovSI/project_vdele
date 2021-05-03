@@ -79,6 +79,19 @@ let btnCancel = document.getElementById('button-cancel');
 let arrDeleting = [];
 //--Фотографии
 
+//++Теги
+let tagsItems = document.getElementsByClassName('btn-del-tag');
+let tagsWrap = document.getElementsByClassName('tag-wrap');
+let btnClearTag = document.getElementById('ClearTag');
+let valueTag = document.getElementById('valueTag');
+let btnEnterTag = document.getElementById('EnterTag');
+let textTag = document.getElementById('textTag');
+let containerTags = document.getElementById('container-tags');
+let listTags = document.getElementById('list_tags');
+
+let newId = 0;
+//--Теги
+
 $(document).ready( function() {
     let strDate = convertTimeStamp(divParamDateOfBirth.innerHTML);
     let curDate = new Date(strDate);
@@ -136,6 +149,36 @@ $(document).ready( function() {
         };
     })
     //--Фотографии
+
+    //++Теги
+    arrTags = Array.from(tagsItems);
+    arrTags.forEach(function(item, i, arr) {
+        item.onclick = function(e) {
+            let id = item.getAttribute('data-id');
+            deleteTag(id);
+        };
+    });
+
+    btnClearTag.onclick = function(e) {
+        valueTag.value= '';
+    };
+
+    btnEnterTag.onclick = function(e) {
+        addTag();
+    };
+
+    valueTag.onkeydown = function(e) {
+        var evtobj = window.event ? event : e;
+
+        if (e.keyCode == 13) {
+            addTag();
+            e.preventDefault();
+        }
+    };
+
+
+
+    //--Теги
 });
 
 function convertTimeStamp(timestamp) {
@@ -231,6 +274,32 @@ buttonSave.onclick = function(e) {
         genderId = 2;
     }
 
+    let tags = [];
+    let elem;
+
+    let arrTagsWrap = Array.from(tagsWrap);
+    arrTagsWrap.forEach(function(item, i, arr) {
+        let children = item.childNodes;
+
+        elem = {};
+        for(let child in children){
+            if(children[child].nodeName === 'DIV') {
+                if(children[child].classList.contains('tagname')) {
+                    elem.name = children[child].innerText;
+                }
+                if(children[child].classList.contains('tag-del')) {
+                    let children2 = children[child].childNodes;
+                    for(child2 in children2) {
+                        if((children2[child2].nodeName === 'DIV') && (children2[child2].classList.contains('btn-del-tag'))) {
+                            elem.id = children2[child2].getAttribute('data-id');
+                        }
+                    }
+                }
+            }
+        }
+        tags.push(elem);
+    });
+
     let thisData = {
         'surname' : valueSurname.value,
         'name' : valueName.value,
@@ -251,6 +320,7 @@ buttonSave.onclick = function(e) {
         'icq' : valueIcq.value,
         'about' : valueAbout.value,
         'avatarName' : curAvatar.getAttribute('src'),
+        'tags' : tags,
     };
 
     runAjax('/site/ac-edit-save', thisData);
@@ -269,7 +339,7 @@ function runAjax(url, value, typeReq = 'post'){
         data : value
     }).done(function(data) {
         if (data.error === null || data.error === undefined) {
-                console.log(data);
+                //console.log(data);
 
         } else {
             if (data.error !== '' || data.error !== null || data.error !== undefined){
@@ -764,3 +834,119 @@ function rerender(dataSet) {
     }
 }
 //--Фотографии
+
+//++Теги
+function deleteTag(id) {
+    let wasDeleted = false;
+
+    arrTagsWrap = Array.from(tagsWrap);
+    arrTagsWrap.forEach(function(item, i, arr) {
+        let children = item.childNodes;
+
+        for(child in children){
+            if(children[child].nodeName === 'DIV') {
+                if(children[child].classList.contains('tag-del')) {
+                    let children2 = children[child].childNodes;
+                    for(child2 in children2) {
+                        if((children2[child2].nodeName === 'DIV') && (children2[child2].classList.contains('btn-del-tag'))) {
+                            if(children2[child2].getAttribute('data-id') === id) {
+                                item.remove();
+                                wasDeleted = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(wasDeleted === true) {
+                break;
+            }
+        }
+    });
+}
+
+function addTag() {
+    arrTagsWrap = Array.from(tagsWrap);
+    let tagNameStr = valueTag.value.trim();
+
+    if(tagNameStr === '') {
+        textTag.innerText = "Не указан тег!";
+    }
+    else if(arrTagsWrap.length >= 3) {
+        textTag.innerText = "Сначала удалите один из существующих тегов!";
+    }
+    else {
+        let children = listTags.childNodes;
+
+        let wasFound = false;
+        let curId = '';
+        let curName = '';
+        for(child in children){
+            if((children[child].nodeName === 'OPTION') && (children[child].innerText === tagNameStr)) {
+                wasFound = true;
+                curId = children[child].getAttribute('data-id');
+                curName = children[child].getAttribute('data-name');
+                break;
+            }
+        }
+
+        if(wasFound === false) {
+            newId = newId + 1;
+            curId = 'n'+newId;
+            curName = tagNameStr.replace(/(^|\s)\S/g, function(a) {return a.toUpperCase()}); //Преобразовать в тег
+            curName = curName.replace(/[^а-яА-Яa-zA-Z0-9 -]/, "").replace(/\s/g, "");
+        }
+
+        let isExists = false;
+        let arrTagsWrap = Array.from(tagsWrap);
+        arrTagsWrap.forEach(function(item, i, arr) {
+            let children = item.childNodes;
+
+            for(let child in children){
+                if(children[child].nodeName === 'DIV') {
+                    if(children[child].classList.contains('tagname')) {
+                        if(children[child].innerText === curName) {
+                            textTag.innerText = "Такой тег уже существует!";
+                            isExists = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        if(isExists === true) {
+            return;
+        }
+
+        textTag.innerText = "";
+
+        let divWrap = document.createElement('div');
+        divWrap.className = 'flex-item message-wrapper-line-gen window-border underlined-back tag-wrap';
+
+        let divTagName = document.createElement('div');
+        divTagName.className = 'tagname';
+        divTagName.innerText = curName;
+
+        let divTegDelWrap = document.createElement('div');
+        divTegDelWrap.className = 'tag-del m-l-10px';
+
+        let divTegDel = document.createElement('div');
+        divTegDel.className = 'interactive symbol_style btn-del-tag';
+        divTegDel.setAttribute('data-id', curId);
+        divTegDel.innerHTML = '&#10008;';
+        divTegDel.onclick = function(e) {
+            let id = divTegDel.getAttribute('data-id');
+            deleteTag(id);
+        };
+
+        divTegDelWrap.append(divTegDel);
+        divWrap.append(divTagName);
+        divWrap.append(divTegDelWrap);
+        containerTags.append(divWrap);
+
+        valueTag.value= '';
+    }
+}
+//--Теги

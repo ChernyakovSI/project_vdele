@@ -11,6 +11,7 @@ use yii\helpers\Html;
 use common\models\Image;
 use DateTime;
 use yii\db\Query;
+use common\models\Tag;
 
 /**
  * User model
@@ -705,6 +706,8 @@ class User extends ActiveRecord implements IdentityInterface
         //return $User;
 
         $User->save();
+
+        Tag::editTagsForUser($User->id, $data['tags']);
 
         return true;
     }

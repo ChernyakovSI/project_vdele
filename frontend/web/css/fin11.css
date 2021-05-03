@@ -90,6 +90,14 @@
     margin-top: 10px;
 }
 
+.caption-line {
+    padding: 8px; /* the container will keep the padding untouched */
+    float: left;
+    text-align: right;
+
+    margin-top: 10px;
+}
+
 .empty-line-half {
     width: 80%;
     float: left;

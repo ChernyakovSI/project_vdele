@@ -42,7 +42,7 @@ $isFilled = false;
             <?php } ?>
             <div class="subwindow unactive ac-last-activity"><?= $user->getTimeLastActivity() ?></div>
         </div>
-        <div class="window window-border main-info">
+        <div class="window window-border main-info p-10px">
             <div class="full-height full-width">
 
                     <?php if($user->date_of_birth > 0) {
@@ -57,14 +57,14 @@ $isFilled = false;
                             </div>
                         </div>
                     <?php }
-                    if($user->id_city > 0) {
+                    if(($user->id_city > 0) && (isset($city))) {
                         $isFilled = true; ?>
                         <div class="container-wrap-2colomns">
                             <div class="wrap2-column1">
                                 <label>Город:</label>
                             </div>
                             <div class="wrap2-column2">
-                                <?= $city->name ?>
+                                <?= (isset($city) ? $city->name : '') ?>
                             </div>
                         </div>
                     <?php }
@@ -166,7 +166,19 @@ $isFilled = false;
                                 <?= $user->icq ?>
                             </div>
                         </div>
+                    <?php }
+                    if(count(userTags) > 0) {
+                        $isFilled = true; ?>
+                        <div class="container-wrap-2colomns">
+                            <div class="wrap2-column1">
+                                <label>Теги:</label>
+                            </div>
+                            <div class="wrap2-column2">
+                                <?php $sep = ''; foreach ($userTags as $tag) : echo $sep.$tag['name']; $sep = ', '; endforeach; ?>
+                            </div>
+                        </div>
                     <?php } ?>
+
 
                     <?php if(($isFilled === false) && ($user->about === '')) {
                         ?>
@@ -189,7 +201,7 @@ $isFilled = false;
         </div>
 
         <div class="window window-border button-panel">
-            <div class="full-width full-height window-subcaption">
+            <div class="full-width full-height window-subcaption p-10px">
                 <?php if($cur_user_id == $user->getId()) { ?>
                     <a href="/site/ac-edit">
                         <div class="subwindow button-item">
@@ -218,7 +230,7 @@ $isFilled = false;
             </div>
         </div>
 
-        <div class="window window-border goals">
+        <div class="window window-border goals p-10px">
             <div class="full-width">
                 <?php
                 if($user->about <> '') {

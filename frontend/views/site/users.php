@@ -9,6 +9,36 @@ $this->title = 'Пользователи';
 ?>
 <div class="window window-border window-caption">Пользователи (<?= count($usersAll) ?>)</div>
 
+<!--<div class="window window-border gap-v" id="main-window">
+    <div class="Rollup">
+        <input class="hide" id="hd-1" type="checkbox">
+        <label for="hd-1">Настройки списка</label>
+        <div>
+            <div class="">
+                <div class="clearfix"></div>
+                <div class="flex" id="container-tags">
+                </div>
+                <div class="clearfix"></div>
+                <div id="fieldTag">
+                    <div class="caption-line w-16">Тег:</div>
+                    <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueTagWrap">
+                        <input type="text" class="message-text-line" list="list_tags" id="valueTag" contentEditable />
+                        <datalist id="list_tags">
+                            <?php //foreach ($tags as $tag): ?>
+                                <option data-id=<?= ''//$tag['id'] ?> data-name=<?= ''//$tag['name'] ?>><?= ''//$tag['name'].' ('.$tag['count_users'].')' ?></option>
+                            <?php //endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="EnterTag">&#10004;</div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearTag">&#10008;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="clearfix gap-v"></div>
 
 <div class="users-center">
     <?= LinkPager::widget(['pagination' => $pagination,
@@ -19,7 +49,7 @@ $this->title = 'Пользователи';
         'maxButtonCount' => 8,
         'disabledPageCssClass' => 'disabled',]) ?></div>
 
-    <div class="content flex">
+    <div class="content flex-between">
         <?php $imageClass = new Image();
         foreach ($users as $user): ?>
 

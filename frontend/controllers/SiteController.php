@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use common\models\Dialog;
 use common\models\DialogUsers;
 use common\models\Message;
+use common\models\Tag;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\data\Pagination;
@@ -186,6 +187,8 @@ class SiteController extends Controller
                 Если письмо не пришло, то вышлете повторное письмо по кнопке из меню сверху, либо напишите в поддержку');
             }
 
+            $userTags = Tag::getTagsByUser($id_user);
+
             return $this->render('ac', [
                 'user_id' => $id_user,
                 'cur_user_id' => $cur_user->getId(),
@@ -193,6 +196,7 @@ class SiteController extends Controller
                 'months' => $months,
                 'city' => $city,
                 'path_avatar' => $path_avatar,
+                'userTags' => $userTags,
             ]);
         }
         else {
@@ -375,6 +379,9 @@ class SiteController extends Controller
 
             $dateOfBirth = $cur_user->date_of_birth; //strtotime(date('Y-m-d 00:00:00', $cur_user->date_of_birth));
 
+            $userTags = Tag::getTagsByUser($user_id);
+            $tags = Tag::getAllTags();
+
             return $this->render('ac-edit', [
                 'cur_user' => $cur_user,
                 'city' => $city,
@@ -382,6 +389,8 @@ class SiteController extends Controller
                 'tab' => 1,
                 'dateOfBirth' => $dateOfBirth,
                 'allPaths' => $allPaths,
+                'tags' => $tags,
+                'userTags' => $userTags
             ]);
         }
         else {
@@ -461,10 +470,13 @@ class SiteController extends Controller
             ->limit($pagination->limit)
             ->all();
 
+        $tags = Tag::getAllTags();
+
         return $this->render('users', [
             'users' => $users,
             'pagination' => $pagination,
             'usersAll' => $usersAll,
+            'tags' => $tags,
         ]);
     }
 

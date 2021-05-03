@@ -235,6 +235,37 @@ $this->registerLinkTag([
                             <input type="text" class="message-text-line" id="valueUrlWWW" value="<?= $cur_user->url_www ?>" placeholder="" contentEditable />
                         </div>
                     </div>
+
+                    <div class="caption">Теги</div>
+                    <div class="wrap_text">
+                        <div class="caption-line-gen">Укажите ключевые слова без пробелов, по которым Вас можно быстро найти по интересам и целям знакомств</div>
+                        <div class="clearfix"></div>
+                        <div class="flex" id="container-tags">
+                            <?php foreach ($userTags as $tag): ?>
+                                <div class="flex-item message-wrapper-line-gen window-border underlined-back tag-wrap">
+                                    <div class="tagname"><?= $tag['name'] ?></div><div class="tag-del m-l-10px">
+                                        <div class="interactive symbol_style btn-del-tag" aria-hidden="true" data-id=<?= $tag['id'] ?>>&#10008;</div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="fieldTag">
+                            <div class="caption-line w-16">Добавить:</div>
+                            <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueTagWrap">
+                                <input type="text" class="message-text-line" list="list_tags" id="valueTag" contentEditable />
+                                <datalist id="list_tags">
+                                    <?php foreach ($tags as $tag): ?>
+                                        <option data-id=<?= $tag['id'] ?> data-name=<?= $tag['name'] ?>><?= $tag['name'].' ('.$tag['count_users'].')' ?></option>
+                                    <?php endforeach; ?>
+                                </datalist>
+                            </div>
+                            <div class="window-button-in-panel window-border gap-v-13" id="EnterTag">&#10004;</div>
+                            <div class="window-button-in-panel window-border gap-v-13" id="ClearTag">&#10008;</div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="text-color-red text-center" id="textTag"></div>
+                    </div>
                 </div>
             </div>
         </section>

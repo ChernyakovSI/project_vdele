@@ -369,3 +369,11 @@ a:hover {
 .col-back-tra {
     background: linear-gradient(45deg, rgba(153, 204, 255, 0.7), rgba(153, 204, 255, 0.2));
 }
+
+.col-message-wrapper {
+    background-color: #f9fafb;
+}
+
+.text-color-red {
+    color: #FE2E2E;
+}

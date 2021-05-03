@@ -1,7 +1,7 @@
 .users-container-wrap {
     height: 180px;
-    min-width: 550px;
-    max-width: 550px;
+    min-width: 567px;
+    max-width: 567px;
     display: grid;
     grid-gap: 45px;
     grid-template-columns: 150px repeat(1, 1fr);

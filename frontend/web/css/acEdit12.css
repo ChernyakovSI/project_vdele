@@ -176,3 +176,19 @@
     height: 0;
     border-width: 0;
 }
+
+.message-wrapper-line-gen {
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+
+    margin-top: 10px;
+}
+
+.tagname {
+    float: left;
+}
+
+.tag-del {
+    float: left;
+}
