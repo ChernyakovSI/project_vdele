@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
 use common\models\Image;
+use common\models\Tag;
 
 $this->title = 'Пользователи';
 //$this->params['breadcrumbs'][] = $this->title;
@@ -77,7 +78,9 @@ $this->title = 'Пользователи';
                 <div>
                     <div>
                         <a href="/?id=<?= $user->getId() ?>">
-                            <?= Html::encode("{$user->getFIO($user->id, false)}") ?>
+                            <div class="h-20px content-hide">
+                                <?= Html::encode("{$user->getFIO($user->id, false)}") ?>
+                            </div>
                         </a>
                         <div class="subwindow unactive">
                             <?= Html::encode("{$user->getTimeLastActivity()}") ?>
@@ -93,6 +96,43 @@ $this->title = 'Пользователи';
                             <a href="/foto?id=<?= $user->getId() ?>">Фотоальбом</a>
                         </div>
                         <?php } ?>
+                        <?php $userTags = Tag::getTagsByUser($user->id); if(count($userTags) > 0) { ?>
+                            <div class="subwindow flex-start">
+                                <?php foreach ($userTags as $tag): ?>
+                                    <div class="flex-item m-l-10px wrapper-tag window-border
+                                    <?php if($tag['id'] % 8 === 0) {
+                                        echo 'col-back-inn-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 1) {
+                                        echo 'col-back-fin-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 2) {
+                                        echo 'col-back-hea-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 3) {
+                                        echo 'col-back-rel-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 4) {
+                                        echo 'col-back-edu-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 5) {
+                                        echo 'col-back-rea-light';
+                                    }
+                                    elseif ($tag['id'] % 8 === 6) {
+                                        echo 'col-back-psy-light';
+                                    }
+                                    else {
+                                        echo 'col-back-tra-light';
+                                    }
+                                    ?>
+
+                                    ">
+                                        <div class="tagname"><?= $tag['name'] ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php } ?>
+
                     </div>
 
                 </div>

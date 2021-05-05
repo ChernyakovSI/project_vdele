@@ -22,6 +22,15 @@
     width: 75%;
 }
 
+.content-hide {
+    position: relative;
+    overflow-y: hidden;
+}
+
+.h-20px {
+    height: 20px;
+}
+
 .m-l-10px {
     margin-left: 10px;
 }
@@ -38,5 +47,12 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    align-items: center;
+}
+
+.flex-start {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
     align-items: center;
 }

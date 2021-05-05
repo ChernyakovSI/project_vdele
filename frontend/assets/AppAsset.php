@@ -17,9 +17,9 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color23.css',
+        'css/color24.css',
         'css/acEdit12.css',
-        'css/users9.css',
+        'css/users10.css',
         'css/url3.css',
         'css/fin11.css',
         'css/useful1.css',
@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto1.css',
         'css/slider.css',
-        'css/size.css'
+        'css/size1.css'
     ];
     public $js = [];
 //    [

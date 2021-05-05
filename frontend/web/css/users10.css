@@ -50,3 +50,8 @@
     object-position: 0 0;
     border-radius: 50%;
 }
+
+.wrapper-tag {
+    padding: 3px;
+    float: left;
+}
