@@ -24,7 +24,7 @@ body {
 .hide,
 .hide + label ~ div {
     display: none;
-    height: 135px;
+    /*height: 135px;*/
 }
 /* вид текста label */
 .hide + label {
@@ -45,7 +45,7 @@ body {
     -webkit-box-shadow: inset 3px 3px 10px #7d8e8f;
     box-shadow: inset 3px 3px 10px #7d8e8f;*?
     /* чуточку анимации при появлении */
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     -webkit-animation:fade ease-in 0.5s;
     -moz-animation:fade ease-in 0.5s;
     animation:fade ease-in 0.5s;

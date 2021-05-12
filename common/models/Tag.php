@@ -64,7 +64,8 @@ class Tag extends ActiveRecord
     public static function getTagsByUser($id_user){
         $query = new Query();
         $body = $query->Select(['Tag.`id` as id',
-                                'Tag.`name` as name'
+                                'Tag.`name` as name',
+                                'Tag.`id` % 8 as color'
         ])
             ->from(self::tableName().' as Tag')
             ->join('INNER JOIN', 'tag_user as TagUser', 'TagUser.`id_tag` = Tag.`id`')

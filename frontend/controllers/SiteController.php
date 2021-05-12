@@ -457,6 +457,19 @@ class SiteController extends Controller
     public function actionUsers() {
 
         $query = User::find();
+        $gFind = false;
+        $findTag = '';
+
+        $params = Yii::$app->request;
+        if($params->get('tag')) {
+            $query = User::findWithParams($params);
+            $gFind = true;
+            $findTag = $params->get('tag');
+            if (!isset($findTag)) {
+                $findTag = '';
+            }
+        }
+
 
         $pagination = new Pagination([
             'defaultPageSize' => 10,
@@ -477,6 +490,8 @@ class SiteController extends Controller
             'pagination' => $pagination,
             'usersAll' => $usersAll,
             'tags' => $tags,
+            'gFind' => $gFind,
+            'findTag' => $findTag
         ]);
     }
 

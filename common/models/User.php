@@ -259,6 +259,53 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+    public static function getFIO_s($user_id, $abbreviated = false)
+    {
+        if ((isset($user_id)) && ($user_id > 0)) {
+            $columns_array = [
+                'user.surname as surname',
+                'user.name as name',
+                'user.middlename as middlename',
+                'user.email as email',
+            ];
+
+            $query = User::find()->select($columns_array);
+            $model = $query->where('user.id = '.$user_id)->one();
+
+            $userFIO = '';
+            if ((isset($model->surname)) && ($model->surname !== '')) {
+                $userFIO = $userFIO." ".$model->surname;
+            }
+            $nameIsFull = " ";
+            if ((isset($model->name)) && ($model->name !== '')) {
+                if ($abbreviated == true)
+                {
+                    $nameIsFull = "";
+                    $userFIO = $userFIO." ".mb_substr($model->name, 0, 1).".";
+                }
+                else
+                    $userFIO = $userFIO." ".$model->name;
+            }
+            if ((isset($model->middlename)) && ($model->middlename !== '')) {
+                if ($abbreviated == true)
+                    $userFIO = $userFIO.$nameIsFull.mb_substr($model->middlename, 0, 1).".";
+                else
+                    $userFIO = $userFIO." ".$model->middlename;
+            }
+
+            if ($userFIO == "") {
+                $userFIO = $model->email;
+            }
+
+            return trim($userFIO);
+
+        }
+        else
+        {
+            return '';
+        }
+    }
+
     public static function getI($user_id)
     {
         if ((isset($user_id)) && ($user_id > 0)) {
@@ -647,7 +694,16 @@ class User extends ActiveRecord implements IdentityInterface
         else{
             return $message.date('j '.$months[$month-1].' Y', $lastActivity);
         }
+    }
 
+    public static function getTimeLastActivity_s($id){
+        $thisUser = User::find((int)$id)->one();
+        if (isset($thisUser)) {
+            return $thisUser->getTimeLastActivity();
+        }
+        else {
+            return '';
+        }
 
     }
 
@@ -710,6 +766,45 @@ class User extends ActiveRecord implements IdentityInterface
         Tag::editTagsForUser($User->id, $data['tags']);
 
         return true;
+    }
+
+    public static function findWithParams($params) {
+        $query = new Query();
+        $body = $query->Select(['User.`id` as id',
+            'User.`email` as email',
+            'User.`status` as status',
+            'User.`id_role` as id_role',
+            'User.`created_at` as created_at',
+            'User.`updated_at` as updated_at',
+            'User.`name` as name',
+            'User.`surname` as surname',
+            'User.`middlename` as middlename',
+            'User.`date_of_birth` as date_of_birth',
+            'User.`id_city` as id_city',
+            'User.`phone` as phone',
+            'User.`url_vk` as url_vk',
+            'User.`url_fb` as url_fb',
+            'User.`url_ok` as url_ok',
+            'User.`url_in` as url_in',
+            'User.`url_www` as url_www',
+            'User.`skype` as skype',
+            'User.`icq` as icq',
+            'User.`about` as about',
+            'User.`last_activity` as last_activity',
+            'User.`telegram` as telegram',
+            'User.`image_id` as image_id'
+        ])
+            ->from(self::tableName().' as User');
+
+        if($params->get('tag')) {
+            $tagName = $params->get('tag');
+
+            $body = $body->join('INNER JOIN', 'tag_user as TagUser', 'TagUser.`id_user` = User.`id`')
+                ->join('INNER JOIN', 'tag_item as TagItem', 'TagUser.`id_tag` = TagItem.`id`')
+                ->where(['TagItem.`name`' => $tagName]);
+        }
+
+        return $body;
     }
 }
 

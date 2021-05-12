@@ -54,4 +54,5 @@
 .wrapper-tag {
     padding: 3px;
     float: left;
+    max-width: 159px;
 }
