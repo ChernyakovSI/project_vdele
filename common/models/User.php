@@ -697,7 +697,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public static function getTimeLastActivity_s($id){
-        $thisUser = User::find((int)$id)->one();
+        $thisUser = User::find()->where(['id' => (int)$id])->one();
         if (isset($thisUser)) {
             return $thisUser->getTimeLastActivity();
         }
