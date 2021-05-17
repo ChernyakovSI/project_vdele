@@ -54,7 +54,7 @@
         <div class="window window-border gap-v" id="main-window">
 
 
-            <div class="Rollup">
+            <div class="Rollup w-100">
                 <input class="hide" id="hd-1" type="checkbox">
                 <label for="hd-1">Настройки отчета: период с <span id="settingsPeriodFrom"><?= Reports::timestampToDateString($periodFrom) ?></span> по <span id="settingsPeriodTo"><?= Reports::timestampToDateString($periodTo) ?></span></label>
                 <div>
@@ -79,10 +79,12 @@
 
             </div>
 
+            <div class="clearfix"></div>
             <div class="text-size">
                 Прибыль: <span id="delta"><?= Account::formatNumberToMoney($totalDelta) ?></span>
             </div>
 
+            <div class="clearfix"></div>
             <div class="halfwidth-wrapper">
                 <div class="halfwidth">
 

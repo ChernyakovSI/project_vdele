@@ -20,19 +20,33 @@ $this->title = 'Пользователи';
         <div>
             <div class="">
                 <div class="clearfix"></div>
-                <div id="fieldTag">
-                    <div class="caption-line w-16">Тег:</div>
-                    <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueTagWrap">
-                        <input type="text" class="message-text-line" list="list_tags" id="valueTag" contentEditable value="<?= $findTag ?>" />
-                        <datalist id="list_tags">
-                            <?php foreach ($tags as $tag): ?>
-                                <option data-id=<?= $tag['id'] ?> data-name=<?= $tag['name'] ?>><?= $tag['name'].' ('.$tag['count_users'].')' ?></option>
-                            <?php endforeach; ?>
-                        </datalist>
+                <div class="column-50">
+                    <div id="fieldTag">
+                        <div class="caption-line w-16">Тег:</div>
+                        <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueTagWrap">
+                            <input type="text" class="message-text-line" list="list_tags" id="valueTag" contentEditable value="<?= $findTag ?>" />
+                            <datalist id="list_tags">
+                                <?php foreach ($tags as $tag): ?>
+                                    <option data-id=<?= $tag['id'] ?> data-name=<?= $tag['name'] ?>><?= $tag['name'].' ('.$tag['count_users'].')' ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="ClearTag">&#10008;</div>
                     </div>
 
-                    <div class="window-button-in-panel window-border gap-v-13" id="ClearTag">&#10008;</div>
+
                 </div>
+                <div class="column-50">
+                    <div class="clearfix"></div>
+                    <div id="fieldFIO">
+                        <div class="caption-line w-16">ФИО:</div>
+                        <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueFIOWrap">
+                            <input type="text" class="message-text-line" id="valueFIO" contentEditable value="<?= $findFIO ?>" />
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="ClearFIO">&#10008;</div>
+                    </div>
+                </div>
+
                 <div class="clearfix"></div>
                 <div class="window-button-panel window-m-t-9">
                     <div class="window-button-in-panel window-border gap-v-13" id="btnFind">&#10004; Найти</div>

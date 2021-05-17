@@ -459,14 +459,21 @@ class SiteController extends Controller
         $query = User::find();
         $gFind = false;
         $findTag = '';
+        $findFIO = '';
 
         $params = Yii::$app->request;
-        if($params->get('tag')) {
+        if(($params->get('tag')) || ($params->get('fio'))) {
             $query = User::findWithParams($params);
             $gFind = true;
             $findTag = $params->get('tag');
             if (!isset($findTag)) {
                 $findTag = '';
+            }
+
+            $findFIO = $params->get('fio');
+            $findFIO = str_replace ( "," , " " , $findFIO);
+            if (!isset($findFIO)) {
+                $findFIO = '';
             }
         }
 
@@ -491,7 +498,8 @@ class SiteController extends Controller
             'usersAll' => $usersAll,
             'tags' => $tags,
             'gFind' => $gFind,
-            'findTag' => $findTag
+            'findTag' => $findTag,
+            'findFIO' => $findFIO
         ]);
     }
 

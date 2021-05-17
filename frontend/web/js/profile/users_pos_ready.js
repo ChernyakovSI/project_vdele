@@ -5,6 +5,9 @@ let valueTag = document.getElementById('valueTag');
 let listTags = document.getElementById('list_tags');
 let tagsWraps = document.getElementsByClassName('wrapper-tag');
 
+let btnClearFIO = document.getElementById('ClearFIO');
+let valueFIO = document.getElementById('valueFIO');
+
 $(document).ready( function() {
 
     arrTagWraps = Array.from(tagsWraps);
@@ -21,6 +24,10 @@ $(document).ready( function() {
         }
     })
 
+    btnClearFIO.onclick = function(e) {
+        valueFIO.value = '';
+    };
+
     btnClearTag.onclick = function(e) {
         valueTag.value = '';
     };
@@ -31,7 +38,7 @@ $(document).ready( function() {
 
     btnFind.onclick = function(e) {
         let params = '';
-        let sep = '';
+        let sep = '?';
 
         let tagNameStr = valueTag.value.trim();
         if (tagNameStr !== '') {
@@ -59,8 +66,11 @@ $(document).ready( function() {
             sep = '&';
         }
 
-        if (params !== '') {
-            params = '?' + params;
+        let FIOStr = valueFIO.value.trim();
+        if (FIOStr !== '') {
+            curFIO = FIOStr.replaceAll(" ", ",");
+            params = params + sep + 'fio=' + curFIO;
+            sep = '&';
         }
 
         window.location.href = '/users' + params;

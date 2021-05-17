@@ -796,12 +796,36 @@ class User extends ActiveRecord implements IdentityInterface
         ])
             ->from(self::tableName().' as User');
 
+        $arrWhere = [];
+        $strWhere = '';
+
         if($params->get('tag')) {
             $tagName = $params->get('tag');
 
             $body = $body->join('INNER JOIN', 'tag_user as TagUser', 'TagUser.`id_user` = User.`id`')
-                ->join('INNER JOIN', 'tag_item as TagItem', 'TagUser.`id_tag` = TagItem.`id`')
-                ->where(['TagItem.`name`' => $tagName]);
+                ->join('INNER JOIN', 'tag_item as TagItem', 'TagUser.`id_tag` = TagItem.`id`');
+                //->where(['TagItem.`name`' => $tagName]);
+
+            $arrWhere['TagItem.`name`'] = $tagName;
+        }
+
+        if($params->get('fio')) {
+            $fio = $params->get('fio');
+            $arrFio = explode(',', $fio);
+
+            $strFio = implode('", "',$arrFio);
+
+            $strWhere = 'User.`name` IN ("'.$strFio.'") OR User.`surname` IN ("'.$strFio.'") OR User.`middlename` IN ("'.$strFio.'")';
+        }
+
+        if (count($arrWhere) > 0) {
+            $body = $body->where($arrWhere);
+            if ($strWhere !== '') {
+                $body = $body->andWhere($strWhere);
+            }
+        }
+        elseif ($strWhere !== '') {
+            $body = $body->where($strWhere);
         }
 
         return $body;
