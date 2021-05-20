@@ -34,6 +34,33 @@ $this->title = 'Пользователи';
                         <div class="window-button-in-panel window-border gap-v-13" id="ClearTag">&#10008;</div>
                     </div>
 
+                    <div class="clearfix"></div>
+                    <div id="fieldAge" class="column-14">
+                        <div class="caption-line w-16">Возраст:</div>
+                    </div>
+                    <div class="column-35">
+                        <div id="fieldAgeFrom">
+                            <div class="caption-line w-16">от</div>
+                            <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueAgeFromWrap">
+                                <input type="number" class="message-text-line" id="valueAgeFrom" contentEditable value="<?= $findAgeFrom ?>" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="column-35">
+                        <div id="fieldAgeTo">
+                            <div class="caption-line w-16">до</div>
+                            <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueAgeToWrap">
+                                <input type="number" class="message-text-line" id="valueAgeTo" contentEditable value="<?= $findAgeTo ?>" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="fieldAge column-10">
+                        <div class="window-button-in-panel window-border gap-v-13" id="ClearAge">&#10008;</div>
+                    </div>
+
+
 
                 </div>
                 <div class="column-50">
@@ -99,6 +126,8 @@ $this->title = 'Пользователи';
                         <a href="/?id=<?= $user['id'] ?>">
                             <div class="h-20px content-hide">
                                 <?= User::getFIO_s($user['id'], false) ?>
+
+
                             </div>
                         </a>
                         <div class="subwindow unactive">

@@ -769,6 +769,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public static function findWithParams($params) {
+        $fullYears = '(YEAR(CURRENT_DATE) - YEAR(FROM_UNIXTIME(User.`date_of_birth`))) - (DATE_FORMAT(CURRENT_DATE, "%m%d") < DATE_FORMAT(FROM_UNIXTIME(User.`date_of_birth`), "%m%d"))';
+
         $query = new Query();
         $body = $query->Select(['User.`id` as id',
             'User.`email` as email',
@@ -780,6 +782,7 @@ class User extends ActiveRecord implements IdentityInterface
             'User.`surname` as surname',
             'User.`middlename` as middlename',
             'User.`date_of_birth` as date_of_birth',
+            $fullYears.' as fullYears',
             'User.`id_city` as id_city',
             'User.`phone` as phone',
             'User.`url_vk` as url_vk',
@@ -798,6 +801,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         $arrWhere = [];
         $strWhere = '';
+        $strWhereCon = '';
 
         if($params->get('tag')) {
             $tagName = $params->get('tag');
@@ -815,7 +819,22 @@ class User extends ActiveRecord implements IdentityInterface
 
             $strFio = implode('", "',$arrFio);
 
-            $strWhere = 'User.`name` IN ("'.$strFio.'") OR User.`surname` IN ("'.$strFio.'") OR User.`middlename` IN ("'.$strFio.'")';
+            $strWhere = $strWhere.$strWhereCon.'User.`name` IN ("'.$strFio.'") OR User.`surname` IN ("'.$strFio.'") OR User.`middlename` IN ("'.$strFio.'")';
+            $strWhereCon = ' AND ';
+        }
+
+        if($params->get('af')) {
+            $ageFrom = $params->get('af');
+
+            $strWhere = $strWhere.$strWhereCon.$fullYears.' >= '.$ageFrom;
+            $strWhereCon = ' AND ';
+        }
+
+        if($params->get('at')) {
+            $ageTo = $params->get('at');
+
+            $strWhere = $strWhere.$strWhereCon.$fullYears.' <= '.$ageTo;
+            $strWhereCon = ' AND ';
         }
 
         if (count($arrWhere) > 0) {

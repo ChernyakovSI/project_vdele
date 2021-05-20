@@ -460,9 +460,12 @@ class SiteController extends Controller
         $gFind = false;
         $findTag = '';
         $findFIO = '';
+        $findAgeFrom = '';
+        $findAgeTo = '';
 
         $params = Yii::$app->request;
-        if(($params->get('tag')) || ($params->get('fio'))) {
+        if(($params->get('tag')) || ($params->get('fio'))
+            || ($params->get('af')) || ($params->get('at'))) {
             $query = User::findWithParams($params);
             $gFind = true;
             $findTag = $params->get('tag');
@@ -474,6 +477,16 @@ class SiteController extends Controller
             $findFIO = str_replace ( "," , " " , $findFIO);
             if (!isset($findFIO)) {
                 $findFIO = '';
+            }
+
+            $findAgeFrom = $params->get('af');
+            if (!isset($findAgeFrom)) {
+                $findAgeFrom = '';
+            }
+
+            $findAgeTo = $params->get('at');
+            if (!isset($findAgeTo)) {
+                $findAgeTo = '';
             }
         }
 
@@ -499,7 +512,9 @@ class SiteController extends Controller
             'tags' => $tags,
             'gFind' => $gFind,
             'findTag' => $findTag,
-            'findFIO' => $findFIO
+            'findFIO' => $findFIO,
+            'findAgeFrom' => $findAgeFrom,
+            'findAgeTo' => $findAgeTo
         ]);
     }
 

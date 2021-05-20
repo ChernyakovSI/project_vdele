@@ -8,6 +8,10 @@ let tagsWraps = document.getElementsByClassName('wrapper-tag');
 let btnClearFIO = document.getElementById('ClearFIO');
 let valueFIO = document.getElementById('valueFIO');
 
+let btnClearAge = document.getElementById('ClearAge');
+let valueAgeFrom = document.getElementById('valueAgeFrom');
+let valueAgeTo = document.getElementById('valueAgeTo');
+
 $(document).ready( function() {
 
     arrTagWraps = Array.from(tagsWraps);
@@ -30,6 +34,23 @@ $(document).ready( function() {
 
     btnClearTag.onclick = function(e) {
         valueTag.value = '';
+    };
+
+    btnClearAge.onclick = function(e) {
+        valueAgeFrom.value = 0;
+        valueAgeTo.value = 0;
+    };
+
+    valueAgeFrom.onfocus = function(e) {
+        if(valueAgeFrom.value === '0') {
+            valueAgeFrom.value = '';
+        }
+    };
+
+    valueAgeTo.onfocus = function(e) {
+        if(valueAgeTo.value === '0') {
+            valueAgeTo.value = '';
+        }
     };
 
     btnReset.onclick = function(e) {
@@ -70,6 +91,18 @@ $(document).ready( function() {
         if (FIOStr !== '') {
             curFIO = FIOStr.replaceAll(" ", ",");
             params = params + sep + 'fio=' + curFIO;
+            sep = '&';
+        }
+
+        let AgeFrom = valueAgeFrom.value;
+        if (AgeFrom !== '' && AgeFrom !== '0') {
+            params = params + sep + 'af=' + AgeFrom;
+            sep = '&';
+        }
+
+        let AgeTo = valueAgeTo.value;
+        if (AgeTo !== '' && AgeTo !== '0') {
+            params = params + sep + 'at=' + AgeTo;
             sep = '&';
         }
 

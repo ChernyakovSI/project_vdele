@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto1.css',
         'css/slider.css',
-        'css/size3.css'
+        'css/size4.css'
     ];
     public $js = [];
 //    [

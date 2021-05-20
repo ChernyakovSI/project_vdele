@@ -4,6 +4,26 @@
     overflow-y: hidden;
 }
 
+.column-10 {
+    float: left;
+    width: 10%;
+}
+
+.column-14 {
+    float: left;
+    width: 14%;
+}
+
+.column-35 {
+    float: left;
+    width: 35%;
+}
+
+.column-40 {
+    float: left;
+    width: 40%;
+}
+
 .column-50 {
     float: left;
     width: 50%;
