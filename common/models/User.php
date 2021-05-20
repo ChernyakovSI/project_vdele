@@ -823,11 +823,13 @@ class User extends ActiveRecord implements IdentityInterface
             $strWhereCon = ' AND ';
         }
 
+        $isAge = false;
         if($params->get('af')) {
             $ageFrom = $params->get('af');
 
             $strWhere = $strWhere.$strWhereCon.$fullYears.' >= '.$ageFrom;
             $strWhereCon = ' AND ';
+            $isAge = true;
         }
 
         if($params->get('at')) {
@@ -835,6 +837,13 @@ class User extends ActiveRecord implements IdentityInterface
 
             $strWhere = $strWhere.$strWhereCon.$fullYears.' <= '.$ageTo;
             $strWhereCon = ' AND ';
+            $isAge = true;
+        }
+
+        if($isAge === true) {
+            $strWhere = $strWhere.$strWhereCon.' User.`date_of_birth` != 0 ';
+            $strWhereCon = ' AND ';
+            $isAge = true;
         }
 
         if (count($arrWhere) > 0) {
