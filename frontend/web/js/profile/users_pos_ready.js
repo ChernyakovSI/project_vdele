@@ -12,6 +12,13 @@ let btnClearAge = document.getElementById('ClearAge');
 let valueAgeFrom = document.getElementById('valueAgeFrom');
 let valueAgeTo = document.getElementById('valueAgeTo');
 
+let btnClearGender = document.getElementById('ClearGender');
+let valueGender = document.getElementById('valueGender');
+
+let btnClearCity = document.getElementById('ClearCity');
+let valueCity = document.getElementById('valueCity');
+let listCities = document.getElementById('list_cities');
+
 $(document).ready( function() {
 
     arrTagWraps = Array.from(tagsWraps);
@@ -32,8 +39,16 @@ $(document).ready( function() {
         valueFIO.value = '';
     };
 
+    btnClearGender.onclick = function(e) {
+        valueGender.value = '';
+    };
+
     btnClearTag.onclick = function(e) {
         valueTag.value = '';
+    };
+
+    btnClearCity.onclick = function(e) {
+        valueCity.value = '';
     };
 
     btnClearAge.onclick = function(e) {
@@ -103,6 +118,47 @@ $(document).ready( function() {
         let AgeTo = valueAgeTo.value;
         if (AgeTo !== '' && AgeTo !== '0') {
             params = params + sep + 'at=' + AgeTo;
+            sep = '&';
+        }
+
+        let GenderStr = valueGender.value.trim();
+        if (GenderStr == 'Мужской') {
+            curGender = 1;
+            params = params + sep + 'gen=' + curGender;
+            sep = '&';
+        }
+        else if (GenderStr == 'Женский') {
+            curGender = 2;
+            params = params + sep + 'gen=' + curGender;
+            sep = '&';
+        }
+        else
+        {
+            valueGender.value = '';
+        }
+
+        let cityNameStr = valueCity.value;
+        if (cityNameStr !== '') {
+            let children = listCities.childNodes;
+
+            let wasFound = false;
+            let curId = '';
+            let curName = '';
+            for(child in children){
+                if((children[child].nodeName === 'OPTION') && (children[child].innerText === cityNameStr)) {
+                    wasFound = true;
+                    curId = children[child].getAttribute('data-id');
+                    curName = children[child].getAttribute('data-name');
+                    break;
+                }
+            }
+
+            if(wasFound === false) {
+                curId = '0';
+                curName = cityNameStr;
+            }
+
+            params = params + sep + 'city=' + curName;
             sep = '&';
         }
 

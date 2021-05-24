@@ -9,6 +9,7 @@
 namespace common\models;
 
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 class City extends ActiveRecord
 {
@@ -65,5 +66,24 @@ class City extends ActiveRecord
     public static function findById($id)
     {
         return static::findOne(['id' => $id]);
+    }
+
+    public static function getAllCities(){
+        $query = new Query();
+        $body = $query->Select(['City.`id` as id',
+            'City.`name` as name',
+            'count_users' =>
+                (new Query())->Select('count(*)')
+                    ->from('user as User')
+
+                    ->where('City.`id` = User.`id_city`')
+        ])
+            ->from(self::tableName().' as City')
+            //->join('INNER JOIN', 'tag_user as TagUser', 'TagUser.`id_tag` = Tag.`id`')
+            ->distinct();
+
+        $result = $body->orderBy('count_users DESC')->all();
+
+        return $result;
     }
 }

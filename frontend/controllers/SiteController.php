@@ -462,10 +462,13 @@ class SiteController extends Controller
         $findFIO = '';
         $findAgeFrom = '';
         $findAgeTo = '';
+        $findGender = '';
+        $findCity = '';
 
         $params = Yii::$app->request;
         if(($params->get('tag')) || ($params->get('fio'))
-            || ($params->get('af')) || ($params->get('at'))) {
+            || ($params->get('af')) || ($params->get('at'))
+            || ($params->get('gen')) || ($params->get('city'))) {
             $query = User::findWithParams($params);
             $gFind = true;
             $findTag = $params->get('tag');
@@ -488,6 +491,19 @@ class SiteController extends Controller
             if (!isset($findAgeTo)) {
                 $findAgeTo = '';
             }
+
+            $findGenderId = $params->get('gen');
+            if ($findGenderId === '1') {
+                $findGender = 'Мужской';
+            }
+            else if ($findGenderId === '2') {
+                $findGender = 'Женский';
+            }
+
+            $findCity = $params->get('city');
+            if (!isset($findCity)) {
+                $findCity = '';
+            }
         }
 
 
@@ -504,6 +520,7 @@ class SiteController extends Controller
             ->all();
 
         $tags = Tag::getAllTags();
+        $cities = City::getAllCities();
 
         return $this->render('users', [
             'users' => $users,
@@ -514,7 +531,10 @@ class SiteController extends Controller
             'findTag' => $findTag,
             'findFIO' => $findFIO,
             'findAgeFrom' => $findAgeFrom,
-            'findAgeTo' => $findAgeTo
+            'findAgeTo' => $findAgeTo,
+            'findGender' => $findGender,
+            'cities' => $cities,
+            'findCity' => $findCity
         ]);
     }
 

@@ -781,6 +781,7 @@ class User extends ActiveRecord implements IdentityInterface
             'User.`name` as name',
             'User.`surname` as surname',
             'User.`middlename` as middlename',
+            'User.`gender` as gender',
             'User.`date_of_birth` as date_of_birth',
             $fullYears.' as fullYears',
             'User.`id_city` as id_city',
@@ -811,6 +812,20 @@ class User extends ActiveRecord implements IdentityInterface
                 //->where(['TagItem.`name`' => $tagName]);
 
             $arrWhere['TagItem.`name`'] = $tagName;
+        }
+
+        if($params->get('gen')) {
+            $genName = $params->get('gen');
+
+            $arrWhere['User.`gender`'] = (integer)$genName;
+        }
+
+        if($params->get('city')) {
+            $cityName = $params->get('city');
+
+            $body = $body->join('INNER JOIN', 'city as City', 'city.`id` = User.`id_city`');
+
+            $arrWhere['City.`name`'] = $cityName;
         }
 
         if($params->get('fio')) {

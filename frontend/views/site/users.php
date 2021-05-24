@@ -60,6 +60,20 @@ $this->title = 'Пользователи';
                         <div class="window-button-in-panel window-border gap-v-13" id="ClearAge">&#10008;</div>
                     </div>
 
+                    <div class="clearfix"></div>
+                    <div id="fieldCity">
+                        <div class="caption-line w-16">Город:</div>
+                        <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueCityWrap">
+                            <input type="text" class="message-text-line" list="list_cities" id="valueCity" contentEditable value="<?= $findCity ?>" />
+                            <datalist id="list_cities">
+                                <?php foreach ($cities as $city): ?>
+                                    <option data-id=<?= $city['id'] ?> data-name="<?= $city['name'] ?>"><?= $city['name'].' ('.$city['count_users'].')' ?></option>
+                                <?php endforeach; ?>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="ClearCity">&#10008;</div>
+                    </div>
+
 
 
                 </div>
@@ -71,6 +85,20 @@ $this->title = 'Пользователи';
                             <input type="text" class="message-text-line" id="valueFIO" contentEditable value="<?= $findFIO ?>" />
                         </div>
                         <div class="window-button-in-panel window-border gap-v-13" id="ClearFIO">&#10008;</div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div id="fieldGender">
+                        <div class="caption-line w-16">Пол:</div>
+                        <div class="message-wrapper-line-gen col-message-wrapper w-66 window-border" id="valueGenderWrap">
+                            <input type="text" class="message-text-line" list="list_genders" id="valueGender" contentEditable value="<?= $findGender ?>" />
+                            <datalist id="list_genders">
+                                <option data-id=0 data-name=""></option>
+                                <option data-id=1 data-name="Мужской">Мужской</option>
+                                <option data-id=2 data-name="Женский">Женский</option>
+                            </datalist>
+                        </div>
+                        <div class="window-button-in-panel window-border gap-v-13" id="ClearGender">&#10008;</div>
                     </div>
                 </div>
 
