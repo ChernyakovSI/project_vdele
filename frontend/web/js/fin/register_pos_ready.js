@@ -264,12 +264,12 @@ $(document).ready( function() {
         if ( menuState !== 0 ) {
             menuState = 0;
             menu.classList.remove(activeClassName);
-            console.log('111')
+            //console.log('111')
         }
         if ( regItemInContext) {
             regItemInContext.classList.remove('underlined-back');
             regItemInContext = null;
-            console.log('222')
+            //console.log('222')
         }
     }
 

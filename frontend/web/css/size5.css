@@ -47,6 +47,15 @@
     height: 20px;
 }
 
+.ia-border:hover {
+    outline: solid -2px black;
+}
+
+.ia-r-20px:hover {
+    /*margin-left: 20px;*/
+    margin-right: -20px;
+}
+
 .m-l-10px {
     margin-left: 10px;
 }
@@ -61,6 +70,11 @@
 
 .text-center {
     text-align: center;
+}
+
+.visible-not {
+    visibility: hidden;
+    display: none;
 }
 
 .w-16 {

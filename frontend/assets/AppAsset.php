@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color24.css',
+        'css/color25.css',
         'css/acEdit12.css',
         'css/users11.css',
         'css/url3.css',
@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto1.css',
         'css/slider.css',
-        'css/size4.css'
+        'css/size5.css'
     ];
     public $js = [];
 //    [
@@ -46,6 +46,9 @@ class AppAsset extends AssetBundle
 
     public function init()
     {
+        if ((\yii::$app->request->url == '/goal/spheres') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/spheres?')) {
+            $this->js[] = 'js/goal/spheres-pos-ready.js';
+        }
         if (\yii::$app->request->url == '/site/ac-edit') {
             $this->js[] = 'js/apiGeo.js';
             $this->js[] = 'js/profile/ac-edit_pos_ready.js';

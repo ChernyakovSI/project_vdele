@@ -823,7 +823,7 @@ class User extends ActiveRecord implements IdentityInterface
         if($params->get('city')) {
             $cityName = $params->get('city');
 
-            $body = $body->join('INNER JOIN', 'city as City', 'city.`id` = User.`id_city`');
+            $body = $body->join('INNER JOIN', 'city as City', 'City.`id` = User.`id_city`');
 
             $arrWhere['City.`name`'] = $cityName;
         }
