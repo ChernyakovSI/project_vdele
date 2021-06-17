@@ -34,6 +34,10 @@ class Sphere extends ActiveRecord
         );
     }
 
+    public static function getSphereById($id){
+        return self::find()->where(['id' => $id])->one();
+    }
+
     public static function getAllBaseSpheres(){
         return self::find()->orderBy('id')->all();
     }
@@ -41,7 +45,7 @@ class Sphere extends ActiveRecord
     public static function getAllSpheresByUser($id){
         $query = new Query();
         $body = $query->Select(['sphere.`id` as id',
-            'ISNULL(sphereUser.`name`, sphere.`name`) as name'
+            'IFNULL(sphereUser.`name`, sphere.`name`) as name'
         ])
             ->from(self::tableName().' as sphere');
 

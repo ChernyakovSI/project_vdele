@@ -279,7 +279,7 @@ $this->registerLinkTag([
         </section>
 
 
-    <div class="window window-border window-h-50 window-m-t-9">
+    <div class="window window-border window-m-t-9">
         <div class="clearfix"></div>
         <div class="red-comment" id="red-comment"></div>
         <div class="window-button-panel">

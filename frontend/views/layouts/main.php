@@ -69,6 +69,7 @@ $this->registerLinkTag([
             $menuItems[] = ['label' => 'Система', 'items' => [
                 ['label' => 'Веб-ссылки', 'url' => ['/url/all']],
                 ['label' => ''],['label' => ''],
+                ['label' => 'Заметки', 'url' => ['/goal/notes']],
                 ['label' => 'Сферы жизни', 'url' => ['/goal/spheres']],
             ]];
             $menuItems[] = ['label' => 'Финансы', 'items' => [
@@ -156,7 +157,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.7.1)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.7.2)</p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>

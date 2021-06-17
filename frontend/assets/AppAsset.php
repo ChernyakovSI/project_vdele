@@ -27,9 +27,9 @@ class AppAsset extends AssetBundle
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles3.css',
         'css/contextMenu.css',
-        'css/foto1.css',
+        'css/foto2.css',
         'css/slider.css',
-        'css/size5.css'
+        'css/size6.css'
     ];
     public $js = [];
 //    [
@@ -46,6 +46,12 @@ class AppAsset extends AssetBundle
 
     public function init()
     {
+        if ((\yii::$app->request->url == '/goal/note') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/note/')) {
+            $this->js[] = 'js/goal/note-pos-ready.js';
+        }
+        if ((\yii::$app->request->url == '/goal/notes') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/notes?')) {
+            $this->js[] = 'js/goal/notes-pos-ready.js';
+        }
         if ((\yii::$app->request->url == '/goal/spheres') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/spheres?')) {
             $this->js[] = 'js/goal/spheres-pos-ready.js';
         }

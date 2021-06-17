@@ -14,6 +14,7 @@ use yii\filters\AccessControl;
 use yii\filters\Cors;
 use common\models\goal\Sphere;
 use common\models\goal\SphereUser;
+use common\models\goal\Note;
 
 class GoalController extends Controller
 {
@@ -32,7 +33,11 @@ class GoalController extends Controller
                     [
                         'actions' => ['spheres',
                                         'spheres-get',
-                                        'spheres-save'],
+                                        'spheres-save',
+                                        'notes',
+                                        'note',
+                                        'note-save',
+                                        'note-delete'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -125,4 +130,116 @@ class GoalController extends Controller
         }
 
     }
+
+    public function actionNotes()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $AllNotes = Note::getAllNotesByUser($user_id);
+
+        return $this->render('notes', [
+            "AllNotes" => $AllNotes,
+        ]);
+
+    }
+
+    public function actionNote()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $data = Note::getNoteByUserAndNum($user_id, $params->get('n'));
+            $date = $data['date'];
+            $sphere = Sphere::getSphereById($data['id_sphere']);
+        }
+        else {
+            $data = new Note();
+            $date = time();
+            $sphere = new Sphere();
+        }
+
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('note', [
+            "data" => $data,
+            "spheres" => $spheres,
+            "date" => $date,
+            "sphere" => $sphere
+        ]);
+
+    }
+
+    public function actionNoteSave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_note = $_POST['id'];
+
+            if((integer)$id_note == 0) {
+                Note::addRecord($_POST, $user_id);
+            }
+            else {
+                Note::editRecord($_POST);
+            }
+
+            return [
+                "data" => $id_note,
+                "error" => "",
+            ];
+        }
+
+    }
+
+    public function actionNoteDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                foreach ($data['sources'] as $item) {
+                    if ($item !== '') {
+                        Note::deleteRecord($item, $user_id);
+                    }
+                }
+
+                $allNotes = Note::getAllNotesByUser($user_id);
+
+                $pathNotes = 'note/';
+                $colors = [];
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 1);
+                }
+
+                $dates = [];
+                foreach ($allNotes as $note) {
+                    $dates[$note['id']] = date("d.m.Y H:i:s", $note['date']);
+                }
+
+                return [
+                    'error' => '',
+                    'allNotes' => $allNotes,
+                    'pathNotes' => $pathNotes,
+                    'colorStyle' => $colors,
+                    'dates' => $dates
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
+
+    }
+
+
 }
