@@ -27,7 +27,7 @@ class AppAsset extends AssetBundle
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles3.css',
         'css/contextMenu.css',
-        'css/foto2.css',
+        'css/foto3.css',
         'css/slider.css',
         'css/size6.css'
     ];

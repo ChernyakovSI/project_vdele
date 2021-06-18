@@ -32,13 +32,13 @@ $(document).ready( function() {
     let strDate = convertTimeStampWithTime(divParamDate.innerText);
     let curDate = new Date(strDate);
     curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-    thisData['date'] = String(curDate.getTime()).substr(0, 10);
+    console.log(divParamDate.innerText);
+    thisData['date'] = divParamDate.innerText; //String(curDate.getTime()).substr(0, 10);
 
     valueDate.value = curDate.toISOString().substring(0, 16);
 
     if(divParamID.innerText) {
         thisData['id'] = divParamID.innerText;
-        thisData['date'] = divParamDate.innerText;
         thisData['id_sphere'] = divParamIDSphere.innerText;
         thisData['title'] = valueTitle.value;
         thisData['text'] = valueText.value;
@@ -51,8 +51,8 @@ $(document).ready( function() {
 
 valueDate.onchange = function(event){
     let curDate = new Date(this.value);
-    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
     thisData['date'] = String(curDate.getTime()).substr(0, 10);
+    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
 };
 
 valueSphere.onchange = function(event){
