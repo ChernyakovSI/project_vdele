@@ -44,7 +44,7 @@ $this->title = 'Заметка';
             </div>
             <div class="half_width">
                 <div class="caption-line-10">Сфера:</div><div class="message-wrapper-line-half window-border" id="valueSphereWrap">
-                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= $sphere->name ?>"/>
+                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= isset($sphere)?$sphere->name:'' ?>"/>
                     <datalist id="list_sphere">
                         <?php foreach ($spheres as $sphere): ?>
                             <option data-id=<?= $sphere['id'] ?>><?= $sphere['name'] ?></option>
