@@ -1,0 +1,5 @@
+.back-cells {
+    background: linear-gradient( #ccc, transparent 1px), linear-gradient( 90deg, #ccc, #fff 1px);
+    background-size: 15px 15px;
+    background-position: center center;
+}

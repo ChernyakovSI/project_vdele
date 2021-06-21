@@ -49,6 +49,8 @@ return [
                 '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',//контроллер теперь понимает путь task/123 и работает как с task/view?id=12
                 '<controller>' => '<controller>/index',
                 '<controller>s' => '<controller>/index',//контроллер теперь понимает путь tasks и работает как с task/index
+
+                '<controller:[\w-]+>/<action:[\w-]+>/<n:\d+>' => '<controller>/<action>',//контроллер теперь понимает путь task/123 и работает как с task/view?id=12
             ],
         ],
         'assetManager' => [
