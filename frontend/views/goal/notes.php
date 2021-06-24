@@ -1,6 +1,7 @@
 <?php
 
 use common\models\goal\Sphere;
+use common\models\goal\Note;
 
 $this->title = 'Заметки';
 
@@ -73,7 +74,7 @@ $this->title = 'Заметки';
                                     </div>
                                 </div>
                                 <div class="subwindow h-20 like-table w-100 content-hide">
-                                    <p class="text-right like-cell text-s-20px"><?= date("d.m.Y H:i:s", $note['date']) ?></p>
+                                    <p class="text-right like-cell text-s-20px <?= Note::getColorForDate($note['date']) ?>"><?= date("d.m.Y H:i:s", $note['date']) ?></p>
                                 </div>
                             </div>
                         </a></div>

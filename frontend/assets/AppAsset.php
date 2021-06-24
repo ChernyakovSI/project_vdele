@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color25.css',
+        'css/color26.css',
         'css/acEdit12.css',
         'css/users11.css',
         'css/url3.css',
@@ -29,7 +29,8 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size6.css'
+        'css/size6.css',
+        'css/backgrounds.css'
     ];
     public $js = [];
 //    [
@@ -46,6 +47,9 @@ class AppAsset extends AssetBundle
 
     public function init()
     {
+        if ((\yii::$app->request->url == '/goal/calendar') || (mb_substr(\yii::$app->request->url, 0, 15) == '/goal/calendar?')) {
+            $this->js[] = 'js/goal/calendar-pos-ready.js';
+        }
         if ((\yii::$app->request->url == '/goal/note') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/note/')) {
             $this->js[] = 'js/goal/note-pos-ready.js';
         }

@@ -157,6 +157,22 @@ class Sphere extends ActiveRecord
                 $color = 'col-back-tra';
             }
         }
+        else if ($id === -1) {
+            if ($mode === 0){
+                $color = 'col-back-unused-light';
+            }
+            else {
+                $color = 'col-back-unused';
+            }
+        }
+        else if ($id === 0) {
+            if ($mode === 0){
+                $color = 'col-back-none-light';
+            }
+            else {
+                $color = 'col-back-none';
+            }
+        }
 
         if ($withHover == 1){
             $colorHov = $color.'-harder';

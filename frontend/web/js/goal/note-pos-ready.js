@@ -32,7 +32,6 @@ $(document).ready( function() {
     let strDate = convertTimeStampWithTime(divParamDate.innerText);
     let curDate = new Date(strDate);
     curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-    console.log(divParamDate.innerText);
     thisData['date'] = divParamDate.innerText; //String(curDate.getTime()).substr(0, 10);
 
     valueDate.value = curDate.toISOString().substring(0, 16);

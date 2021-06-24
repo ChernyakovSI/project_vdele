@@ -39,7 +39,7 @@ class Note extends ActiveRecord
     }
 
     public static function getAllNotesByUser($id_user){
-        return self::find()->where(['id_user' => $id_user, 'is_deleted' => false])->orderBy('date')->all();
+        return self::find()->where(['id_user' => $id_user, 'is_deleted' => false])->orderBy('date DESC')->all();
     }
 
     public static function getNoteByUserAndNum($id_user, $num){
@@ -125,4 +125,55 @@ class Note extends ActiveRecord
         return $rec;
     }
 
+    public static function isToday($date){
+        $curDay = date('d', $date);
+        $curMonth = date('m', $date);
+        $curYear = date('Y', $date);
+
+        $nowDay = date('d');
+        $nowMonth = date('m');
+        $nowYear = date('Y');
+
+        $isToday = false;
+
+        if($curDay === $nowDay && $curMonth === $nowMonth && $curYear === $nowYear) {
+            $isToday = true;
+        }
+
+        return $isToday;
+    }
+
+    public static function isPast($date){
+        $curDay = date('d', $date);
+        $curMonth = date('m', $date);
+        $curYear = date('Y', $date);
+
+        $nowDay = date('d');
+        $nowMonth = date('m');
+        $nowYear = date('Y');
+
+        $isPast = false;
+
+        if($curDay === $nowDay && $curMonth === $nowMonth && $curYear === $nowYear) {
+            $isPast = false;
+        } else {
+            if(time() > $date) {
+                $isPast = true;
+            }
+        }
+
+        return $isPast;
+    }
+
+    public static function getColorForDate($date){
+        $color = 'text-color-darkBlue';
+
+        if (SELF::isToday($date) === true) {
+            $color = 'text-color-red';
+        } elseif (SELF::isPast($date) === true) {
+            $color = '';
+        }
+
+        return $color;
+    }
 }

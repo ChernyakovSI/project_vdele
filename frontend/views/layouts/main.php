@@ -67,8 +67,8 @@ $this->registerLinkTag([
         {
             $QUnreadMessages = Message::GetQuantityOfUnreadDialogs($id);
             $menuItems[] = ['label' => 'Система', 'items' => [
-                ['label' => 'Календарь', 'url' => ['/goal/calendar']],
-                ['label' => ''],['label' => ''],
+                //['label' => 'Календарь', 'url' => ['/goal/calendar']],
+                //['label' => ''],['label' => ''],
                 ['label' => 'Веб-ссылки', 'url' => ['/url/all']],
                 ['label' => ''],['label' => ''],
                 ['label' => 'Заметки', 'url' => ['/goal/notes']],
@@ -159,7 +159,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.7.5)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.7.6)</p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>
