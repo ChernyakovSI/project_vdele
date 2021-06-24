@@ -179,7 +179,7 @@ function rerender(dataSet) {
             divWrap4.className = 'subwindow h-20 like-table w-100 content-hide';
 
             let pDate = document.createElement('p');
-            pDate.className = 'text-right like-cell text-s-20px';
+            pDate.className = 'text-right like-cell text-s-20px '+dataSet.datesColor[data['id']];
             pDate.innerText = dataSet.dates[data['id']];
 
             divWrap3.append(pTitle);
