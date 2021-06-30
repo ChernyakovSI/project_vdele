@@ -37,7 +37,8 @@ class GoalController extends Controller
                                         'notes',
                                         'note',
                                         'note-save',
-                                        'note-delete'],
+                                        'note-delete',
+                                        'goal/calendar'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -220,8 +221,10 @@ class GoalController extends Controller
                 }
 
                 $dates = [];
+                $datesColor = [];
                 foreach ($allNotes as $note) {
                     $dates[$note['id']] = date("d.m.Y H:i:s", $note['date']);
+                    $datesColor[$note['id']] = Note::getColorForDate($note['date']);
                 }
 
                 return [
@@ -229,7 +232,8 @@ class GoalController extends Controller
                     'allNotes' => $allNotes,
                     'pathNotes' => $pathNotes,
                     'colorStyle' => $colors,
-                    'dates' => $dates
+                    'dates' => $dates,
+                    'datesColor' => $datesColor
                 ];
             }
 
@@ -238,6 +242,41 @@ class GoalController extends Controller
         return [
             'error' => ''
         ];
+
+    }
+
+    public function actionCalendar()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $period = strtotime(date('Y-m-01 00:00:00'));
+        $date = time();
+
+        //список месяцев с названиями для замены
+        $_monthsList = array("01" => "Январь", "02" => "Февраль",
+            "03" => "Март", "04" => "Апрель", "05" => "Май", "06" => "Июнь",
+            "07" => "Июль", "08" => "Август", "09" => "Сентябрь",
+            "10" => "Октябрь", "11" => "Ноябрь", "12" => "Декабрь");
+
+        //текущая дата
+        $currentDate = date("m Y", $period);
+        //переменная $currentDate теперь хранит текущую дату в формате 22.07.2015
+
+        //но так как наша задача - вывод русской даты,
+        //заменяем число месяца на название:
+        $_mD = date("m", $period); //для замены
+        $currentDate = str_replace($_mD, $_monthsList[$_mD]." ", $currentDate);
+        //теперь в переменной $currentDate хранится дата в формате 22 июня 2015
+
+        $colorUnused = Sphere::getColorForId(-1, 0);
+        $colorNone = Sphere::getColorForId(0, 1, 1);
+
+        return $this->render('calendar', [
+            'curDate' => $currentDate,
+            'date' => $date,
+            'colorUnused' => $colorUnused,
+            'colorNone' => $colorNone,
+        ]);
 
     }
 

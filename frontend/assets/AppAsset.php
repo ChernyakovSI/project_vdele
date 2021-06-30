@@ -17,19 +17,19 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color27.css',
+        'css/color28.css',
         'css/acEdit12.css',
         'css/users11.css',
         'css/url3.css',
         'css/fin11.css',
-        'css/useful2.css',
+        'css/useful3.css',
         //'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css',
         'css/floatingCircles3.css',
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size6.css',
+        'css/size7.css',
         'css/backgrounds.css'
     ];
     public $js = [];
