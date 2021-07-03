@@ -22,7 +22,8 @@ let thisData = {
     'date' : 0,
     'month' : 0,
     'day': 0,
-    'startDate': 0
+    'startDate': 0,
+    'today': 0
 };
 
 let numDaysInMonth = 0;
@@ -42,6 +43,12 @@ $(document).ready( function() {
     thisData['startDate'] = String(startDateString.getTime()).substr(0, 10);
     thisData['month'] = String(startDateString.getTime()).substr(0, 10);
     thisData['day'] = startDateString.getDay();
+
+    if(nowServer.getMonth() === startDateString.getMonth() && nowServer.getFullYear() === startDateString.getFullYear()){
+        thisData['today'] = nowServer.getDate();
+    } else {
+        thisData['today'] = 0;
+    }
 
     numDaysInMonth = daysInMonth(curDate.getMonth()+1, curDate.getFullYear());
     numStartWeek = startDateString.getWeek();
@@ -73,6 +80,11 @@ function renewMonth(forward = true){
     thisData['startDate'] = String(startDateString.getTime()).substr(0, 10);
     thisData['month'] = String(startDateString.getTime()).substr(0, 10);
     thisData['day'] = startDateString.getDay();
+    if(nowServer.getMonth() === startDateString.getMonth() && nowServer.getFullYear() === startDateString.getFullYear()){
+        thisData['today'] = nowServer.getDate();
+    } else {
+        thisData['today'] = 0;
+    }
 
     if (thisData['day'] === 0) {
         thisData['day'] = 7;
@@ -83,7 +95,6 @@ function renewMonth(forward = true){
     numDaysInMonth = daysInMonth(startDateString.getMonth()+1, startDateString.getFullYear());
     numStartWeek = startDateString.getWeek();
 
-    console.log(thisData['day']);
     render();
 }
 
@@ -133,6 +144,12 @@ function render() {
     }
 
     for(let i=1; i<=42; i++) {
+        let divDay = document.getElementById('day'+i);
+        let divNDay = document.getElementById('nday'+i);
+
+        clearColor(divDay);
+        clearColor(divNDay);
+
         if(mode === 1 && i > 28 && i <= 35) {
             continue;
         }
@@ -144,8 +161,7 @@ function render() {
             isWork = true;
         }
 
-        let divDay = document.getElementById('day'+i);
-        let divNDay = document.getElementById('nday'+i);
+
 
         if(isWork === true) {
             num = num + 1;
@@ -155,10 +171,14 @@ function render() {
             isWork = false;
         }
 
-        clearColor(divDay);
+
         if(isWork === true) {
             divNDay.innerText = num;
             ColorNoneArr.forEach(curColor => divDay.classList.add(curColor));
+
+            if(thisData['today'] === num){
+                divNDay.classList.add('numberCircle');
+            }
         } else {
             divNDay.innerText = '';
             divDay.classList.add(ColorUnused);
@@ -177,6 +197,7 @@ function render() {
 function clearColor(divDay) {
     ColorNoneArr.forEach(curColor => divDay.classList.remove(curColor));
     divDay.classList.remove(ColorUnused);
+    divDay.classList.remove('numberCircle');
 }
 
 function fotmatMonth(month) {

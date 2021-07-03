@@ -116,6 +116,10 @@
     height: 25px;
 }
 
+.h-30px {
+    height: 30px;
+}
+
 .h-40px {
     height: 40px;
 }
@@ -275,8 +279,6 @@
 .w-180px {
     width: 180px;
 }
-
-/* - */
 
 
 

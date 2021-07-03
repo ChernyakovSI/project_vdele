@@ -114,3 +114,10 @@ body {
 .test1 {
 
 }
+
+/* Обвести в кружок */
+
+.numberCircle {
+    border: 0.1em solid #800;
+    border-radius: 50%;
+}
