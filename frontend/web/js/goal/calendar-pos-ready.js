@@ -189,17 +189,23 @@ function render() {
         }
     }
 
+    num = numStartWeek;
     for(let i=1; i<=6; i++) {
+
         if(mode === 1 && i === 5) {
             continue;
         }
-        if(mode === 2 && i > 4 && i <= 5) {
+        if(mode === 2 && i >= 4 && i <= 5) {
             continue;
+        }
+
+        if (i > 1) {
+            num = num + 1;
         }
 
         let divWeek = document.getElementById('num-week'+i);
 
-        num = numStartWeek + i - 1;
+
 
         divWeek.innerText = num;
     }
