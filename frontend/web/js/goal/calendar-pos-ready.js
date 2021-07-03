@@ -16,7 +16,7 @@ let ColorNoneArr = ColorNone.split(' ');
 
 let nowServer = new Date();
 let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
-nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
+//nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
 
 let thisData = {
     'date' : 0,
@@ -49,6 +49,8 @@ $(document).ready( function() {
     } else {
         thisData['today'] = 0;
     }
+
+    console.log(nowServer);
 
     numDaysInMonth = daysInMonth(curDate.getMonth()+1, curDate.getFullYear());
     numStartWeek = startDateString.getWeek();
@@ -89,6 +91,8 @@ function renewMonth(forward = true){
     if (thisData['day'] === 0) {
         thisData['day'] = 7;
     }
+
+    console.log(nowServer);
 
     divCaption.innerText =nameMonth(startDateString.getMonth()) + ' ' + startDateString.getFullYear();
 

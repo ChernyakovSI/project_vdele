@@ -309,7 +309,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px content-hide" id="day6">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday6">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday6">
 
                                 </div>
                             </div>
@@ -356,7 +356,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-right content-hide" id="day7">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday7">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday7">
 
                                 </div>
                             </div>
@@ -645,7 +645,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px content-hide" id="day13">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday13">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday13">
 
                                 </div>
                             </div>
@@ -692,7 +692,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-right content-hide" id="day14">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday14">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday14">
 
                                 </div>
                             </div>
@@ -981,7 +981,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px content-hide" id="day20">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday20">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday20">
 
                                 </div>
                             </div>
@@ -1028,7 +1028,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-right content-hide" id="day21">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday21">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday21">
 
                                 </div>
                             </div>
@@ -1317,7 +1317,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px content-hide" id="day27">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday27">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday27">
 
                                 </div>
                             </div>
@@ -1364,7 +1364,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-right content-hide" id="day28">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday28">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday28">
 
                                 </div>
                             </div>
@@ -1653,7 +1653,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px content-hide" id="day34">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday34">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday34">
 
                                 </div>
                             </div>
@@ -1700,7 +1700,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-right content-hide" id="day35">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday35">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday35">
 
                                 </div>
                             </div>
@@ -1989,7 +1989,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-bottom content-hide" id="day41">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday41">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday41">
 
                                 </div>
                             </div>
@@ -2036,7 +2036,7 @@ $this->title = 'Календарь';
                         </div>
                         <div class="column-13 h-110px border-1px-all content-hide" id="day42">
                             <div class="column-33 h-40px content-hide like-table">
-                                <div class="like-cell text-center text-s-20px" id="nday42">
+                                <div class="like-cell text-center text-s-20px text-color-red" id="nday42">
 
                                 </div>
                             </div>
