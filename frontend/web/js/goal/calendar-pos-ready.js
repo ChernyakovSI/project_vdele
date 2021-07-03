@@ -190,6 +190,13 @@ function render() {
     }
 
     for(let i=1; i<=6; i++) {
+        if(mode === 1 && i === 5) {
+            continue;
+        }
+        if(mode === 2 && i > 4 && i <= 5) {
+            continue;
+        }
+
         let divWeek = document.getElementById('num-week'+i);
 
         num = numStartWeek + i - 1;
