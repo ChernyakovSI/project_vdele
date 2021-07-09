@@ -38,7 +38,8 @@ class GoalController extends Controller
                                         'note',
                                         'note-save',
                                         'note-delete',
-                                        'goal/calendar'],
+                                        'goal/calendar',
+                                        'get-data-for-month'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -277,6 +278,42 @@ class GoalController extends Controller
             'colorUnused' => $colorUnused,
             'colorNone' => $colorNone,
         ]);
+
+    }
+
+    public function actionGetDataForMonth()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                //$beginOfDay = strtotime("today", $date);
+                //$endOfDay   = strtotime("tomorrow", $beginOfDay) - 1;
+                $beginOfMonth =  strtotime(date('Y-m-01', $data['startDate']));
+                $endOfMonth =   strtotime(date('Y-m-t 23:59:59', $data['startDate']));
+                $allNotes = Note::getAllNotesByFilter($user_id, $beginOfMonth, $endOfMonth);
+
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 0);
+                }
+
+                return [
+                    'error' => '',
+                    'allNotes' => $allNotes,
+                    'colorStyle' => $colors,
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
 
     }
 

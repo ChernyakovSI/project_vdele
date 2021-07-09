@@ -9,6 +9,7 @@
 namespace common\models\goal;
 
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 class Note extends ActiveRecord
 {
@@ -48,6 +49,24 @@ class Note extends ActiveRecord
 
     public static function getNoteById($id){
         return self::find()->where(['id' => $id])->one();
+    }
+
+    public static function getAllNotesByFilter($id_user, $startDate, $finishDate){
+        $query = new Query();
+        $body = $query->Select(['Note.`id` as id',
+            'Note.`date` as date',
+            'Note.`id_sphere` as id_sphere',
+        ])
+            ->from(self::tableName().' as Note');
+
+        $strWhere = 'Note.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Note.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND Note.`date` >= '.(integer)$startDate;
+        $strWhere = $strWhere.' AND Note.`date` <= '.(integer)$finishDate;
+
+        $body = $body->where($strWhere)->orderBy('Note.`date`');
+
+        return $body->all();
     }
 
     public static function getNewNote(){

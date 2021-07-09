@@ -63,6 +63,11 @@
     width: 40%;
 }
 
+.column-45 {
+    float: left;
+    width: 45%;
+}
+
 .column-50 {
     float: left;
     width: 50%;
@@ -104,8 +109,16 @@
     max-height: 80%;
 }
 
+.h-5px {
+    height: 5px;
+}
+
 .h-10px {
     height: 10px;
+}
+
+.h-16px {
+    height: 16px;
 }
 
 .h-20px {
@@ -187,6 +200,10 @@
     display: table;
 }
 
+.m-l-3px {
+    margin-left: 3px;
+}
+
 .m-l-10px {
     margin-left: 10px;
 }
@@ -197,6 +214,10 @@
 
 .m-r-10px {
     margin-right: 10px;
+}
+
+.m-t-3px {
+    margin-top: 3px;
 }
 
 .m-t-10px {
@@ -221,6 +242,14 @@
 
 .text-full-center {
     text-align: center; /*like-table like-cell in goal/notes */
+}
+
+.text-s-13px {
+    font-size: 13px;
+}
+
+.text-s-14px {
+    font-size: 14px;
 }
 
 .text-s-16px {

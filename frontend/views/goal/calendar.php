@@ -231,17 +231,74 @@ $this->title = 'Календарь';
                             </div>
                             <div class="column-33 h-40px content-hide like-table">
                                 <div class="like-cell text-center text-s-20px" id="r2c1day4">
+                                    <!--<div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px m-t-3px">
 
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-inn m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-fin m-t-3px">
+
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="column-33 h-40px content-hide like-table">
                                 <div class="like-cell text-center text-s-20px" id="r2c2day4">
+                                    <!--<div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-hea m-t-3px">
 
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-edu m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-rel m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-rea m-t-3px">
+
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="column-33 h-40px content-hide like-table">
                                 <div class="like-cell text-center text-s-20px" id="r2c3day4">
+                                    <!--<div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-psy m-t-3px">
 
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px fullCircle col-back-tra m-t-3px">
+
+                                        </div>
+                                    </div>
+                                    <div class="column-40 h-20px content-hide like-table m-l-3px">
+                                        <div class="h-16px m-t-3px">
+
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="column-33 h-30px content-hide like-table">

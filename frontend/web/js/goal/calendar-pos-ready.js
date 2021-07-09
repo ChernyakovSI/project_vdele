@@ -50,12 +50,10 @@ $(document).ready( function() {
         thisData['today'] = 0;
     }
 
-    console.log(nowServer);
-
     numDaysInMonth = daysInMonth(curDate.getMonth()+1, curDate.getFullYear());
     numStartWeek = startDateString.getWeek();
 
-    render();
+    runAjax('/goal/get-data-for-month', thisData);
 });
 
 btnBack.onclick = function(e) {
@@ -92,19 +90,27 @@ function renewMonth(forward = true){
         thisData['day'] = 7;
     }
 
-    console.log(nowServer);
-
     divCaption.innerText =nameMonth(startDateString.getMonth()) + ' ' + startDateString.getFullYear();
 
     numDaysInMonth = daysInMonth(startDateString.getMonth()+1, startDateString.getFullYear());
     numStartWeek = startDateString.getWeek();
 
-    render();
+    runAjax('/goal/get-data-for-month', thisData);
 }
 
-function render() {
+function render(dataSet) {
+    if(dataSet.allNotes.length > 0) {
+
+        dataSet.allNotes.forEach((data) => {
+            let curDate = new Date(Number(data['date'] + '000'));
+            data['day'] = curDate.getDate();
+        })
+    }
+    console.log(dataSet);
+
     let isWork = false;
     let num = 0;
+    let Spheres = [];
 
     let maxCell = Number(thisData['day']) + numDaysInMonth - 1;
     let mode = 0;
@@ -147,12 +153,25 @@ function render() {
         arrForward.classList.add('h-686px');
     }
 
+    if(dataSet.allNotes.length > 0) {
+        dataSet.allNotes.forEach((data) => {
+            if(Spheres[data['day']] === undefined) {
+                Spheres[data['day']] = [];
+            }
+            if(Spheres[data['day']].includes(data['id_sphere']) === false) {
+                Spheres[data['day']].push(Number(data['id_sphere']));
+            }
+        })
+    }
+
+    console.log(Spheres);
+
     for(let i=1; i<=42; i++) {
         let divDay = document.getElementById('day'+i);
         let divNDay = document.getElementById('nday'+i);
 
-        clearColor(divDay);
-        clearColor(divNDay);
+        clearColor(divDay, i);
+        clearColor(divNDay, i);
 
         if(mode === 1 && i > 28 && i <= 35) {
             continue;
@@ -183,6 +202,10 @@ function render() {
             if(thisData['today'] === num){
                 divNDay.classList.add('numberCircle');
             }
+
+            if(Spheres[num] !== undefined) {
+                fullDay(i, Spheres[num], dataSet.colorStyle);
+            }
         } else {
             divNDay.innerText = '';
             divDay.classList.add(ColorUnused);
@@ -211,10 +234,80 @@ function render() {
     }
 }
 
-function clearColor(divDay) {
+function fullDay(day, Spheres, colors) {
+    let divDay2r1c = document.getElementById('r2c1day'+day);
+    let divDay2r2c = document.getElementById('r2c2day'+day);
+
+    let divWrap;
+    let divCell
+
+    for(let i=1; i<=4; i++) {
+        divWrap = document.createElement('div');
+        divWrap.className = 'column-40 h-20px content-hide like-table m-l-3px';
+
+        divCell = document.createElement('div');
+        if (Spheres.includes(i) === true){
+            divCell.className = 'h-16px fullCircle m-t-3px ' + colors[i];
+        }
+        else {
+            divCell.className = 'h-16px m-t-3px';
+        }
+
+
+        divWrap.append(divCell);
+        divDay2r1c.append(divWrap);
+    }
+
+    for(let i=5; i<=8; i++) {
+        divWrap = document.createElement('div');
+        divWrap.className = 'column-40 h-20px content-hide like-table m-l-3px';
+
+        divCell = document.createElement('div');
+        if (Spheres.includes(i) === true){
+            divCell.className = 'h-16px fullCircle m-t-3px ' + colors[i];
+        }
+        else {
+            divCell.className = 'h-16px m-t-3px';
+        }
+
+        divWrap.append(divCell);
+        divDay2r2c.append(divWrap);
+    }
+}
+
+function runAjax(url, value, typeReq = 'post'){
+    floatingCirclesGMain.hidden = false;
+
+    $.ajax({
+        type : typeReq,
+        url : url,
+        data : value
+    }).done(function(data) {
+        if (data.error === null || data.error === undefined || data.error === '') {
+            render(data);
+
+        } else {
+            if (data.error !== '' || data.error !== null || data.error !== undefined){
+                //showError(data);
+            }
+        }
+
+        floatingCirclesGMain.hidden = true;
+    }).fail(function() {
+        floatingCirclesGMain.hidden = true;
+    });
+}
+
+function clearColor(divDay, day) {
     ColorNoneArr.forEach(curColor => divDay.classList.remove(curColor));
     divDay.classList.remove(ColorUnused);
     divDay.classList.remove('numberCircle');
+
+    let divDay2r1c = document.getElementById('r2c1day'+day);
+    let divDay2r2c = document.getElementById('r2c2day'+day);
+
+    divDay2r1c.innerHTML = '';
+    divDay2r2c.innerHTML = '';
 }
 
 function fotmatMonth(month) {
