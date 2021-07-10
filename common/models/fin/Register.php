@@ -366,4 +366,51 @@ class Register extends ActiveRecord
         //
     }
 
+    public static function getAllRegsByFilter($id_user, $startDate, $finishDate){
+        $query = new Query();
+        $body = $query->Select(['Reg.`id` as id',
+            'Reg.`date` as date',
+            'Reg.`sum` as sum',
+            'Reg.`id_type` as id_type',
+        ])
+            ->from(self::tableName().' as Reg');
+
+        $strWhere = 'Reg.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Reg.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND Reg.`id_type` < 2';
+        $strWhere = $strWhere.' AND Reg.`date` >= '.(integer)$startDate;
+        $strWhere = $strWhere.' AND Reg.`date` <= '.(integer)$finishDate;
+
+        $body = $body->where($strWhere)->orderBy('Reg.`date`');
+
+        return SELF::getArrayByDays($body->all());
+    }
+
+    public static function getArrayByDays($regs)
+    {
+        $result = [];
+
+        $daySum[0] = 0;
+        $daySum[1] = 0;
+
+        for($i=1;$i<=31;$i++){
+            $result[$i] = $daySum;
+        }
+
+        foreach ($regs as $reg) {
+            $day = (integer)(date("d", $reg['date']));
+            $daySum = $result[$day];
+
+            if((integer)$reg['id_type'] === 0) {
+                $daySum[0] = $daySum[0] + $reg['sum'];
+            } else {
+                $daySum[1] = $daySum[1] + $reg['sum'];
+            }
+
+            $result[$day] = $daySum;
+        }
+
+        return $result;
+    }
+
 }

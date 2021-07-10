@@ -15,6 +15,7 @@ use yii\filters\Cors;
 use common\models\goal\Sphere;
 use common\models\goal\SphereUser;
 use common\models\goal\Note;
+use common\models\fin\Register;
 
 class GoalController extends Controller
 {
@@ -297,6 +298,7 @@ class GoalController extends Controller
                 $beginOfMonth =  strtotime(date('Y-m-01', $data['startDate']));
                 $endOfMonth =   strtotime(date('Y-m-t 23:59:59', $data['startDate']));
                 $allNotes = Note::getAllNotesByFilter($user_id, $beginOfMonth, $endOfMonth);
+                $allRegs = Register::getAllRegsByFilter($user_id, $beginOfMonth, $endOfMonth);
 
                 for($i=1; $i<=8; $i++){
                     $colors[$i] = Sphere::getColorForId($i, 1, 0);
@@ -306,6 +308,7 @@ class GoalController extends Controller
                     'error' => '',
                     'allNotes' => $allNotes,
                     'colorStyle' => $colors,
+                    'regs' => $allRegs,
                 ];
             }
 

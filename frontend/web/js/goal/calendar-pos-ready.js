@@ -111,6 +111,7 @@ function render(dataSet) {
     let isWork = false;
     let num = 0;
     let Spheres = [];
+    let regs = dataSet.regs;
 
     let maxCell = Number(thisData['day']) + numDaysInMonth - 1;
     let mode = 0;
@@ -164,7 +165,7 @@ function render(dataSet) {
         })
     }
 
-    console.log(Spheres);
+    //console.log(regs);
 
     for(let i=1; i<=42; i++) {
         let divDay = document.getElementById('day'+i);
@@ -203,9 +204,11 @@ function render(dataSet) {
                 divNDay.classList.add('numberCircle');
             }
 
+            fullDayFirst(i, regs[num]);
             if(Spheres[num] !== undefined) {
                 fullDay(i, Spheres[num], dataSet.colorStyle);
             }
+
         } else {
             divNDay.innerText = '';
             divDay.classList.add(ColorUnused);
@@ -234,7 +237,7 @@ function render(dataSet) {
     }
 }
 
-function fullDay(day, Spheres, colors) {
+function fullDay(day, Spheres, colors, regs) {
     let divDay2r1c = document.getElementById('r2c1day'+day);
     let divDay2r2c = document.getElementById('r2c2day'+day);
 
@@ -275,6 +278,50 @@ function fullDay(day, Spheres, colors) {
     }
 }
 
+function fullDayFirst(day, regs) {
+    let divDay1r = document.getElementById('r1c2day'+day);
+    let divWrap = document.createElement('div');
+    divWrap.className = 'column-90 h-20px content-hide like-table m-l-3px';
+    let divCell = document.createElement('div');
+    divCell.className = 'h-16px color-text-profit m-t-3px text-s-13px';
+    if(regs[1] !== 0) {
+        divCell.innerText = formatSum(regs[1]);
+    }
+    divWrap.append(divCell);
+    divDay1r.append(divWrap);
+
+    divWrap = document.createElement('div');
+    divWrap.className = 'column-90 h-20px content-hide like-table m-l-3px';
+    divCell = document.createElement('div');
+    divCell.className = 'h-16px btn-active m-t-3px text-s-13px';
+    if(regs[0] !== 0) {
+        divCell.innerText = formatSum(regs[0]);
+    }
+    divWrap.append(divCell);
+    divDay1r.append(divWrap);
+}
+
+function formatSum(Sum) {
+
+    let Stepen = '';
+    if (Sum > 999999999999) {
+        Stepen = 'M';
+        Sum = Math.floor(Sum/1000000);
+    } else
+    if (Sum > 999999999) {
+        Stepen = 'Т';
+        Sum = Math.floor(Sum/1000);
+    } else
+    if (Sum > 999999) {
+        Sum = Math.floor(Sum);
+    }
+
+    let strSum = String(Sum.toLocaleString());
+    strSum = strSum.substr(0, 9) + Stepen;
+
+    return strSum;
+}
+
 function runAjax(url, value, typeReq = 'post'){
     floatingCirclesGMain.hidden = false;
 
@@ -305,9 +352,11 @@ function clearColor(divDay, day) {
 
     let divDay2r1c = document.getElementById('r2c1day'+day);
     let divDay2r2c = document.getElementById('r2c2day'+day);
+    let divDay1r = document.getElementById('r1c2day'+day);
 
     divDay2r1c.innerHTML = '';
     divDay2r2c.innerHTML = '';
+    divDay1r.innerHTML = '';
 }
 
 function fotmatMonth(month) {

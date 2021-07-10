@@ -73,9 +73,19 @@
     width: 50%;
 }
 
+.column-66 {
+    float: left;
+    width: 66%;
+}
+
 .column-80 {
     float: left;
     width: 80%;
+}
+
+.column-90 {
+    float: left;
+    width: 90%;
 }
 
 .flex-between {
