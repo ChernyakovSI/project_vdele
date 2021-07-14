@@ -18,6 +18,12 @@ let nowServer = new Date();
 let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
 //nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
 
+let selClearMonth = document.getElementById('selClearMonth');
+let selValueMonth = document.getElementById('valueMonth');
+let selvalueYear = document.getElementById('valueYear');
+
+let btnRegSpeciality = document.getElementById('regSpeciality');
+
 let thisData = {
     'date' : 0,
     'month' : 0,
@@ -51,9 +57,11 @@ $(document).ready( function() {
     }
 
     numDaysInMonth = daysInMonth(curDate.getMonth()+1, curDate.getFullYear());
+    //.log(startDateString);
     numStartWeek = startDateString.getWeek();
 
     runAjax('/goal/get-data-for-month', thisData);
+
 });
 
 btnBack.onclick = function(e) {
@@ -64,17 +72,48 @@ btnForward.onclick = function(e) {
     renewMonth();
 };
 
-function renewMonth(forward = true){
+selClearMonth.onclick = function(e) {
+    selValueMonth.value = '';
+};
+
+selValueMonth.onchange = function(event) {
+    if (selValueMonth.value !== '') {
+        let num = numMonth(selValueMonth.value);
+        if(num > 0) {
+            renewMonth(false, num);
+        }
+    }
+};
+
+selvalueYear.onchange = function(event) {
+    let year = selvalueYear.value;
+    renewMonth(false, 0, year);
+};
+
+btnRegSpeciality.onclick = function(event) {
+    runAjax('/goal/reg-speciality', thisData);
+};
+
+function renewMonth(forward = true, numMonth = 0, year = 0){
     let curDate = new Date(Number(thisData['startDate'] + '000'));
 
     startDateString = fotmatMonth(curDate.getMonth()) + '-01-' + curDate.getFullYear();
     startDateString = new Date(startDateString);
 
-    if(forward === true) {
-        startDateString.setMonth(startDateString.getMonth() + 1);
-    } else {
-        startDateString.setMonth(startDateString.getMonth() - 1);
+    if (year !== 0 ) {
+        startDateString.setFullYear(year);
+    } else
+    if (numMonth !== 0) {
+        startDateString.setMonth(numMonth-1);
     }
+    else {
+        if(forward === true) {
+            startDateString.setMonth(startDateString.getMonth() + 1);
+        } else {
+            startDateString.setMonth(startDateString.getMonth() - 1);
+        }
+    }
+
 
     thisData['date'] = String(curDate.getTime()).substr(0, 10);
     thisData['startDate'] = String(startDateString.getTime()).substr(0, 10);
@@ -106,12 +145,13 @@ function render(dataSet) {
             data['day'] = curDate.getDate();
         })
     }
-    console.log(dataSet);
+    //console.log(dataSet);
 
     let isWork = false;
     let num = 0;
     let Spheres = [];
     let regs = dataSet.regs;
+    let specs = dataSet.speciality;
 
     let maxCell = Number(thisData['day']) + numDaysInMonth - 1;
     let mode = 0;
@@ -171,8 +211,8 @@ function render(dataSet) {
         let divDay = document.getElementById('day'+i);
         let divNDay = document.getElementById('nday'+i);
 
-        clearColor(divDay, i);
-        clearColor(divNDay, i);
+        clearColor(divDay, i, dataSet.colorStyle);
+        clearColor(divNDay, i, dataSet.colorStyle);
 
         if(mode === 1 && i > 28 && i <= 35) {
             continue;
@@ -208,6 +248,13 @@ function render(dataSet) {
             if(Spheres[num] !== undefined) {
                 fullDay(i, Spheres[num], dataSet.colorStyle);
             }
+            specs.forEach( function(value, index, array) {
+                let curDate = new Date(Number(value['date'] + '000'));
+                let numDay = curDate.getDate();
+                if(numDay === num) {
+                    fullDayLast(i, value, dataSet.colorStyle);
+                }
+            })
 
         } else {
             divNDay.innerText = '';
@@ -301,6 +348,11 @@ function fullDayFirst(day, regs) {
     divDay1r.append(divWrap);
 }
 
+function fullDayLast(day, value, colors) {
+    let divDay3r2c = document.getElementById('r3c2day'+day);
+    divDay3r2c.classList.add(colors[value['id_sphere']]);
+}
+
 function formatSum(Sum) {
 
     let Stepen = '';
@@ -345,7 +397,7 @@ function runAjax(url, value, typeReq = 'post'){
     });
 }
 
-function clearColor(divDay, day) {
+function clearColor(divDay, day, colors) {
     ColorNoneArr.forEach(curColor => divDay.classList.remove(curColor));
     divDay.classList.remove(ColorUnused);
     divDay.classList.remove('numberCircle');
@@ -353,6 +405,11 @@ function clearColor(divDay, day) {
     let divDay2r1c = document.getElementById('r2c1day'+day);
     let divDay2r2c = document.getElementById('r2c2day'+day);
     let divDay1r = document.getElementById('r1c2day'+day);
+    let divDay3r2c = document.getElementById('r3c2day'+day);
+
+    for (let key in colors) {
+        divDay3r2c.classList.remove(colors[key])
+    }
 
     divDay2r1c.innerHTML = '';
     divDay2r2c.innerHTML = '';
@@ -403,6 +460,47 @@ function nameMonth(month) {
         return 'Декабрь';
     }
     return '';
+}
+
+function numMonth(month) {
+    month = month.toLowerCase();
+    if(month === 'январь') {
+        return 1;
+    }
+    if(month === 'февраль') {
+        return 2;
+    }
+    if(month === 'март') {
+        return 3;
+    }
+    if(month === 'апрель') {
+        return 4;
+    }
+    if(month === 'май') {
+        return 5;
+    }
+    if(month === 'июнь') {
+        return 6;
+    }
+    if(month === 'июль') {
+        return 7;
+    }
+    if(month === 'август') {
+        return 8;
+    }
+    if(month === 'сентябрь') {
+        return 9;
+    }
+    if(month === 'октябрь') {
+        return 10;
+    }
+    if(month === 'ноябрь') {
+        return 11;
+    }
+    if(month === 'декабрь') {
+        return 12;
+    }
+    return 0;
 }
 
 function convertTimeStampWithTime(timestamp) {

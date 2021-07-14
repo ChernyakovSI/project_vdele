@@ -16,6 +16,7 @@ use common\models\goal\Sphere;
 use common\models\goal\SphereUser;
 use common\models\goal\Note;
 use common\models\fin\Register;
+use common\models\goal\Calendar;
 
 class GoalController extends Controller
 {
@@ -40,7 +41,8 @@ class GoalController extends Controller
                                         'note-save',
                                         'note-delete',
                                         'goal/calendar',
-                                        'get-data-for-month'],
+                                        'get-data-for-month',
+                                        'reg-speciality',],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -263,6 +265,7 @@ class GoalController extends Controller
         //текущая дата
         $currentDate = date("m Y", $period);
         //переменная $currentDate теперь хранит текущую дату в формате 22.07.2015
+        $curYear = date("Y", $period);
 
         //но так как наша задача - вывод русской даты,
         //заменяем число месяца на название:
@@ -278,6 +281,8 @@ class GoalController extends Controller
             'date' => $date,
             'colorUnused' => $colorUnused,
             'colorNone' => $colorNone,
+            'curMonthName' => $_monthsList[$_mD],
+            'curYear' => $curYear
         ]);
 
     }
@@ -300,6 +305,8 @@ class GoalController extends Controller
                 $allNotes = Note::getAllNotesByFilter($user_id, $beginOfMonth, $endOfMonth);
                 $allRegs = Register::getAllRegsByFilter($user_id, $beginOfMonth, $endOfMonth);
 
+                $Speciality = Calendar::getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
+
                 for($i=1; $i<=8; $i++){
                     $colors[$i] = Sphere::getColorForId($i, 1, 0);
                 }
@@ -309,6 +316,52 @@ class GoalController extends Controller
                     'allNotes' => $allNotes,
                     'colorStyle' => $colors,
                     'regs' => $allRegs,
+                    'speciality' => $Speciality,
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
+
+    }
+
+    public function actionRegSpeciality()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                //$beginOfDay = strtotime("today", $date);
+                //$endOfDay   = strtotime("tomorrow", $beginOfDay) - 1;
+                $beginOfMonth =  strtotime(date('Y-m-01', $data['startDate']));
+                $endOfMonth =   strtotime(date('Y-m-t 23:59:59', $data['startDate']));
+                $allDays = Calendar::getAllDaysForPeriod($beginOfMonth, $endOfMonth);
+                $allDaysSpec = Calendar::regSpecForDay($allDays);
+                Calendar::saveAllDays($allDaysSpec, $user_id);
+
+                $Speciality = Calendar::getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
+
+                $allNotes = Note::getAllNotesByFilter($user_id, $beginOfMonth, $endOfMonth);
+                $allRegs = Register::getAllRegsByFilter($user_id, $beginOfMonth, $endOfMonth);
+
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 0);
+                }
+
+                return [
+                    'error' => '',
+                    'allNotes' => $allNotes,
+                    'colorStyle' => $colors,
+                    'regs' => $allRegs,
+                    'speciality' => $Speciality,
                 ];
             }
 

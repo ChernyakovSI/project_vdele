@@ -28,7 +28,49 @@ $this->title = 'Календарь';
 </div>
 
 <div class="content">
-    <div class="window window-border main-info-foto">
+    <div class="window window-border">
+
+        <div class="Rollup">
+            <input class="hide" id="hd-1" type="checkbox">
+            <label for="hd-1">Настройки календаря</label>
+            <div>
+                <div class="half_third">
+                    <div class="caption-line-half-20">Месяц:</div><div class="message-wrapper-line-half window-border">
+                        <input type="text" class="message-text-line" list="list_months" contentEditable id="valueMonth" value=<?= $curMonthName ?>>
+                        <datalist id="list_months">
+                            <option data-id="1">Январь</option>
+                            <option data-id="2">Февраль</option>
+                            <option data-id="3">Март</option>
+                            <option data-id="4">Апрель</option>
+                            <option data-id="5">Май</option>
+                            <option data-id="6">Июнь</option>
+                            <option data-id="7">Июль</option>
+                            <option data-id="8">Август</option>
+                            <option data-id="9">Сентябрь</option>
+                            <option data-id="10">Октябрь</option>
+                            <option data-id="11">Ноябрь</option>
+                            <option data-id="12">Декабрь</option>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="selClearMonth">х</div>
+                    <div class="caption-line-half-20">Год:</div><div class="message-wrapper-line-half window-border">
+                        <input type="number" class="message-text-line" contentEditable id="valueYear" value=<?= $curYear ?>>
+                    </div>
+                </div>
+                <div class="half_third">
+
+                </div>
+                <div class="half_third" id="wrapSelCats">
+                    <div class="window-button-panel">
+                        <div class="window-button-in-panel window-border" id="regSpeciality">Задать специализации</div>
+                        <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-info-foto">
+
         <div class="caption-text w-100" id="caption"><?= $curDate ?></div>
         <div class="main clear">
             <div class="column-10" id="arrow-back">
@@ -2150,5 +2192,6 @@ $this->title = 'Календарь';
              </div>
 
          </div>
+        </div>
      </div>
  </div>
