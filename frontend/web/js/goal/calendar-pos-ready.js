@@ -199,7 +199,7 @@ function render(dataSet) {
             if(Spheres[data['day']] === undefined) {
                 Spheres[data['day']] = [];
             }
-            if(Spheres[data['day']].includes(data['id_sphere']) === false) {
+            if(Spheres[data['day']].includes(Number(data['id_sphere'])) === false) {
                 Spheres[data['day']].push(Number(data['id_sphere']));
             }
         })
@@ -291,38 +291,25 @@ function fullDay(day, Spheres, colors, regs) {
     let divWrap;
     let divCell
 
-    for(let i=1; i<=4; i++) {
+    let position = 0;
+    Spheres.forEach((sphere) => {
+        position = position + 1;
+
         divWrap = document.createElement('div');
         divWrap.className = 'column-40 h-20px content-hide like-table m-l-3px';
 
         divCell = document.createElement('div');
-        if (Spheres.includes(i) === true){
-            divCell.className = 'h-16px fullCircle m-t-3px ' + colors[i];
-        }
-        else {
-            divCell.className = 'h-16px m-t-3px';
-        }
-
+        divCell.className = 'h-16px fullCircle m-t-3px ' + colors[sphere];
 
         divWrap.append(divCell);
-        divDay2r1c.append(divWrap);
-    }
 
-    for(let i=5; i<=8; i++) {
-        divWrap = document.createElement('div');
-        divWrap.className = 'column-40 h-20px content-hide like-table m-l-3px';
-
-        divCell = document.createElement('div');
-        if (Spheres.includes(i) === true){
-            divCell.className = 'h-16px fullCircle m-t-3px ' + colors[i];
+        if (position < 5) {
+            divDay2r1c.append(divWrap);
         }
         else {
-            divCell.className = 'h-16px m-t-3px';
+            divDay2r2c.append(divWrap);
         }
-
-        divWrap.append(divCell);
-        divDay2r2c.append(divWrap);
-    }
+    })
 }
 
 function fullDayFirst(day, regs) {
@@ -349,8 +336,37 @@ function fullDayFirst(day, regs) {
 }
 
 function fullDayLast(day, value, colors) {
-    let divDay3r2c = document.getElementById('r3c2day'+day);
-    divDay3r2c.classList.add(colors[value['id_sphere']]);
+    let divDay3r = document.getElementById('r3day'+day);
+
+    let divLine = document.createElement('div');
+    divLine.classList.add(colors[value['id_sphere']]);
+    divLine.classList.add('h-5px');
+    divLine.classList.add('m-t-10px');
+    divLine.classList.add('color-line');
+
+    divDay3r.append(divLine);
+
+    /*let divDay3r2c = document.getElementById('r3c2day'+day);
+    let divDay3r1c = document.getElementById('r3c1day'+day);
+    let divDay3r3c = document.getElementById('r3c3day'+day);
+
+    let divLine = document.createElement('div');
+    divLine.classList.add(colors[value['id_sphere']]);
+    divLine.classList.add('h-5px');
+
+    divDay3r2c.append(divLine);
+
+    divLine = document.createElement('div');
+    divLine.classList.add(colors[value['id_sphere']]);
+    divLine.classList.add('h-5px');
+    divDay3r1c.append(divLine);
+
+    divLine = document.createElement('div');
+    divLine.classList.add(colors[value['id_sphere']]);
+    divLine.classList.add('h-5px');
+    divDay3r3c.append(divLine);*/
+
+    //divDay3r2c.classList.add(colors[value['id_sphere']]);
 }
 
 function formatSum(Sum) {
@@ -405,11 +421,20 @@ function clearColor(divDay, day, colors) {
     let divDay2r1c = document.getElementById('r2c1day'+day);
     let divDay2r2c = document.getElementById('r2c2day'+day);
     let divDay1r = document.getElementById('r1c2day'+day);
-    let divDay3r2c = document.getElementById('r3c2day'+day);
+    /*let divDay3r2c = document.getElementById('r3c2day'+day);
 
     for (let key in colors) {
         divDay3r2c.classList.remove(colors[key])
-    }
+    }*/
+
+    let divColorLines = document.getElementsByClassName('color-line');
+    arrLines = Array.from(divColorLines);
+    arrLines.forEach(function(item, i, arr) {
+        let parent = item.parentNode;
+        if (parent.parentNode === divDay && parent.contains(item) ){
+            parent.removeChild(item);
+        }
+    });
 
     divDay2r1c.innerHTML = '';
     divDay2r2c.innerHTML = '';

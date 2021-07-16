@@ -88,6 +88,11 @@
     width: 90%;
 }
 
+.column-100 {
+    float: left;
+    width: 100%;
+}
+
 .flex-between {
     display: flex;
     flex-flow: row wrap;
