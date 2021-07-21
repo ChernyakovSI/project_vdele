@@ -41,32 +41,38 @@ class Calendar extends ActiveRecord
         return $allDays;
     }
 
-    public static function regSpecForDay($allDays) {
+    public static function regSpecForDay($allDays, $clear = false) {
         $allDaysSpec = [];
         $allSpheres = [1, 2, 3, 4, 5, 6, 7, 8];
         $usedSpheres = [];
 
         foreach ($allDays as $day) {
-            if (count($usedSpheres) === 8) {
-                $usedSpheres = [];
+            if ($clear === false) {
+                if (count($usedSpheres) === 8) {
+                    $usedSpheres = [];
+                }
+
+                $spec = rand(1, 8 - count($usedSpheres));
+
+                $num = 0;
+                $curSphere = 0;
+                foreach ($allSpheres as $sphere) {
+                    if(in_array($sphere, $usedSpheres) === false) {
+                        $num = $num + 1;
+                    }
+                    if($num === $spec) {
+                        $usedSpheres[] = $sphere;
+                        $curSphere = $sphere;
+                        break;
+                    }
+                }
+
+                $allDaysSpec[$day] = $curSphere;
+            } else
+            {
+                $allDaysSpec[$day] = 0;
             }
 
-            $spec = rand(1, 8 - count($usedSpheres));
-
-            $num = 0;
-            $curSphere = 0;
-            foreach ($allSpheres as $sphere) {
-                if(in_array($sphere, $usedSpheres) === false) {
-                    $num = $num + 1;
-                }
-                if($num === $spec) {
-                    $usedSpheres[] = $sphere;
-                    $curSphere = $sphere;
-                    break;
-                }
-            }
-
-            $allDaysSpec[$day] = $curSphere;
         }
 
 
@@ -109,9 +115,28 @@ class Calendar extends ActiveRecord
         $strWhere = 'Calendar.`id_user`= '.(integer)$id_user;
         $strWhere = $strWhere.' AND Calendar.`date` >= '.(integer)$beginOfMonth;
         $strWhere = $strWhere.' AND Calendar.`date` <= '.(integer)$endOfMonth;
+        $strWhere = $strWhere.' AND Calendar.`id_sphere` > 0';
 
         $body = $body->where($strWhere)->orderBy('Calendar.`date`');
 
         return $body->all();
+    }
+
+    public static function getCountSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $id_user) {
+        $query = new Query();
+        $body = $query->Select(['Calendar.`id` as id',
+            'Calendar.`date` as date',
+            'Calendar.`id_sphere` as id_sphere',
+        ])
+            ->from(self::tableName().' as Calendar');
+
+        $strWhere = 'Calendar.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Calendar.`date` >= '.(integer)$beginOfMonth;
+        $strWhere = $strWhere.' AND Calendar.`date` <= '.(integer)$endOfMonth;
+        $strWhere = $strWhere.' AND Calendar.`id_sphere` > 0';
+
+        $body = $body->where($strWhere)->orderBy('Calendar.`date`');
+
+        return $body->count();
     }
 }

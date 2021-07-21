@@ -22,6 +22,10 @@ let selClearMonth = document.getElementById('selClearMonth');
 let selValueMonth = document.getElementById('valueMonth');
 let selvalueYear = document.getElementById('valueYear');
 
+let setFinance = document.getElementById('setFinance');
+let setMarker = document.getElementById('setMarker');
+let setSpec = document.getElementById('setSpec');
+
 let btnRegSpeciality = document.getElementById('regSpeciality');
 
 let thisData = {
@@ -56,6 +60,8 @@ $(document).ready( function() {
         thisData['today'] = 0;
     }
 
+    thisData['withSpecs'] = false;
+
     numDaysInMonth = daysInMonth(curDate.getMonth()+1, curDate.getFullYear());
     //.log(startDateString);
     numStartWeek = startDateString.getWeek();
@@ -74,6 +80,18 @@ btnForward.onclick = function(e) {
 
 selClearMonth.onclick = function(e) {
     selValueMonth.value = '';
+};
+
+setFinance.onclick = function(e) {
+    runAjax('/goal/get-data-for-month', thisData);
+};
+
+setMarker.onclick = function(e) {
+    runAjax('/goal/get-data-for-month', thisData);
+};
+
+setSpec.onclick = function(e) {
+    runAjax('/goal/get-data-for-month', thisData);
 };
 
 selValueMonth.onchange = function(event) {
@@ -152,6 +170,15 @@ function render(dataSet) {
     let Spheres = [];
     let regs = dataSet.regs;
     let specs = dataSet.speciality;
+
+    if(specs.length > 0) {
+        btnRegSpeciality.innerText = 'Очистить специализации';
+        thisData['withSpecs'] = true;
+    } else
+    {
+        btnRegSpeciality.innerText = 'Задать специализации';
+        thisData['withSpecs'] = false;
+    }
 
     let maxCell = Number(thisData['day']) + numDaysInMonth - 1;
     let mode = 0;
@@ -244,17 +271,24 @@ function render(dataSet) {
                 divNDay.classList.add('numberCircle');
             }
 
-            fullDayFirst(i, regs[num]);
-            if(Spheres[num] !== undefined) {
-                fullDay(i, Spheres[num], dataSet.colorStyle);
-            }
-            specs.forEach( function(value, index, array) {
-                let curDate = new Date(Number(value['date'] + '000'));
-                let numDay = curDate.getDate();
-                if(numDay === num) {
-                    fullDayLast(i, value, dataSet.colorStyle);
+           if(setFinance.checked === false) {
+               fullDayFirst(i, regs[num]);
+           }
+            if(setMarker.checked === false) {
+                if(Spheres[num] !== undefined) {
+                    fullDay(i, Spheres[num], dataSet.colorStyle);
                 }
-            })
+            }
+            if(setSpec.checked === false) {
+                specs.forEach( function(value, index, array) {
+                    let curDate = new Date(Number(value['date'] + '000'));
+                    let numDay = curDate.getDate();
+                    if(numDay === num) {
+                        fullDayLast(i, value, dataSet.colorStyle);
+                    }
+                })
+            }
+
 
         } else {
             divNDay.innerText = '';

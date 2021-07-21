@@ -58,7 +58,21 @@ $this->title = 'Календарь';
                     </div>
                 </div>
                 <div class="half_third">
-
+                    <div class="w-100">
+                        <div class="caption-line-half-20"></div>
+                        <input type="checkbox" id="setFinance" class="custom-checkbox">
+                        <label for="setFinance" class="interactive-only">Скрыть суммы движений</label>
+                    </div>
+                    <div class="w-100">
+                        <div class="caption-line-half-20"></div>
+                        <input type="checkbox" id="setMarker" class="custom-checkbox">
+                        <label for="setMarker" class="interactive-only">Скрыть маркеры</label>
+                    </div>
+                    <div class="w-100">
+                        <div class="caption-line-half-20"></div>
+                        <input type="checkbox" id="setSpec" class="custom-checkbox">
+                        <label for="setSpec" class="interactive-only">Скрыть специализации</label>
+                    </div>
                 </div>
                 <div class="half_third" id="wrapSelCats">
                     <div class="window-button-panel">

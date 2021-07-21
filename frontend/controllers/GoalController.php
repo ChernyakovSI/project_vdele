@@ -343,8 +343,11 @@ class GoalController extends Controller
                 //$endOfDay   = strtotime("tomorrow", $beginOfDay) - 1;
                 $beginOfMonth =  strtotime(date('Y-m-01', $data['startDate']));
                 $endOfMonth =   strtotime(date('Y-m-t 23:59:59', $data['startDate']));
+
+                $countSpeciality = Calendar::getCountSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
+
                 $allDays = Calendar::getAllDaysForPeriod($beginOfMonth, $endOfMonth);
-                $allDaysSpec = Calendar::regSpecForDay($allDays);
+                $allDaysSpec = Calendar::regSpecForDay($allDays, $countSpeciality > 0);
                 Calendar::saveAllDays($allDaysSpec, $user_id);
 
                 $Speciality = Calendar::getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
