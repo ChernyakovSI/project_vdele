@@ -17,6 +17,7 @@ use common\models\goal\SphereUser;
 use common\models\goal\Note;
 use common\models\fin\Register;
 use common\models\goal\Calendar;
+use common\models\goal\Day;
 
 class GoalController extends Controller
 {
@@ -40,9 +41,12 @@ class GoalController extends Controller
                                         'note',
                                         'note-save',
                                         'note-delete',
-                                        'goal/calendar',
+                                        'calendar',
                                         'get-data-for-month',
-                                        'reg-speciality',],
+                                        'reg-speciality',
+                                        'day',
+                                        'get-data-for-day',
+                                        'day-save',],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -376,7 +380,86 @@ class GoalController extends Controller
 
     }
 
+    public function actionDay()
+    {
+        $user_id = Yii::$app->user->identity->getId();
 
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $date = strtotime($params->get('n'));
+            $endDay = $date + 24*60*60 - 1;
+        }
+        else {
+            $date = strtotime(date('Y-m-d 00:00:00'));
+            $endDay = strtotime(date('Y-m-d 23:59:59'));
+        }
+
+        $dayData = Day::getDayDataByUserAndPeriod($user_id, $date, $endDay);
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('day', [
+            'date' => $date,
+            'dayData' => $dayData,
+            'spheres' => $spheres,
+        ]);
+
+    }
+
+    public function actionGetDataForDay()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                $date = strtotime(date('Y-m-d 00:00:00', $data['date']));
+                $endDay = strtotime(date('Y-m-d 23:59:59', $data['date']));
+
+                $dayData = Day::getDayDataByUserAndPeriod($user_id, $date, $endDay);
+
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 1);
+                }
+
+                $allNotes = Note::getAllNotesByFilter($user_id, $date, $endDay);
+                $pathNotes = '/goal/note/';
+
+                return [
+                    'error' => '',
+                    'dayData' => $dayData,
+                    'colorStyle' => $colors,
+                    'allNotes' => $allNotes,
+                    'pathNotes' => $pathNotes,
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
+    }
+
+    public function actionDaySave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $date = $_POST['date'];
+
+            Day::editRecord($_POST, $user_id);
+
+            return [
+                "data" => $date,
+                "error" => "",
+            ];
+        }
+    }
 }
 
 //-

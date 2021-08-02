@@ -56,6 +56,8 @@ class Note extends ActiveRecord
         $body = $query->Select(['Note.`id` as id',
             'Note.`date` as date',
             'Note.`id_sphere` as id_sphere',
+            'Note.`title` as title',
+            'Note.`num` as num',
         ])
             ->from(self::tableName().' as Note');
 

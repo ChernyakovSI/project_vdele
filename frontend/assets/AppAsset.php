@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size11.css',
+        'css/size12.css',
         'css/backgrounds.css'
     ];
     public $js = [];
@@ -49,6 +49,9 @@ class AppAsset extends AssetBundle
     {
         if ((\yii::$app->request->url == '/goal/calendar') || (mb_substr(\yii::$app->request->url, 0, 15) == '/goal/calendar?')) {
             $this->js[] = 'js/goal/calendar-pos-ready.js';
+        }
+        if ((\yii::$app->request->url == '/goal/day') || (mb_substr(\yii::$app->request->url, 0, 10) == '/goal/day/')) {
+            $this->js[] = 'js/goal/day-pos-ready.js';
         }
         if ((\yii::$app->request->url == '/goal/note') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/note/')) {
             $this->js[] = 'js/goal/note-pos-ready.js';

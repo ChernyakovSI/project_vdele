@@ -2,6 +2,8 @@ let divParamDate = document.getElementById('paramDate');
 let ColorUnused = document.getElementById('paramColorUnused').innerText;
 let ColorNone = document.getElementById('paramColorNone').innerText;
 
+let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
+
 let btnBack = document.getElementById('arrow-back');
 let btnForward = document.getElementById('arrow-forward');
 
@@ -33,7 +35,9 @@ let thisData = {
     'month' : 0,
     'day': 0,
     'startDate': 0,
-    'today': 0
+    'today': 0,
+    'year': 0,
+    'monthNum': 0,
 };
 
 let numDaysInMonth = 0;
@@ -53,11 +57,17 @@ $(document).ready( function() {
     thisData['startDate'] = String(startDateString.getTime()).substr(0, 10);
     thisData['month'] = String(startDateString.getTime()).substr(0, 10);
     thisData['day'] = startDateString.getDay();
+    thisData['year'] = startDateString.getFullYear();
+    thisData['monthNum'] = startDateString.getMonth();
 
     if(nowServer.getMonth() === startDateString.getMonth() && nowServer.getFullYear() === startDateString.getFullYear()){
         thisData['today'] = nowServer.getDate();
     } else {
         thisData['today'] = 0;
+    }
+
+    if (thisData['day'] === 0) {
+        thisData['day'] = 7;
     }
 
     thisData['withSpecs'] = false;
@@ -136,6 +146,8 @@ function renewMonth(forward = true, numMonth = 0, year = 0){
     thisData['date'] = String(curDate.getTime()).substr(0, 10);
     thisData['startDate'] = String(startDateString.getTime()).substr(0, 10);
     thisData['month'] = String(startDateString.getTime()).substr(0, 10);
+    thisData['year'] = startDateString.getFullYear();
+    thisData['monthNum'] = startDateString.getMonth();
     thisData['day'] = startDateString.getDay();
     if(nowServer.getMonth() === startDateString.getMonth() && nowServer.getFullYear() === startDateString.getFullYear()){
         thisData['today'] = nowServer.getDate();
@@ -267,6 +279,17 @@ function render(dataSet) {
             divNDay.innerText = num;
             ColorNoneArr.forEach(curColor => divDay.classList.add(curColor));
 
+            divDay.onclick = function(e) {
+                let numDay = '0';
+                let idNum = 'n' + this.id;
+                let idivNDay = document.getElementById(idNum);
+                numDay = idivNDay.innerText;
+                if(numDay.length === 1) {
+                    numDay = '0' + numDay;
+                }
+                window.location.href = '/goal/day/'+ thisData['year'] + fotmatMonth(thisData['monthNum']) + numDay;
+            };
+
             if(thisData['today'] === num){
                 divNDay.classList.add('numberCircle');
             }
@@ -293,6 +316,10 @@ function render(dataSet) {
         } else {
             divNDay.innerText = '';
             divDay.classList.add(ColorUnused);
+
+            divDay.onclick = function(e) {
+
+            };
         }
     }
 
