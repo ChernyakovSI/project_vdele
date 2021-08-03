@@ -22,6 +22,8 @@ let thisData = {
     'id_sphere' : 0
 };
 
+let spanDelta = document.querySelector('#delta');
+
 $(document).ready( function() {
     let strDate = convertTimeStampWithTime(divParamDate.innerText);
     let curDate = new Date(strDate);
@@ -164,6 +166,146 @@ function render(dataSet) {
     else {
         divContentNotes.hidden = true;
     }
+
+    //Expences
+
+    let listExp = document.getElementById('list-expenses');
+    listExp.innerHTML = '';
+
+    let SumFormatExp = dataSet.SumFormatExp;
+
+    if(dataSet.dataExp.length > 0){
+        dataSet.dataExp.forEach(function(data, i, arrData){
+            let divRow = document.createElement('div');
+            divRow.className = 'fin-acc-row expense-back interactive-only';
+
+            let divMainCat = document.createElement('div');
+            divMainCat.className = 'fin-reg-cat-60 table-text';
+
+            let divWrapCat = document.createElement('div');
+            divWrapCat.className = 'message-wrapper-title';
+
+            let divTextCat = document.createElement('div');
+            divTextCat.className = 'message-text-line';
+
+            divTextCat.innerHTML = data['CatName'];
+
+            divWrapCat.append(divTextCat);
+            divMainCat.append(divWrapCat);
+            divRow.append(divMainCat);
+
+            let divMainAmount = document.createElement('div');
+
+            let divWrapAmount = document.createElement('div');
+            divWrapAmount.className = 'message-wrapper-title';
+
+            let divTextAmount = document.createElement('div');
+            divTextAmount.className = 'message-text-line right-text';
+            divTextAmount.innerHTML = SumFormatExp[data['id_category']];
+            divMainAmount.className = 'fin-reg-amount-end  table-text';
+
+            divWrapAmount.append(divTextAmount);
+            divMainAmount.append(divWrapAmount);
+            divRow.append(divMainAmount);
+
+            let hrLine = document.createElement('hr');
+            hrLine.className = 'line';
+
+            let divClear = document.createElement('div');
+            divClear.className = 'clearfix';
+
+            divClear.append(hrLine);
+            divRow.append(divClear);
+
+            listExp.append(divRow);
+        });
+
+        // resize();
+    }
+    else
+    {
+        let divInfo = document.createElement('div');
+        divInfo.className = 'text-font text-center margin-v20';
+        divInfo.setAttribute('id', 'infoExp');
+        divInfo.innerHTML = 'Нет движений';
+
+        listExp.append(divInfo);
+    }
+
+    let divTotalExp = document.getElementById('totalExp');
+    divTotalExp.innerHTML = dataSet.totalExp;
+
+    // Profits
+
+    let listProfit = document.getElementById('list-profits');
+    listProfit.innerHTML = '';
+
+    let SumFormatProf = dataSet.SumFormatProf;
+
+    if(dataSet.dataProf.length > 0){
+        dataSet.dataProf.forEach(function(data, i, arrData){
+            let divRow = document.createElement('div');
+            divRow.className = 'fin-acc-row profit-back interactive-only';
+
+            let divMainCat = document.createElement('div');
+            divMainCat.className = 'fin-reg-cat-60 table-text';
+
+            let divWrapCat = document.createElement('div');
+            divWrapCat.className = 'message-wrapper-title';
+
+            let divTextCat = document.createElement('div');
+            divTextCat.className = 'message-text-line';
+
+            divTextCat.innerHTML = data['CatName'];
+
+            divWrapCat.append(divTextCat);
+            divMainCat.append(divWrapCat);
+            divRow.append(divMainCat);
+
+            let divMainAmount = document.createElement('div');
+
+            let divWrapAmount = document.createElement('div');
+            divWrapAmount.className = 'message-wrapper-title';
+
+            let divTextAmount = document.createElement('div');
+            divTextAmount.className = 'message-text-line right-text';
+            divTextAmount.innerHTML = SumFormatProf[data['id_category']];
+            divMainAmount.className = 'fin-reg-amount-end table-text';
+
+            divWrapAmount.append(divTextAmount);
+            divMainAmount.append(divWrapAmount);
+            divRow.append(divMainAmount);
+
+            let hrLine = document.createElement('hr');
+            hrLine.className = 'line';
+
+            let divClear = document.createElement('div');
+            divClear.className = 'clearfix';
+
+            divClear.append(hrLine);
+            divRow.append(divClear);
+
+            listProfit.append(divRow);
+        });
+
+
+
+        // resize();
+    }
+    else
+    {
+        let divInfo = document.createElement('div');
+        divInfo.className = 'text-font text-center margin-v20';
+        divInfo.setAttribute('id', 'infoProf');
+        divInfo.innerHTML = 'Нет движений';
+
+        listProfit.append(divInfo);
+    }
+
+    let divTotalProf = document.getElementById('totalProf');
+    divTotalProf.innerHTML = dataSet.totalProf;
+
+    spanDelta.innerHTML = dataSet.totalDelta;
 
     //console.log(dataSet);
 }

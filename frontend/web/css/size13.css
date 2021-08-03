@@ -19,6 +19,13 @@
     border: solid 1px #AAA;
 }
 
+.caption-head {
+    width: 100%;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+}
+
 .clear {
     clear:both;
 }

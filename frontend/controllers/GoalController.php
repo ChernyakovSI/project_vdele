@@ -18,6 +18,8 @@ use common\models\goal\Note;
 use common\models\fin\Register;
 use common\models\goal\Calendar;
 use common\models\goal\Day;
+use common\models\fin\Reports;
+use common\models\fin\Account;
 
 class GoalController extends Controller
 {
@@ -428,12 +430,47 @@ class GoalController extends Controller
                 $allNotes = Note::getAllNotesByFilter($user_id, $date, $endDay);
                 $pathNotes = '/goal/note/';
 
+                $resultsProf = Reports::getTotalByProfitCatsByUser($user_id, $date, $endDay);
+                $resultsExp = Reports::getTotalByExpenceCatsByUser($user_id, $date, $endDay);
+
+                $totalProf = 0;
+                $totalExp = 0;
+
+                $SumFormatProf = [];
+                $SumFormatExp = [];
+
+                foreach ($resultsExp as $item) {
+                    if ($item['id_category'] != 0) {
+                        $totalExp = $totalExp + $item['sum'];
+                        $SumFormatExp[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    }
+                }
+                foreach ($resultsProf as $item) {
+                    if ($item['id_category'] != 0) {
+                        $totalProf = $totalProf + $item['sum'];
+                        $SumFormatProf[$item['id_category']] = Account::formatNumberToMoney($item['sum']);
+                    }
+                }
+
+                $totalDelta = $totalProf - $totalExp;
+
+                $totalProf = Account::formatNumberToMoney($totalProf);
+                $totalExp = Account::formatNumberToMoney($totalExp);
+                $totalDelta = Account::formatNumberToMoney($totalDelta);
+
                 return [
                     'error' => '',
                     'dayData' => $dayData,
                     'colorStyle' => $colors,
                     'allNotes' => $allNotes,
                     'pathNotes' => $pathNotes,
+                    'totalProf' => $totalProf,
+                    'totalExp' => $totalExp,
+                    'totalDelta' => $totalDelta,
+                    'dataProf' => $resultsProf,
+                    'dataExp' => $resultsExp,
+                    'SumFormatExp' => $SumFormatExp,
+                    'SumFormatProf' => $SumFormatProf,
                 ];
             }
 
