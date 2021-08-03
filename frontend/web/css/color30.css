@@ -466,6 +466,10 @@ a:hover {
     background-color: #f9fafb;
 }
 
+.text-color-black {
+    color: #000000;
+}
+
 .text-color-red {
     color: #BE2E2E;
 }

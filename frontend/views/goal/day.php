@@ -57,61 +57,102 @@ $this->title = 'День';
                 <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">х</div>
             </div>
 
-            <div id="content-notes" hidden="hidden">
-                <div class="clearfix gap-v-60"></div>
 
-                <div class="interactive-only">
-                    <div class="border-1px-right">
-                        <div class="message-wrapper-title">
-                            <div class="message-text-line table-caption"><?= 'Заметки' ?></div>
-                        </div>
-                    </div>
+
+            <div id="content-notes" hidden="hidden">
+
+                <div class="clearfix gap-v-60"></div>
+                <div class="caption-head m-t-10px col-back-inn-light">
+                    Заметки, напоминания, задачи
                 </div>
-                <div id="list-notes">
-                    <div class="fin-acc-row interactive-only">
+
+                <div class="halfwidth m-t-10px">
+                    <div class="interactive-only">
                         <div class="border-1px-right">
                             <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= 'Название заметки 1' ?></div>
+                                <div class="message-text-line table-caption"><?= 'Заметки' ?></div>
                             </div>
                         </div>
                     </div>
-                    <div class="fin-acc-row interactive-only">
-                        <div class="border-1px-all">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= 'Название заметки 1' ?></div>
-                            </div>
-                        </div>
+                    <div id="list-notes">
+
                     </div>
                 </div>
             </div>
 
 
             <!-- Начало фин отчета -->
-            <div class="clearfix"></div>
-            <div class="caption-head m-t-10px col-back-fin-light">
-                Движения за день
-            </div>
-            <div class="clearfix"></div>
-            <div class="text-size">
-                Прибыль: <span id="delta"><?= Account::formatNumberToMoney($totalDelta) ?></span>
-            </div>
+            <div id="content-fin" hidden="hidden">
+                <div class="clearfix"></div>
+                <div class="caption-head m-t-10px col-back-fin-light">
+                    Движения за день
+                </div>
+                <div class="clearfix"></div>
+                <div class="text-size">
+                    Прибыль: <span id="delta"></span>
+                </div>
 
-            <div class="clearfix"></div>
-            <div class="halfwidth-wrapper">
-                <div class="halfwidth">
+                <div class="clearfix"></div>
+                <div class="halfwidth-wrapper">
+                    <div class="halfwidth">
 
-                    <div  class="text-font-5 text-center">
-                        Расходы
+                        <div  class="text-font-5 text-center">
+                            Расходы
+                        </div>
+                        <div class="clearfix"><hr class="line"></div>
+                        <div id="header-expenses">
+                            <div class="interactive-only">
+                                <div id="expenses-colname-cat" class="fin-reg-cat-60 table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line table-caption"><?= 'Категория' ?></div>
+                                    </div>
+                                </div>
+                                <div id="expenses-colname-amo" class="fin-reg-amount-end table-text">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="">
+                                <div id="expenses-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line"><?= '' ?></div>
+                                    </div>
+                                </div>
+                                <div id="expenses-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
+                                    <div class="message-wrapper-title">
+                                        <div class="message-text-line right-text" id="totalExp"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"><hr class="line"></div>
+                        <div id="list-expenses">
+                            <div id="infoExp" class="text-font-5 text-center margin-v20">
+                                Нет данных
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="clearfix"><hr class="line"></div>
-                    <div id="header-expenses">
+                    <div class="halfwidth-gap">&nbsp;</div>
+                    <div class="halfwidth">
+
+                        <div  class="text-font-5 text-center">
+                            Доходы
+                        </div>
+                        <div class="clearfix"><hr class="line"></div>
+
                         <div class="interactive-only">
-                            <div id="expenses-colname-cat" class="fin-reg-cat-60 table-text">
+                            <div id="profits-colname-cat" class="fin-reg-cat-60 table-text">
                                 <div class="message-wrapper-title">
                                     <div class="message-text-line table-caption"><?= 'Категория' ?></div>
                                 </div>
                             </div>
-                            <div id="expenses-colname-amo" class="fin-reg-amount-end table-text">
+                            <div id="profits-colname-amo" class="fin-reg-amount-end table-text">
                                 <div class="message-wrapper-title">
                                     <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
                                 </div>
@@ -120,120 +161,32 @@ $this->title = 'День';
                         <div class="clearfix"></div>
 
                         <div class="">
-                            <div id="expenses-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
+                            <div id="profits-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
                                 <div class="message-wrapper-title">
                                     <div class="message-text-line"><?= '' ?></div>
                                 </div>
                             </div>
-                            <div id="expenses-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
+                            <div id="profits-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
                                 <div class="message-wrapper-title">
-                                    <div class="message-text-line right-text" id="totalExp"><?= Account::formatNumberToMoney($totalExp) ?></div>
+                                    <div class="message-text-line right-text" id="totalProf"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="clearfix"><hr class="line"></div>
-                    <div id="list-expenses">
-                        <?php if (count($resultsExp) == 0){ ?>
-                            <div id="infoExp" class="text-font-5 text-center margin-v20">
-                                Нет данных
-                            </div>
-                        <?php } else {  foreach ($resultsExp as $res): ?>
-                            <div class="fin-acc-row expense-back interactive-only">
-
-                                <div class="fin-reg-cat-60 table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line"><?= $res['CatName'] ?></div>
-                                    </div>
-                                </div>
-                                <div class="fin-reg-amount-end table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line right-text"><?= Account::formatNumberToMoney($res['sum']) ?></div>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix"><hr class="line"></div>
-                            </div>
-                        <?php endforeach; } ?>
-
-                    </div>
-
-                </div>
-                <div class="halfwidth-gap">&nbsp;</div>
-                <div class="halfwidth">
-
-                    <div  class="text-font-5 text-center">
-                        Доходы
-                    </div>
-                    <div class="clearfix"><hr class="line"></div>
-
-                    <div class="interactive-only">
-                        <div id="profits-colname-cat" class="fin-reg-cat-60 table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line table-caption"><?= 'Категория' ?></div>
-                            </div>
-                        </div>
-                        <div id="profits-colname-amo" class="fin-reg-amount-end table-text">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line table-caption"><?= 'Сумма' ?></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-
-                    <div class="">
-                        <div id="profits-coltotal-cat" class="fin-reg-cat-60 table-text brown-back">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line"><?= '' ?></div>
-                            </div>
-                        </div>
-                        <div id="profits-coltotal-amo" class="fin-reg-amount-end table-text brown-back">
-                            <div class="message-wrapper-title">
-                                <div class="message-text-line right-text" id="totalProf"><?= Account::formatNumberToMoney($totalProf) ?></div>
-                            </div>
-                        </div>
-                    </div>
 
 
 
-                    <div class="clearfix"><hr class="line"></div>
-                    <div id="list-profits">
-                        <?php if (count($resultsProf) == 0){ ?>
+                        <div class="clearfix"><hr class="line"></div>
+                        <div id="list-profits">
                             <div id="infoProf" class="text-font-5 text-center margin-v20">
                                 Нет данных
                             </div>
-                        <?php } else {  foreach ($resultsProf as $res): ?>
-
-                            <div class="fin-acc-row profit-back interactive-only">
-
-
-                                <div class="fin-reg-cat-60 table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line"><?= $res['CatName'] ?></div>
-                                    </div>
-                                </div>
-                                <!--<div class="fin-reg-sub table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line"><?= ''//$res['SubName'] ?></div>
-                                    </div>
-                                </div>-->
-                                <div class="fin-reg-amount-end table-text">
-                                    <div class="message-wrapper-title">
-                                        <div class="message-text-line right-text"><?= Account::formatNumberToMoney($res['sum']) ?></div>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix"><hr class="line"></div>
-                            </div>
-                        <?php endforeach; } ?>
+                        </div>
 
                     </div>
 
                 </div>
-
             </div>
+
             <!-- Конец фин отчета -->
 
 

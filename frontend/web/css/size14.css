@@ -270,6 +270,10 @@
     text-align: right;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .text-full-center {
     text-align: center; /*like-table like-cell in goal/notes */
 }

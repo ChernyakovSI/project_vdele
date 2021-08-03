@@ -7,6 +7,7 @@ let valueSphere = document.getElementById('valueSphere');
 let list_sphere = document.getElementById('list_sphere');
 let btnClearSphere = document.getElementById('ClearSphere');
 let divContentNotes = document.getElementById('content-notes');
+let divContentFin = document.getElementById('content-fin');
 let divListNotes = document.getElementById('list-notes');
 
 let btnCancel = document.getElementById('button-cancel');
@@ -136,7 +137,7 @@ function render(dataSet) {
             pos = pos + 1;
 
             let divTitle = document.createElement('div');
-            divTitle.className = 'message-text-line';
+            divTitle.className = 'message-text-line text-bold text-color-black';
             divTitle.innerText = data['title'];
 
             let divWrap = document.createElement('div');
@@ -165,6 +166,13 @@ function render(dataSet) {
     }
     else {
         divContentNotes.hidden = true;
+    }
+
+    //Finance
+    if(dataSet.dataExp.length > 0 && dataSet.dataProf.length > 0) {
+        divContentFin.hidden = false;
+    } else {
+        divContentFin.hidden = true;
     }
 
     //Expences
