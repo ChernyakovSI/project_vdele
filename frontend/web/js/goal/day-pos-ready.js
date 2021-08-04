@@ -169,7 +169,7 @@ function render(dataSet) {
     }
 
     //Finance
-    if(dataSet.dataExp.length > 0 && dataSet.dataProf.length > 0) {
+    if(dataSet.dataExp.length > 0 || dataSet.dataProf.length > 0) {
         divContentFin.hidden = false;
     } else {
         divContentFin.hidden = true;
