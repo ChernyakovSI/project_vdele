@@ -3,13 +3,60 @@ let btnRemove = document.getElementById('button-remove');
 let panelColored = document.getElementById('panel-colored');
 let fotoItems = document.getElementsByClassName('foto-item');
 
+let valuePeriodFrom = document.getElementById('valuePeriodFrom');
+let valuePeriodTo = document.getElementById('valuePeriodTo');
+
 let clickTime;
 let modeColored = 0;
 let arrDeleting = [];
 
+let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
+
+let nowServer = new Date();
+let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
+
+let thisData = {
+    'dateFrom' : 0,
+    'dateTo' : 0
+};
+
 $(document).ready( function() {
     panelColored.hidden = true;
 
+    let curDate = new Date();
+    curDate.setDate(curDate.getDate() - 31);
+    valuePeriodFrom.value = curDate.toISOString().substring(0, 10);
+    thisData['dateFrom'] = String(curDate.getTime()).substr(0, 10);
+
+    curDate = new Date();
+    curDate.setDate(curDate.getDate() + 31);
+    valuePeriodTo.value = curDate.toISOString().substring(0, 10);
+    thisData['dateTo'] = String(curDate.getTime()).substr(0, 10);
+
+    AddEventsToNotes();
+});
+
+valuePeriodFrom.onchange = function(e) {
+    RenewPeriod();
+};
+
+valuePeriodTo.onchange = function(e) {
+    RenewPeriod();
+};
+
+function RenewPeriod() {
+    let curDate = new Date(valuePeriodFrom.value);
+    curDate.setHours(curDate.getHours() + currentTimeZoneOffset);
+    thisData['dateFrom'] = String(curDate.getTime()).substr(0, 10);
+
+    curDate = new Date(valuePeriodTo.value);
+    curDate.setHours(curDate.getHours() + currentTimeZoneOffset);
+    thisData['dateTo'] = String(curDate.getTime()).substr(0, 10);
+
+    runAjax('/goal/get-notes-for-period', thisData);
+}
+
+function AddEventsToNotes() {
     arrFotos = Array.from(fotoItems);
     arrFotos.forEach(function(item, i, arr) {
         item.onmousedown = function(e) {
@@ -44,8 +91,7 @@ $(document).ready( function() {
             clearTimeout(clickTime);
         };
     })
-
-});
+}
 
 function deleteLightBox() {
     arrFotos = Array.from(fotoItems);
@@ -104,6 +150,8 @@ btnRemove.onclick = function(e) {
     if(arrSrc.length > 0) {
         value = {
             'sources' : arrSrc,
+            'dateFrom' : thisData['dateFrom'],
+            'dateTo' : thisData['dateTo'],
         };
 
         runAjax('/goal/note-delete', value);

@@ -40,6 +40,7 @@ class GoalController extends Controller
                                         'spheres-get',
                                         'spheres-save',
                                         'notes',
+                                        'get-notes-for-period',
                                         'note',
                                         'note-save',
                                         'note-delete',
@@ -146,11 +147,50 @@ class GoalController extends Controller
     {
         $user_id = Yii::$app->user->identity->getId();
 
-        $AllNotes = Note::getAllNotesByUser($user_id);
+        //$AllNotes = Note::getAllNotesByUser($user_id);
+        $startDate =  strtotime("-1 month");
+        $finishDate =  strtotime("+1 month");
+        $AllNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false);
 
         return $this->render('notes', [
             "AllNotes" => $AllNotes,
         ]);
+
+    }
+
+    public function actionGetNotesForPeriod()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $startDate = $_POST['dateFrom'];
+            $finishDate = $_POST['dateTo'];
+
+            $allNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false);
+
+            $pathNotes = 'note/';
+            $colors = [];
+            for($i=1; $i<=8; $i++){
+                $colors[$i] = Sphere::getColorForId($i, 1, 1);
+            }
+
+            $dates = [];
+            $datesColor = [];
+            foreach ($allNotes as $note) {
+                $dates[$note['id']] = date("d.m.Y H:i:s", $note['date']);
+                $datesColor[$note['id']] = Note::getColorForDate($note['date']);
+            }
+
+            return [
+                'error' => '',
+                'allNotes' => $allNotes,
+                'pathNotes' => $pathNotes,
+                'colorStyle' => $colors,
+                'dates' => $dates,
+                'datesColor' => $datesColor
+            ];
+        }
 
     }
 
@@ -222,7 +262,10 @@ class GoalController extends Controller
                     }
                 }
 
-                $allNotes = Note::getAllNotesByUser($user_id);
+                $startDate = $_POST['dateFrom'];
+                $finishDate = $_POST['dateTo'];
+
+                $allNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false);
 
                 $pathNotes = 'note/';
                 $colors = [];

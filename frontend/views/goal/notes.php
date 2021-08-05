@@ -36,6 +36,32 @@ $this->title = 'Заметки';
         </div>
 
         <div class="window window-border main-info-foto">
+            <div class="Rollup">
+                <input class="hide" id="hd-1" type="checkbox">
+                <label for="hd-1">Настройки списка</label>
+                <div>
+                    <div class="half_third">
+                        <div class="caption-line-half-20">c:</div>
+                        <div class="message-wrapper-line-half window-border">
+                            <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
+                        </div>
+                        <div class="caption-line-half-20">по:</div>
+                        <div class="message-wrapper-line-half window-border">
+                            <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
+                        </div>
+                    </div>
+                    <div class="half_third">
+
+                    </div>
+                    <div class="half_third">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="m-t-10px"></div>
+
             <div class="flex" id="list-fotos">
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 <a href="note">

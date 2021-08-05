@@ -51,7 +51,7 @@ class Note extends ActiveRecord
         return self::find()->where(['id' => $id])->one();
     }
 
-    public static function getAllNotesByFilter($id_user, $startDate, $finishDate){
+    public static function getAllNotesByFilter($id_user, $startDate, $finishDate, $sortDate = true){
         $query = new Query();
         $body = $query->Select(['Note.`id` as id',
             'Note.`date` as date',
@@ -66,7 +66,13 @@ class Note extends ActiveRecord
         $strWhere = $strWhere.' AND Note.`date` >= '.(integer)$startDate;
         $strWhere = $strWhere.' AND Note.`date` <= '.(integer)$finishDate;
 
-        $body = $body->where($strWhere)->orderBy('Note.`date`');
+        if($sortDate === true) {
+            $body = $body->where($strWhere)->orderBy('Note.`date`');
+        }
+        else {
+            $body = $body->where($strWhere)->orderBy('Note.`date` DESC');
+        }
+
 
         return $body->all();
     }
