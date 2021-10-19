@@ -51,7 +51,7 @@ $this->title = 'Мечта';
             <div class="half_width">
                 <div class="caption-line-10">Сфера:</div>
                 <div class="message-wrapper-line-half window-border" id="valueSphereWrap">
-                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= $spheres[(isset($data)?$data->id_sphere:1)-1]['name'] ?>"/>
+                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= $spheres[(isset($data) && $data->id_sphere>0?$data->id_sphere:1)-1]['name'] ?>"/>
                     <datalist id="list_sphere">
                         <?php foreach ($spheres as $sphere): ?>
                             <option data-id=<?= $sphere['id'] ?>><?= $sphere['name'] ?></option>
@@ -65,7 +65,7 @@ $this->title = 'Мечта';
             <div class="half_width">
                 <div class="caption-line-half-20">Тип:</div>
                 <div class="message-wrapper-line-half window-border" id="valueLevelWrap">
-                    <input type="text" class="message-text-line" list="list_level" id="valueLevel" value="<?= $levels[(isset($data)?$data->id_level:2) - 1]['name'] ?>"/>
+                    <input type="text" class="message-text-line" list="list_level" id="valueLevel" value="<?= $levels[(isset($data) && $data->id_level>0?$data->id_level:2) - 1]['name'] ?>"/>
                     <datalist id="list_level">
                         <?php foreach ($levels as $clevel): ?>
                             <option data-id=<?= $clevel['id'] ?>><?= $clevel['name'] ?></option>

@@ -76,7 +76,7 @@ $this->title = 'Мечты';
 <div class="content">
     <div class="submenu">
         <span class="btn-submenu btn-active">Список</span>
-        <span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>
+        <!--<span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>-->
     </div>
 
     <div class="window window-border gap-v" id="main-window">
