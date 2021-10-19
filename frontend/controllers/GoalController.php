@@ -20,6 +20,7 @@ use common\models\goal\Calendar;
 use common\models\goal\Day;
 use common\models\fin\Reports;
 use common\models\fin\Account;
+use common\models\goal\Ambition;
 
 class GoalController extends Controller
 {
@@ -49,7 +50,14 @@ class GoalController extends Controller
                                         'reg-speciality',
                                         'day',
                                         'get-data-for-day',
-                                        'day-save',],
+                                        'day-save',
+                                        'dreams',
+                                        'wishes',
+                                        'intents',
+                                        'goals',
+                                        'dream',
+                                        'dream-save',
+                                        'dreams-refresh'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -539,6 +547,274 @@ class GoalController extends Controller
                 "error" => "",
             ];
         }
+    }
+
+    public function actionGoals()
+    {
+        $getData = Yii::$app->request->get();
+
+        $getData['level'] = 4;
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-30 year 00:00");
+        $finishDate =  strtotime("+1 year 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        if(isset($getData['level'])) {
+            $option['level'] = $getData['level'];
+        } else {
+            $option['level'] = 1; //Мечты
+        }
+
+        $AllDreams = Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('amb_dreams', [
+            "AllDreams" => $AllDreams,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+            "level" => $option['level'],
+        ]);
+    }
+
+    public function actionIntents()
+    {
+        $getData = Yii::$app->request->get();
+
+        $getData['level'] = 3;
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-30 year 00:00");
+        $finishDate =  strtotime("+1 year 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        if(isset($getData['level'])) {
+            $option['level'] = $getData['level'];
+        } else {
+            $option['level'] = 1; //Мечты
+        }
+
+        $AllDreams = Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('amb_dreams', [
+            "AllDreams" => $AllDreams,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+            "level" => $option['level'],
+        ]);
+    }
+
+    public function actionWishes()
+    {
+        $getData = Yii::$app->request->get();
+
+        $getData['level'] = 2;
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-30 year 00:00");
+        $finishDate =  strtotime("+1 year 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        if(isset($getData['level'])) {
+            $option['level'] = $getData['level'];
+        } else {
+            $option['level'] = 1; //Мечты
+        }
+
+        $AllDreams = Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('amb_dreams', [
+            "AllDreams" => $AllDreams,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+            "level" => $option['level'],
+        ]);
+    }
+
+    public function actionDreams()
+    {
+        $getData = Yii::$app->request->get();
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-30 year 00:00");
+        $finishDate =  strtotime("+1 year 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        if(isset($getData['level'])) {
+            $option['level'] = $getData['level'];
+        } else {
+            $option['level'] = 1; //Мечты
+        }
+
+        $AllDreams = Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('amb_dreams', [
+            "AllDreams" => $AllDreams,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+            "level" => $option['level'],
+        ]);
+    }
+
+    public function actionDreamsRefresh()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                $startDate =  $data['dateFrom'];
+                $finishDate =  $data['dateTo'];
+
+                $status = [];
+                if($data['status_dont'] == 1) {
+                    $status[] = 2;
+                }
+                if($data['status_process'] == 1) {
+                    $status[] = 0;
+                }
+                if($data['status_done'] == 1) {
+                    $status[] = 1;
+                }
+
+                $option = [];
+                if(isset($data['id_sphere']) === true && $data['id_sphere'] !== 0) {
+                    $option['id_sphere'] = $data['id_sphere'];
+                }
+                $option['status'] = $status;
+
+                $option['level'] = $data['level'];
+
+                $AllDreams = Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 1);
+                }
+
+                $dates = [];
+                //$datesColor = [];
+
+                foreach ($AllDreams as $dream) {
+                    $dates[$dream['id']] = date("d.m.Y", $dream['date']);
+                    //$datesColor[$note['id']] = Note::getColorForDate($note['date']);
+                }
+
+                return [
+                    'error' => '',
+                    "data" => $AllDreams,
+                    'colorStyle' => $colors,
+                    'dates' => $dates,
+                    'pathNotes' => 'dream/'
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
+    }
+
+    public function actionDream()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        $getData = $params->get();
+
+        if($params->get('n')) {
+            $data = Ambition::getDreamByUserAndNum($user_id, $params->get('n'));
+            $date = $data['created_at'];
+            $dateDone = $data['dateDone'];
+            $dateGoal = $data['date'];
+            $sphere = Sphere::getSphereById($data['id_sphere']);
+        }
+        else {
+            $data = new Ambition();
+            $date = time();
+            $sphere = new Sphere();
+            $dateDone = 0;
+            $dateGoal = strtotime("+1 month");
+        }
+
+        if(isset($getData['level'])) {
+            $level = $getData['level'];
+        } else {
+            $level = 1; //Мечты
+        }
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+        $levels = Ambition::getLevels();
+
+        return $this->render('amb_dream', [
+            "data" => $data,
+            "spheres" => $spheres,
+            "date" => $date,
+            "dateDone" => $dateDone,
+            "sphere" => $sphere,
+            "levels" => $levels,
+            "level" => $level,
+            "dateGoal" => $dateGoal
+        ]);
+
+    }
+
+    public function actionDreamSave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_dream = $_POST['id'];
+
+            if((integer)$id_dream == 0) {
+                $id_dream = Ambition::addRecord($_POST, $user_id);
+            }
+            else {
+                $id_dream = Ambition::editRecord($_POST);
+            }
+
+            return [
+                "data" => $id_dream,
+                "error" => "",
+            ];
+        }
+
     }
 }
 

@@ -69,6 +69,11 @@ $this->registerLinkTag([
             $menuItems[] = ['label' => 'Система', 'items' => [
                 ['label' => 'Календарь', 'url' => ['/goal/calendar']],
                 ['label' => ''],['label' => ''],
+                ['label' => 'Цели', 'url' => ['/goal/goals']],
+                ['label' => 'Намерения', 'url' => ['/goal/intents']],
+                ['label' => 'Желания', 'url' => ['/goal/wishes']],
+                ['label' => 'Мечты', 'url' => ['/goal/dreams']],
+                ['label' => ''],['label' => ''],
                 ['label' => 'Веб-ссылки', 'url' => ['/url/all']],
                 ['label' => ''],['label' => ''],
                 ['label' => 'Заметки', 'url' => ['/goal/notes']],
@@ -159,7 +164,7 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.8.15)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.1.9.1)</p>
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>

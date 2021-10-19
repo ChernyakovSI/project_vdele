@@ -342,6 +342,10 @@ a:hover {
     box-shadow: 0 0 10px 10px #2E8B57;
 }
 
+.col-back-nul {
+    background: rgba(0, 0, 0, 0);
+}
+
 .col-back-inn {
     background: linear-gradient(45deg, rgba(102, 51, 0, 0.7), rgba(102, 51, 0, 0.2));
 }
@@ -464,6 +468,10 @@ a:hover {
 
 .col-message-wrapper {
     background-color: #f9fafb;
+}
+
+.col-message-wrapper-gray {
+    background-color: #F0F0F0;
 }
 
 .text-color-black {

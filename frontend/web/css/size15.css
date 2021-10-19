@@ -26,6 +26,45 @@
     font-weight: bold;
 }
 
+.caption-line-bold {
+    width: 100%;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+
+    margin-top: 10px;
+    padding: 8px;
+}
+
+.caption-line-bold-left {
+    width: 100%;
+    float: left;
+    text-align: left;
+    font-weight: bold;
+
+    margin-top: 10px;
+    padding: 8px;
+}
+
+.caption-line-bold-right {
+    width: 100%;
+    float: left;
+    text-align: right;
+    font-weight: bold;
+
+    margin-top: 10px;
+    padding: 8px;
+}
+
+.caption-line-simple-28 {
+    width: 28%;
+    float: left;
+    text-align: right;
+
+    margin-top: 10px;
+    padding: 8px;
+}
+
 .clear {
     clear:both;
 }
@@ -55,6 +94,11 @@
     width: 14%;
 }
 
+.column-25 {
+    float: left;
+    width: 25%;
+}
+
 .column-33 {
     float: left;
     width: 33%;
@@ -80,9 +124,19 @@
     width: 50%;
 }
 
+.column-65 {
+    float: left;
+    width: 65%;
+}
+
 .column-66 {
     float: left;
     width: 66%;
+}
+
+.column-75 {
+    float: left;
+    width: 75%;
 }
 
 .column-80 {
@@ -343,7 +397,14 @@
     width: 180px;
 }
 
+.wrapper-line-half {
+    width: 60%;
+    padding: 8px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
 
+    margin-top: 10px;
+}
 
 
 

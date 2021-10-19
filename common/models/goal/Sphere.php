@@ -50,6 +50,7 @@ class Sphere extends ActiveRecord
             ->from(self::tableName().' as sphere');
 
         $body = $body->join('LEFT JOIN', 'sphere_user as sphereUser', 'sphereUser.`id_sphere` = sphere.`id` AND sphereUser.`id_user` = '.$id);
+        $body = $body->orderBy('sphere.`id`');
 
         return $body->all();
     }

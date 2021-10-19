@@ -89,7 +89,7 @@ function render(dataSet) {
         dataSet.AllSpheres.forEach(function(item, i, arr) {
 
             let curElem = $('#'+item['id']);
-            console.log(curElem.find('.message-text-line'));
+            //console.log(curElem.find('.message-text-line'));
             curElem.find('.message-text-line')[0].innerText = item['name'];
         });
     }
