@@ -161,6 +161,10 @@ $this->title = 'Мечты';
                     if(count($AllDreams) > 0) {
                         $halved = array_chunk($AllDreams, ceil(count($AllDreams)/2));
                     }
+                    elseif (count($AllDreams) === 1) {
+                        $halved = array_chunk($AllDreams, ceil(count($AllDreams)/2));
+                        $halved[1] = [];
+                    }
                     else {
                         $halved[0] = [];
                         $halved[1] = [];
