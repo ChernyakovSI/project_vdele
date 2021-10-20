@@ -158,7 +158,7 @@ $this->title = 'Мечты';
                 <div id="list-dreams1">
                     <?php
                     $number = 0;
-                    if(count($AllDreams) > 0) {
+                    if(count($AllDreams) > 1) {
                         $halved = array_chunk($AllDreams, ceil(count($AllDreams)/2));
                     }
                     elseif (count($AllDreams) === 1) {
