@@ -284,12 +284,12 @@ function createRow(curData, numRow, style, pathNotes, date) {
     return divRow;
 }
 
-function resize() {
+function resize(mode = 0) {
     let children = dListDreams1.childNodes;
-    resizeTable(children);
+    resizeTable(children, mode);
 
     children = dListDreams2.childNodes;
-    resizeTable(children);
+    resizeTable(children, mode);
 
 }
 
@@ -307,7 +307,12 @@ function resizeTable(children, mode = 0) {
                 continue
             } else {
                 if(mode == 0) {
-                    divRow = divRow[0].childNodes;
+                    for(column in divRow){
+                        if(divRow[column].nodeName == 'A') {
+                            divRow = divRow[column].childNodes;
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -315,7 +320,6 @@ function resizeTable(children, mode = 0) {
                 continue
             }
 
-            console.log(divRow);
             for(column in divRow){
                 if (divRow.length > 0){
                     if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colNameNum') > -1) {
