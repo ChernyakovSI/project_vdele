@@ -247,7 +247,7 @@ $this->title = 'Мечты';
                         <?php $curPath = 'dream/'.$reg['num']; ?>
                         <div class="fin-acc-row interactive-only <?= Sphere::getColorForId((integer)$reg['id_sphere'], 1, 1) ?>" id="<?= $reg['id'] ?>">
                             <a href="<?= $curPath ?>">
-                                <div class="column-10 border-1px-bottom col-back-nul">
+                                <div class="column-10 border-1px-bottom col-back-nul colNameNum">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><div><?= ++$number ?></div>
                                             <?php
@@ -260,12 +260,12 @@ $this->title = 'Мечты';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column-25 border-1px-bottom col-back-nul">
+                                <div class="column-25 border-1px-bottom col-back-nul colNameDate">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']).(($reg['status'] != 0)?' / '.date("d.m.Y", $reg['dateDone']):'') ?></div>
                                     </div>
                                 </div>
-                                <div class="column-65 border-1px-all col-back-nul">
+                                <div class="column-65 border-1px-all col-back-nul colNameDream">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><?= $reg['title'] ?></div>
                                     </div>
