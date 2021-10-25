@@ -730,7 +730,11 @@ class GoalController extends Controller
                 //$datesColor = [];
 
                 foreach ($AllDreams as $dream) {
-                    $dates[$dream['id']] = date("d.m.Y", $dream['date']);
+                    if($option['level'] == 4) {
+                        $dates[$dream['id']] = date("d.m.Y", $dream['date']);
+                    } else {
+                        $dates[$dream['id']] = date("d.m.Y", $dream['created_at']);
+                    }
                     //$datesColor[$note['id']] = Note::getColorForDate($note['date']);
                 }
 

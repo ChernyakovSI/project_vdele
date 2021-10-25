@@ -51,7 +51,7 @@ $this->title = 'Мечта';
             <div class="half_width">
                 <div class="caption-line-10">Сфера:</div>
                 <div class="message-wrapper-line-half window-border" id="valueSphereWrap">
-                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= $spheres[(isset($data) && $data->id_sphere>0?$data->id_sphere:1)-1]['name'] ?>"/>
+                    <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value="<?= isset($data) && $data->id_sphere>0 ? $spheres[$data->id_sphere]['name'] : '' ?>"/>
                     <datalist id="list_sphere">
                         <?php foreach ($spheres as $sphere): ?>
                             <option data-id=<?= $sphere['id'] ?>><?= $sphere['name'] ?></option>
