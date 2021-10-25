@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site22.css',
         'css/index47.css',
-        'css/color31.css',
+        'css/color32.css',
         'css/acEdit12.css',
         'css/users11.css',
         'css/url3.css',

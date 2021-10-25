@@ -18,7 +18,7 @@ $this->title = 'Мечты';
         if($level == 1) {
             $name = 'Мечта';
             $names = 'Мечты';
-            $colNameDate = 'Создано';
+            $colNameDate = 'Создано / Дата завершения';
             ?>
         <span class="btn-submenu btn-active">Мечты</span>
         <span class="btn-submenu"><a href="/goal/wishes">Желания</a></span>
@@ -27,7 +27,7 @@ $this->title = 'Мечты';
     <?php } elseif($level == 2) {
             $name = 'Желание';
             $names = 'Желания';
-            $colNameDate = 'Создано';
+            $colNameDate = 'Создано / Дата завершения';
             ?>
         <span class="btn-submenu"><a href="/goal/dreams">Мечты</a></span>
         <span class="btn-submenu btn-active">Желания</a></span>
@@ -36,7 +36,7 @@ $this->title = 'Мечты';
     <?php } elseif($level == 3) {
             $name = 'Намерение';
             $names = 'Намерения';
-            $colNameDate = 'Создано';
+            $colNameDate = 'Создано / Дата завершения';
             ?>
         <span class="btn-submenu"><a href="/goal/dreams">Мечты</a></span>
         <span class="btn-submenu"><a href="/goal/wishes">Желания</a></span>
@@ -45,7 +45,7 @@ $this->title = 'Мечты';
     <?php } elseif($level == 4) {
             $name = 'Цель';
             $names = 'Цели';
-            $colNameDate = 'Срок';
+            $colNameDate = 'Срок / Дата завершения';
             ?>
         <span class="btn-submenu"><a href="/goal/dreams">Мечты</a></span>
         <span class="btn-submenu"><a href="/goal/wishes">Желания</a></span>
@@ -136,17 +136,17 @@ $this->title = 'Мечты';
             <div class="halfwidth m-r-10px">
                 <div id="header1">
                     <div class="interactive-only">
-                        <div class="column-10 border-1px-bottom">
+                        <div class="column-10 border-1px-bottom colNameNum">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= '№' ?></div>
                             </div>
                         </div>
-                        <div class="column-25 border-1px-bottom">
+                        <div class="column-25 border-1px-bottom colNameDate">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $colNameDate ?></div>
                             </div>
                         </div>
-                        <div class="column-65 border-1px-all">
+                        <div class="column-65 border-1px-all colNameDream">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $name ?></div>
                             </div>
@@ -181,17 +181,25 @@ $this->title = 'Мечты';
                         <?php $curPath = 'dream/'.$reg['num']; ?>
                         <div class="fin-acc-row interactive-only <?= Sphere::getColorForId((integer)$reg['id_sphere'], 1, 1) ?>" id="<?= $reg['id'] ?>">
                             <a href="<?= $curPath ?>">
-                                <div class="column-10 border-1px-bottom col-back-nul">
+                                <div class="column-10 border-1px-bottom col-back-nul colNameNum">
                                     <div class="message-wrapper-title">
-                                        <div class="message-text-line text-center"><?= ++$number ?></div>
+                                        <div class="message-text-line text-center"><div><?= ++$number ?></div>
+                                            <?php
+                                            if($reg['status'] == 1) {
+                                                echo '<i class="fa fa-check-circle symbol_style text-center text-color-green" aria-hidden="true"></i>';
+                                            } elseif ($reg['status'] == 2) {
+                                                echo '<i class="fa fa-ban symbol_style text-center text-color-red" aria-hidden="true"></i>';
+                                            }
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="column-25 border-1px-bottom col-back-nul">
+                                <div class="column-25 border-1px-bottom col-back-nul colNameDate">
                                     <div class="message-wrapper-title">
-                                        <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']) ?></div>
+                                        <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']).(($reg['status'] != 0)?' / '.date("d.m.Y", $reg['dateDone']):'') ?></div>
                                     </div>
                                 </div>
-                                <div class="column-65 border-1px-all col-back-nul">
+                                <div class="column-65 border-1px-all col-back-nul colNameDream">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><?= $reg['title'] ?></div>
                                     </div>
@@ -207,17 +215,17 @@ $this->title = 'Мечты';
 
                 <div id="header2">
                     <div class="interactive-only">
-                        <div class="column-10 border-1px-bottom">
+                        <div class="column-10 border-1px-bottom colNameNum">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= '№' ?></div>
                             </div>
                         </div>
-                        <div class="column-25 border-1px-bottom">
+                        <div class="column-25 border-1px-bottom colNameDate">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $colNameDate ?></div>
                             </div>
                         </div>
-                        <div class="column-65 border-1px-all">
+                        <div class="column-65 border-1px-all colNameDreams">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $name ?></div>
                             </div>
@@ -241,12 +249,20 @@ $this->title = 'Мечты';
                             <a href="<?= $curPath ?>">
                                 <div class="column-10 border-1px-bottom col-back-nul">
                                     <div class="message-wrapper-title">
-                                        <div class="message-text-line text-center"><?= ++$number ?></div>
+                                        <div class="message-text-line text-center"><div><?= ++$number ?></div>
+                                            <?php
+                                            if($reg['status'] == 1) {
+                                                echo '<i class="fa fa-check-circle symbol_style text-center text-color-green" aria-hidden="true"></i>';
+                                            } elseif ($reg['status'] == 2) {
+                                                echo '<i class="fa fa-ban symbol_style text-center text-color-red" aria-hidden="true"></i>';
+                                            }
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="column-25 border-1px-bottom col-back-nul">
                                     <div class="message-wrapper-title">
-                                        <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']) ?></div>
+                                        <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']).(($reg['status'] != 0)?' / '.date("d.m.Y", $reg['dateDone']):'') ?></div>
                                     </div>
                                 </div>
                                 <div class="column-65 border-1px-all col-back-nul">

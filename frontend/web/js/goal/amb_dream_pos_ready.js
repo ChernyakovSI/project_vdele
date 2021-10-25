@@ -197,6 +197,8 @@ btnSave.onclick = function(e) {
 function renewDataStatus() {
     if(valueIsArchive.checked === true) {
         thisData['status'] = 2;
+        let curDate = new Date();
+        thisData['dateDone'] = String(curDate.getTime()).substr(0, 10);
     }
     if(valueIsInProcess.checked === true) {
         thisData['status'] = 0;

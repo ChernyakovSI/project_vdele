@@ -14,6 +14,8 @@ let dInfo1 = document.getElementById('info1');
 let dInfo2 = document.getElementById('info2');
 let dListDreams1 = document.getElementById('list-dreams1');
 let dListDreams2 = document.getElementById('list-dreams2');
+let dHeader1 = document.getElementById('header1');
+let dHeader2 = document.getElementById('header2');
 
 let btnClearSphere = document.getElementById('ClearSphere');
 let btnNewDream = document.getElementById('new-reg');
@@ -61,6 +63,13 @@ $(document).ready( function() {
     } else {
         setDone.checked = false;
     }
+
+    let children = dHeader1.childNodes;
+    resizeTable(children, 1);
+    children = dHeader2.childNodes;
+    resizeTable(children, 1);
+
+    resize();
 });
 
 btnClearSphere.onclick = function(e) {
@@ -217,6 +226,8 @@ function render(dataSet) {
         divInfo.innerText = 'Нет данных';
         dListDreams2.append(divInfo);
     }
+
+    resize();
 }
 
 function createRow(curData, numRow, style, pathNotes, date) {
@@ -227,19 +238,27 @@ function createRow(curData, numRow, style, pathNotes, date) {
     let aDream = document.createElement('a');
     aDream.setAttribute('href', pathNotes + curData['num']);
 
+    if(curData['status'] == 1) {
+        strIcon = '<i class="fa fa-check-circle symbol_style text-center text-color-green" aria-hidden="true"></i>';
+    } else if (curData['status'] == 2) {
+        strIcon = '<i class="fa fa-ban symbol_style text-center text-color-red" aria-hidden="true"></i>';
+    } else {
+        strIcon = '';
+    }
+
     let divWrap = document.createElement('div');
-    divWrap.className = 'column-10 border-1px-bottom col-back-nul';
+    divWrap.className = 'column-10 border-1px-bottom col-back-nul colNameNum';
     let divWrap2 = document.createElement('div');
     divWrap2.className = 'message-wrapper-title';
     let divWrap3 = document.createElement('div');
     divWrap3.className = 'message-text-line text-center';
-    divWrap3.innerText = numRow;
+    divWrap3.innerHTML = '<div>'+numRow+'</div>'+strIcon;
     divWrap2.append(divWrap3);
     divWrap.append(divWrap2);
     aDream.append(divWrap);
 
     divWrap = document.createElement('div');
-    divWrap.className = 'column-25 border-1px-bottom col-back-nul';
+    divWrap.className = 'column-25 border-1px-bottom col-back-nul colNameDate';
     divWrap2 = document.createElement('div');
     divWrap2.className = 'message-wrapper-title';
     divWrap3 = document.createElement('div');
@@ -250,7 +269,7 @@ function createRow(curData, numRow, style, pathNotes, date) {
     aDream.append(divWrap);
 
     divWrap = document.createElement('div');
-    divWrap.className = 'column-65 border-1px-all col-back-nul';
+    divWrap.className = 'column-65 border-1px-all col-back-nul colNameDream';
     divWrap2 = document.createElement('div');
     divWrap2.className = 'message-wrapper-title';
     divWrap3 = document.createElement('div');
@@ -263,4 +282,75 @@ function createRow(curData, numRow, style, pathNotes, date) {
     divRow.append(aDream);
 
     return divRow;
+}
+
+function resize() {
+    let children = dListDreams1.childNodes;
+    resizeTable(children);
+
+    children = dListDreams2.childNodes;
+    resizeTable(children);
+
+}
+
+function resizeTable(children, mode = 0) {
+    if (children.length > 0) {
+        let divRow;
+
+        let colNum, colADate, colDream, maxHeight;
+
+        for(child in children){
+            maxHeight = 0;
+            divRow = children[child].childNodes;
+
+            if (divRow == undefined || divRow.length == 0) {
+                continue
+            } else {
+                if(mode == 0) {
+                    divRow = divRow[0].childNodes;
+                }
+            }
+
+            if (mode == 0 && (divRow == undefined || divRow.length == 0)) {
+                continue
+            }
+
+            console.log(divRow);
+            for(column in divRow){
+                if (divRow.length > 0){
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colNameNum') > -1) {
+                        colNum = divRow[column];
+                        if(maxHeight < colNum.clientHeight) {
+                            maxHeight = colNum.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colNameDate') > -1) {
+                        colADate = divRow[column];
+                        if(maxHeight < colADate.clientHeight) {
+                            maxHeight = colADate.clientHeight;
+                        }
+                    }
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colNameDream') > -1) {
+                        colDream = divRow[column];
+                        if(maxHeight < colDream.clientHeight) {
+                            maxHeight = colDream.clientHeight;
+                        }
+                    }
+                }
+            }
+            if(colNum != undefined && colNum.clientHeight != undefined < maxHeight) {
+                colNum.style.height = maxHeight + "px";
+            }
+            if(colADate != undefined && colADate.clientHeight != undefined < maxHeight) {
+                colADate.style.height = maxHeight + "px";
+            }
+            if(colDream != undefined && colDream.clientHeight != undefined < maxHeight) {
+                colDream.style.height = maxHeight + "px";
+            }
+            colNum = undefined;
+            colADate = undefined;
+            colDream = undefined;
+
+        }
+    }
 }

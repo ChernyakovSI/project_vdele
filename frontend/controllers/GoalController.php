@@ -731,9 +731,9 @@ class GoalController extends Controller
 
                 foreach ($AllDreams as $dream) {
                     if($option['level'] == 4) {
-                        $dates[$dream['id']] = date("d.m.Y", $dream['date']);
+                        $dates[$dream['id']] = date("d.m.Y", $dream['date']).(($dream['status'] != 0)?' / '.date("d.m.Y", $dream['dateDone']):'');
                     } else {
-                        $dates[$dream['id']] = date("d.m.Y", $dream['created_at']);
+                        $dates[$dream['id']] = date("d.m.Y", $dream['created_at']).(($dream['status'] != 0)?' / '.date("d.m.Y", $dream['dateDone']):'');
                     }
                     //$datesColor[$note['id']] = Note::getColorForDate($note['date']);
                 }
