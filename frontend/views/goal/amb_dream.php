@@ -113,7 +113,7 @@ $this->title = 'Мечта';
 
             <div class="clearfix"></div>
             <div class="new-message-wrapper width-full multistring-min-25 window-border m-t-10px back-cells" id="valueTextWrap">
-                <textarea class="message-text-multistring resize_vertical_only multistring-min-25" id="valueText"><?= $data->text ?></textarea>
+                <div contentEditable="true" class="message-text-multistring resize_vertical_only multistring-min-25 ahref" id="valueText"><?= $data->text ?></div>
             </div>
         </div>
 

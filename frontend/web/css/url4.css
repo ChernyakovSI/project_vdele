@@ -1,3 +1,13 @@
+.href a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.elem_href {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .url-container-wrap {
     height: 100%;
     display: grid;

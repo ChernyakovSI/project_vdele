@@ -30,7 +30,6 @@ let btnSave = document.getElementById('button-save');
 
 let divCaption = document.getElementById('form-caption');
 
-
 let thisData = {
     'id' : 0,
     'date' : 0,
@@ -66,7 +65,7 @@ $(document).ready( function() {
         thisData['id'] = Number(divParamID.innerText);
         thisData['id_sphere'] = Number(divParamIDSphere.innerText);
         thisData['title'] = valueTitle.value;
-        thisData['text'] = valueText.value;
+        thisData['text'] = valueText.innerHTML;
         thisData['num'] = Number(divParamNum.innerText);
         thisData['id_level'] = Number(paramLevel);
         thisData['status'] = Number(divParamStatus.innerText);
@@ -86,6 +85,9 @@ $(document).ready( function() {
 
     renewStatusElement();
     renewCaption();
+
+    DetectURLs(valueText);
+    generatorURLs();
 
 });
 
@@ -125,9 +127,11 @@ valueTitle.onchange = function(event){
     thisData['title'] = this.value.trim();
 };
 
-valueText.onchange = function(event){
-    thisData['text'] = this.value.trim();
-};
+valueText.onblur = function (event){
+    thisData['text'] = this.innerHTML.trim();
+    DetectURLs(this);
+    generatorURLs();
+}
 
 valueLevel.onchange = function(event){
     let curLevel = this.value.trim();
@@ -193,6 +197,34 @@ btnSave.onclick = function(e) {
 };
 
 //Helpers
+
+function generatorURLs() {
+    let ahrefs = document.getElementsByClassName('elem_href');
+    console.log(ahrefs);
+
+    let arrHrefs = Array.from(ahrefs);
+    arrHrefs.forEach(function(item, i, arr) {
+        console.log(item);
+        if (item.getAttribute('href') != '') {
+            item.onclick = function() {
+                window.open(item.getAttribute('href'), "_blank");
+            }
+        }
+    });
+}
+
+function DetectURLs(element) {
+    /*let url_regex = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
+    element.innerHTML = element.innerHTML.replace(url_regex, '<a href="$1">$1</a>');
+*/
+    let urlRegex = /(https?:\/\/[^\s]+)/g;
+    let textHTML = element.innerText;
+    textHTML = textHTML.replace(urlRegex, '<a href="$1" class="elem_href">$1</a>')
+
+    //console.log(textHTML);
+    element.innerHTML = textHTML;
+    //console.log(element.innerHTML);
+}
 
 function renewDataStatus() {
     if(valueIsArchive.checked === true) {

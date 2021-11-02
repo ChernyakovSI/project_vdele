@@ -342,6 +342,23 @@ a:hover {
     box-shadow: 0 0 10px 10px #2E8B57;
 }
 
+.ahref a {
+    color: #463232;
+}
+
+.ahref a:hover {
+    color: #261212;
+}
+
+.elem_href {
+    color: #463232;
+}
+
+.elem_href:hover {
+    color: #261212;
+}
+
+
 .col-back-nul {
     background: rgba(0, 0, 0, 0);
 }
