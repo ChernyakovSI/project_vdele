@@ -8,6 +8,8 @@ $this->title = 'Мечта';
 <div id="paramDateDone" hidden="hidden"><?= $dateDone ?></div>
 <div id="paramDateGoal" hidden="hidden"><?= $dateGoal ?></div>
 
+<div id="paramText" hidden="hidden"><?= $data->text ?></div>
+
 <div id="paramNum" hidden="hidden"><?= $data->num ?></div>
 <div id="paramID" hidden="hidden"><?= $data->id ?></div>
 <div id="paramIDSphere" hidden="hidden"><?= $data->id_sphere ?></div>
