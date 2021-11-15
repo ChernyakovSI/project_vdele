@@ -241,6 +241,10 @@ function convertNewLinesToBr(element) {
     let textHTML = element.innerHTML;
     textHTML = textHTML.replace(urlRegex, '<br>');
 
+    //Первый div заменить переносом
+    urlRegex = /<div>/;
+    textHTML = textHTML.replace(urlRegex, '<br>');
+
     urlRegex = /<div>/g;
     textHTML = textHTML.replace(urlRegex, '');
 
