@@ -22,14 +22,10 @@ function DetectURLs(element) {
 
     //Сохраняем переносы в форме HTML
     let urlRegex = /(?:\r\n|\r|\n)/g;
-    textHTML = textHTML.replace(urlRegex, '<br>');
+    textHTML = textHTML.replace(urlRegex, ' <br>');
 
-    console.log(textHTML);
-
-    urlRegex = /(https?:\/\/[^\s(<br>)]+)/g;
+    urlRegex = /(https?:\/\/[^\s]+)/g;
     textHTML = textHTML.replace(urlRegex, '<a href="$1" class="elem_href">$1</a>')
-
-    console.log(textHTML);
 
     element.innerHTML = textHTML;
 }
