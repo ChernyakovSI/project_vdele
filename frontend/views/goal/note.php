@@ -6,6 +6,8 @@ $this->title = 'Заметка';
 
 <div id="paramDate" hidden="hidden"><?= $date ?></div>
 
+<div id="paramText" hidden="hidden"><?= $data->text ?></div>
+
 <div id="paramNum" hidden="hidden"><?= $data->num ?></div>
 <div id="paramID" hidden="hidden"><?= $data->id ?></div>
 <div id="paramIDSphere" hidden="hidden"><?= $data->id_sphere ?></div>
@@ -61,7 +63,7 @@ $this->title = 'Заметка';
 
             <div class="clearfix"></div>
             <div class="new-message-wrapper width-full multistring-min-25 window-border m-t-10px back-cells" id="valueTextWrap">
-                <textarea class="message-text-multistring resize_vertical_only multistring-min-25" id="valueText"><?= $data->text ?></textarea>
+                <div contentEditable="true" class="message-text-multistring resize_vertical_only multistring-min-25 ahref" id="valueText"><?= $data->text ?></div>
             </div>
         </div>
 

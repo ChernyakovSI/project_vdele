@@ -1,5 +1,6 @@
 let valueDate = document.getElementById('valueDate');
 let divParamDate = document.getElementById('paramDate');
+let divParamText = document.getElementById('paramText');
 
 let valueSphere = document.getElementById('valueSphere');
 let list_sphere = document.getElementById('list_sphere');
@@ -44,6 +45,12 @@ $(document).ready( function() {
         thisData['num'] = divParamNum.innerText;
     }
 
+    valueText.innerHTML = getNewLinesToBr(divParamText);
+
+    convertNewLinesToBr(valueText);
+    DetectURLs(valueText);
+    generatorURLs();
+
 })
 
 //Events
@@ -83,15 +90,19 @@ valueTitle.onchange = function(event){
     thisData['title'] = this.value.trim();
 };
 
-valueText.onchange = function(event){
-    thisData['text'] = this.value.trim();
-};
+valueText.onblur = function (event){
+    thisData['text'] = this.innerHTML.trim();
+    convertNewLinesToBr(this);
+    DetectURLs(this);
+    generatorURLs();
+}
 
 btnCancel.onclick = function(e) {
     window.location.href = '/goal/notes';
 };
 
 btnSave.onclick = function(e) {
+    thisData.text = getBrToNewLines(valueText);
     runAjax('/goal/note-save', thisData);
 };
 
