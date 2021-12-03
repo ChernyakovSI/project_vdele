@@ -511,4 +511,61 @@ a:hover {
     background-color: rgba(80, 56, 54, 0.5);
 }
 
+/* Оформление дедлайнов */
+
+.deadline-fail {
+    color: #ffff00;
+    background-color: rgba(255, 51, 51, 0.7);
+    font-weight: bold;
+}
+
+.deadline-today {
+    color: #ffffff;
+    background-color: rgba(255, 100, 8, 0.7);
+    font-weight: bold;
+}
+
+.deadline-1 {
+    color: #000000;
+    background-color: rgba(255, 100, 8, 0.7);
+    font-weight: bold;
+}
+
+.deadline-3 {
+    color: #000000;
+    background-color: rgba(255, 150, 8, 0.6);
+    font-weight: bold;
+}
+
+.deadline-7 {
+    color: #000000;
+    background-color: rgba(255, 200, 8, 0.4);
+    font-weight: bold;
+}
+
+.deadline-15 {
+    color: #000000;
+    background-color: rgba(50, 150, 200, 0.4);
+}
+
+.deadline-30 {
+    color: #000000;
+    background-color: rgba(75, 175, 225, 0.4);
+}
+
+.deadline-60 {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.deadline-100 {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.deadline-done {
+    color: #000000;
+    background-color: rgba(50, 200, 100, 0.7);
+}
+
 /* - */

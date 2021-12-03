@@ -1,6 +1,7 @@
 <?php
 
 use common\models\goal\Sphere;
+use common\models\goal\Ambition;
 
 $this->title = 'Мечты';
 
@@ -194,7 +195,7 @@ $this->title = 'Мечты';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column-25 border-1px-bottom col-back-nul colNameDate">
+                                <div class="column-25 border-1px-bottom col-back-nul colNameDate <?= Ambition::getColorForDateline($reg['date'], $reg['status'], $reg['id_level']) ?>">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']).(($reg['status'] != 0)?' / '.date("d.m.Y", $reg['dateDone']):'') ?></div>
                                     </div>
@@ -260,7 +261,7 @@ $this->title = 'Мечты';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="column-25 border-1px-bottom col-back-nul colNameDate">
+                                <div class="column-25 border-1px-bottom col-back-nul colNameDate <?= Ambition::getColorForDateline($reg['date'], $reg['status'], $reg['id_level']) ?>">
                                     <div class="message-wrapper-title">
                                         <div class="message-text-line text-center"><?= date("d.m.Y", ($level == 4)?$reg['date']:$reg['created_at']).(($reg['status'] != 0)?' / '.date("d.m.Y", $reg['dateDone']):'') ?></div>
                                     </div>

@@ -31,3 +31,7 @@ function endDay (date) {
 
     return date;
 }
+
+function NowTimeStamp_Sec() {
+    return Math.round(new Date().getTime()/1000)
+}

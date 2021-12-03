@@ -259,6 +259,31 @@ function createRow(curData, numRow, style, pathNotes, date) {
 
     divWrap = document.createElement('div');
     divWrap.className = 'column-25 border-1px-bottom col-back-nul colNameDate';
+    if(curData['id_level'] == 4){
+        let nowStamp = NowTimeStamp_Sec();
+
+        if (curData['status'] == 1) {
+            divWrap.className = divWrap.className + ' deadline-done';
+        } else if(nowStamp > curData['date']){
+            divWrap.className = divWrap.className + ' deadline-fail';
+        } else if ((nowStamp + 24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-today';
+        } else if ((nowStamp + 2*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-1';
+        } else if ((nowStamp + 4*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-3';
+        } else if ((nowStamp + 8*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-7';
+        } else if ((nowStamp + 16*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-15';
+        } else if ((nowStamp + 31*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-30';
+        } else if ((nowStamp + 61*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-60';
+        } else if ((nowStamp + 101*24*60*60) > curData['date']) {
+            divWrap.className = divWrap.className + ' deadline-100';
+        }
+    }
     divWrap2 = document.createElement('div');
     divWrap2.className = 'message-wrapper-title';
     divWrap3 = document.createElement('div');
@@ -354,6 +379,46 @@ function resizeTable(children, mode = 0) {
             colNum = undefined;
             colADate = undefined;
             colDream = undefined;
+
+        }
+    }
+}
+
+function paintTable(children) {
+    if (children.length > 0) {
+        let divRow;
+
+        let colADate;
+
+        for(child in children){
+            divRow = children[child].childNodes;
+
+            if (divRow == undefined || divRow.length == 0) {
+                continue
+            } else {
+                for(column in divRow){
+                    if(divRow[column].nodeName == 'A') {
+                        divRow = divRow[column].childNodes;
+                        break;
+                    }
+                }
+            }
+
+            if (divRow == undefined || divRow.length == 0) {
+                continue
+            }
+
+            for(column in divRow){
+                if (divRow.length > 0){
+                    if(divRow[column].nodeName == 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colNameDate') > -1) {
+                        colADate = divRow[column];
+                        if(maxHeight < colADate.clientHeight) {
+                            maxHeight = colADate.clientHeight;
+                        }
+                    }
+                }
+            }
+
 
         }
     }

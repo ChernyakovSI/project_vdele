@@ -5,6 +5,7 @@ namespace common\models\goal;
 
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use DateTime;
 
 class Ambition extends ActiveRecord
 {
@@ -55,6 +56,7 @@ class Ambition extends ActiveRecord
             'amb.`num` as num',
             'amb.`status` as status',
             'amb.`dateDone` as dateDone',
+            'amb.`id_level` as id_level',
         ])
             ->from(self::tableName().' as amb');
 
@@ -194,5 +196,38 @@ class Ambition extends ActiveRecord
         }
 
         return $lastNum;
+    }
+
+    public static function getColorForDateline($date, $done = 0, $level = 0){
+        if($level <> 4) {
+            return '';
+        }
+
+        $color = '';
+        $nowStamp = (new DateTime())->getTimestamp();
+
+        if ($done == 1) {
+            $color = 'deadline-done';
+        } else if($nowStamp > $date){
+            $color = 'deadline-fail';
+        } else if (($nowStamp + 24*60*60) > $date) {
+            $color = 'deadline-today';
+        } else if (($nowStamp + 2*24*60*60) > $date) {
+            $color = 'deadline-1';
+        } else if (($nowStamp + 4*24*60*60) > $date) {
+            $color = 'deadline-3';
+        } else if (($nowStamp + 8*24*60*60) > $date) {
+            $color = 'deadline-7';
+        } else if (($nowStamp + 16*24*60*60) > $date) {
+            $color = 'deadline-15';
+        } else if (($nowStamp + 31*24*60*60) > $date) {
+            $color = 'deadline-30';
+        } else if (($nowStamp + 61*24*60*60) > $date) {
+            $color = 'deadline-60';
+        } else if (($nowStamp + 101*24*60*60) > $date) {
+            $color = 'deadline-100';
+        }
+
+        return $color;
     }
 }
