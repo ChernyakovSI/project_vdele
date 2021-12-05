@@ -68,14 +68,33 @@ $this->title = 'День';
 
                 <div class="halfwidth m-t-10px">
                     <div class="interactive-only">
-                        <div class="border-1px-right">
+                        <div id="cell-note-title" class="border-1px-right">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= 'Заметки' ?></div>
                             </div>
                         </div>
                     </div>
                     <div id="list-notes">
+                        <div id="infoExp" class="text-font-5 text-center margin-v20">
+                            Нет данных
+                        </div>
+                    </div>
+                </div>
 
+                <div class="halfwidth-gap">&nbsp;</div>
+
+                <div class="halfwidth m-t-10px">
+                    <div class="interactive-only">
+                        <div id="cell-goal-title" class="border-1px-right">
+                            <div class="message-wrapper-title">
+                                <div class="message-text-line table-caption"><?= 'Цели' ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="list-goals">
+                        <div id="infoExp" class="text-font-5 text-center margin-v20">
+                            Нет данных
+                        </div>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ namespace common\models\goal;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use common\models\goal\Sphere;
+use common\models\goal\Ambition;
 
 class Day extends ActiveRecord
 {
@@ -39,7 +40,7 @@ class Day extends ActiveRecord
         $body = $query->Select(['Calendar.`id` as id',
             'Calendar.`date` as date',
             'Calendar.`id_sphere` as id_sphere',
-            'Sphere.`name` as name_sphere',
+            'IFNULL(Sphere.`name`, "") as name_sphere',
         ])
             ->from(self::tableName().' as Calendar')
             ->join('LEFT JOIN', Sphere::tableName().' as Sphere', 'Sphere.`id` = Calendar.`id_sphere`');

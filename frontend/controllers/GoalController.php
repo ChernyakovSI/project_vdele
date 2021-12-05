@@ -359,7 +359,7 @@ class GoalController extends Controller
                 //$endOfDay   = strtotime("tomorrow", $beginOfDay) - 1;
                 $beginOfMonth =  strtotime(date('Y-m-01', $data['startDate']));
                 $endOfMonth =   strtotime(date('Y-m-t 23:59:59', $data['startDate']));
-                $allNotes = Note::getAllNotesByFilter($user_id, $beginOfMonth, $endOfMonth);
+                $allNotes = Calendar::getAllObjectsByFilter($user_id, $beginOfMonth, $endOfMonth);
                 $allRegs = Register::getAllRegsByFilter($user_id, $beginOfMonth, $endOfMonth);
 
                 $Speciality = Calendar::getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
@@ -509,6 +509,11 @@ class GoalController extends Controller
                 $totalExp = Account::formatNumberToMoney($totalExp);
                 $totalDelta = Account::formatNumberToMoney($totalDelta);
 
+                $option = [];
+                $option['level'] = 4;
+                $goals = Ambition::getDreamsForPeriodAndUser($user_id, $date, $endDay, $option);
+                $pathGoals = '/goal/dream/';
+
                 return [
                     'error' => '',
                     'dayData' => $dayData,
@@ -522,6 +527,8 @@ class GoalController extends Controller
                     'dataExp' => $resultsExp,
                     'SumFormatExp' => $SumFormatExp,
                     'SumFormatProf' => $SumFormatProf,
+                    'goals' => $goals,
+                    'pathGoals' => $pathGoals
                 ];
             }
 

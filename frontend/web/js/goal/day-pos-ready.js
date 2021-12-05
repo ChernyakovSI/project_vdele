@@ -9,6 +9,9 @@ let btnClearSphere = document.getElementById('ClearSphere');
 let divContentNotes = document.getElementById('content-notes');
 let divContentFin = document.getElementById('content-fin');
 let divListNotes = document.getElementById('list-notes');
+let divListGoals = document.getElementById('list-goals');
+let divCellNoteTitle = document.getElementById('cell-note-title');
+let divCellGoalTitle = document.getElementById('cell-goal-title');
 
 let btnCancel = document.getElementById('button-cancel');
 let btnSave = document.getElementById('button-save');
@@ -115,7 +118,7 @@ function runAjax(url, value, typeReq = 'post'){
 }
 
 function render(dataSet) {
-    if(dataSet.dayData !== null && dataSet.dayData !== undefined) {
+    if(dataSet.dayData !== null && dataSet.dayData !== undefined && dataSet.dayData.count > 1) {
         valueSphere.value = dataSet.dayData[0]['name_sphere'];
 
     }
@@ -126,6 +129,8 @@ function render(dataSet) {
     valueDate.value = curDate.toISOString().substring(0, 10);
 
     let colors = dataSet.colorStyle;
+
+    divContentNotes.hidden = true;
 
     divListNotes.innerHTML = '';
     if(dataSet.allNotes.length > 0) {
@@ -163,9 +168,76 @@ function render(dataSet) {
             divRow.append(aNote);
             divListNotes.append(divRow);
         })
+
+        divCellNoteTitle.classList.remove('border-1px-right');
+        divCellNoteTitle.classList.remove('border-1px-all');
+        divCellNoteTitle.classList.add('border-1px-right');
     }
     else {
-        divContentNotes.hidden = true;
+        let divInfo = document.createElement('div');
+        divInfo.className = 'text-font text-center margin-v20';
+        divInfo.setAttribute('id', 'infoExp');
+        divInfo.innerHTML = 'Нет данных';
+
+        divListNotes.append(divInfo);
+
+        divCellNoteTitle.classList.remove('border-1px-right');
+        divCellNoteTitle.classList.remove('border-1px-all');
+        divCellNoteTitle.classList.add('border-1px-all');
+    }
+
+    divListGoals.innerHTML = '';
+    if(dataSet.goals.length > 0) {
+        divContentNotes.hidden = false;
+
+        let pos = 0;
+        dataSet.goals.forEach((data) => {
+
+            pos = pos + 1;
+
+            let divTitle = document.createElement('div');
+            divTitle.className = 'message-text-line text-bold text-color-black';
+            divTitle.innerText = data['title'];
+
+            let divWrap = document.createElement('div');
+            divWrap.className = 'message-wrapper-title';
+
+            let divBorder = document.createElement('div');
+            if(pos === dataSet.goals.length){
+                divBorder.className = 'border-1px-all';
+            }
+            else {
+                divBorder.className = 'border-1px-right';
+            }
+
+            let aNote = document.createElement('a');
+            aNote.setAttribute('href', dataSet.pathGoals + data['num']);
+
+            let divRow = document.createElement('div');
+            divRow.className = 'fin-acc-row interactive-only ' + colors[data['id_sphere']];;
+
+            divWrap.append(divTitle);
+            divBorder.append(divWrap);
+            aNote.append(divBorder);
+            divRow.append(aNote);
+            divListGoals.append(divRow);
+        })
+
+        divCellGoalTitle.classList.remove('border-1px-right');
+        divCellGoalTitle.classList.remove('border-1px-all');
+        divCellGoalTitle.classList.add('border-1px-right');
+    }
+    else {
+        let divInfo = document.createElement('div');
+        divInfo.className = 'text-font text-center margin-v20';
+        divInfo.setAttribute('id', 'infoExp');
+        divInfo.innerHTML = 'Нет данных';
+
+        divListGoals.append(divInfo);
+
+        divCellGoalTitle.classList.remove('border-1px-right');
+        divCellGoalTitle.classList.remove('border-1px-all');
+        divCellGoalTitle.classList.add('border-1px-all');
     }
 
     //Finance

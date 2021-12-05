@@ -139,4 +139,51 @@ class Calendar extends ActiveRecord
 
         return $body->count();
     }
+
+    public static function getAllObjectsByFilter($id_user, $startDate, $finishDate, $sortDate = true){
+        $query = new Query();
+        $body = $query->Select(['Note.`id` as id',
+            'Note.`date` as date',
+            'Note.`id_sphere` as id_sphere',
+            'Note.`title` as title',
+            'Note.`num` as num',
+        ])
+            ->from('note as Note');
+
+        $strWhere = 'Note.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Note.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND Note.`date` >= '.(integer)$startDate;
+        $strWhere = $strWhere.' AND Note.`date` <= '.(integer)$finishDate;
+
+        $body = $body->where($strWhere);
+
+        //цели
+
+        $query = new Query();
+        $bodyAmb = $query->Select(['Amb.`id` as id',
+            'Amb.`date` as date',
+            'Amb.`id_sphere` as id_sphere',
+            'Amb.`title` as title',
+            'Amb.`num` as num',
+        ])
+            ->from('ambition as Amb');
+
+        $strWhere = 'Amb.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Amb.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND Amb.`date` >= '.(integer)$startDate;
+        $strWhere = $strWhere.' AND Amb.`date` <= '.(integer)$finishDate;
+
+        $bodyAmb = $bodyAmb->where($strWhere);
+
+        $body = $body->union($bodyAmb);
+
+        if($sortDate === true) {
+            $body = $body->orderBy('`date`');
+        }
+        else {
+            $body = $body->orderBy('`date` DESC');
+        }
+
+        return $body->all();
+    }
 }

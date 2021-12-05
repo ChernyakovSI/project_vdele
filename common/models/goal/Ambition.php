@@ -62,10 +62,12 @@ class Ambition extends ActiveRecord
 
         $strWhere = 'amb.`id_user`= '.(integer)$id_user;
         if($startDate > 0) {
-            $strWhere = $strWhere.' AND amb.`created_at` >= '.(integer)$startDate;
+            $strWhere = $strWhere.' AND ((amb.`id_level` <> 4 AND amb.`created_at` >= '.(integer)$startDate.') OR '.
+                '(amb.`id_level` = 4 AND amb.`date` >= '.(integer)$startDate.'))';
         }
         if($finishDate > 0 && $finishDate > $startDate) {
-            $strWhere = $strWhere.' AND amb.`created_at` <= '.(integer)$finishDate;
+            $strWhere = $strWhere.' AND ((amb.`id_level` <> 4 AND amb.`created_at` <= '.(integer)$finishDate.') OR '.
+                '(amb.`id_level` = 4 AND amb.`date` <= '.(integer)$finishDate.'))';;
         }
         $strWhere = $strWhere.' AND amb.`is_deleted` = 0 ';
         //$strWhere = $strWhere.' AND amb.`id_level` = 1';
