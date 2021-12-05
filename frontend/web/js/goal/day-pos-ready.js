@@ -118,7 +118,7 @@ function runAjax(url, value, typeReq = 'post'){
 }
 
 function render(dataSet) {
-    if(dataSet.dayData !== null && dataSet.dayData !== undefined && dataSet.dayData.count > 1) {
+    if(dataSet.dayData !== null && dataSet.dayData !== undefined && dataSet.dayData.length > 0) {
         valueSphere.value = dataSet.dayData[0]['name_sphere'];
 
     }
