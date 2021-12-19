@@ -244,6 +244,7 @@ class Ambition extends ActiveRecord
     public static function getPriorityForDayAndUser($id_user, $curDate = 0, $option = []) {
         $result['zachet'] = [];
         $result['exam'] = [];
+        $result['sem'] = [];
 
         $query = new Query();
         $body = $query->Select(['sem.`id` as id',
