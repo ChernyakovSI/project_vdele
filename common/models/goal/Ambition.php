@@ -142,6 +142,10 @@ class Ambition extends ActiveRecord
         $newRec->id_level = (integer)$params['id_level'];
         $newRec->status = (integer)$params['status'];
 
+        $newRec->result_type = (integer)$params['resultType'];
+        $newRec->result_mark = (integer)$params['resultMark'];
+        $newRec->result_text = strip_tags($params['resultText']);
+
         $newRec->title = strip_tags($params['title']);
         $newRec->text = strip_tags($params['text']);
 
@@ -176,6 +180,10 @@ class Ambition extends ActiveRecord
         $rec->id_sphere = (integer)$params['id_sphere'];
         $rec->id_level = (integer)$params['id_level'];
         $rec->status = (integer)$params['status'];
+
+        $rec->result_type = (integer)$params['resultType'];
+        $rec->result_mark = (integer)$params['resultMark'];
+        $rec->result_text = strip_tags($params['resultText']);
 
         $rec->title = strip_tags($params['title']);
         $rec->text = strip_tags($params['text']);
@@ -231,5 +239,154 @@ class Ambition extends ActiveRecord
         }
 
         return $color;
+    }
+
+    public static function getPriorityForDayAndUser($id_user, $curDate = 0, $option = []) {
+        $result['zachet'] = [];
+        $result['exam'] = [];
+
+        $query = new Query();
+        $body = $query->Select(['sem.`id` as id',
+            'sem.`created_at` as created_at',
+            'sem.`date` as date',
+            'sem.`name` as name',
+            'sem.`dateFinish` as dateFinish',
+        ])
+            ->from('semester as sem');
+
+        $strWhere = 'sem.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND (sem.`date` <= '.(integer)$curDate.' AND sem.`dateFinish` >= '.(integer)$curDate.')';
+        $strWhere = $strWhere.' AND sem.`is_deleted` = 0 ';
+        $body = $body->where($strWhere)->orderBy('sem.`date`');
+
+        if($body->count() > 0) {
+            foreach ($body->each() as $rec) {
+                $startDate = $rec['date'];
+                $finishDate = $rec['dateFinish'];
+
+                $sem['date'] = $startDate;
+                $sem['dateFinish'] = $finishDate;
+                $sem['name'] = $rec['name'];
+                $sem['id'] = $rec['id'];
+            }
+
+        } else {
+            return $result;
+        }
+
+        $result['sem'] = $sem;
+
+        $body = $query->Select(['amb.`id` as id',
+            'amb.`created_at` as created_at',
+            'amb.`date` as date',
+            'amb.`id_sphere` as id_sphere',
+            'amb.`title` as title',
+            'amb.`text` as text',
+            'amb.`num` as num',
+            'amb.`status` as status',
+            'amb.`dateDone` as dateDone',
+            'amb.`id_level` as id_level',
+            'amb.`result_type` as result_type',
+            'amb.`result_mark` as result_mark',
+            'amb.`result_text` as result_text',
+        ])
+            ->from(self::tableName().' as amb');
+
+        $strWhere = 'amb.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND (amb.`date` >= '.(integer)$startDate.' AND amb.`date` <= '.(integer)$finishDate.')';
+        $strWhere = $strWhere.' AND amb.`is_deleted` = 0 ';
+        $strWhere = $strWhere.' AND amb.`result_type` = 1';
+
+        if(isset($option['level']) === false) {
+            $level = 0;
+        } else {
+            $level = $option['level'];
+        }
+
+        if($level > 0) {
+            $strWhere = $strWhere.' AND amb.`id_level` = '.(integer)$level;
+        }
+
+        if($level == 4) {
+            $body = $body->where($strWhere)->orderBy('amb.`date`');
+        }
+        else {
+            $body = $body->where($strWhere)->orderBy('amb.`created_at`');
+        }
+
+        $result['zachet'] = $body->all();
+
+
+        $body = $query->Select(['amb.`id` as id',
+            'amb.`created_at` as created_at',
+            'amb.`date` as date',
+            'amb.`id_sphere` as id_sphere',
+            'amb.`title` as title',
+            'amb.`text` as text',
+            'amb.`num` as num',
+            'amb.`status` as status',
+            'amb.`dateDone` as dateDone',
+            'amb.`id_level` as id_level',
+            'amb.`result_type` as result_type',
+            'amb.`result_mark` as result_mark',
+            'amb.`result_text` as result_text',
+        ])
+            ->from(self::tableName().' as amb');
+
+        $strWhere = 'amb.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND (amb.`date` >= '.(integer)$startDate.' AND amb.`date` <= '.(integer)$finishDate.')';
+        $strWhere = $strWhere.' AND amb.`is_deleted` = 0 ';
+        $strWhere = $strWhere.' AND amb.`result_type` = 2';
+
+        if(isset($option['level']) === false) {
+            $level = 0;
+        } else {
+            $level = $option['level'];
+        }
+
+        if($level > 0) {
+            $strWhere = $strWhere.' AND amb.`id_level` = '.(integer)$level;
+        }
+
+        if($level == 4) {
+            $body = $body->where($strWhere)->orderBy('amb.`date`');
+        }
+        else {
+            $body = $body->where($strWhere)->orderBy('amb.`created_at`');
+        }
+
+        $result['exam'] = $body->all();
+
+        return $result;
+    }
+
+    public static function getNameMark($mark, $isExam = true) {
+        $name = '';
+
+        $mark = (integer)$mark;
+
+        if($isExam == true) {
+            if ($mark == 5) {
+                $name = 'ОТЛ';
+            } else if ($mark == 4) {
+                $name = 'ХОР';
+            } else if ($mark == 3) {
+                $name = 'УДОВЛ';
+            } else if ($mark == 2) {
+                $name = 'НЕУДОВЛ';
+            } else if ($mark == 1) {
+                $name = 'ОТВРАТ';
+            }
+        } else {
+            if ($mark >= 1) {
+                $name = 'ЗАЧЕТ';
+            } else {
+                $name = 'НЕЗАЧЕТ';
+            }
+        }
+
+
+
+        return $name;
     }
 }

@@ -77,6 +77,10 @@ $this->title = 'Мечты';
 <div class="content">
     <div class="submenu">
         <span class="btn-submenu btn-active">Список</span>
+
+        <?php if($level == 4) { ?>
+            <span class="btn-submenu"><a href="/goal/priority">Зачетка</a></span>
+        <?php } ?>
         <!--<span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>-->
     </div>
 

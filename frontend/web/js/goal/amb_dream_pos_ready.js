@@ -1,6 +1,4 @@
-let nowServer = new Date();
-let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
-nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
+//include Date.js
 
 let divParamDate = document.getElementById('paramDate');
 let divParamDateDone = document.getElementById('paramDateDone');
@@ -11,6 +9,12 @@ let divParamNum = document.getElementById('paramNum');
 let divParamStatus = document.getElementById('paramStatus');
 let paramLevel = document.getElementById('paramLevel').innerText;
 let divParamText = document.getElementById('paramText');
+let divParamResType = document.getElementById('paramResultType');
+let divParamResMark = document.getElementById('paramResultMark');
+let divParamResText = document.getElementById('paramResultText');
+
+let setZachet = document.getElementById('setZachet');
+let valueMark = document.getElementById('valueMark');
 
 let valueTitle = document.getElementById('valueTitle');
 let valueText = document.getElementById('valueText');
@@ -22,6 +26,10 @@ let valueIsInProcess = document.getElementById('isInProcess');
 let valueIsDone = document.getElementById('isDone');
 let valueDateGoal = document.getElementById('valueDateGoal');
 
+let valueIsUsual = document.getElementById('isUsual');
+let valueIsZachet = document.getElementById('isZachet');
+let valueIsExam = document.getElementById('isExam');
+
 let list_level = document.getElementById('list_level');
 
 let btnClearSphere = document.getElementById('ClearSphere');
@@ -30,11 +38,17 @@ let btnCancel = document.getElementById('button-cancel');
 let btnSave = document.getElementById('button-save');
 
 let divCaption = document.getElementById('form-caption');
+let divMarkZachet = document.getElementById('markZachet');
+let divMarkExam = document.getElementById('markExam');
+let divGoalResult = document.getElementById('goalResult');
+let divGoalMark = document.getElementById('goalMark');
+
+let GroupGoalResult = document.getElementById('goalResult');
 
 let thisData = {
     'id' : 0,
     'date' : 0,
-    'dateGoal' : 0,
+    'dateGoal' : 0, //Дата цели (в мечтах тоже есть)
     'id_sphere' : 0,
     'title' : '',
     'text' : '',
@@ -42,25 +56,18 @@ let thisData = {
     'id_level': 0,
     'status': 0,
     'dateDone': 0,
+    'resultType': 0,
+    'resultMark': 0,
+    'resultText': '',
 };
 
 $(document).ready( function() {
 
-    let strDate = convertTimeStampWithTime(divParamDate.innerText);
-    let curDate = new Date(strDate);
-    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
     thisData['date'] = divParamDate.innerText;
+    valueDate.value = getStringDateFromTimeStamp(divParamDate.innerText);
 
-    valueDate.value = curDate.toISOString().substring(0, 16);
-
-    if(Number(paramLevel) === 4) {
-        strDate = convertTimeStampWithTime(paramDateGoal.innerText);
-        curDate = new Date(strDate);
-        curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-        thisData['dateGoal'] = paramDateGoal.innerText;
-
-        valueDateGoal.value = curDate.toISOString().substring(0, 16);
-    }
+    thisData['dateGoal'] = paramDateGoal.innerText;
+    valueDateGoal.value = getStringDateFromTimeStamp(paramDateGoal.innerText);
 
     if(divParamID.innerText) {
         thisData['id'] = Number(divParamID.innerText);
@@ -71,6 +78,9 @@ $(document).ready( function() {
         thisData['id_level'] = Number(paramLevel);
         thisData['status'] = Number(divParamStatus.innerText);
         thisData['dateDone'] = Number(divParamDateDone.innerText);
+        thisData['resultType'] = Number(divParamResType.innerText);
+        thisData['resultMark'] = Number(divParamResMark.innerText);;
+        thisData['resultText'] = divParamResText.innerText;
     }
     else {
         thisData['id'] = 0;
@@ -82,11 +92,15 @@ $(document).ready( function() {
         renewLevelElement();
         thisData['status'] = 0;
         thisData['dateDone'] = 0;
+        thisData['resultType'] = 0;
+        thisData['resultMark'] = 0;
+        thisData['resultText'] = '';
     }
 
     valueText.innerHTML = getNewLinesToBr(divParamText);
 
     renewStatusElement();
+    renewTypeElement();
     renewCaption();
 
     convertNewLinesToBr(valueText);
@@ -96,6 +110,18 @@ $(document).ready( function() {
 });
 
 //Events
+
+setZachet.onclick = function(e) {
+    if(setZachet.checked === false) {
+        thisData['resultMark'] = 0;
+    } else {
+        thisData['resultMark'] = 1;
+    }
+};
+
+valueMark.onchange = function(event){
+    thisData['resultMark'] = valueMark.value;
+};
 
 valueDate.onchange = function(event){
     let curDate = new Date(this.value);
@@ -154,6 +180,19 @@ valueLevel.onchange = function(event){
     if (idLevel === 0) {
         this.value = '';
     }
+
+    if (thisData['id_level'] === 4) {
+        GroupGoalResult.hidden = false;
+
+       let nowTime = NowTimeStamp_Sec();
+       let numDateGoal = Number(thisData['dateGoal']);
+        if (numDateGoal < nowTime) {
+            thisData['dateGoal'] = nowTime + 7*24*60*60;
+            valueDateGoal.value = getStringDateFromTimeStamp(thisData['dateGoal']);
+        }
+    } else {
+        GroupGoalResult.hidden = true;
+    }
 };
 
 valueDateGoal.onchange = function(e) {
@@ -179,12 +218,29 @@ valueIsDone.onclick = function(e) {
     renewDataStatus();
 };
 
+valueIsUsual.onclick = function(e) {
+    renewDataType();
+};
+
+valueIsZachet.onclick = function(e) {
+    renewDataType();
+};
+
+valueIsExam.onclick = function(e) {
+    renewDataType();
+};
+
 btnCancel.onclick = function(e) {
     if(thisData['id_level'] == 1) {
         window.location.href = '/goal/dreams';
     }
     else if (thisData['id_level'] == 4) {
-        window.location.href = '/goal/goals';
+        if(thisData['result_type'] == 0) {
+            window.location.href = '/goal/goals';
+        } else {
+            window.location.href = '/goal/priority';
+        }
+
     }
     else if (thisData['id_level'] == 3) {
         window.location.href = '/goal/intents';
@@ -221,6 +277,28 @@ function renewDataStatus() {
     }
 }
 
+function renewDataType() {
+    if(valueIsUsual.checked === true) {
+        thisData['resultType'] = 0;
+        divMarkZachet.hidden = true;
+        divMarkExam.hidden = true;
+        divGoalMark.hidden = true;
+    }
+    if(valueIsZachet.checked === true) {
+        thisData['resultType'] = 1;
+        divMarkZachet.hidden = false;
+        divMarkExam.hidden = true;
+        divGoalMark.hidden = false;
+    }
+    if(valueIsExam.checked === true) {
+        thisData['resultType'] = 2;
+        divMarkZachet.hidden = true;
+        divMarkExam.hidden = false;
+        divGoalMark.hidden = false;
+    }
+    renewTypeElement();
+}
+
 function runAjax(url, value, typeReq = 'post'){
     floatingCirclesGMain.hidden = false;
 
@@ -239,6 +317,9 @@ function runAjax(url, value, typeReq = 'post'){
 
                 if(thisData['id_level'] == 1) {
                     window.location.href = '/goal/dreams';
+                }
+                else if(thisData['id_level'] == 4 && thisData['result_type'] > 0) {
+                    window.location.href = '/goal/priority';
                 }
                 else if(thisData['id_level'] > 1) {
                     window.location.href = '/goal/dreams?level='+thisData['id_level'];
@@ -271,6 +352,33 @@ function renewStatusElement() {
     }
 }
 
+function renewTypeElement() {
+    if (thisData['resultType'] === 0) {
+        valueIsUsual.checked = true;
+        valueIsZachet.checked = false;
+        valueIsExam.checked = false;
+    }
+    if (thisData['resultType'] === 1) {
+        valueIsUsual.checked = false;
+        valueIsZachet.checked = true;
+        valueIsExam.checked = false;
+
+        if(thisData['resultMark'] > 0) {
+            setZachet.checked = true;
+        } else {
+            setZachet.checked = false;
+        }
+
+    }
+    if (thisData['resultType'] === 2) {
+        valueIsUsual.checked = false;
+        valueIsZachet.checked = false;
+        valueIsExam.checked = true;
+
+        valueMark.value = thisData['resultMark'];
+    }
+}
+
 function renewLevelElement(){
     let children = list_level.childNodes;
     for(child in children){
@@ -278,6 +386,12 @@ function renewLevelElement(){
             valueLevel.value = children[child].innerText;
             break;
         }
+    }
+
+    if (thisData['id_level'] === 4) {
+        GroupGoalResult.hidden = false;
+    } else {
+        GroupGoalResult.hidden = true;
     }
 }
 
@@ -291,23 +405,4 @@ function renewCaption() {
     } else if(thisData['id_level'] == 4) {
         divCaption.innerText = "Цель";
     }
-}
-
-function convertTimeStampWithTime(timestamp) {
-    let condate = new Date(timestamp*1000);
-
-    strDate = [
-        condate.getFullYear(),           // Get day and pad it with zeroes
-        ('0' + (condate.getMonth()+1)).slice(-2),      // Get month and pad it with zeroes
-        ('0' + condate.getDate()).slice(-2)                          // Get full year
-    ].join('-');  // Glue the pieces together
-
-    strDate = strDate + 'T';
-
-    strTime = [
-        ('0' + (condate.getHours())).slice(-2),
-        ('0' + condate.getMinutes()).slice(-2)
-    ].join(':');
-
-    return strDate+strTime;
 }

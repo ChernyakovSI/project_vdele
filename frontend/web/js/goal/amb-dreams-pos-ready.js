@@ -22,8 +22,7 @@ let btnNewDream = document.getElementById('new-reg');
 
 let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
 
-let nowServer = new Date();
-let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
+
 
 let thisData = {
     'dateFrom' : 0,

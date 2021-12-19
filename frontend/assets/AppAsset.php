@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size15.css',
+        'css/size16.css',
         'css/backgrounds.css'
     ];
     public $js = [];
@@ -49,6 +49,7 @@ class AppAsset extends AssetBundle
     {
         if ((\yii::$app->request->url == '/goal/dream') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream/')
             || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream?')){
+            $this->js[] = 'js/dates.js';
             $this->js[] = 'js/goal/amb_dream_pos_ready.js';
             $this->js[] = 'js/texts.js';
         }
@@ -67,6 +68,11 @@ class AppAsset extends AssetBundle
         if ((\yii::$app->request->url == '/goal/note') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/note/')) {
             $this->js[] = 'js/goal/note-pos-ready.js';
             $this->js[] = 'js/texts.js';
+        }
+        if ((\yii::$app->request->url == '/goal/priority')) {
+            $this->js[] = 'js/ajax.js';
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/goal/priority-pos-ready.js';
         }
         if (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/wishes') {
             $this->js[] = 'js/goal/amb-dreams-pos-ready.js';

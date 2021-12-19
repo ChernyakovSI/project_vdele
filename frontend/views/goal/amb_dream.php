@@ -16,6 +16,11 @@ $this->title = 'Мечта';
 <div id="paramLevel" hidden="hidden"><?= ($data->id_level > 0) ? $data->id_level : $level ?></div>
 <div id="paramStatus" hidden="hidden"><?= $data->status ?></div>
 
+<div id="paramResultType" hidden="hidden"><?= $data->result_type ?></div>
+<div id="paramResultMark" hidden="hidden"><?= $data->result_mark ?></div>
+<div id="paramResultText" hidden="hidden"><?= $data->result_text ?></div>
+
+
 
 <div class="window window-border window-caption window-h-35">
     <div class="caption-begin window-m-t--9">
@@ -94,19 +99,70 @@ $this->title = 'Мечта';
             </div>
 
             <div class="clearfix"></div>
-            <div class="half_width">
-                <?php if ($data->id_level === 4 || $level == 4){ ?>
+            <?php if ($data->id_level === 4 || $level == 4){ ?>
+            <div id="goalResult">
+            <?php } else { ?>
+            <div id="goalResult" hidden="hidden">
+            <?php } ?>
+                <div class="half_width">
                     <div id="wrap-DateGoal">
-                <?php } else { ?>
-                    <div id="wrap-DateGoal" hidden="hidden">
-                <?php } ?>
                         <div class="caption-line-half-20">Срок:</div>
                         <div class="message-wrapper-line-half window-border">
                             <input type="datetime-local" class="message-text-line" id="valueDateGoal">
                         </div>
                     </div>
+                </div>
+                <div class="half_width">
+                    <div class="radio-container">
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueZachet" id="isUsual" checked>
+                            <label for="isUsual">Без отметок</label>
+                        </div>
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueZachet" id="isZachet">
+                            <label for="isZachet">На зачет</label>
+                        </div>
+                        <div class="form-item radio-btn nth-3">
+                            <input type="radio" name="valueZachet" id="isExam">
+                            <label for="isExam">На оценку</label>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="clearfix"></div>
+                <?php if ($data->result_type > 0){ ?>
+                <div id="goalMark">
+                <?php } else { ?>
+                <div id="goalMark" hidden="hidden">
+                <?php } ?>
+                    <div class="half_width">
+                        &nbsp;
+                    </div>
+                    <div class="half_width">
+                        <div class="float-right w-116px m-r-78px">
+                            <?php if ($data->result_type == 1){ ?>
+                            <div id="markZachet" class="m-t-10px">
+                            <?php } else { ?>
+                            <div id="markZachet" class="m-t-10px" hidden="hidden">
+                            <?php } ?>
+                                <input type="checkbox" id="setZachet" class="custom-checkbox">
+                                <label for="setZachet" class="interactive-only">Зачтено</label>
+                            </div>
+                            <?php if ($data->result_type == 2){ ?>
+                            <div id="markExam">
+                            <?php } else { ?>
+                            <div id="markExam" hidden="hidden">
+                            <?php } ?>
+                                <div class="caption-line-half-70px">Оценка:</div>
+                                <div class="message-wrapper-line-46px window-border" id="valueExamWrap">
+                                    <input type="number" min="0" max="5" class="message-text-line" id="valueMark" value="<?= $data->result_mark ?>"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div class="clearfix"></div>
             <div class="caption-line-10">Заголовок:</div><div class="message-wrapper-line window-border" id="valueTitleWrap">

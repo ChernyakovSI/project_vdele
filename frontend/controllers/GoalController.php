@@ -21,6 +21,7 @@ use common\models\goal\Day;
 use common\models\fin\Reports;
 use common\models\fin\Account;
 use common\models\goal\Ambition;
+use common\models\goal\Semester;
 
 class GoalController extends Controller
 {
@@ -57,7 +58,9 @@ class GoalController extends Controller
                                         'goals',
                                         'dream',
                                         'dream-save',
-                                        'dreams-refresh'],
+                                        'dreams-refresh',
+                                        'priority',
+                                        'semester-save'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -564,7 +567,7 @@ class GoalController extends Controller
 
         $user_id = Yii::$app->user->identity->getId();
 
-        $startDate =  strtotime("-30 year 00:00");
+        $startDate =  strtotime("-1 month 00:00");
         $finishDate =  strtotime("+1 year 23:59:59");
 
         $status = [0];
@@ -822,6 +825,51 @@ class GoalController extends Controller
 
             return [
                 "data" => $id_dream,
+                "error" => "",
+            ];
+        }
+
+    }
+
+    public function actionPriority()
+    {
+        $getData = Yii::$app->request->get();
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $curDate =  strtotime('now');
+
+        $option['level'] = 4;
+
+        $AllPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('priority', [
+            "AllPriority" => $AllPriority,
+            "curDate" => $curDate,
+            "spheres" => $spheres,
+            "level" => 4,
+        ]);
+    }
+
+    public function actionSemesterSave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_sem = $_POST['id'];
+
+            if((integer)$id_sem == 0) {
+                $sem = Semester::addRecord($_POST, $user_id);
+            }
+            else {
+                $sem = Semester::editRecord($_POST);
+            }
+
+            return [
+                "data" => $sem,
                 "error" => "",
             ];
         }
