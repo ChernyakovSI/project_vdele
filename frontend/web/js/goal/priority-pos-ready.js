@@ -1,4 +1,5 @@
 
+let divParamID = document.getElementById('paramID');
 let divParamDate = document.getElementById('paramDate');
 let divParamDateFinish = document.getElementById('paramDateFinish');
 let divParamName = document.getElementById('paramName');
@@ -31,6 +32,8 @@ $(document).ready( function() {
 
     thisData['name'] = divParamName.innerText;
     valueName.value = divParamName.innerText;
+
+    thisData['id'] = divParamID.innerText;
 
     resize();
 });
@@ -153,4 +156,8 @@ function resizeTable(children, mode = 0) {
 
         }
     }
+}
+
+function render(data) {
+    window.location.href = '/goal/priority';
 }

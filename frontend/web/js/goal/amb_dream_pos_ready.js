@@ -36,6 +36,8 @@ let btnClearSphere = document.getElementById('ClearSphere');
 let btnClearLevel = document.getElementById('ClearLevel');
 let btnCancel = document.getElementById('button-cancel');
 let btnSave = document.getElementById('button-save');
+let btnText = document.getElementById('btnText');
+let btnResult = document.getElementById('btnResult');
 
 let divCaption = document.getElementById('form-caption');
 let divMarkZachet = document.getElementById('markZachet');
@@ -97,11 +99,19 @@ $(document).ready( function() {
         thisData['resultText'] = '';
     }
 
-    valueText.innerHTML = getNewLinesToBr(divParamText);
-
     renewStatusElement();
     renewTypeElement();
     renewCaption();
+
+    valueText.innerHTML = getNewLinesToBr(divParamResText);
+
+    convertNewLinesToBr(valueText);
+    DetectURLs(valueText);
+    generatorURLs();
+
+    thisData['resultText'] = valueText.innerHTML.trim();
+
+    valueText.innerHTML = getNewLinesToBr(divParamText);
 
     convertNewLinesToBr(valueText);
     DetectURLs(valueText);
@@ -110,6 +120,30 @@ $(document).ready( function() {
 });
 
 //Events
+
+btnText.onclick = function(e) {
+    isText = btnText.classList.contains('btn-active');
+
+    if(isText == false) {
+        btnText.classList.add('btn-active');
+        btnResult.classList.remove('btn-active');
+
+        thisData['resultText'] = valueText.innerHTML.trim();
+        valueText.innerHTML = thisData['text'];
+    }
+};
+
+btnResult.onclick = function(e) {
+    isText = btnResult.classList.contains('btn-active');
+
+    if(isText == false) {
+        btnResult.classList.add('btn-active');
+        btnText.classList.remove('btn-active');
+
+        thisData['text'] = valueText.innerHTML.trim();
+        valueText.innerHTML = thisData['resultText'];
+    }
+};
 
 setZachet.onclick = function(e) {
     if(setZachet.checked === false) {
@@ -156,13 +190,6 @@ btnClearSphere.onclick = function(e) {
 valueTitle.onchange = function(event){
     thisData['title'] = this.value.trim();
 };
-
-valueText.onblur = function (event){
-    thisData['text'] = this.innerHTML.trim();
-    convertNewLinesToBr(this);
-    DetectURLs(this);
-    generatorURLs();
-}
 
 valueLevel.onchange = function(event){
     let curLevel = this.value.trim();
@@ -253,8 +280,37 @@ btnCancel.onclick = function(e) {
     }
 };
 
+valueText.onblur = function (event){
+    isText = btnText.classList.contains('btn-active');
+
+    if(isText == true) {
+        thisData['text'] = getBrToNewLines(this);
+        console.log(thisData['text']);
+    } else {
+        thisData['resultText'] = getBrToNewLines(this);
+        console.log(thisData['resultText']);
+    }
+    convertNewLinesToBr(this);
+    DetectURLs(this);
+    generatorURLs();
+}
+
 btnSave.onclick = function(e) {
-    thisData.text = getBrToNewLines(valueText);
+    valueText.innerHTML = getNewLinesToBr_Text(thisData['text']);
+    convertNewLinesToBr(valueText);
+    DetectURLs(valueText);
+    generatorURLs();
+    thisData['text'] = getBrToNewLines(valueText);
+
+    valueText.innerHTML = getNewLinesToBr_Text(thisData['resultText']);
+    convertNewLinesToBr(valueText);
+    DetectURLs(valueText);
+    generatorURLs();
+    thisData['resultText'] = getBrToNewLines(valueText);
+
+    console.log(thisData.text);
+    console.log(thisData.resultText);
+
     runAjax('/goal/dream-save', thisData);
 };
 
@@ -313,12 +369,14 @@ function runAjax(url, value, typeReq = 'post'){
         } else {
             if (data.error !== '' || data.error !== null || data.error !== undefined){
                 //showError(data);
+                //console.log(thisData['id_level']);
                 //console.log(data);
+                //return;
 
                 if(thisData['id_level'] == 1) {
                     window.location.href = '/goal/dreams';
                 }
-                else if(thisData['id_level'] == 4 && thisData['result_type'] > 0) {
+                else if(thisData['id_level'] == 4 && thisData['resultType'] > 0) {
                     window.location.href = '/goal/priority';
                 }
                 else if(thisData['id_level'] > 1) {

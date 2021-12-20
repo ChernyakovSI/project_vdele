@@ -170,6 +170,17 @@ $this->title = 'Мечта';
             </div>
 
             <div class="clearfix"></div>
+            <?php if ($data->id_level === 4 || $level == 4){ ?>
+            <div class="submenu m-t-10px">
+            <?php } else { ?>
+            <div class="submenu m-t-10px" hidden="hidden">
+            <?php } ?>
+                <span class="btn-submenu cur-pointer btn-active" id="btnText">Описание</span>
+                <span class="btn-submenu cur-pointer" id="btnResult">Результаты</span>
+                <!--<span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>-->
+            </div>
+
+            <div class="clearfix"></div>
             <div class="new-message-wrapper width-full multistring-min-25 window-border m-t-10px back-cells" id="valueTextWrap">
                 <div contentEditable="true" class="message-text-multistring resize_vertical_only multistring-min-25 ahref" id="valueText"><?= $data->text ?></div>
             </div>

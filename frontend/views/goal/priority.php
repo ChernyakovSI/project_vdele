@@ -41,6 +41,17 @@ $this->title = 'Зачетка';
         echo '';
     } ?>
 </div>
+<div id="paramID" hidden="hidden"><?php
+    if (count($AllPriority) > 0) {
+        if(count($AllPriority['sem']) > 0) {
+            echo $AllPriority['sem']['id'];
+        } else {
+            echo 0;
+        }
+    } else {
+        echo 0;
+    } ?>
+</div>
 
 <div class="submenu">
     <?php
@@ -138,12 +149,12 @@ $this->title = 'Зачетка';
                                 <div class="message-text-line table-caption"><?= $colNameDate ?></div>
                             </div>
                         </div>
-                        <div class="column-48 border-1px-bottom colNameDreams">
+                        <div class="column-46 border-1px-bottom colNameDreams">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $name ?></div>
                             </div>
                         </div>
-                        <div class="column-13 border-1px-bottom colNameMark">
+                        <div class="column-15 border-1px-bottom colNameMark">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption">Отметка</div>
                             </div>
@@ -183,12 +194,12 @@ $this->title = 'Зачетка';
                                     <div class="message-text-line text-center"><?= date("d.m.Y", $reg['date']) ?></div>
                                 </div>
                             </div>
-                            <div class="column-48 border-1px-bl col-back-nul colNameDream">
+                            <div class="column-46 border-1px-bl col-back-nul colNameDream">
                                 <div class="message-wrapper-title">
                                     <div class="message-text-line text-center"><?= $reg['title'] ?></div>
                                 </div>
                             </div>
-                            <div class="column-13 border-1px-bl col-back-nul colNameMark">
+                            <div class="column-15 border-1px-bl col-back-nul colNameMark">
                                 <div class="message-wrapper-title">
                                     <div class="message-text-line text-center"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark']):'' ?></div>
                                 </div>
@@ -222,12 +233,12 @@ $this->title = 'Зачетка';
                                 <div class="message-text-line table-caption"><?= $colNameDate ?></div>
                             </div>
                         </div>
-                        <div class="column-48 border-1px-bottom colNameDreams">
+                        <div class="column-46 border-1px-bottom colNameDreams">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $name ?></div>
                             </div>
                         </div>
-                        <div class="column-13 border-1px-bottom colNameMark">
+                        <div class="column-15 border-1px-bottom colNameMark">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption">Отметка</div>
                             </div>
@@ -269,12 +280,12 @@ $this->title = 'Зачетка';
                                             <div class="message-text-line text-center"><?= date("d.m.Y", $reg['date']) ?></div>
                                         </div>
                                     </div>
-                                    <div class="column-48 border-1px-bl col-back-nul colNameDream">
+                                    <div class="column-46 border-1px-bl col-back-nul colNameDream">
                                         <div class="message-wrapper-title">
                                             <div class="message-text-line text-center"><?= $reg['title'] ?></div>
                                         </div>
                                     </div>
-                                    <div class="column-13 border-1px-bl col-back-nul colNameMark">
+                                    <div class="column-15 border-1px-bl col-back-nul colNameMark">
                                         <div class="message-wrapper-title">
                                             <div class="message-text-line text-center"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark'], false):'' ?></div>
                                         </div>

@@ -57,7 +57,13 @@ function getTimeStampFromElement(element) {
 }
 
 function convertTimeStampWithTime(timestamp) {
-    let condate = new Date(timestamp*1000);
+    let condate;
+
+    if (timestamp == '') {
+        condate = new Date();
+    } else {
+        condate = new Date(timestamp*1000);
+    }
 
     strDate = [
         condate.getFullYear(),           // Get day and pad it with zeroes

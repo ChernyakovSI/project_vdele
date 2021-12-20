@@ -69,6 +69,17 @@ function getBrToNewLines(element) {
     return textHTML;
 }
 
+function getBrToNewLines_Text(textHTML) {
+    //Конвертируем переносы создаваемые автоматически br в div
+    let urlRegex = /<br>/g;
+
+    textHTML = deleteLastBr(textHTML);
+
+    textHTML = textHTML.replace(urlRegex, '\\r\\n');
+
+    return textHTML;
+}
+
 function getNewLinesToBr(element) {
     //Конвертируем переносы создаваемые автоматически div в br
     let urlRegex = /(?:\r\n|\r|\n)/g;
@@ -81,12 +92,21 @@ function getNewLinesToBr(element) {
     return textHTML;
 }
 
+function getNewLinesToBr_Text(textHTML) {
+    //Конвертируем переносы создаваемые автоматически div в br
+    let urlRegex = /(?:\r\n|\r|\n)/g;
+
+    textHTML = textHTML.replace(urlRegex, '<br>');
+
+    textHTML = deleteLastBr(textHTML);
+
+    return textHTML;
+}
+
 function deleteLastBr(textHTML) {
     //Удалить послдений br
     while (textHTML.slice(-4) == '<br>') {
-        console.log(textHTML);
         textHTML = textHTML.substring(0, textHTML.length - 4);
-        console.log(textHTML);
     }
 
     return textHTML;
