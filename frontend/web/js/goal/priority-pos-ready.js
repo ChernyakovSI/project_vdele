@@ -88,10 +88,10 @@ divArrowBack.onclick = function(event){
 
 divArrowForward.onclick = function(event){
     if(divArrowForwardH.classList.contains('ia-background')) {
-        thisData['dateFinish'] = Number(thisData['dateFinish']) + 24 * 60 * 60;
+        thisData['date'] = Number(thisData['dateFinish']) + 24 * 60 * 60;
         thisData['next'] = 1;
 
-        window.location.href = '/goal/priority?date=' + thisData['dateFinish'] + '&next=' + thisData['next'];
+        window.location.href = '/goal/priority?date=' + thisData['date'] + '&next=' + thisData['next'];
     }
 };
 
