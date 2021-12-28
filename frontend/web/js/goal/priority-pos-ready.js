@@ -3,6 +3,15 @@ let divParamID = document.getElementById('paramID');
 let divParamDate = document.getElementById('paramDate');
 let divParamDateFinish = document.getElementById('paramDateFinish');
 let divParamName = document.getElementById('paramName');
+let divParamStart = document.getElementById('paramStart');
+let divParamFinish = document.getElementById('paramFinish');
+
+let divArrowBack = document.getElementById('arrow-back');
+let divArrowForward = document.getElementById('arrow-forward');
+let divArrowBackH = document.getElementById('arrow-back-high');
+let divArrowForwardH = document.getElementById('arrow-forward-high');
+let divSymForward = document.getElementById('symForward');
+let divSymBack = document.getElementById('symBack');
 
 let valuePeriodFrom = document.getElementById('valuePeriodFrom');
 let valuePeriodTo = document.getElementById('valuePeriodTo');
@@ -20,15 +29,22 @@ let thisData = {
     'id' : 0,
     'date' : 0,
     'dateFinish' : 0,
-    'name' : ''
+    'name' : '',
+    'next': 0
 };
 
 $(document).ready( function() {
     thisData['date'] = divParamDate.innerText;
     valuePeriodFrom.value = getStringDateFromTimeStamp(divParamDate.innerText, false);
+    if( thisData['date'] == 0){
+        thisData['date'] = getTimeStampFromElement(valuePeriodFrom);
+    }
 
     thisData['dateFinish'] = divParamDateFinish.innerText;
     valuePeriodTo.value = getStringDateFromTimeStamp(divParamDateFinish.innerText, false);
+    if( thisData['dateFinish'] == 0){
+        thisData['dateFinish'] = getTimeStampFromElement(valuePeriodTo);
+    }
 
     thisData['name'] = divParamName.innerText;
     valueName.value = divParamName.innerText;
@@ -36,6 +52,8 @@ $(document).ready( function() {
     thisData['id'] = divParamID.innerText;
 
     resize();
+
+    renewEditable();
 });
 
 //Events -------------------------------------------------------------------------------------
@@ -48,20 +66,66 @@ valueName.onchange = function(event){
 valuePeriodFrom.onchange = function(event){
     thisData['date'] = getTimeStampFromElement(this);
     btnSave.hidden = false;
+
+    HideAllError();
 };
 
 valuePeriodTo.onchange = function(event){
     thisData['dateFinish'] = getTimeStampFromElement(this);
     btnSave.hidden = false;
+
+    HideAllError();
+};
+
+divArrowBack.onclick = function(event){
+    if(divArrowBackH.classList.contains('ia-background')) {
+        thisData['date'] = Number(thisData['date'])-24*60*60;
+        thisData['next'] = 0;
+
+        window.location.href = '/goal/priority?date='+thisData['date']+'&next='+thisData['next'];
+    }
+};
+
+divArrowForward.onclick = function(event){
+    if(divArrowForwardH.classList.contains('ia-background')) {
+        thisData['dateFinish'] = Number(thisData['dateFinish']) + 24 * 60 * 60;
+        thisData['next'] = 1;
+
+        window.location.href = '/goal/priority?date=' + thisData['dateFinish'] + '&next=' + thisData['next'];
+    }
 };
 
 btnSave.onclick = function(event){
     btnSave.hidden = true;
 
-    runAjax('/goal/semester-save', thisData, floatingCirclesGMain);
+    let eData = isCorrect();
+
+    if (eData.error == false) {
+        runAjax('/goal/semester-save', thisData, floatingCirclesGMain);
+    } else {
+        showError(eData);
+    }
+
 };
 
 //HELPERS ------------------------------------------------------------------------------------
+
+function renewEditable() {
+    if(thisData['date'] <= Number(divParamStart.innerText)) {
+        divArrowBackH.classList.remove('ia-background');
+        divArrowBackH.classList.add('ia-background-off');
+
+        divSymBack.classList.remove('arrow');
+    }
+
+    if(thisData['dateFinish'] > Number(divParamFinish.innerText)) {
+        divArrowForwardH.classList.remove('ia-background');
+        divArrowForwardH.classList.add('ia-background-off');
+
+        divSymForward.classList.remove('arrow');
+    }
+
+}
 
 function resize(mode = 0) {
     let children = tblExams.childNodes;
@@ -160,4 +224,33 @@ function resizeTable(children, mode = 0) {
 
 function render(data) {
     window.location.href = '/goal/priority';
+}
+
+function isCorrect() {
+    let eData = [];
+    let eMessages = [];
+    let eElements = [];
+
+    if(thisData['date'] <= 0) {
+        eMessages.push('Необходимо заполнить начало периода');
+        eElements.push('PeriodFrom');
+    }
+    if(thisData['dateFinish'] <= 0) {
+        eMessages.push('Необходимо заполнить окончание периода');
+        eElements.push('PeriodTo');
+    }
+    if(thisData['date'] > thisData['dateFinish']) {
+        eMessages.push('Окончание периода должно быть больше начала периода');
+        eElements.push('PeriodTo');
+    }
+
+    eData['message'] = eMessages;
+    eData['element'] = eElements;
+    if(eMessages.length > 0) {
+        eData['error'] = true;
+    } else {
+        eData['error'] = false;
+    }
+
+    return eData;
 }

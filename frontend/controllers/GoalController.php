@@ -833,15 +833,24 @@ class GoalController extends Controller
 
     public function actionPriority()
     {
-        $getData = Yii::$app->request->get();
-
         $user_id = Yii::$app->user->identity->getId();
 
-        $curDate =  strtotime('now');
+        $data = Yii::$app->request->get();
 
-        $option['level'] = 4;
+        if(isset($data['next'])){
+            $curDate =  $data['date'];
+            $next =  $data['next'];
+            $option['level'] = 4;
 
-        $AllPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+            $AllPriority = Semester::getNearestPriorityForDayAndUser($user_id, $curDate, $next, $option);
+        } else {
+
+            $curDate =  strtotime('now');
+            $option['level'] = 4;
+
+            $AllPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+        }
+
 
         $spheres = Sphere::getAllSpheresByUser($user_id);
 

@@ -245,6 +245,7 @@ class Ambition extends ActiveRecord
         $result['zachet'] = [];
         $result['exam'] = [];
         $result['sem'] = [];
+        $result['option'] = Semester::getBordersSemestersOfUser($id_user);
 
         $query = new Query();
         $body = $query->Select(['sem.`id` as id',

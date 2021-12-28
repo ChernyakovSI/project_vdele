@@ -52,6 +52,28 @@ $this->title = 'Зачетка';
         echo 0;
     } ?>
 </div>
+<div id="paramStart" hidden="hidden"><?php
+    if (count($AllPriority) > 0) {
+        if(count($AllPriority['option']) > 0) {
+            echo $AllPriority['option']['start'];
+        } else {
+            echo 0;
+        }
+    } else {
+        echo 0;
+    } ?>
+</div>
+<div id="paramFinish" hidden="hidden"><?php
+    if (count($AllPriority) > 0) {
+        if(count($AllPriority['option']) > 0) {
+            echo $AllPriority['option']['finish'];
+        } else {
+            echo 0;
+        }
+    } else {
+        echo 0;
+    } ?>
+</div>
 
 <div class="submenu">
     <?php
@@ -98,7 +120,7 @@ $this->title = 'Зачетка';
             <div class="column-5" id="arrow-back">
                 <div class="like-table h-70px w-100 ia-background" id="arrow-back-high">
                     <div class="like-cell text-center">
-                        <i class="arrow arrow-left"></i>
+                        <i class="arrow arrow-left" id="symBack"></i>
                     </div>
                 </div>
             </div>
@@ -110,18 +132,18 @@ $this->title = 'Зачетка';
             </div>
             <div class="div-w-30">
                 <div class="message-caption-line-2symbols">c:</div>
-                <div class="message-wrapper-line-date window-border">
+                <div class="message-wrapper-line-date window-border" id="valuePeriodFromWrap">
                     <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
                 </div>
                 <div class="message-caption-line-2symbols">по:</div>
-                <div class="message-wrapper-line-date window-border">
+                <div class="message-wrapper-line-date window-border" id="valuePeriodToWrap">
                     <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
                 </div>
             </div>
             <div class="column-5" id="arrow-forward">
                 <div class="like-table h-70px w-100 ia-background" id="arrow-forward-high">
                     <div class="like-cell text-center">
-                        <i class="arrow arrow-right"></i>
+                        <i class="arrow arrow-right" id="symForward"></i>
                     </div>
                 </div>
             </div>
@@ -132,6 +154,8 @@ $this->title = 'Зачетка';
             <div class="window-button-in-panel window-border" id="new-reg">Сохранить</div>
             <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
         </div>
+        <div class="clearfix"></div>
+        <div class="red-comment" id="red-comment"></div>
 
         <div class="halfwidth-wrapper m-t-10px">
             <div class="halfwidth m-r-10px">

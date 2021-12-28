@@ -14,9 +14,15 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
 
         } else {
             if (data.error !== '' || data.error !== null || data.error !== undefined){
-                //showError(data);
+
                 //console.log(data);
-                render(data);
+                if(data.data['error'] !== null) {
+                    showError(data.data);
+                } else {
+                    //showError(data);
+                    //console.log(data);
+                    render(data);
+                }
             }
         }
 

@@ -69,9 +69,10 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/goal/note-pos-ready.js';
             $this->js[] = 'js/texts.js';
         }
-        if ((\yii::$app->request->url == '/goal/priority')) {
+        if ((\yii::$app->request->url == '/goal/priority') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/priority')) {
             $this->js[] = 'js/ajax.js';
             $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/errors.js';
             $this->js[] = 'js/goal/priority-pos-ready.js';
         }
         if (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/wishes') {
