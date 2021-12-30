@@ -51,6 +51,10 @@ $(document).ready( function() {
 
     thisData['id'] = divParamID.innerText;
 
+    if(divParamID.innerText == ''){
+        btnSave.hidden = false;
+    }
+
     resize();
 
     renewEditable();
@@ -223,7 +227,8 @@ function resizeTable(children, mode = 0) {
 }
 
 function render(data) {
-    window.location.href = '/goal/priority';
+    //window.location.href = '/goal/priority';
+    window.location.href = '/goal/priority?date=' + thisData['dateFinish'] + '&next=1';
 }
 
 function isCorrect() {

@@ -247,6 +247,14 @@ class Ambition extends ActiveRecord
         $result['sem'] = [];
         $result['option'] = Semester::getBordersSemestersOfUser($id_user);
 
+        if($result['option']['finish'] > time()) {
+            $result['sem']['date'] = $result['option']['finish']+24*60*60;
+            $result['sem']['dateFinish'] = $result['option']['finish']+24*60*60;
+        } else {
+            $result['sem']['date'] = time();
+            $result['sem']['dateFinish'] = time();
+        }
+
         $query = new Query();
         $body = $query->Select(['sem.`id` as id',
             'sem.`created_at` as created_at',

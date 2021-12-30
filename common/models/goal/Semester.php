@@ -127,6 +127,15 @@ class Semester extends ActiveRecord
         $result['sem'] = [];
         $result['option'] = SELF::getBordersSemestersOfUser($id_user);
 
+        if($result['option']['finish'] > time()) {
+            $result['sem']['date'] = $result['option']['finish']+24*60*60;
+            $result['sem']['dateFinish'] = $result['option']['finish']+24*60*60;
+        } else {
+            $result['sem']['date'] = time();
+            $result['sem']['dateFinish'] = time();
+        }
+
+
         $query = new Query();
         if($next == 1) {
             $body = $query->Select([
