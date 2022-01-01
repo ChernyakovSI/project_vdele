@@ -254,6 +254,8 @@ class Ambition extends ActiveRecord
             $result['sem']['date'] = time();
             $result['sem']['dateFinish'] = time();
         }
+        $result['sem']['name'] = '';
+        $result['sem']['id'] = 0;
 
         $query = new Query();
         $body = $query->Select(['sem.`id` as id',
