@@ -9,13 +9,13 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
         url : url,
         data : value
     }).done(function(data) {
-        if (data.error === null || data.error === undefined) {
-            //console.log(data);
+        if (data.error === null || data.error === undefined || data.error === '') {
+
+            render(data);
 
         } else {
             if (data.error !== '' || data.error !== null || data.error !== undefined){
 
-                //console.log(data);
                 if(data.data['error'] !== null) {
                     showError(data.data);
                 } else {

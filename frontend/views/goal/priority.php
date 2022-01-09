@@ -22,7 +22,7 @@ $this->title = 'Зачетка';
 <div id="paramDateFinish" hidden="hidden"><?php
     if (count($AllPriority) > 0) {
         if(count($AllPriority['sem']) > 0) {
-            echo $AllPriority['sem']['dateFinish'];
+            echo strtotime("tomorrow", $AllPriority['sem']['dateFinish']) - 1;
         } else {
             echo '';
         }
@@ -66,7 +66,7 @@ $this->title = 'Зачетка';
 <div id="paramFinish" hidden="hidden"><?php
     if (count($AllPriority) > 0) {
         if(count($AllPriority['option']) > 0) {
-            echo $AllPriority['option']['finish'];
+            echo strtotime("tomorrow", $AllPriority['option']['finish']) - 1;
         } else {
             echo 0;
         }
@@ -331,7 +331,10 @@ $this->title = 'Зачетка';
 
 
         <div class="clearfix"></div>
-
+        <div class="window-button-panel" id="btnDelete" hidden="hidden">
+            <div class="window-button-in-panel window-border" id="del-reg">Удалить</div>
+            <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
+        </div>
 
     </div>
 </div>

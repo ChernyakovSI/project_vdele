@@ -21,6 +21,7 @@ let tblExams = document.getElementById('list-dreams1');
 let tblZachet = document.getElementById('list-dreams2');
 
 let btnSave = document.getElementById('btnSave');
+let btnDelete = document.getElementById('btnDelete');
 
 let floatingCirclesGMain = document.getElementById('floatingCirclesGMain');
 
@@ -51,8 +52,11 @@ $(document).ready( function() {
 
     thisData['id'] = divParamID.innerText;
 
-    if(divParamID.innerText == ''){
+    if(divParamID.innerText == '' || divParamID.innerText == '0'){
         btnSave.hidden = false;
+        btnDelete.hidden = true;
+    } else {
+        btnDelete.hidden = false;
     }
 
     resize();
@@ -112,17 +116,30 @@ btnSave.onclick = function(event){
 
 };
 
+btnDelete.onclick = function(event){
+    let ans = confirm('Удалить страницу за текущий период?');
+
+    if(ans === true) {
+        btnDelete.hidden = true;
+
+        thisData['dateFinish'] = NowTimeStamp_Sec();
+
+        runAjax('/goal/semester-del', thisData, floatingCirclesGMain);
+    }
+
+};
+
 //HELPERS ------------------------------------------------------------------------------------
 
 function renewEditable() {
-    if(thisData['date'] <= Number(divParamStart.innerText)) {
+    if(Number(thisData['date']) <= Number(divParamStart.innerText)) {
         divArrowBackH.classList.remove('ia-background');
         divArrowBackH.classList.add('ia-background-off');
 
         divSymBack.classList.remove('arrow');
     }
 
-    if(thisData['dateFinish'] > Number(divParamFinish.innerText)) {
+    if(Number(thisData['dateFinish']) > Number(divParamFinish.innerText)) {
         divArrowForwardH.classList.remove('ia-background');
         divArrowForwardH.classList.add('ia-background-off');
 
@@ -227,7 +244,6 @@ function resizeTable(children, mode = 0) {
 }
 
 function render(data) {
-    //window.location.href = '/goal/priority';
     window.location.href = '/goal/priority?date=' + thisData['dateFinish'] + '&next=1';
 }
 

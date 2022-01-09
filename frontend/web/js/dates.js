@@ -51,6 +51,14 @@ function getStringDateFromTimeStamp(timeStamp, withTime = true) {
     return result;
 }
 
+function getDateFromTimeStamp(timeStamp) {
+    let strDate = convertTimeStampWithTime(timeStamp);
+    let curDate = new Date(strDate);
+    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+
+    return curDate;
+}
+
 function getTimeStampFromElement(element) {
     let curDate = new Date(element.value);
     return String(curDate.getTime()).substr(0, 10);
@@ -79,4 +87,12 @@ function convertTimeStampWithTime(timestamp) {
     ].join(':');
 
     return strDate+strTime;
+}
+
+function endDay_timestamp(timestamp) {
+    let curDate = getDateFromTimeStamp(timeStamp);
+    curDate = endDay (date);
+    let endTimeStamp = Math.round(curDate.getTime()/1000);
+
+    return endTimeStamp;
 }

@@ -60,7 +60,8 @@ class GoalController extends Controller
                                         'dream-save',
                                         'dreams-refresh',
                                         'priority',
-                                        'semester-save'],
+                                        'semester-save',
+                                        'semester-del'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -882,7 +883,28 @@ class GoalController extends Controller
                 "error" => "",
             ];
         }
+    }
 
+    public function actionSemesterDel()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_sem = $_POST['id'];
+
+            if((integer)$id_sem == 0) {
+                $error = 'Не указан id';
+            }
+            else {
+                $sem = Semester::deleteRecord($id_sem);
+            }
+
+            return [
+                "data" => $sem,
+                "error" => $error,
+            ];
+        }
     }
 }
 

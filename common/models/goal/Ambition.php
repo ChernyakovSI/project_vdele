@@ -249,10 +249,10 @@ class Ambition extends ActiveRecord
 
         if($result['option']['finish'] > time()) {
             $result['sem']['date'] = $result['option']['finish']+24*60*60;
-            $result['sem']['dateFinish'] = $result['option']['finish']+24*60*60;
+            $result['sem']['dateFinish'] = strtotime("tomorrow", $result['option']['finish']+24*60*60) - 1;
         } else {
             $result['sem']['date'] = time();
-            $result['sem']['dateFinish'] = time();
+            $result['sem']['dateFinish'] = strtotime("tomorrow", time()) - 1;
         }
         $result['sem']['name'] = '';
         $result['sem']['id'] = 0;
@@ -274,7 +274,7 @@ class Ambition extends ActiveRecord
         if($body->count() > 0) {
             foreach ($body->each() as $rec) {
                 $startDate = $rec['date'];
-                $finishDate = $rec['dateFinish'];
+                $finishDate = strtotime("tomorrow", $rec['dateFinish']) - 1;
 
                 $sem['date'] = $startDate;
                 $sem['dateFinish'] = $finishDate;

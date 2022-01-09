@@ -117,6 +117,10 @@ $(document).ready( function() {
     DetectURLs(valueText);
     generatorURLs();
 
+    if(divParamResText.innerText !== '') {
+        btnResult.click();
+    }
+
 });
 
 //Events

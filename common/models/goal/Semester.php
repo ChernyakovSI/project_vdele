@@ -77,6 +77,16 @@ class Semester extends ActiveRecord
         return $rec;
     }
 
+    public static function deleteRecord($id) {
+        $rec = self::getSemesterById((integer)$id);
+
+        $rec->updated_at = time();
+        $rec->is_deleted = 1;
+        $rec->save();
+
+        return $rec;
+    }
+
     public static function isCorrect($rec, $id_user) {
         $eData = [];
 
@@ -129,10 +139,10 @@ class Semester extends ActiveRecord
 
         if($result['option']['finish'] > time()) {
             $result['sem']['date'] = $result['option']['finish']+24*60*60;
-            $result['sem']['dateFinish'] = $result['option']['finish']+24*60*60;
+            $result['sem']['dateFinish'] = strtotime("tomorrow", $result['option']['finish']+24*60*60) - 1;
         } else {
             $result['sem']['date'] = time();
-            $result['sem']['dateFinish'] = time();
+            $result['sem']['dateFinish'] = strtotime("tomorrow", time()) - 1;
         }
         $result['sem']['name'] = '';
         $result['sem']['id'] = 0;
@@ -178,7 +188,7 @@ class Semester extends ActiveRecord
                 if($bodySem->count() > 0) {
                     foreach ($bodySem->each() as $recSem) {
                         $startDate = $recSem['date'];
-                        $finishDate = $recSem['dateFinish'];
+                        $finishDate = strtotime("tomorrow", $recSem['dateFinish']) - 1;
 
                         $sem['date'] = $startDate;
                         $sem['dateFinish'] = $finishDate;
