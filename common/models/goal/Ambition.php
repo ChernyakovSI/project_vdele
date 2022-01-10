@@ -396,9 +396,29 @@ class Ambition extends ActiveRecord
                 $name = 'НЕЗАЧЕТ';
             }
         }
-
-
-
         return $name;
     }
+
+    public static function getClassMark($mark, $isExam = true) {
+        $name = '';
+
+        $mark = (integer)$mark;
+
+        if($isExam == true) {
+            if ($mark == 5 || $mark == 4 || $mark == 3) {
+                $name = 'text-color-green';
+            } else {
+                $name = 'text-color-red';
+            }
+        } else {
+            if ($mark >= 1) {
+                $name = 'text-color-green';
+            } else {
+                $name = 'text-color-red';
+            }
+        }
+        return $name.' text-bold';
+    }
+
+
 }

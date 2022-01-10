@@ -225,7 +225,7 @@ $this->title = 'Зачетка';
                             </div>
                             <div class="column-15 border-1px-bl col-back-nul colNameMark">
                                 <div class="message-wrapper-title">
-                                    <div class="message-text-line text-center"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark']):'' ?></div>
+                                    <div class="message-text-line text-center <?= ($reg['status'] == 1)?Ambition::getClassMark($reg['result_mark'], true):'' ?>"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark']):'' ?></div>
                                 </div>
                             </div>
                             <div class="column-16 border-1px-rbl col-back-nul colNameDateDone">
@@ -311,7 +311,7 @@ $this->title = 'Зачетка';
                                     </div>
                                     <div class="column-15 border-1px-bl col-back-nul colNameMark">
                                         <div class="message-wrapper-title">
-                                            <div class="message-text-line text-center"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark'], false):'' ?></div>
+                                            <div class="message-text-line text-center <?= ($reg['status'] == 1)?Ambition::getClassMark($reg['result_mark'], false):'' ?>"><?= ($reg['status'] == 1)?Ambition::getNameMark($reg['result_mark'], false):'' ?></div>
                                         </div>
                                     </div>
                                     <div class="column-16 border-1px-rbl col-back-nul colNameDateDone">
@@ -331,7 +331,7 @@ $this->title = 'Зачетка';
 
 
         <div class="clearfix"></div>
-        <div class="window-button-panel" id="btnDelete" hidden="hidden">
+        <div class="window-button-panel m-t-10px" id="btnDelete" hidden="hidden">
             <div class="window-button-in-panel window-border" id="del-reg">Удалить</div>
             <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
         </div>
