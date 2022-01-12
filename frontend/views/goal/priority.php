@@ -110,6 +110,7 @@ $this->title = 'Зачетка';
     <div class="submenu">
         <span class="btn-submenu"><a href="/goal/goals">Список</a></span>
         <span class="btn-submenu btn-active">Зачетка</span>
+        <span class="btn-submenu"><a href="/goal/results">Итоги</a></span>
         <!--<span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>-->
     </div>
 

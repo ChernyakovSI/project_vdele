@@ -420,5 +420,37 @@ class Ambition extends ActiveRecord
         return $name.' text-bold';
     }
 
+    public static function getResultsForUser($id_user, $PeriodType = 0, $option = []) {
+        $result = [];
+
+        $query = new Query();
+        $body = $query->Select(['count(amb.`id`) as total',
+            'IFNULL(count(ambD.`id`), 0) as done',
+            'IFNULL(count(ambD.`id`)*100/count(amb.`id`), 0) as doneProcent',
+            'IFNULL(count(ambZAll.`id`), 0) as totalZ',
+            'IFNULL(count(ambZ.`id`), 0) as doneZ',
+            'IFNULL(count(ambZ.`id`)*100/count(ambZAll.`id`), 0) as doneZProcent',
+            'amb.`id_sphere` as id_sphere',
+            'IFNULL(Sphere.`name`, "") as sphere',
+        ])
+            ->from(self::tableName().' as amb')
+            ->join('LEFT JOIN', Sphere::tableName().' as Sphere', 'Sphere.`id` = amb.`id_sphere`')
+            ->join('LEFT JOIN', self::tableName().' as ambD', 'amb.`id` = ambD.`id` AND ((ambD.`result_type` = 0 AND ambD.`status` = 1) OR (ambD.`result_type` = 1 AND ambD.`status` = 1 AND ambD.`result_mark` = 1) OR (ambD.`result_type` = 2 AND ambD.`status` = 1 AND ambD.`result_mark` > 2))')
+            ->join('LEFT JOIN', self::tableName().' as ambZ', 'amb.`id` = ambZ.`id` AND ((ambZ.`result_type` = 1 AND ambZ.`status` = 1 AND ambZ.`result_mark` = 1) OR (ambZ.`result_type` = 2 AND ambZ.`status` = 1 AND ambZ.`result_mark` > 2))')
+            ->join('LEFT JOIN', self::tableName().' as ambZAll', 'amb.`id` = ambZAll.`id` AND (ambZAll.`result_type` = 1 OR ambZAll.`result_type` = 2)');
+
+        $strWhere = 'amb.`id_user`= '.(integer)$id_user;
+        //$strWhere = $strWhere.' AND (amb.`date` >= '.(integer)$startDate.' AND amb.`date` <= '.(integer)$finishDate.')';
+        $strWhere = $strWhere.' AND amb.`is_deleted` = 0 ';
+        $strWhere = $strWhere.' AND amb.`status` IN(0, 1)';
+        $strWhere = $strWhere.' AND amb.`id_level` = 4';
+
+        $body = $body->where($strWhere)->groupBy('id_sphere, sphere');
+
+        $result = $body->all();
+
+        return $result;
+    }
+
 
 }

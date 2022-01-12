@@ -109,6 +109,11 @@
     width: 7%;
 }
 
+.column-8 {
+    float: left;
+    width: 8%;
+}
+
 .column-9 {
     float: left;
     width: 9%;
@@ -154,6 +159,11 @@
     width: 25%;
 }
 
+.column-27 {
+    float: left;
+    width: 27%;
+}
+
 .column-33 {
     float: left;
     width: 33%;
@@ -162,6 +172,11 @@
 .column-35 {
     float: left;
     width: 35%;
+}
+
+.column-39 {
+    float: left;
+    width: 39%;
 }
 
 .column-40 {
@@ -192,6 +207,11 @@
 .column-50 {
     float: left;
     width: 50%;
+}
+
+.column-56 {
+    float: left;
+    width: 56%;
 }
 
 .column-65 {

@@ -61,7 +61,8 @@ class GoalController extends Controller
                                         'dreams-refresh',
                                         'priority',
                                         'semester-save',
-                                        'semester-del'],
+                                        'semester-del',
+                                        'results'],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -906,6 +907,26 @@ class GoalController extends Controller
             ];
         }
     }
+
+    public function actionResults()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $data = Yii::$app->request->get();
+
+        $PeriodType = 0; // 0 - все
+
+        $AllPriority = Ambition::getResultsForUser($user_id, $PeriodType);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('results', [
+            "AllPriority" => $AllPriority,
+            "PeriodType" => $PeriodType,
+            "spheres" => $spheres,
+        ]);
+    }
+
 }
 
 //-

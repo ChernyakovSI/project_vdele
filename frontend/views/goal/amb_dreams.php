@@ -80,6 +80,7 @@ $this->title = 'Мечты';
 
         <?php if($level == 4) { ?>
             <span class="btn-submenu"><a href="/goal/priority">Зачетка</a></span>
+            <span class="btn-submenu"><a href="/goal/results">Итоги</a></span>
         <?php } ?>
         <!--<span class="btn-submenu"><a href="/goal/dreams-foto">Доска</a></span>-->
     </div>
