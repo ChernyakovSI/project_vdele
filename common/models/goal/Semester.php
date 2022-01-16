@@ -320,4 +320,22 @@ class Semester extends ActiveRecord
 
         return $result;
     }
+
+    public static function getPrioritiesForUser($id_user) {
+
+        $query = new Query();
+        $bodySem = $query->Select(['sem.`id` as id',
+            'sem.`created_at` as created_at',
+            'sem.`date` as date',
+            'sem.`name` as name',
+            'sem.`dateFinish` as dateFinish',
+        ])
+            ->from('semester as sem');
+
+        $strWhere = 'sem.`id_user`= '.(integer)$id_user;
+        $strWhere = $strWhere.' AND sem.`is_deleted` = 0 ';
+        $result = $bodySem->where($strWhere)->orderBy('sem.`date`')->all();
+
+        return $result;
+    }
 }

@@ -436,6 +436,22 @@
     margin-top: 10px;
 }
 
+.message-caption-line-2 {
+    width: 2%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.message-caption-line-3 {
+    width: 3%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
 .message-caption-line-12 {
     width: 12%;
     padding: 8px;
@@ -446,6 +462,23 @@
 
 .message-wrapper-line-date {
     width: 41%;
+    background-color: #f9fafb;
+    padding: 8px;
+    max-height: 145px;
+    float: left;
+    margin-top: 10px;
+}
+
+/*c ... по ...*/
+.message-caption-line-date {
+    width: 40px;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+.message-wrapper-line-date-2 {
+    width: 141px;
     background-color: #f9fafb;
     padding: 8px;
     max-height: 145px;

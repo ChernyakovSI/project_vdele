@@ -8,6 +8,7 @@
 
 namespace frontend\controllers;
 
+use common\models\AcEdit;
 use yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -914,16 +915,97 @@ class GoalController extends Controller
 
         $data = Yii::$app->request->get();
 
-        $PeriodType = 0; // 0 - все
+        if(isset($data['typePeriod']) == false) {
+            $PeriodType = 1; // 0 - все, 1 - по зачетке
 
-        $AllPriority = Ambition::getResultsForUser($user_id, $PeriodType);
+            $curDate = strtotime('now');
+            $option['level'] = 4;
 
+            $CurPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+
+            if($CurPriority['sem']['id'] > 0) {
+                $option['id'] = $CurPriority['sem']['id'];
+                $AllResults = Ambition::getResultsForUser($user_id, $PeriodType, $option);
+
+                $dateFrom = $CurPriority['sem']['date'];
+                $dateTo = $CurPriority['sem']['dateFinish'];
+            } else {
+                $PeriodType = 0;
+                $AllResults = Ambition::getResultsForUser($user_id, $PeriodType);
+
+                $dateFrom = $curDate;
+                $dateTo = $curDate;
+            }
+        } else {
+            if($data['typePeriod'] == 0) {
+                $PeriodType = 0; // 0 - все, 1 - по зачетке
+
+                $AllResults = Ambition::getResultsForUser($user_id, $PeriodType);
+                $curDate = strtotime('now');
+                $option['level'] = 4;
+
+                $CurPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+
+                if($CurPriority['sem']['id'] > 0) {
+                    $dateFrom = $CurPriority['sem']['date'];
+                    $dateTo = $CurPriority['sem']['dateFinish'];
+                } else {
+                    $dateFrom = $curDate;
+                    $dateTo = $curDate;
+                }
+            } elseif ($data['typePeriod'] == 1) {
+                $PeriodType = 1; // 0 - все, 1 - по зачетке
+
+                $curDate = strtotime('now');
+                $option['level'] = 4;
+                $id = $data['sem'];
+
+                $Priority = Semester::getSemesterById($id);
+                $CurPriority['sem'] = $Priority;
+
+                if(isset($CurPriority['sem'])) {
+                    $option['id'] = $CurPriority['sem']['id'];
+                    $AllResults = Ambition::getResultsForUser($user_id, $PeriodType, $option);
+
+                    $dateFrom = $CurPriority['sem']['date'];
+                    $dateTo = $CurPriority['sem']['dateFinish'];
+                } else {
+                    $PeriodType = 0;
+                    $AllResults = Ambition::getResultsForUser($user_id, $PeriodType);
+
+                    $dateFrom = $curDate;
+                    $dateTo = $curDate;
+                }
+            } else {
+                $PeriodType = 2; // 0 - все, 1 - по зачетке, 2 - по периоду
+
+                $curDate = strtotime('now');
+                $option['level'] = 4;
+                $from = $data['from'];
+                $to = $data['to'];
+
+                $CurPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);
+
+                $option['from'] = $from;
+                $option['to'] = $to;
+                $AllResults = Ambition::getResultsForUser($user_id, $PeriodType, $option);
+
+                $dateFrom = $from;
+                $dateTo = $to;
+            }
+        }
+
+        $AllPriority = Semester::getPrioritiesForUser($user_id);
         $spheres = Sphere::getAllSpheresByUser($user_id);
 
         return $this->render('results', [
+            "AllResults" => $AllResults,
             "AllPriority" => $AllPriority,
+            "CurPriority" => $CurPriority,
             "PeriodType" => $PeriodType,
             "spheres" => $spheres,
+            "dateFrom" => $dateFrom,
+            "dateTo" => $dateTo,
         ]);
     }
 

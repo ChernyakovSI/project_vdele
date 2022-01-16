@@ -34,10 +34,20 @@ function endDay (date) {
     return date;
 }
 
+function endDay_timestamp(timestamp) {
+    let strDate = convertTimeStampWithTime(timestamp);
+    let curDate = new Date(strDate);
+    curDate = endDay(curDate);
+    let endTimeStamp = Math.floor(curDate.getTime()/1000);
+
+    return endTimeStamp;
+}
+
 function NowTimeStamp_Sec() {
     return Math.round(new Date().getTime()/1000)
 }
 
+//Получить представление даты с или без времени yyyy-mm-dd
 function getStringDateFromTimeStamp(timeStamp, withTime = true) {
     let strDate = convertTimeStampWithTime(timeStamp);
     let curDate = new Date(strDate);
@@ -49,6 +59,35 @@ function getStringDateFromTimeStamp(timeStamp, withTime = true) {
         result = curDate.toISOString().substring(0, 10);
     }
     return result;
+}
+
+//Получить представление даты с или без времени dd.mm.yyyy hh:mm
+function getStringDateFromTimeStamp2(timestamp, withTime = true) {
+    let condate;
+
+    if (timestamp == '') {
+        condate = new Date();
+    } else {
+        condate = new Date(timestamp*1000);
+    }
+
+    strDate = [
+        ('0' + condate.getDate()).slice(-2),                          // Get full year
+        ('0' + (condate.getMonth()+1)).slice(-2),      // Get month and pad it with zeroes
+        condate.getFullYear()           // Get day and pad it with zeroes
+    ].join('.');  // Glue the pieces together
+
+    let strTime = '';
+    if(withTime == true) {
+        strDate = strDate + ' ';
+
+        strTime = [
+            ('0' + (condate.getHours())).slice(-2),
+            ('0' + condate.getMinutes()).slice(-2)
+        ].join(':');
+    }
+
+    return strDate+strTime;
 }
 
 function getDateFromTimeStamp(timeStamp) {
@@ -89,10 +128,3 @@ function convertTimeStampWithTime(timestamp) {
     return strDate+strTime;
 }
 
-function endDay_timestamp(timestamp) {
-    let curDate = getDateFromTimeStamp(timeStamp);
-    curDate = endDay (date);
-    let endTimeStamp = Math.round(curDate.getTime()/1000);
-
-    return endTimeStamp;
-}

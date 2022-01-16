@@ -16,7 +16,7 @@ class AppAsset extends AssetBundle
 
     public $css = [
         'css/site22.css',
-        'css/index47.css',
+        'css/index48.css',
         'css/color34.css',
         'css/acEdit12.css',
         'css/users11.css',
@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size18.css',
+        'css/size19.css',
         'css/backgrounds.css'
     ];
     public $js = [];
@@ -74,6 +74,10 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/dates.js';
             $this->js[] = 'js/errors.js';
             $this->js[] = 'js/goal/priority-pos-ready.js';
+        }
+        if ((\yii::$app->request->url == '/goal/results') || (mb_substr(\yii::$app->request->url, 0, 13) == '/goal/results')) {
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/goal/results-pos-ready.js';
         }
         if (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/wishes') {
             $this->js[] = 'js/goal/amb-dreams-pos-ready.js';
