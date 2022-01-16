@@ -961,7 +961,10 @@ class GoalController extends Controller
                 $id = $data['sem'];
 
                 $Priority = Semester::getSemesterById($id);
-                $CurPriority['sem'] = $Priority;
+                $CurPriority['sem']['date'] = $Priority['date'];
+                $CurPriority['sem']['dateFinish'] = $Priority['dateFinish'];
+                $CurPriority['sem']['name'] = $Priority['name'];
+                $CurPriority['sem']['id'] = $Priority['id'];
 
                 if(isset($CurPriority['sem'])) {
                     $option['id'] = $CurPriority['sem']['id'];
