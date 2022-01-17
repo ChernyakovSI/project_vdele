@@ -166,8 +166,11 @@ class GoalController extends Controller
         $finishDate =  strtotime("+1 month");
         $AllNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false);
 
+        $AllSpheres = $spheres = Sphere::getAllSpheresByUser($user_id);
+
         return $this->render('notes', [
             "AllNotes" => $AllNotes,
+            "AllSpheres" => $AllSpheres,
         ]);
 
     }
@@ -181,7 +184,9 @@ class GoalController extends Controller
             $startDate = $_POST['dateFrom'];
             $finishDate = $_POST['dateTo'];
 
-            $allNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false);
+            $option['id_sphere'] = $_POST['id_sphere'];
+
+            $allNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false, $option);
 
             $pathNotes = 'note/';
             $colors = [];

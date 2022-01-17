@@ -6,6 +6,10 @@ let fotoItems = document.getElementsByClassName('foto-item');
 let valuePeriodFrom = document.getElementById('valuePeriodFrom');
 let valuePeriodTo = document.getElementById('valuePeriodTo');
 
+let valueSphere = document.getElementById('selValueSphere');
+let list_sphere = document.getElementById('list_sphere_sel');
+let btnClearSphere = document.getElementById('ClearSphere');
+
 let clickTime;
 let modeColored = 0;
 let arrDeleting = [];
@@ -17,7 +21,8 @@ let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
 
 let thisData = {
     'dateFrom' : 0,
-    'dateTo' : 0
+    'dateTo' : 0,
+    'id_sphere' : 0,
 };
 
 $(document).ready( function() {
@@ -36,6 +41,8 @@ $(document).ready( function() {
     AddEventsToNotes();
 });
 
+//------------------------------------------------------------------------------Events
+
 valuePeriodFrom.onchange = function(e) {
     RenewPeriod();
 };
@@ -43,6 +50,35 @@ valuePeriodFrom.onchange = function(e) {
 valuePeriodTo.onchange = function(e) {
     RenewPeriod();
 };
+
+valueSphere.onchange = function(event){
+    let curSphere = this.value.trim();
+    let idSphere = 0;
+
+    let children = list_sphere.childNodes;
+    for(child in children){
+        if(children[child].nodeName === 'OPTION' && children[child].innerText === curSphere) {
+            idSphere = children[child].getAttribute('data-id');
+            thisData['id_sphere'] = idSphere;
+            break;
+        }
+    }
+
+    if (idSphere === 0) {
+        this.value = '';
+    }
+
+    RenewPeriod();
+
+};
+
+btnClearSphere.onclick = function(e) {
+    valueSphere.value = '';
+
+    thisData['id_sphere'] = 0;
+};
+
+//------------------------------------------------------------------------------Helpers
 
 function RenewPeriod() {
     let curDate = new Date(valuePeriodFrom.value);
