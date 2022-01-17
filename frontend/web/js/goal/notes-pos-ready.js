@@ -76,6 +76,8 @@ btnClearSphere.onclick = function(e) {
     valueSphere.value = '';
 
     thisData['id_sphere'] = 0;
+
+    RenewPeriod();
 };
 
 //------------------------------------------------------------------------------Helpers
