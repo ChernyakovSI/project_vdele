@@ -51,7 +51,13 @@ class Note extends ActiveRecord
         return self::find()->where(['id' => $id])->one();
     }
 
-    public static function getAllNotesByFilter($id_user, $startDate, $finishDate, $sortDate = true){
+    public static function getAllNotesByFilter($id_user, $startDate, $finishDate, $sortDate = true, $option = []){
+        if(isset($option['id_sphere']) && $option['id_sphere'] > 0) {
+            $id_sphere = (integer)$option['id_sphere'];
+        } else {
+            $id_sphere = 0;
+        }
+
         $query = new Query();
         $body = $query->Select(['Note.`id` as id',
             'Note.`date` as date',
@@ -65,6 +71,9 @@ class Note extends ActiveRecord
         $strWhere = $strWhere.' AND Note.`is_deleted` = 0';
         $strWhere = $strWhere.' AND Note.`date` >= '.(integer)$startDate;
         $strWhere = $strWhere.' AND Note.`date` <= '.(integer)$finishDate;
+        if ($id_sphere > 0) {
+            $strWhere = $strWhere.' AND Note.`id_sphere` = '.$id_sphere;
+        }
 
         if($sortDate === true) {
             $body = $body->where($strWhere)->orderBy('Note.`date`');
