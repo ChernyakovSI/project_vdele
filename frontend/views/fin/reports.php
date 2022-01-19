@@ -58,15 +58,17 @@
                 <input class="hide" id="hd-1" type="checkbox">
                 <label for="hd-1">Настройки отчета: период с <span id="settingsPeriodFrom"><?= Reports::timestampToDateString($periodFrom) ?></span> по <span id="settingsPeriodTo"><?= Reports::timestampToDateString($periodTo) ?></span></label>
                 <div>
-                    <div class="half_third">
-                        <div class="caption-line-half-20">c:</div><div class="message-wrapper-line-half window-border">
+                    <div class="column-33">
+                        <div class="message-caption-line-date">c:</div>
+                        <div class="message-wrapper-line-date-2 window-border">
                             <input type="date" class="message-text-line" contentEditable id="valuePeriodFrom">
                         </div>
-                        <div class="caption-line-half-20">по:</div><div class="message-wrapper-line-half window-border">
+                        <div class="message-caption-line-date">по:</div>
+                        <div class="message-wrapper-line-date-2 window-border">
                             <input type="date" class="message-text-line" contentEditable id="valuePeriodTo">
                         </div>
                     </div>
-                    <div class="half_third">
+                    <div class="column-33">
                         <div class="gap-v-13">
                             <input type="checkbox" id="setVisibleSub" class="custom-checkbox" onclick="setVisibleSub()">
                             <label for="setVisibleSub" class="interactive-only">Показать подкатегории</label>
