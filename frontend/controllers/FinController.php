@@ -1849,6 +1849,105 @@ class FinController extends Controller
 
             $totalDelta = $totalProf - $totalExp;
 
+            //За день
+
+            $periodFromDay = strtotime(date('Y-m-d 00:00:00'));
+            $periodToDay = strtotime(date('Y-m-d 23:59:59'));
+
+            $resultsProfDay = Reports::getTotalByProfitCatsByUser($id_user, $periodFromDay, $periodToDay);
+            $resultsExpDay = Reports::getTotalByExpenceCatsByUser($id_user, $periodFromDay, $periodToDay);
+
+            $totalProfDay = 0;
+            $totalExpDay = 0;
+
+            foreach ($resultsExpDay as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExpDay = $totalExpDay + $item['sum'];
+                }
+            }
+            foreach ($resultsProfDay as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProfDay = $totalProfDay + $item['sum'];
+                }
+            }
+
+            $totalDeltaDay = $totalProfDay - $totalExpDay;
+
+            //За неделю
+            $dayOfWeek = date('w');
+            $week_start = date('Y-m-d 00:00:00', strtotime('-'.$dayOfWeek.' days'));
+            $week_end = date('Y-m-d 23:59:59', strtotime('+'.(6-$dayOfWeek).' days'));
+
+            $periodFromWeek = strtotime($week_start);
+            $periodToDayWeek = strtotime($week_end);
+
+            $resultsProfWeek = Reports::getTotalByProfitCatsByUser($id_user, $periodFromWeek, $periodToDayWeek);
+            $resultsExpWeek = Reports::getTotalByExpenceCatsByUser($id_user, $periodFromWeek, $periodToDayWeek);
+
+            $totalProfWeek = 0;
+            $totalExpWeek = 0;
+
+            foreach ($resultsExpWeek as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExpWeek = $totalExpWeek + $item['sum'];
+                }
+            }
+            foreach ($resultsProfWeek as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProfWeek = $totalProfWeek + $item['sum'];
+                }
+            }
+
+            $totalDeltaWeek = $totalProfWeek - $totalExpWeek;
+
+            //За месяц
+
+            $periodFromMonth = strtotime(date('Y-m-01 00:00:00'));
+            $periodToMonth = strtotime(date('Y-m-t 23:59:59'));
+
+            $resultsProfMonth = Reports::getTotalByProfitCatsByUser($id_user, $periodFromMonth, $periodToMonth);
+            $resultsExpMonth = Reports::getTotalByExpenceCatsByUser($id_user, $periodFromMonth, $periodToMonth);
+
+            $totalProfMonth = 0;
+            $totalExpMonth = 0;
+
+            foreach ($resultsExpMonth as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExpMonth = $totalExpMonth + $item['sum'];
+                }
+            }
+            foreach ($resultsProfMonth as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProfMonth = $totalProfMonth + $item['sum'];
+                }
+            }
+
+            $totalDeltaMonth = $totalProfMonth - $totalExpMonth;
+
+            //За год
+
+            $periodFromYear = strtotime(date('Y-01-01 00:00:00'));
+            $periodToYear = strtotime(date('Y-12-31 23:59:59'));
+
+            $resultsProfYear = Reports::getTotalByProfitCatsByUser($id_user, $periodFromYear, $periodToYear);
+            $resultsExpYear = Reports::getTotalByExpenceCatsByUser($id_user, $periodFromYear, $periodToYear);
+
+            $totalProfYear = 0;
+            $totalExpYear = 0;
+
+            foreach ($resultsExpYear as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalExpYear = $totalExpYear + $item['sum'];
+                }
+            }
+            foreach ($resultsProfYear as $item) {
+                if ($item['id_category'] != 0) {
+                    $totalProfYear = $totalProfYear + $item['sum'];
+                }
+            }
+
+            $totalDeltaYear = $totalProfYear - $totalExpYear;
+
             return $this->render('reports', [
                 'id_user' => $id_user,
                 'resultsProf' => $resultsProf,
@@ -1858,7 +1957,11 @@ class FinController extends Controller
                 'periodFrom' => $periodFrom,
                 'periodTo' => $periodTo,
                 'typeReport' => 0,
-                'totalDelta' => $totalDelta
+                'totalDelta' => $totalDelta,
+                'totalDeltaDay' => $totalDeltaDay,
+                'totalDeltaWeek' => $totalDeltaWeek,
+                'totalDeltaMonth' => $totalDeltaMonth,
+                'totalDeltaYear' => $totalDeltaYear
             ]);
         }
 

@@ -80,8 +80,14 @@
             </div>
 
             <div class="clearfix"></div>
-            <div class="text-size">
-                Прибыль: <span id="delta"><?= Account::formatNumberToMoney($totalDelta) ?></span>
+            <div class="m-l-14px m-t-3px">
+                Прибыль за период: <span id="delta" class="text-color-darkBlue text-bold"><?= Account::formatNumberToMoney($totalDelta) ?></span>
+            </div>
+            <div class="m-l-14px m-t-3px">
+                За текущий день: <span id="deltaD" class="text-color-darkBlue text-bold"><?= Account::formatNumberToMoney($totalDeltaDay) ?></span>
+                , за текущую неделю: <span id="deltaW" class="text-color-darkBlue text-bold"><?= Account::formatNumberToMoney($totalDeltaWeek) ?></span>
+                , за текущий месяц: <span id="deltaM" class="text-color-darkBlue text-bold"><?= Account::formatNumberToMoney($totalDeltaMonth) ?></span>
+                , за текущий год: <span id="deltaY" class="text-color-darkBlue text-bold"><?= Account::formatNumberToMoney($totalDeltaYear) ?></span>
             </div>
 
             <div class="clearfix"></div>
