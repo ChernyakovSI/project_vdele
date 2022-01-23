@@ -42,9 +42,9 @@
 }
 
 
-.navbar-default .navbar-nav > .open > a {
-    color: #dddddd;
-    background-color: #64524a;
+.navbar-default .navbar-nav > .dropdown > a {
+    color: #cccccc;
+    background-color: #54423a;
     height: 48px;
     margin-top: -20px;
     padding-top: 23px;
@@ -55,10 +55,18 @@
     background-color: #64524a;
 }
 
-.navbar-default .navbar-nav > .open > a:hover {
+.navbar-default .navbar-nav > .dropdown > a:hover {
     color: #dddddd;
     background-color: #64524a;
+    height: 48px;
+    margin-top: -20px;
+    padding-top: 23px;
 }
+
+/*.navbar-default .navbar-nav > .open > a:hover {
+    color: #dddddd;
+    background-color: #64524a;
+}*/
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
     color: #dddddd;
