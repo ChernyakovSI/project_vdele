@@ -1874,7 +1874,10 @@ class FinController extends Controller
             $totalDeltaDay = $totalProfDay - $totalExpDay;
 
             //За неделю
-            $dayOfWeek = date('w');
+            $dayOfWeek = date('w')-1;
+            if($dayOfWeek == -1){
+                $dayOfWeek = 6;
+            }
             $week_start = date('Y-m-d 00:00:00', strtotime('-'.$dayOfWeek.' days'));
             $week_end = date('Y-m-d 23:59:59', strtotime('+'.(6-$dayOfWeek).' days'));
 
