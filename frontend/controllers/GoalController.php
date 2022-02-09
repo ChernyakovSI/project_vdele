@@ -23,6 +23,7 @@ use common\models\fin\Reports;
 use common\models\fin\Account;
 use common\models\goal\Ambition;
 use common\models\goal\Semester;
+use common\models\goal\Task;
 
 class GoalController extends Controller
 {
@@ -63,7 +64,10 @@ class GoalController extends Controller
                                         'priority',
                                         'semester-save',
                                         'semester-del',
-                                        'results'],
+                                        'results',
+                                        'tasks',
+                                        'tasks-all',
+                                        'task',],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -338,7 +342,7 @@ class GoalController extends Controller
         //но так как наша задача - вывод русской даты,
         //заменяем число месяца на название:
         $_mD = date("m", $period); //для замены
-        $currentDate = str_replace($_mD, $_monthsList[$_mD]." ", $currentDate);
+        $currentDate = str_replace($_mD." ", $_monthsList[$_mD]." ", $currentDate);
         //теперь в переменной $currentDate хранится дата в формате 22 июня 2015
 
         $colorUnused = Sphere::getColorForId(-1, 0);
@@ -1014,6 +1018,108 @@ class GoalController extends Controller
             "spheres" => $spheres,
             "dateFrom" => $dateFrom,
             "dateTo" => $dateTo,
+        ]);
+    }
+
+    public function actionTasks()
+    {
+        $getData = Yii::$app->request->get();
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-1 month 00:00");
+        $finishDate =  strtotime("+1 month 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        $AllTasks = [];//Ambition::getDreamsForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('tasks', [
+            "AllTasks" => $AllTasks,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+        ]);
+    }
+
+    public function actionTasksAll()
+    {
+        $getData = Yii::$app->request->get();
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        $startDate =  strtotime("-1 month 00:00");
+        $finishDate =  strtotime("+1 month 23:59:59");
+
+        $status = [0];
+        $option = [
+            'status' => $status
+        ];
+
+        $AllTasks = Task::getTasksForPeriodAndUser($user_id, $startDate, $finishDate, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+        $types = Task::getTypes();
+
+        return $this->render('tasks-all', [
+            "AllTasks" => $AllTasks,
+            "periodFrom" => $startDate,
+            "periodTo" => $finishDate,
+            "spheres" => $spheres,
+            "types" => $types,
+        ]);
+    }
+
+    public function actionTask()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        $getData = $params->get();
+
+        if($params->get('n')) {
+            /*$data = Ambition::getDreamByUserAndNum($user_id, $params->get('n'));
+            $date = $data['created_at'];
+            $dateDone = $data['dateDone'];
+            $dateGoal = $data['date'];
+            $sphere = Sphere::getSphereById($data['id_sphere']);*/
+        }
+        else {
+            $data = new Task();
+            $date = time();
+            $sphere = new Sphere();
+            $dateDone = 0;
+            $dateGoal = strtotime("+1 week");
+        }
+
+        if(isset($getData['type'])) {
+            $type = $getData['type'];
+        } else {
+            $type = 0; //Обычная задача
+        }
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+        $types = Task::getTypes();
+
+        $goals = [];
+        $tasks = [];
+
+        return $this->render('task', [
+            "data" => $data,
+            "spheres" => $spheres,
+            "date" => $date,
+            "dateDone" => $dateDone,
+            "sphere" => $sphere,
+            "types" => $types,
+            "type" => $type,
+            "dateGoal" => $dateGoal,
+            "goals" => $goals,
+            "tasks" => $tasks
         ]);
     }
 

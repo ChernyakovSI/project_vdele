@@ -272,6 +272,10 @@
     align-items: center;
 }
 
+.float-left {
+    float: left;
+}
+
 .float-right {
     float: right;
 }
@@ -400,6 +404,10 @@
     margin-left: 14px;
 }
 
+.m-l-35px {
+    margin-left: 35px;
+}
+
 .m-r-5px {
     margin-right: 5px;
 }
@@ -432,6 +440,13 @@
     margin-top: 10px;
 }
 
+.message-caption-line {
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
 .message-caption-line-2symbols {
     width: 9%;
     padding: 8px;
@@ -456,6 +471,30 @@
     margin-top: 10px;
 }
 
+.message-caption-line-6 {
+    width: 6%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.message-caption-line-7 {
+    width: 7%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.message-caption-line-8 {
+    width: 8%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
 .message-caption-line-12 {
     width: 12%;
     padding: 8px;
@@ -464,8 +503,33 @@
     margin-top: 10px;
 }
 
+.message-caption-line-16 {
+    width: 16%;
+    padding: 8px;
+    float: left;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.message-wrap-line {
+    background-color: #f9fafb;
+    padding: 8px;
+    max-height: 145px;
+    float: left;
+    margin-top: 10px;
+}
+
 .message-wrapper-line-date {
     width: 41%;
+    background-color: #f9fafb;
+    padding: 8px;
+    max-height: 145px;
+    float: left;
+    margin-top: 10px;
+}
+
+.message-wrapper-line-datetime-px {
+    width: 185px;
     background-color: #f9fafb;
     padding: 8px;
     max-height: 145px;
@@ -483,6 +547,15 @@
 }
 .message-wrapper-line-date-2 {
     width: 141px;
+    background-color: #f9fafb;
+    padding: 8px;
+    max-height: 145px;
+    float: left;
+    margin-top: 10px;
+}
+
+.message-wrapper-line-number999-px {
+    width: 62px;
     background-color: #f9fafb;
     padding: 8px;
     max-height: 145px;
@@ -567,12 +640,36 @@
     display: none;
 }
 
+.w-1 {
+    width: 1%;
+}
+
+.w-3 {
+    width: 3%;
+}
+
+.w-6 {
+    width: 6%;
+}
+
 .w-10 {
     width: 10%;
 }
 
 .w-16 {
     width: 16%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-33 {
+    width: 33%;
+}
+
+.w-46 {
+    width: 46%;
 }
 
 .w-49 {
@@ -591,6 +688,10 @@
     width: 67%;
 }
 
+.w-70 {
+    width: 70%;
+}
+
 .w-75 {
     width: 75%;
 }
@@ -599,16 +700,56 @@
     width: 80%;
 }
 
+.w-92 {
+    width: 92%;
+}
+
 .w-100 {
     width: 100%;
+}
+
+.w-35px {
+    width: 35px;
+}
+
+.w-50px {
+    width: 50px;
+}
+
+.w-55px {
+    width: 55px;
+}
+
+.w-87px {
+    width: 87px;
 }
 
 .w-116px {
     width: 116px;
 }
 
+.w-152px {
+    width: 152px;
+}
+
+.w-166px {
+    width: 166px;
+}
+
+.w-176px {
+    width: 176px;
+}
+
 .w-180px {
     width: 180px;
+}
+
+.w-275px {
+    width: 275px;
+}
+
+.w-322px {
+    width: 322px;
 }
 
 .wrapper-line-half {
