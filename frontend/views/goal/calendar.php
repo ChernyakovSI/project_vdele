@@ -58,7 +58,7 @@ $this->title = 'Календарь';
                     </div>
                 </div>
                 <div class="half_third">
-                    <div class="w-100">
+                    <div class="w-100 m-t-20px">
                         <div class="caption-line-half-20"></div>
                         <input type="checkbox" id="setFinance" class="custom-checkbox">
                         <label for="setFinance" class="interactive-only">Скрыть суммы движений</label>
@@ -75,7 +75,7 @@ $this->title = 'Календарь';
                     </div>
                 </div>
                 <div class="half_third" id="wrapSelCats">
-                    <div class="window-button-panel">
+                    <div class="window-button-panel m-t-20px">
                         <div class="window-button-in-panel window-border" id="regSpeciality">Задать специализации</div>
                         <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
                     </div>

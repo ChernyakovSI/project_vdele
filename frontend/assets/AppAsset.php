@@ -16,7 +16,7 @@ class AppAsset extends AssetBundle
 
     public $css = [
         'css/site22.css',
-        'css/index48.css',
+        'css/index49.css',
         'css/color35.css',
         'css/acEdit12.css',
         'css/users11.css',
@@ -29,7 +29,7 @@ class AppAsset extends AssetBundle
         'css/contextMenu.css',
         'css/foto3.css',
         'css/slider.css',
-        'css/size21.css',
+        'css/size22.css',
         'css/backgrounds.css'
     ];
     public $js = [];
@@ -78,6 +78,15 @@ class AppAsset extends AssetBundle
         if ((\yii::$app->request->url == '/goal/results') || (mb_substr(\yii::$app->request->url, 0, 13) == '/goal/results')) {
             $this->js[] = 'js/dates.js';
             $this->js[] = 'js/goal/results-pos-ready.js';
+        }
+        if ((\yii::$app->request->url == '/goal/task') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/task/')) {
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/texts.js';
+            $this->js[] = 'js/goal/task-pos-ready.js';
+        }
+        if ((\yii::$app->request->url == '/goal/tasks-all') || (mb_substr(\yii::$app->request->url, 0, 15) == '/goal/tasks-all')) {
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/goal/tasks-pos-ready.js';
         }
         if (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/wishes') {
             $this->js[] = 'js/goal/amb-dreams-pos-ready.js';

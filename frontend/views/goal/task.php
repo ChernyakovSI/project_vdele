@@ -51,17 +51,10 @@ $this->title = 'Задача';
                     <input type="datetime-local" class="message-text-line" id="valueDate">
                 </div>
             </div>
-            <div class="w-30 float-left">
-                <div class="w-6 float-left">&nbsp</div>
-                <div class="message-wrap-line w-46 window-border" id="valueSphereWrap">
-                    <input type="text" class="message-text-line" placeholder="Сфера" list="list_sphere" id="valueSphere" value="<?= isset($data) && $data->id_sphere>0 ? $spheres[$data->id_sphere-1]['name'] : '' ?>"/>
-                    <datalist id="list_sphere">
-                        <?php foreach ($spheres as $sphere): ?>
-                            <option data-id=<?= $sphere['id'] ?>><?= $sphere['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
-                </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">&#10008;</div>
+            <div class="w-30 float-left m-t-20px">
+                <div class="caption-line-half-20"></div>
+                <input type="checkbox" id="isActive" class="custom-checkbox w-1-5em">
+                <label for="isActive" class="interactive-only">Актив</label>
             </div>
             <div class="w-30 float-left">
                 <div class="w-3 float-left">&nbsp</div>
@@ -79,7 +72,7 @@ $this->title = 'Задача';
             <div class="clearfix"></div>
 
             <div class="half_width">
-                <div class="w-10 float-left">&nbsp</div>
+                <div class="w-87px float-left">&nbsp</div>
                 <div class="message-wrap-line w-70 window-border">
                     <input type="text" class="message-text-line" placeholder="Цель" list="list_goals" id="valueGoal" value="<?= isset($data) && $data->id_goal>0 ? $goals[$data->id_goal]['name'] : '' ?>">
                     <datalist id="list_goals">
@@ -91,16 +84,31 @@ $this->title = 'Задача';
                 <div class="window-button-in-panel window-border gap-v-13" id="ClearGoal">&#10008;</div>
             </div>
             <div class="half_width">
-                <div class="w-10 float-left">&nbsp</div>
-                <div class="message-wrap-line w-70 window-border" id="valueSphereWrap">
-                    <input type="text" class="message-text-line" placeholder="Главная задача" list="list_tasks" id="valueTask" value="<?= isset($data) && $data->id_task>0 ? $tasks[$data->id_task-1]['name'] : '' ?>"/>
-                    <datalist id="list_sphere">
-                        <?php foreach ($tasks as $task): ?>
-                            <option data-id=<?= $task['id'] ?>><?= $task['name'] ?></option>
-                        <?php endforeach; ?>
-                    </datalist>
+                <div class="w-50 float-left">
+
+                    <div class="message-wrap-line w-80 window-border" id="valueSphereWrap">
+                        <input type="text" class="message-text-line" placeholder="Главная задача" list="list_tasks" id="valueTask" value="<?= isset($data) && $data->id_task>0 ? $tasks[$data->id_task-1]['name'] : '' ?>"/>
+                        <datalist id="list_sphere">
+                            <?php foreach ($tasks as $task): ?>
+                                <option data-id=<?= $task['id'] ?>><?= $task['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearTask">&#10008;</div>
                 </div>
-                <div class="window-button-in-panel window-border gap-v-13" id="ClearTask">&#10008;</div>
+
+                <div class="w-50 float-left">
+                    <div class="w-6 float-left">&nbsp</div>
+                    <div class="message-wrap-line w-46 window-border" id="valueSphereWrap">
+                        <input type="text" class="message-text-line" placeholder="Сфера" list="list_sphere" id="valueSphere" value="<?= isset($data) && $data->id_sphere>0 ? $spheres[$data->id_sphere-1]['name'] : '' ?>"/>
+                        <datalist id="list_sphere">
+                            <?php foreach ($spheres as $sphere): ?>
+                                <option data-id=<?= $sphere['id'] ?>><?= $sphere['name'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">&#10008;</div>
+                </div>
             </div>
 
             <div class="clearfix"></div>

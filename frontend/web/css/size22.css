@@ -440,6 +440,10 @@
     margin-top: 10px;
 }
 
+.m-t-20px {
+    margin-top: 20px;
+}
+
 .message-caption-line {
     padding: 8px;
     float: left;
@@ -706,6 +710,10 @@
 
 .w-100 {
     width: 100%;
+}
+
+.w-1-5em {
+    width: 1.5em;
 }
 
 .w-35px {

@@ -84,7 +84,7 @@ $this->title = 'Задачи';
 
         <div class="clearfix"></div>
         <div class="window-button-panel">
-            <div class="window-button-in-panel window-border" id="new-reg">Добавить</div>
+            <div class="window-button-in-panel window-border" id="new-task">Добавить</div>
             <!--                <div class="window-button-in-panel window-border" id="btn-copy">Скопировать</div>-->
         </div>
 

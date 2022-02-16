@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="column-33">
-                        <div class="gap-v-13">
+                        <div class="gap-v-13 m-t-20px">
                             <input type="checkbox" id="setVisibleSub" class="custom-checkbox" onclick="setVisibleSub()">
                             <label for="setVisibleSub" class="interactive-only">Показать подкатегории</label>
                         </div>

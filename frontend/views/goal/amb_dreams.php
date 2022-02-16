@@ -112,7 +112,7 @@ $this->title = 'Мечты';
                     <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">х</div>
                 </div>
                 <div class="half_third">
-                    <div class="w-100">
+                    <div class="w-100 m-t-20px">
                         <div class="caption-line-half-20"></div>
                         <input type="checkbox" id="setDont" class="custom-checkbox">
                         <label for="setDont" class="interactive-only">Не будет выполнено</label>

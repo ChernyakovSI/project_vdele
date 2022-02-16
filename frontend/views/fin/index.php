@@ -139,7 +139,7 @@ $this->registerJsFile('@web/js/fin/index_pos_ready.js', ['position' => \yii\web\
     </div>
 
 
-    <div class="height-5em">
+    <div class="height-5em m-t-20px">
         <input type="checkbox" id="setVisibleDeleted" class="custom-checkbox" onclick="setVisibleDeleted()">
         <label for="setVisibleDeleted" class="interactive-only">Показать скрытые</label>
 
