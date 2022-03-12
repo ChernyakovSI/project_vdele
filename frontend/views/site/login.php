@@ -23,13 +23,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
+                <!-- //++ 002 12/03/2022 -->
+                <div class="w-100">
+                    <input type="checkbox" id="setPasVisible" class="custom-checkbox">
+                    <label for="setPasVisible" class="interactive-only" id="lblSetPasVisible">Отобразить пароль</label>
+                </div>
+
+                <div class="w-100">
+                    <input type="checkbox" id="setRememberMe" class="custom-checkbox">
+                    <label for="setRememberMe" class="interactive-only" id="lblSetRememberMe">Запомнить меня</label>
+                </div>
+                <!-- //-- 002 12/03/2022 -->
+
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                 <div style="color:#999;margin:1em 0">
                     Если вы забыли ваш пароль, вы можете <?= Html::a('сбросить его', ['site/request-password-reset']) ?>.
                 </div>
                 <div style="color:#999;margin:1em 0">
-                    Если вы никогда не являтесь пользователем сайта, вы можете <?= Html::a('зарегистрироваться', ['/signup']) ?>.
+                    <!-- //++ 002 12/03/2022
+                    //:-
+                    Если вы никогда не являтесь пользователем сайта, вы можете <= Html::a('зарегистрироваться', ['/signup']) ?>.
+                    //:+
+                    -->
+                    Если вы еще не являетесь пользователем сайта, вы можете <?= Html::a('зарегистрироваться', ['/signup']) ?>.
+                    <!-- //-- 002 12/03/2022 -->
                 </div>
 
                 <div class="form-group">

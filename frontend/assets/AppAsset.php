@@ -128,6 +128,14 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/lightbox.js';
             $this->css[] = 'css/lightbox.css';
         }
+        //++ 002 12/03/2022
+        if (\yii::$app->request->url == '/login') {
+            $this->js[] = 'js/site/logIn.js';
+        }
+        if (\yii::$app->request->url == '/signup') {
+            $this->js[] = 'js/site/signUp.js';
+        }
+        //-- 002 12/03/2022
         if ((mb_substr(\yii::$app->request->url, 0, 2) == '/?') || (\yii::$app->request->url == '/')) {
             $this->js[] = 'js/lightbox.js';
             $this->css[] = 'css/lightbox.css';

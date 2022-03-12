@@ -36,12 +36,19 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Данная электронная почта уже зарегистрирована.'],
 
             ['password', 'required'],
-            ['password', 'match', 'pattern' => '/^.*(?=.*\d)(?=.*[a-z,а-я,ё])(?=.*[A-Z,А-Я,Ё])(?=.*[@,_,-,\+,*,\/,\.,\,,\^,:,%\!\?\&]).*$/', 'message' => 'Пароль должен содержать минимум одну прописную букву, одну заглавную букву, одну цифру и один специальный символ'],
-            ['password', 'string', 'min' => 12],
+            //++ 002 12/03/2022
+            //['password', 'match', 'pattern' => '/^.*(?=.*\d)(?=.*[a-z,а-я,ё])(?=.*[A-Z,А-Я,Ё])(?=.*[@,_,-,\+,*,\/,\.,\,,\^,:,%\!\?\&]).*$/', 'message' => 'Пароль должен содержать минимум одну прописную букву, одну заглавную букву, одну цифру и один специальный символ'],
+            //-- 002 12/03/2022
+            //++ 002 12/03/2022
+            //:-
+            //['password', 'string', 'min' => 12],
+            //:+
+            ['password', 'string', 'min' => 6, 'message' => 'Пароль должен содержать минимум 6 символов'],
+            //-- 002 12/03/2022
 
             ['passwordAgain', 'required'],
             ['passwordAgain', 'compare', 'compareAttribute'=>'password',  'message' => 'Пароли в двух полях должны совпадать'],
-            ['passwordAgain', 'string', 'min' => 12],
+            ['passwordAgain', 'string', 'min' => 6],
 
             /*['name', 'trim'],
             ['name', 'required'],
