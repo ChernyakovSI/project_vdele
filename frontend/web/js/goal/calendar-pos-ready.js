@@ -400,7 +400,15 @@ function fullDayLast(day, value, colors) {
     let divDay3r = document.getElementById('r3day'+day);
 
     let divLine = document.createElement('div');
-    divLine.classList.add(colors[value['id_sphere']]);
+    //++ 003 15/03/2022
+    if (value['is_key'] === '1') {
+        divLine.classList.add(colors[value['id_sphere']]+'-key');
+    } else {
+    //-- 003 15/03/2022
+        divLine.classList.add(colors[value['id_sphere']]);
+    //++ 003 15/03/2022
+    }
+    //-- 003 15/03/2022
     divLine.classList.add('h-5px');
     divLine.classList.add('m-t-10px');
     divLine.classList.add('color-line');
@@ -460,6 +468,8 @@ function runAjax(url, value, typeReq = 'post'){
         data : value
     }).done(function(data) {
         if (data.error === null || data.error === undefined || data.error === '') {
+            console.log(data.allDaysKey);
+
             render(data);
 
         } else {

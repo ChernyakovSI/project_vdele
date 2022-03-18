@@ -72,14 +72,40 @@ class Calendar extends ActiveRecord
             {
                 $allDaysSpec[$day] = 0;
             }
-
         }
-
 
         return $allDaysSpec;
     }
 
-    public static function saveAllDays($allDaysSpec, $id_user) {
+    //++ 003 16/03/2022
+    public static function regKeyDay($allDays, $allDaysSpec) {
+        $allDaysKey = [];
+
+        $allSpheres = [1, 2, 3, 4, 5, 6, 7, 8];
+        foreach ($allSpheres as $sphere) {
+            $arrDaysBySpere = [];
+            foreach ($allDays as $day) {
+                if($allDaysSpec[$day] === $sphere) {
+                    $arrDaysBySpere[] = $day;
+                }
+            }
+
+            if(count($arrDaysBySpere) > 0) {
+                $key = rand(1, count($arrDaysBySpere));
+                $allDaysKey[] = $arrDaysBySpere[$key-1];
+            }
+        }
+
+        return $allDaysKey;
+    }
+    //-- 003 16/03/2022
+
+    //++ 003 15/03/2022
+    //*-
+    //public static function saveAllDays($allDaysSpec, $id_user) {
+    //*+
+    public static function saveAllDays($allDaysSpec, $allDaysKey, $id_user) {
+    //-- 003 16/03/2022
         foreach ($allDaysSpec as $day => $sphere) {
             $rec = SELF::getRecordByDayAndUser((integer)$day, $id_user);
 
@@ -94,6 +120,14 @@ class Calendar extends ActiveRecord
             $rec->updated_at = time();
             $rec->id_sphere = $sphere;
 
+            //++ 003 15/03/2022
+            if (array_search($day, $allDaysKey) !== false) {
+                $rec->is_key = 1;
+            } else {
+                $rec->is_key = 0;
+            }
+            //-- 003 16/03/2022
+
             $rec->save();
         }
 
@@ -106,10 +140,13 @@ class Calendar extends ActiveRecord
 
     public static function getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $id_user) {
         $query = new Query();
+        //++ 003 16/03/2022
         $body = $query->Select(['Calendar.`id` as id',
             'Calendar.`date` as date',
             'Calendar.`id_sphere` as id_sphere',
+            'Calendar.`is_key` as is_key',
         ])
+         //-- 003 16/03/2022
             ->from(self::tableName().' as Calendar');
 
         $strWhere = 'Calendar.`id_user`= '.(integer)$id_user;

@@ -420,7 +420,16 @@ class GoalController extends Controller
 
                 $allDays = Calendar::getAllDaysForPeriod($beginOfMonth, $endOfMonth);
                 $allDaysSpec = Calendar::regSpecForDay($allDays, $countSpeciality > 0);
-                Calendar::saveAllDays($allDaysSpec, $user_id);
+                //++ 003 15/03/2022
+                $allDaysKey = Calendar::regKeyDay($allDays, $allDaysSpec);
+                //-- 003 15/03/2022
+
+                //++ 003 15/03/2022
+                //*-
+                //Calendar::saveAllDays($allDaysSpec, $user_id);
+                //*+
+                Calendar::saveAllDays($allDaysSpec, $allDaysKey, $user_id);
+                //-- 003 15/03/2022
 
                 $Speciality = Calendar::getSpecDaysForPeriodAndUser($beginOfMonth, $endOfMonth, $user_id);
 
@@ -437,6 +446,9 @@ class GoalController extends Controller
                     'colorStyle' => $colors,
                     'regs' => $allRegs,
                     'speciality' => $Speciality,
+                    //++ 003 CherDel 15/03/2022
+                    'allDaysKey' => $allDaysKey,
+                    //-- 003 15/03/2022
                 ];
             }
 
@@ -1102,11 +1114,26 @@ class GoalController extends Controller
         } else {
             $type = 0; //Обычная задача
         }
+        if(isset($getData['sphere'])) {
+            $id_sphere = $getData['sphere'];
+        } else {
+            $id_sphere = 0;
+        }
+        if(isset($getData['goal'])) {
+            $id_goal = $getData['goal'];
+        } else {
+            $id_goal = 0;
+        }
+        if(isset($getData['task'])) {
+            $id_task = $getData['task'];
+        } else {
+            $id_task = 0;
+        }
 
         $spheres = Sphere::getAllSpheresByUser($user_id);
         $types = Task::getTypes();
 
-        $goals = [];
+        $goals = Ambition::getActualGoalsForUser($user_id);
         $tasks = [];
 
         return $this->render('task', [
@@ -1119,7 +1146,10 @@ class GoalController extends Controller
             "type" => $type,
             "dateGoal" => $dateGoal,
             "goals" => $goals,
-            "tasks" => $tasks
+            "tasks" => $tasks,
+            "id_sphere" => $id_sphere,
+            "id_goal" => $id_goal,
+            "id_task" => $id_task
         ]);
     }
 

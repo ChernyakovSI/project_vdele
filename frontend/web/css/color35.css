@@ -383,6 +383,18 @@ a:hover {
     background: linear-gradient(45deg, rgba(102, 51, 0, 0.9), rgba(102, 51, 0, 0.4));
 }
 
+/* //++ 003 15/03/2022 */
+.col-back-inn-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(102, 51, 0, 0.5),
+            rgba(102, 51, 0, 0.5) 10px,
+            rgba(102, 51, 0, 0.5) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
+
 .col-back-fin {
     background: linear-gradient(45deg, rgba(255, 153, 0, 0.7), rgba(255, 153, 0, 0.2));
 }
@@ -394,6 +406,18 @@ a:hover {
 .col-back-fin-harder:hover {
     background: linear-gradient(45deg, rgba(255, 153, 0, 0.9), rgba(255, 153, 0, 0.4));
 }
+
+/* //++ 003 15/03/2022 */
+.col-back-fin-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(255, 153, 0, 0.7),
+            rgba(255, 153, 0, 0.7) 10px,
+            rgba(255, 153, 0, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
 
 .col-back-hea {
     background: linear-gradient(45deg, rgba(0, 153, 51, 0.7), rgba(0, 153, 51, 0.2));
@@ -407,6 +431,18 @@ a:hover {
     background: linear-gradient(45deg, rgba(0, 153, 51, 0.9), rgba(0, 153, 51, 0.4));
 }
 
+/* //++ 003 15/03/2022 */
+.col-back-hea-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(0, 153, 51, 0.7),
+            rgba(0, 153, 51, 0.7) 10px,
+            rgba(0, 153, 51, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
+
 .col-back-rel {
     background: linear-gradient(45deg, rgba(255, 51, 51, 0.7), rgba(255, 51, 51, 0.2));
 }
@@ -418,6 +454,18 @@ a:hover {
 .col-back-rel-harder:hover {
     background: linear-gradient(45deg, rgba(255, 51, 51, 0.9), rgba(255, 51, 51, 0.4));
 }
+
+/* //++ 003 15/03/2022 */
+.col-back-rel-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(255, 51, 51, 0.7),
+            rgba(255, 51, 51, 0.7) 10px,
+            rgba(255, 51, 51, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
 
 .col-back-edu {
     background: linear-gradient(45deg, rgba(0, 102, 204, 0.7), rgba(0, 102, 204, 0.2));
@@ -431,6 +479,18 @@ a:hover {
     background: linear-gradient(45deg, rgba(0, 102, 204, 0.9), rgba(0, 102, 204, 0.4));
 }
 
+/* //++ 003 15/03/2022 */
+.col-back-edu-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(0, 102, 204, 0.7),
+            rgba(0, 102, 204, 0.7) 10px,
+            rgba(0, 102, 204, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
+
 .col-back-rea {
     background: linear-gradient(45deg, rgba(102, 102, 102, 0.7), rgba(102, 102, 102, 0.2));
 }
@@ -442,6 +502,18 @@ a:hover {
 .col-back-rea-harder:hover {
     background: linear-gradient(45deg, rgba(102, 102, 102, 0.9), rgba(102, 102, 102, 0.4));
 }
+
+/* //++ 003 15/03/2022 */
+.col-back-rea-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(102, 102, 102, 0.7),
+            rgba(102, 102, 102, 0.7) 10px,
+            rgba(102, 102, 102, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
 
 .col-back-psy {
     background: linear-gradient(45deg, rgba(153, 102, 204, 0.7), rgba(153, 102, 204, 0.2));
@@ -455,6 +527,18 @@ a:hover {
     background: linear-gradient(45deg, rgba(153, 102, 204, 0.9), rgba(153, 102, 204, 0.4));
 }
 
+/* //++ 003 15/03/2022 */
+.col-back-psy-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(153, 102, 204, 0.7),
+            rgba(153, 102, 204, 0.7) 10px,
+            rgba(153, 102, 204, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
+
 .col-back-tra {
     background: linear-gradient(45deg, rgba(153, 204, 255, 0.7), rgba(153, 204, 255, 0.2));
 }
@@ -466,6 +550,18 @@ a:hover {
 .col-back-tra-harder:hover {
     background: linear-gradient(45deg, rgba(153, 204, 255, 0.9), rgba(153, 204, 255, 0.4));
 }
+
+/* //++ 003 15/03/2022 */
+.col-back-tra-key {
+    background: repeating-linear-gradient(
+            45deg,
+            rgba(153, 204, 255, 0.7),
+            rgba(153, 204, 255, 0.7) 10px,
+            rgba(153, 204, 255, 0.7) 10px,
+            rgba(0, 0, 0, 0.7) 20px
+    );
+}
+/* //-- 003 15/03/2022 */
 
 .col-back-unused {
      background: linear-gradient(45deg, rgba(169, 169, 169, 0.7), rgba(169, 169, 169, 0.7));
