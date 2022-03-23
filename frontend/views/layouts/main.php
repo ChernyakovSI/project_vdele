@@ -69,7 +69,7 @@ $this->registerLinkTag([
             $menuItems[] = ['label' => 'Система', 'items' => [
                 ['label' => 'Календарь', 'url' => ['/goal/calendar']],
                 ['label' => ''],['label' => ''],
-                /*['label' => 'Задачи (dev)', 'url' => ['/goal/tasks-all']],*/
+                ['label' => 'Задачи (dev)', 'url' => ['/goal/tasks-all']],
                 ['label' => 'Цели', 'url' => ['/goal/goals']],
                 ['label' => 'Намерения', 'url' => ['/goal/intents']],
                 ['label' => 'Желания', 'url' => ['/goal/wishes']],
@@ -165,7 +165,9 @@ $this->registerLinkTag([
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.2.2)</p>
+        <!-- //++ 1-2-2-004 18/03/2022 -->
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.2.4)</p>
+        <!-- //-- 1-2-2-004 18/03/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>
     </div>

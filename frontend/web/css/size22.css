@@ -248,6 +248,12 @@
     cursor: pointer;
 }
 
+/* //++ 1-2-2-004 18/03/2022 */
+.div-center {
+    margin: 0 auto;
+}
+/* //-- 1-2-2-004 18/03/2022 */
+
 .div-w-30 {
     width: 30%;
     float: left;
@@ -704,6 +710,14 @@
     width: 80%;
 }
 
+.w-85 {
+    width: 85%;
+}
+
+.w-90 {
+    width: 90%;
+}
+
 .w-92 {
     width: 92%;
 }
@@ -752,12 +766,30 @@
     width: 180px;
 }
 
+/* //++ 1-2-2-004 18/03/2022 */
+.w-183px {
+    width: 180px;
+}
+/* //-- 1-2-2-004 18/03/2022 */
+
 .w-275px {
     width: 275px;
 }
 
 .w-322px {
     width: 322px;
+}
+
+.w-m-400px {
+    min-width: 400px;
+}
+
+.w-m-475px {
+    min-width: 475px;
+}
+
+.w-m-507px {
+    min-width: 507px;
 }
 
 .wrapper-line-half {

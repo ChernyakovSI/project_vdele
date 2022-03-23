@@ -67,7 +67,13 @@ class SiteController extends Controller
                                     'request-password-reset',
                                     'reset-password',
                                     'login',
-                                    'signup'],
+                                    'signup',
+                                    'mail',
+                                    //++ 1-2-2-004 18/03/2022
+                                    'error-user',
+                                    'show-error',
+                                    //-- 1-2-2-004 18/03/2022
+                                    ],
                         'controllers' => ['site'],
                         'allow' => true,
                     ],
@@ -93,7 +99,15 @@ class SiteController extends Controller
                                     'foto-delete',
                                     'avatar-load',
                                     'avatar-delete',
-                                    'intro'],
+                                    'intro',
+                                    //++ 001 07/03/2022
+                                    'mail',
+                                    //-- 001 07/03/2022
+                                    //++ 1-2-2-004 18/03/2022
+                                    'error-user',
+                                    'show-error',
+                                    //-- 1-2-2-004 18/03/2022
+                                    ],
                         'controllers' => ['site'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -954,6 +968,29 @@ class SiteController extends Controller
         ];
     }
 
+    //++ 1-2-2-004 18/03/2022
+    public function actionShowError()
+    {
+        /*if($error = Yii::app()->errorHandler->error)
+            $this->render('error', $error);
+        */
+        return $this->render('errorUser');
+    }
 
+    public function actionErrorUser()
+    {
+        //echo '<pre>';
+        //echo var_dump(Yii::$app->errorHandler);
+        //if($error = Yii::$app->errorHandler)
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location: '.Yii::$app->params['doman'].'show-error');
+        exit();
+
+
+        //$exception = Yii::$app->errorHandler->exception;
+        //if ($exception !== null) {
+        //    if ($exception->statusCode == 404)
+    }
+    //-- 1-2-2-004 18/03/2022
 
 }
