@@ -8,6 +8,7 @@ use common\models\Tag;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\data\Pagination;
+use yii\debug\models\search\Mail;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -21,6 +22,9 @@ use frontend\models\SignupForm;
 use yii\web\UploadedFile;
 use common\models\Image;
 use yii\filters\Cors;
+//++ 1-2-2-005 30/03/2022
+use common\models\Mailer;
+//-- 1-2-2-005 30/03/2022
 
 /**
  * Site controller
@@ -979,17 +983,78 @@ class SiteController extends Controller
 
     public function actionErrorUser()
     {
-        //echo '<pre>';
-        //echo var_dump(Yii::$app->errorHandler);
-        //if($error = Yii::$app->errorHandler)
+        //++ 1-2-2-005 28/03/2022
+
+        $error = Yii::$app->errorHandler->exception;
+
+        $date = 'Текущая дата: '.date('Y-m-d H:i:s');
+        $path = 'URL: '.Yii::$app->request->absoluteUrl;
+
+        $user_ip = 'Пользователь IP: '.Yii::$app->request->userIP;
+        $user_host = 'Пользователь host: '.Yii::$app->request->userHost;
+        $user_agent = 'Пользователь agent: '.Yii::$app->request->userAgent;
+
+        $message = 'Сообщение: '.$error->getMessage();
+        $code = 'Код: '.$error->getCode();
+        $file = 'Файл: '.$error->getFile();
+        $line = 'Строка: '.$error->getLine();
+        $previous = 'Предыдущее: '.$error->getPrevious();
+        $stack = 'Стэк вызовов: '.$error->getTraceAsString();
+
+        if (isset(Yii::$app->user->identity)) {
+            $user = 'Текущий пользователь: '.Yii::$app->user->identity->getId();
+        } else {
+            $user = 'Текущий пользователь: не авторизован';
+        };
+
+        $textError = $date.'<br>'.$path.'<br>'.$user.'<br>'.
+            $user_ip.'<br>'.$user_host.'<br>'.$user_agent.'<br>'.
+            $message.'<br>'.$code.'<br>'.$file.'<br>'.$line.'<br>'.$stack.'<br>'.$previous;
+
+
+        $is_block = false;
+        if(mb_strripos($path,'.php') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        if(mb_strripos($path,'.xml') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        if(mb_strripos($path,'.txt') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+
+        if ($is_block) {
+            $textError = $textError.'<br> Блокировка!';
+        }
+
+        //var_dump($textError);
+        Mailer::sendLetter('Ошибки ЯВД', $textError, Yii::$app->params['myEmail']);
+
+        if ($is_block) {
+            header('HTTP/1.0 502 Bad Gateway');
+            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+            echo '<html xmlns="http://www.w3.org/1999/xhtml">';
+            echo '<head>';
+            echo '<title>502 Bad Gateway</title>';
+            echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+            echo '</head>';
+            echo '<body>';
+            echo '<h1 style="text-align:center">502 Bad Gateway</h1>';
+            echo '<p style="background:#ccc;border:solid 1px #aaa;margin:30px au-to;padding:20px;text-align:center;width:700px">';
+            echo 'К сожалению, Ваш запрос заблокирован, из-за подозрительных действий. Полная информация о ваших действиях передана в службу безопасности для анализа.<br />';
+            echo 'Если Вы считаете, что имеете право на доступ к запрашиваемой странице, то обратитесь в службу поддержки для разрешения проблемы.<br />';
+            echo '</p>';
+            echo '</body>';
+            echo '</html>';
+            sleep(120);
+            exit;
+        }
+        //-- 1-2-2-005 28/03/2022
+
         header('HTTP/1.1 301 Moved Permanently');
         header('Location: '.Yii::$app->params['doman'].'show-error');
         exit();
 
-
-        //$exception = Yii::$app->errorHandler->exception;
-        //if ($exception !== null) {
-        //    if ($exception->statusCode == 404)
     }
     //-- 1-2-2-004 18/03/2022
 

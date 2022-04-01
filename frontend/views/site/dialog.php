@@ -414,7 +414,14 @@
                             </div>
                             <div class="dialog-list-name">
                                 <?php $QUnreadMessages = Message::GetQuantityOfUnreadMessages(Yii::$app->user->identity->getId(), $user->id); ?>
-                                <?= Html::encode("{$user->getFIO($user->id, true)}".(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):(''))) ?>
+                                <?=
+                                //++ 1-2-2-005 28/03/2022
+                                //*+
+                                //Html::encode("{$user->getFIO($user->id, true)}".(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')))
+                                //*+
+                                Html::encode((isset($user))?("{$user->getFIO($user->id, true)}"):('').(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')))
+                                //-- 1-2-2-005 28/03/2022
+                                ?>
                             </div>
                         </div>
                     </a>
