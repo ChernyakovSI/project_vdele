@@ -20,7 +20,9 @@ class Mailer
 
         $emailFrom = Yii::$app->params['robotEmail'];//"robot@yavdele.net";
 
-        echo $emailFrom;
+        //++ 1-2-2-006 02/04/2022
+        //echo $emailFrom;
+        //-- 1-2-2-006 02/04/2022
 
         Yii::$app->mailer->compose()
             ->setTo($emailTo)
