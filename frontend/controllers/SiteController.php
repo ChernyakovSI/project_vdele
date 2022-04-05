@@ -530,9 +530,17 @@ class SiteController extends Controller
             'totalCount' => $query->count(),
         ]);
 
-        $usersAll = $query->orderBy(['last_activity' => SORT_DESC])->all();
+        //++ 1-2-2-007 05/04/2022
+        //*-
+        /*$usersAll = $query->orderBy(['last_activity' => SORT_DESC])->all();
 
         $users = $query->orderBy(['last_activity' => SORT_DESC])
+        */
+        //*+
+        $usersAll = $query->orderBy(['email_status' => SORT_DESC, 'last_activity' => SORT_DESC])->all();
+
+        $users = $query->orderBy(['email_status' => SORT_DESC, 'last_activity' => SORT_DESC])
+        //-- 1-2-2-007 05/04/2022
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
@@ -1012,6 +1020,9 @@ class SiteController extends Controller
             $message.'<br>'.$code.'<br>'.$file.'<br>'.$line.'<br>'.$stack.'<br>'.$previous;
 
 
+        //++ 1-2-2-007 05/04/2022
+        $forSend = true;
+        //-- 1-2-2-007 05/04/2022
         $is_block = false;
         if(mb_strripos($path,'.php') !== false && isset(Yii::$app->user->identity) === false) {
             $is_block = true;
@@ -1022,13 +1033,37 @@ class SiteController extends Controller
         if(mb_strripos($path,'.txt') !== false && isset(Yii::$app->user->identity) === false) {
             $is_block = true;
         }
+        //++ 1-2-2-006 02/04/2022
+        if(mb_strripos($path,'.env') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        if(mb_strripos($path,'.bak') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        if(mb_strripos($path,'.git') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        if(mb_strripos($path,'config') !== false && isset(Yii::$app->user->identity) === false) {
+            $is_block = true;
+        }
+        //-- 1-2-2-006 02/04/2022
 
         if ($is_block) {
             $textError = $textError.'<br> Блокировка!';
         }
 
         //var_dump($textError);
-        Mailer::sendLetter('Ошибки ЯВД', $textError, Yii::$app->params['myEmail']);
+        //++ 1-2-2-007 05/04/2022
+        if(mb_strripos($path,'.ico') !== false) {
+            $forSend = false;
+        }
+
+        if($forSend === true) {
+        //-- 1-2-2-007 05/04/2022
+            Mailer::sendLetter('Ошибки ЯВД', $textError, Yii::$app->params['myEmail']);
+        //++ 1-2-2-007 05/04/2022
+        }
+        //-- 1-2-2-007 05/04/2022
 
         if ($is_block) {
             header('HTTP/1.0 502 Bad Gateway');
