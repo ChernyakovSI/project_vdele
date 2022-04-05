@@ -161,7 +161,21 @@ $this->title = 'Пользователи';
                         <div class="subwindow unactive">
                             <?= User::getTimeLastActivity_s($user['id']) ?>
                         </div>
-                        <div></br></div>
+                        <!-- //++ 1-2-2-007 05/04/2022 -->
+                        <!-- //*- -->
+                        <!--
+                        <div><br></div>
+                        -->
+                        <!-- //*+ -->
+                        <div><?php if($user['email_status'] == 0) { ?>
+                            <div class="subwindow text-color-red">
+                                Не подтверждена регистрация!
+                            </div>
+                            <?php } else {?>
+                            </br>
+                            <?php } ?>
+                        </div>
+                        <!-- //-- 1-2-2-007 05/04/2022 -->
                         <?php if($user['id'] != Yii::$app->user->identity->getId()) { ?>
                         <div class="subwindow">
                             <a href="/dialog?id=<?= $user['id'] ?>">Написать</a>
