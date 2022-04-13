@@ -12,6 +12,9 @@ let divListNotes = document.getElementById('list-notes');
 let divListGoals = document.getElementById('list-goals');
 let divCellNoteTitle = document.getElementById('cell-note-title');
 let divCellGoalTitle = document.getElementById('cell-goal-title');
+//++ 1-2-2-008 11/04/2022
+let setKey = document.getElementById('setKey');
+//-- 1-2-2-008 11/04/2022
 
 let btnCancel = document.getElementById('button-cancel');
 let btnSave = document.getElementById('button-save');
@@ -23,6 +26,9 @@ let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
 
 let thisData = {
     'date' : 0,
+    //++ 1-2-2-008 11/04/2022
+    'isKey' : 0,
+    //-- 1-2-2-008 11/04/2022
     'id_sphere' : 0
 };
 
@@ -37,6 +43,10 @@ $(document).ready( function() {
     thisData['date'] = String(curDate.getTime()).substr(0, 10);
 
     thisData['id_sphere'] = divParamIDSphere.innerText;
+
+    //++ 1-2-2-008 11/04/2022
+    thisData['isKey'] = 0;
+    //-- 1-2-2-008 11/04/2022
 
     runAjax('/goal/get-data-for-day', thisData);
 
@@ -66,6 +76,16 @@ valueSphere.onchange = function(event){
     }
 
 };
+
+//++ 1-2-2-008 11/04/2022
+setKey.onclick = function(e) {
+    if (this.checked === true) {
+        thisData['isKey'] = 1;
+    } else {
+        thisData['isKey'] = 0;
+    }
+};
+//-- 1-2-2-008 11/04/2022
 
 btnClearSphere.onclick = function(e) {
     valueSphere.value = '';
@@ -121,6 +141,19 @@ function render(dataSet) {
     if(dataSet.dayData !== null && dataSet.dayData !== undefined && dataSet.dayData.length > 0) {
         valueSphere.value = dataSet.dayData[0]['name_sphere'];
 
+        //++ 1-2-2-008 11/04/2022
+        DataDay = dataSet.dayData[0];
+
+        thisData['id_sphere'] = DataDay['id_sphere'];
+
+        if (DataDay['is_key'] === '1') {
+            setKey.checked = true;
+            thisData['isKey'] = 1;
+        } else {
+            setKey.checked = false;
+            thisData['isKey'] = 0;
+        }
+        //-- 1-2-2-008 11/04/2022
     }
 
     let strDate = convertTimeStamp(thisData['date']);

@@ -40,6 +40,9 @@ class Day extends ActiveRecord
         $body = $query->Select(['Calendar.`id` as id',
             'Calendar.`date` as date',
             'Calendar.`id_sphere` as id_sphere',
+            //++ 1-2-2-008 11/04/2022
+            'Calendar.`is_key` as is_key',
+            //-- 1-2-2-008 11/04/2022
             'IFNULL(Sphere.`name`, "") as name_sphere',
         ])
             ->from(self::tableName().' as Calendar')
@@ -60,6 +63,9 @@ class Day extends ActiveRecord
         $rec->updated_at = time();
 
         $rec->id_sphere = (integer)$params['id_sphere'];
+        //++ 1-2-2-008 11/04/2022
+        $rec->is_key = (bool)$params['isKey'];
+        //-- 1-2-2-008 11/04/2022
 
         $rec->save();
 

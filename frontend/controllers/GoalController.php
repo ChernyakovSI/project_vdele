@@ -572,12 +572,23 @@ class GoalController extends Controller
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
             $user_id = Yii::$app->user->identity->getId();
-            $date = $_POST['date'];
+            //++ 1-2-2-008 11/04/2022
+            //*-
+            //$date = $_POST['date'];
+            //*+
+            $date = [];
+            //-- 1-2-2-008 11/04/2022
 
             Day::editRecord($_POST, $user_id);
 
             return [
                 "data" => $date,
+                //++ 1-2-2-008 11/04/2022
+                'allNotes' => [],
+                'goals' => [],
+                'dataExp' => [],
+                'dataProf' => [],
+                //-- 1-2-2-008 11/04/2022
                 "error" => "",
             ];
         }

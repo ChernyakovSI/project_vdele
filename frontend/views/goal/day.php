@@ -7,7 +7,7 @@ $this->title = 'День';
 ?>
 
 <div id="paramDate" hidden="hidden"><?= $date ?></div>
-<div id="paramIDSphere" hidden="hidden"><?= 1//($dayData !== null) ? $dayData->id_sphere : 0 ?></div>
+<div id="paramIDSphere" hidden="hidden"><?= ($dayData !== null) ? $dayData->id_sphere : 0 ?></div>
 
 <div class="window window-border window-caption window-h-35">
     <div class="caption-begin window-m-t--9">
@@ -44,8 +44,9 @@ $this->title = 'День';
         </div>
 
         <div class="window window-border main-info-foto">
-            <div class="">
-                <div class="caption-line-10">Специализация:</div>
+            <!-- //++ 1-2-2-008 11/04/2022 -->
+            <div class="w-66 float-left">
+                <div class="caption-line-pr-20">Специализация:</div>
                 <div class="message-wrapper-line-half window-border" id="valueSphereWrap">
                     <input type="text" class="message-text-line" list="list_sphere" id="valueSphere" value=""/>
                     <datalist id="list_sphere">
@@ -57,7 +58,12 @@ $this->title = 'День';
                 <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">х</div>
             </div>
 
-
+            <div class="w-30 float-left m-t-20px">
+                <div class="caption-line-half-10"></div>
+                <input type="checkbox" id="setKey" class="custom-checkbox w-1-5em">
+                <label for="setKey" class="interactive-only">Ключевой день</label>
+            </div>
+            <!-- //-- 1-2-2-008 11/04/2022 -->
 
             <div id="content-notes" hidden="hidden">
 

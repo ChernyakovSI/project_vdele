@@ -468,7 +468,9 @@ function runAjax(url, value, typeReq = 'post'){
         data : value
     }).done(function(data) {
         if (data.error === null || data.error === undefined || data.error === '') {
-            console.log(data.allDaysKey);
+            //++ 1-2-2-008 11/04/2022
+            //console.log(data.allDaysKey);
+            //-- 1-2-2-008 11/04/2022
 
             render(data);
 
