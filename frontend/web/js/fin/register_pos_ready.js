@@ -20,6 +20,9 @@ let valuePeriodTo = document.getElementById('valuePeriodTo');
 let selValueAcc = document.getElementById('selValueAcc');
 let selValueCat = document.getElementById('selValueCat');
 let selValueSub = document.getElementById('selValueSub');
+//++ 1-2-2-009 15/04/2022
+let selIsColored = document.getElementById('setColorOn');
+//-- 1-2-2-009 15/04/2022
 
 let selClearAcc = document.getElementById('selClearAcc');
 let selClearCat = document.getElementById('selClearCat');
@@ -80,6 +83,9 @@ $(document).ready( function() {
     curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
     valuePeriodTo.value = curDate.toISOString().substring(0, 10);
 
+    //++ 1-2-2-009
+    readTable();
+    //-- 1-2-2-009
     resize();
 
     //Context Menu
@@ -346,6 +352,12 @@ valuePeriodTo.onchange = function(event){
 selValueAcc.onchange = function(event) {
     readTable();
 };
+
+//++ 1-2-2-009 15/04/2022
+selIsColored.onchange = function(event) {
+    readTable();
+};
+//-- 1-2-2-009 15/04/2022
 
 selClearAcc.onclick = function(e) {
     selValueAcc.value = '';
@@ -1275,7 +1287,9 @@ function showFormNew(id, type, callback) {
         thisData['AccId'] = data.data.AccId;
         thisData['AccName'] = data.data.AccName;
 
-        console.log(data.data.type);
+        //++ 1-2-2-009 15/04/2022
+        //console.log(data.data.type);
+        //-- 1-2-2-009 15/04/2022
 
         if (data.data.type !== 2) {
             if (data.data.type === 0) {
@@ -1486,6 +1500,11 @@ function rerender(dataSet) {
 
             let divMainCat = document.createElement('div');
             divMainCat.className = 'fin-reg-cat table-text';
+            //++ 1-2-2-009 15/04/2022
+            if(selIsColored.checked === true && data['CatIsColored'] === '1' && data['CatColor'] !== '') {
+                divMainCat.style.backgroundColor = data['CatColor'];
+            }
+            //-- 1-2-2-009 15/04/2022
 
             let divWrapCat = document.createElement('div');
             divWrapCat.className = 'message-wrapper-title';
@@ -1508,6 +1527,11 @@ function rerender(dataSet) {
 
             let divMainSub = document.createElement('div');
             divMainSub.className = 'fin-reg-sub table-text';
+            //++ 1-2-2-009 15/04/2022
+            if(selIsColored.checked === true && data['SubIsColored'] === '1' && data['SubColor'] !== '') {
+                divMainSub.style.backgroundColor = data['SubColor'];
+            }
+            //-- 1-2-2-009 15/04/2022
 
             let divWrapSub = document.createElement('div');
             divWrapSub.className = 'message-wrapper-title';

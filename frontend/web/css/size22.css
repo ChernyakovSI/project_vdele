@@ -456,6 +456,16 @@
     margin-top: 10px;
 }
 
+/* //++ 1-2-2-009 15/04/2022 */
+.m-t-15px {
+    margin-top: 15px;
+}
+
+.m-t-17px {
+    margin-top: 17px;
+}
+/* //-- 1-2-2-009 15/04/2022 */
+
 .m-t-20px {
     margin-top: 20px;
 }

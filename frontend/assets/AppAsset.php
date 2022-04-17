@@ -104,6 +104,11 @@ class AppAsset extends AssetBundle
         if ((\yii::$app->request->url == '/goal/spheres') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/spheres?')) {
             $this->js[] = 'js/goal/spheres-pos-ready.js';
         }
+        //++ 1-2-2-009 15/04/2022
+        if ((\yii::$app->request->url == '/fin/categories') || (mb_substr(\yii::$app->request->url, 0, 15) == 'fin/categories?')) {
+            $this->js[] = 'js/fin/categories_pos_ready.js';
+        }
+        //-- 1-2-2-009 15/04/2022
         if (\yii::$app->request->url == '/site/ac-edit') {
             $this->js[] = 'js/apiGeo.js';
             $this->js[] = 'js/profile/ac-edit_pos_ready.js';

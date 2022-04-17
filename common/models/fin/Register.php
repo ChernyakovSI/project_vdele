@@ -69,6 +69,7 @@ class Register extends ActiveRecord
 
     public static function getAllRegsByUser($id_user, $beginDate = 0, $endDate = 0, $types = [], $option = []){
         $query = new Query();
+        //++ 1-2-2-009 15/04/2022
         $body = $query->Select('Reg.`id` as id,
                                             Reg.`id_account` as id_account,
                                             Acc.`name` as AccName,
@@ -76,14 +77,23 @@ class Register extends ActiveRecord
                                             AccTo.`name` as AccToName,
                                             Reg.`id_category` as id_category,
                                             Cat.`name` as CatName,
+                                            
+                                            Cat.`color` as CatColor,
+                                            Cat.`isColored` as CatIsColored,
+                                            
                                             Reg.`id_subcategory` as id_subcategory,
                                             Sub.`name` as SubName,
+                                            
+                                            Sub.`color` as SubColor,
+                                            Sub.`isColored` as SubIsColored,
+                                            
                                             Reg.`date` as date,
                                             Reg.`is_deleted` as is_deleted,
                                             Reg.`sum` as sum,
                                             Reg.`comment` as comment,
                                             Reg.`id_type` as id_type
                                             ')
+            //-- 1-2-2-009 15/04/2022
             ->from(self::tableName().' as Reg')
 
             ->join('LEFT JOIN', Account::tableName().' as Acc', 'Acc.`id` = Reg.`id_account`')

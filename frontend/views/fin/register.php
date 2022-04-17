@@ -84,6 +84,12 @@ $this->title = 'Финансы: Движения';
                             </datalist>
                         </div>
                         <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
+                        <!-- //++ 1-2-2-009 15/04/2022 -->
+                        <div class="float-left m-t-17px" id="valuColorOnWrap">
+                            <input type="checkbox" id="setColorOn" class="custom-checkbox" checked="true">
+                            <label for="setColorOn" class="interactive-only">Использовать пользовательские цвета</label>
+                        </div>
+                        <!-- //-- 1-2-2-009 15/04/2022 -->
                     </div>
                     <div class="half_third" id="wrapSelCats">
                         <div class="message-wrapper-line-half-70 window-border">

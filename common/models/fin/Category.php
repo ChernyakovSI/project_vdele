@@ -43,6 +43,15 @@ class Category extends ActiveRecord
 
         $newCat->name = strip_tags($data['name']);
 
+        //++ 1-2-2-009 15/04/2022
+        $newCat->color = $data['color'];
+        if($data['isColored'] === 'true') {
+            $newCat->isColored = 1;
+        } else {
+            $newCat->isColored = 0;
+        }
+        //-- 1-2-2-009 15/04/2022
+
         if(isset($data['created_at'])) {
             $newCat->created_at = $data['created_at'];
         }
@@ -94,6 +103,15 @@ class Category extends ActiveRecord
         $Cat = static::findOne(['id' => $id]);
 
         $Cat->name = strip_tags($data['name']);
+
+        //++ 1-2-2-009 15/04/2022
+        $Cat->color = $data['color'];
+        if($data['isColored'] === 'true') {
+            $Cat->isColored = 1;
+        } else {
+            $Cat->isColored = 0;
+        }
+        //-- 1-2-2-009 15/04/2022
 
         if(isset($data['updated_at'])) {
             $Cat->updated_at = $data['updated_at'];
