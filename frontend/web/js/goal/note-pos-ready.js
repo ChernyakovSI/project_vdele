@@ -102,6 +102,9 @@ btnCancel.onclick = function(e) {
 };
 
 btnSave.onclick = function(e) {
+    //++ 1-2-2-010 19/04/2022
+    rebuildURL();
+    //-- 1-2-2-010 19/04/2022
     thisData.text = getBrToNewLines(valueText);
     runAjax('/goal/note-save', thisData);
 };
