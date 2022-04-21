@@ -29,8 +29,13 @@ function DetectURLs(element) {
     let textHTML = element.innerText;
 
     //Сохраняем переносы в форме HTML
-    let urlRegex = /(?:\r\n|\r|\n)/g;
-    textHTML = textHTML.replace(urlRegex, ' <br>');
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //let urlRegex = /(?:\r\n|\r|\n)/g;
+    //*+
+    let urlRegex = getRegRN();
+    //-- 1-2-2-011 21/04/2022
+    textHTML = textHTML.replace(urlRegex, '<br>');
 
     textHTML = deleteLastBr(textHTML);
 
@@ -45,6 +50,11 @@ function convertNewLinesToBr(element) {
     let urlRegex = /<div><br><\/div>/g;
     let textHTML = element.innerHTML;
     textHTML = textHTML.replace(urlRegex, '<br>');
+
+    //++ 1-2-2-011 21/04/2022
+    urlRegex = /<br><\/div>/g;
+    textHTML = textHTML.replace(urlRegex, '<\/div>');
+    //-- 1-2-2-011 21/04/2022
 
     //Первый div заменить переносом
     //++ 1-2-2-010 19/04/2022
@@ -82,7 +92,12 @@ function convertNewLinesToBr(element) {
     textHTML = textHTML.replace(urlRegex, '');
     //-- 1-2-2-010 19/04/2022
 
-    urlRegex = /(?:\r\n|\r|\n)/g;
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //urlRegex = /(?:\r\n|\r|\n)/g;
+    //*+
+    urlRegex = getRegRN();
+    //-- 1-2-2-011 21/04/2022
     textHTML = textHTML.replace(urlRegex, '<br>');
 
     //++ 1-2-2-010 19/04/2022
@@ -91,6 +106,19 @@ function convertNewLinesToBr(element) {
 
     //Удалить послдений br
     textHTML = deleteLastBr(textHTML);
+
+    //++ 1-2-2-011 21/04/2022
+    urlRegex = /<br><span/g;
+    textHTML = textHTML.replace(urlRegex, '<span');
+
+    urlRegex = /&nbsp/g;
+    textHTML = textHTML.replace(urlRegex, '');
+
+    //Заменить все br на обычные переносы, убрать все теги, вернуть br
+    textHTML = getBrToNewLines_Text(textHTML);
+    textHTML = cutTegs(textHTML);
+    textHTML = getNewLinesToBr_Text(textHTML);
+    //-- 1-2-2-011 21/04/2022
 
     element.innerHTML = textHTML;
 }
@@ -103,7 +131,12 @@ function getBrToNewLines(element) {
 
     textHTML = deleteLastBr(textHTML);
 
-    textHTML = textHTML.replace(urlRegex, '\\r\\n');
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //textHTML = textHTML.replace(urlRegex, '\\r\\n');
+    //*+
+    textHTML = textHTML.replace(urlRegex, '\r\n');
+    //-- 1-2-2-011 21/04/2022
 
     return textHTML;
 }
@@ -114,14 +147,24 @@ function getBrToNewLines_Text(textHTML) {
 
     textHTML = deleteLastBr(textHTML);
 
-    textHTML = textHTML.replace(urlRegex, '\\r\\n');
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //textHTML = textHTML.replace(urlRegex, '\\r\\n');
+    //*+
+    textHTML = textHTML.replace(urlRegex, '\r\n');
+    //-- 1-2-2-011 21/04/2022
 
     return textHTML;
 }
 
 function getNewLinesToBr(element) {
     //Конвертируем переносы создаваемые автоматически div в br
-    let urlRegex = /(?:\r\n|\r|\n)/g;
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //let urlRegex = /(?:\r\n|\r|\n)/g;
+    //*+
+    let urlRegex = getRegRN();
+    //-- 1-2-2-011 21/04/2022
     let textHTML = element.innerText;
 
     textHTML = textHTML.replace(urlRegex, '<br>');
@@ -133,7 +176,12 @@ function getNewLinesToBr(element) {
 
 function getNewLinesToBr_Text(textHTML) {
     //Конвертируем переносы создаваемые автоматически div в br
-    let urlRegex = /(?:\r\n|\r|\n)/g;
+    //++ 1-2-2-011 21/04/2022
+    //*-
+    //let urlRegex = /(?:\r\n|\r|\n)/g;
+    //*+
+    let urlRegex = getRegRN();
+    //-- 1-2-2-011 21/04/2022
 
     textHTML = textHTML.replace(urlRegex, '<br>');
 
@@ -172,3 +220,16 @@ function deleteFirstBr(textHTML) {
     return textHTML;
 }
 //-- 1-2-2-010 19/04/2022
+
+//++ 1-2-2-011 21/04/2022
+function cutTegs(textHTML) {
+    let regex = /<\/?(span|div|img|p)\b[^<>]*>/g;
+    textHTML = textHTML.replace(regex, '');
+
+    return textHTML;
+}
+
+function getRegRN() {
+    return /(?:\r\n|\r|\n)/g;
+}
+//-- 1-2-2-011 21/04/2022
