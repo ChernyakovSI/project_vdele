@@ -288,11 +288,25 @@ valueText.onblur = function (event){
     isText = btnText.classList.contains('btn-active');
 
     if(isText == true) {
-        thisData['text'] = getBrToNewLines(this);
-        console.log(thisData['text']);
+        //++ 1-2-2-012 24/04/2022
+        //*-
+        //thisData['text'] = getBrToNewLines(this);
+        //*+
+        thisData['text'] = this.innerHTML.trim();
+        //-- 1-2-2-012 24/04/2022
+        //++ 1-2-2-012 24/04/2022
+        //console.log(thisData['text']);
+        //-- 1-2-2-012 24/04/2022
     } else {
-        thisData['resultText'] = getBrToNewLines(this);
-        console.log(thisData['resultText']);
+        //++ 1-2-2-012 24/04/2022
+        //*-
+        //thisData['resultText'] = getBrToNewLines(this);
+        //*+
+        thisData['resultText'] = this.innerHTML.trim();
+        //-- 1-2-2-012 24/04/2022
+        //++ 1-2-2-012 24/04/2022
+        //console.log(thisData['resultText']);
+        //-- 1-2-2-012 24/04/2022
     }
     convertNewLinesToBr(this);
     DetectURLs(this);
@@ -312,8 +326,10 @@ btnSave.onclick = function(e) {
     generatorURLs();
     thisData['resultText'] = getBrToNewLines(valueText);
 
-    console.log(thisData.text);
-    console.log(thisData.resultText);
+    //++ 1-2-2-012 24/04/2022
+    //console.log(thisData.text);
+    //console.log(thisData.resultText);
+    //-- 1-2-2-012 24/04/2022
 
     runAjax('/goal/dream-save', thisData);
 };

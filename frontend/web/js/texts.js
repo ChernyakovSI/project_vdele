@@ -28,19 +28,36 @@ function DetectURLs(element) {
 
     let textHTML = element.innerText;
 
+    //++ 1-2-2-012 24/04/2022
+    let urlRegex = /&nbsp;/g;
+    textHTML = textHTML.replace(urlRegex, ' ');
+
+    //urlRegex = /(https?:\/\/[^\s]+)/g;
+    urlRegex = getRegURL();
+    textHTML = textHTML.replace(urlRegex, '<a href="$1" class="elem_href">$1</a>')
+    //-- 1-2-2-012 24/04/2022
+
     //Сохраняем переносы в форме HTML
     //++ 1-2-2-011 21/04/2022
     //*-
     //let urlRegex = /(?:\r\n|\r|\n)/g;
     //*+
-    let urlRegex = getRegRN();
+    //
+    //++ 1-2-2-012 24/04/2022
+    //*-
+    //let urlRegex = getRegRN();
+    //*+
+    urlRegex = getRegRN();
+    //-- 1-2-2-012 24/04/2022
     //-- 1-2-2-011 21/04/2022
     textHTML = textHTML.replace(urlRegex, '<br>');
 
+
+
     textHTML = deleteLastBr(textHTML);
 
-    urlRegex = /(https?:\/\/[^\s]+)/g;
-    textHTML = textHTML.replace(urlRegex, '<a href="$1" class="elem_href">$1</a>')
+    //++ 1-2-2-012 24/04/2022
+    //-- 1-2-2-012 24/04/2022
 
     element.innerHTML = textHTML;
 }
@@ -88,8 +105,14 @@ function convertNewLinesToBr(element) {
     //-- 1-2-2-010 19/04/2022
 
     //++ 1-2-2-010 19/04/2022
+    //++ 1-2-2-012 24/04/2022
+    //*-
+    //urlRegex = /&nbsp;/g;
+    //textHTML = textHTML.replace(urlRegex, '');
+    //*+
     urlRegex = /&nbsp;/g;
-    textHTML = textHTML.replace(urlRegex, '');
+    textHTML = textHTML.replace(urlRegex, ' ');
+    //-- 1-2-2-012 24/04/2022
     //-- 1-2-2-010 19/04/2022
 
     //++ 1-2-2-011 21/04/2022
@@ -111,8 +134,15 @@ function convertNewLinesToBr(element) {
     urlRegex = /<br><span/g;
     textHTML = textHTML.replace(urlRegex, '<span');
 
-    urlRegex = /&nbsp/g;
-    textHTML = textHTML.replace(urlRegex, '');
+    //++ 1-2-2-012 24/04/2022
+    urlRegex = /&nbsp;<a/g;
+    textHTML = textHTML.replace(urlRegex, ' <a');
+    //-- 1-2-2-012 24/04/2022
+
+    //++ 1-2-2-012 24/04/2022
+    //urlRegex = /&nbsp/g;
+    //textHTML = textHTML.replace(urlRegex, '');
+    //-- 1-2-2-012 24/04/2022
 
     //Заменить все br на обычные переносы, убрать все теги, вернуть br
     textHTML = getBrToNewLines_Text(textHTML);
@@ -233,3 +263,9 @@ function getRegRN() {
     return /(?:\r\n|\r|\n)/g;
 }
 //-- 1-2-2-011 21/04/2022
+
+//++ 1-2-2-012 24/04/2022
+function getRegURL() {
+    return /(((http|https|ftp|ftps):\/\/){1}([A-Za-zА-Яа-я0-9_-]+(\.)*(\/)*(\@)*(\#)*(\:)*(\?)*(\=)*(\&)*)+)/g;
+}
+//-- 1-2-2-012 24/04/2022
