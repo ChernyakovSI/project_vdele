@@ -98,6 +98,7 @@ btnCancel.onclick = function(e) {
 };
 
 btnSave.onclick = function(e) {
+    //console.log(thisData);
     runAjax('/goal/day-save', thisData);
     window.location.href = '/goal/calendar';
 };
@@ -107,7 +108,9 @@ valueDate.onchange = function(event){
     curDate.setHours(curDate.getHours() + currentTimeZoneOffset);
     thisData['date'] = String(curDate.getTime()).substr(0, 10);
     curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
-    console.log(thisData['date']);
+    //++ 1-2-2-013 25/04/2022
+    //console.log(thisData['date']);
+    //-- 1-2-2-013 25/04/2022
 
     runAjax('/goal/get-data-for-day', thisData);
 };

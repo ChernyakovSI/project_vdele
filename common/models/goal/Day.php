@@ -60,6 +60,16 @@ class Day extends ActiveRecord
     public static function editRecord($params, $id_user) {
         $rec = SELF::getDayByDate((integer)$params['date'], $id_user);
 
+        //++ 1-2-2-013 25/04/2022
+        if(isset($rec) === false) {
+            $rec = new Day;
+
+            $rec->created_at = time();
+            $rec->date = (integer)$params['date'];
+            $rec->id_user = (integer)$id_user;
+        }
+        //-- 1-2-2-013 25/04/2022
+
         $rec->updated_at = time();
 
         $rec->id_sphere = (integer)$params['id_sphere'];
