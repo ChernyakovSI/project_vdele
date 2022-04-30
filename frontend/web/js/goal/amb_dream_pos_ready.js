@@ -63,6 +63,22 @@ let thisData = {
     'resultText': '',
 };
 
+//++ 1-2-2-014 27/04/2022
+let IsModified = false;
+let thisDataBefore = {
+    'date' : 0,
+    'dateGoal' : 0,
+    'id_sphere' : 0,
+    'title' : '',
+    'text' : '',
+    'id_level': 0,
+    'status': 0,
+    'resultType': 0,
+    'resultMark': 0,
+    'resultText': '',
+};
+//-- 1-2-2-014 27/04/2022
+
 $(document).ready( function() {
 
     thisData['date'] = divParamDate.innerText;
@@ -121,6 +137,18 @@ $(document).ready( function() {
         btnResult.click();
     }
 
+    //++ 1-2-2-014 27/04/2022
+    thisDataBefore['date'] = thisData['date'];//getTimeStampFromElement(valueDate);
+    thisDataBefore['dateGoal'] = thisData['dateGoal'];//getTimeStampFromElement(valueDateGoal);
+    thisDataBefore['id_sphere'] = thisData['id_sphere'];
+    thisDataBefore['title'] = thisData['title'];
+    thisDataBefore['text'] = divParamText.innerText;
+    thisDataBefore['id_level'] = thisData['id_level'];
+    thisDataBefore['status'] = thisData['status'];
+    thisDataBefore['resultType'] = thisData['resultType'];
+    thisDataBefore['resultMark'] = thisData['resultMark'];
+    thisDataBefore['resultText'] = divParamResText.innerText;
+    //-- 1-2-2-014 27/04/2022
 });
 
 //Events
@@ -155,16 +183,31 @@ setZachet.onclick = function(e) {
     } else {
         thisData['resultMark'] = 1;
     }
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueMark.onchange = function(event){
     thisData['resultMark'] = valueMark.value;
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueDate.onchange = function(event){
-    let curDate = new Date(this.value);
-    thisData['date'] = String(curDate.getTime()).substr(0, 10);
+    //++ 1-2-2-014 27/04/2022
+    //*-
+    //let curDate = new Date(this.value);
+    //thisData['date'] = String(curDate.getTime()).substr(0, 10);
     //curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+    //*+
+    thisData['date'] = getTimeStampFromElement(this);
+
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueSphere.onchange = function(event){
@@ -183,16 +226,28 @@ valueSphere.onchange = function(event){
     if (idSphere === 0) {
         this.value = '';
     }
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 btnClearSphere.onclick = function(e) {
     valueSphere.value = '';
 
     thisData['id_sphere'] = 0;
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueTitle.onchange = function(event){
     thisData['title'] = this.value.trim();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueLevel.onchange = function(event){
@@ -224,64 +279,148 @@ valueLevel.onchange = function(event){
     } else {
         GroupGoalResult.hidden = true;
     }
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueDateGoal.onchange = function(e) {
-    let curDate = new Date(this.value);
-    thisData['dateGoal'] = String(curDate.getTime()).substr(0, 10);
+    //++ 1-2-2-014 27/04/2022
+    //*-
+    //let curDate = new Date(this.value);
+    //thisData['dateGoal'] = String(curDate.getTime()).substr(0, 10);
+    //*+
+    thisData['dateGoal'] = getTimeStampFromElement(this);
+
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 btnClearLevel.onclick = function(e) {
     valueLevel.value = '';
 
     thisData['id_level'] = 1;
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsArchive.onclick = function(e) {
     renewDataStatus();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsInProcess.onclick = function(e) {
     renewDataStatus();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsDone.onclick = function(e) {
     renewDataStatus();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsUsual.onclick = function(e) {
     renewDataType();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsZachet.onclick = function(e) {
     renewDataType();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueIsExam.onclick = function(e) {
     renewDataType();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 btnCancel.onclick = function(e) {
+    //++ 1-2-2-014 27/04/2022
+    let urlString = '';
+    //-- 1-2-2-014 27/04/2022
+
     if(thisData['id_level'] == 1) {
-        window.location.href = '/goal/dreams';
+        //++ 1-2-2-014 27/04/2022
+        //*-
+        //window.location.href = '/goal/dreams';
+        //*+
+        urlString = '/goal/dreams';
+        //-- 1-2-2-014 27/04/2022
     }
     else if (thisData['id_level'] == 4) {
         if(thisData['result_type'] == 0) {
-            window.location.href = '/goal/goals';
+            //++ 1-2-2-014 27/04/2022
+            //*-
+            //window.location.href = '/goal/goals';
+            //*+
+            urlString = '/goal/goals';
+            //-- 1-2-2-014 27/04/2022
         } else {
-            window.location.href = '/goal/priority';
+            //++ 1-2-2-014 27/04/2022
+            //*-
+            //window.location.href = '/goal/priority';
+            //*+
+            urlString = '/goal/priority';
+            //-- 1-2-2-014 27/04/2022
         }
 
     }
     else if (thisData['id_level'] == 3) {
-        window.location.href = '/goal/intents';
+        //++ 1-2-2-014 27/04/2022
+        //*-
+        //window.location.href = '/goal/intents';
+        //*+
+        urlString = '/goal/intents';
+        //-- 1-2-2-014 27/04/2022
     }
     else if (thisData['id_level'] == 2) {
-        window.location.href = '/goal/wishes';
+        //++ 1-2-2-014 27/04/2022
+        //*-
+        //window.location.href = '/goal/wishes';
+        //*+
+        urlString = '/goal/wishes';
+        //-- 1-2-2-014 27/04/2022
     }
     else if(thisData['id_level'] > 1) {
-        window.location.href = '/goal/dreams?level='+thisData['id_level'];
+        //++ 1-2-2-014 27/04/2022
+        //*-
+        //window.location.href = '/goal/dreams?level='+thisData['id_level'];
+        //*+
+        urlString = '/goal/dreams?level='+thisData['id_level'];
+        //-- 1-2-2-014 27/04/2022
     }
+
+    //++ 1-2-2-014 27/04/2022
+    if (IsModified === false) {
+        window.location.href = urlString;
+    } else {
+        let ans = confirm('Не сохранять изменения?');
+        if(ans === true) {
+            window.location.href = urlString;
+        }
+    }
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueText.onblur = function (event){
@@ -311,6 +450,10 @@ valueText.onblur = function (event){
     convertNewLinesToBr(this);
     DetectURLs(this);
     generatorURLs();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 }
 
 btnSave.onclick = function(e) {
@@ -484,3 +627,65 @@ function renewCaption() {
         divCaption.innerText = "Цель";
     }
 }
+
+//++ 1-2-2-014 27/04/2022
+function WasModified() {
+    IsModified = false;
+
+    let isText = btnText.classList.contains('btn-active');
+    let thisText = '';
+    let thisTextResult = '';
+
+    if(isText == true) {
+        valueText.innerHTML = getNewLinesToBr_Text(thisData['resultText']);
+        convertNewLinesToBr(valueText);
+        DetectURLs(valueText);
+        generatorURLs();
+        thisTextResult = getBrToNewLines(valueText);
+
+        valueText.innerHTML = getNewLinesToBr_Text(thisData['text']);
+        convertNewLinesToBr(valueText);
+        DetectURLs(valueText);
+        generatorURLs();
+        thisText = getBrToNewLines(valueText);
+    } else {
+        valueText.innerHTML = getNewLinesToBr_Text(thisData['text']);
+        convertNewLinesToBr(valueText);
+        DetectURLs(valueText);
+        generatorURLs();
+        thisText = getBrToNewLines(valueText);
+
+        valueText.innerHTML = getNewLinesToBr_Text(thisData['resultText']);
+        convertNewLinesToBr(valueText);
+        DetectURLs(valueText);
+        generatorURLs();
+        thisTextResult = getBrToNewLines(valueText);
+    }
+
+    if ((thisDataBefore['date'] == thisData['date']
+        && thisDataBefore['dateGoal'] == thisData['dateGoal']
+        && thisDataBefore['id_sphere'] == thisData['id_sphere']
+        && thisDataBefore['title'] == thisData['title']
+        && thisDataBefore['text'] == thisText
+        && thisDataBefore['id_level'] == thisData['id_level']
+        && thisDataBefore['status'] == thisData['status']
+        && thisDataBefore['resultType'] == thisData['resultType']
+        && thisDataBefore['resultMark'] == thisData['resultMark']
+        && thisDataBefore['resultText'] == thisTextResult
+    ) == false
+    ) {
+        IsModified = true;
+    }
+
+    if(IsModified === true) {
+        if (btnCancel.classList.contains('col-back-rea-light') === false) {
+            btnCancel.classList.add('col-back-rea-light');
+        }
+    } else {
+        if (btnCancel.classList.contains('col-back-rea-light') === true) {
+            btnCancel.classList.remove('col-back-rea-light');
+        }
+    }
+
+}
+//-- 1-2-2-014 27/04/2022

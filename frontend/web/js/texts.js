@@ -243,7 +243,12 @@ function rebuildURL() {
 
 function deleteFirstBr(textHTML) {
     //Удалить послдений br
-    while (textHTML.slice(4) == '<br>') {
+    //++ 1-2-2-014 27/04/2022
+    //*-
+    //while (textHTML.slice(4) == '<br>') {
+    //*+
+    while (textHTML.slice(0, 4) == '<br>') {
+    //-- 1-2-2-014 27/04/2022
         textHTML = textHTML.substring(4, textHTML.length);
     }
 
@@ -266,6 +271,11 @@ function getRegRN() {
 
 //++ 1-2-2-012 24/04/2022
 function getRegURL() {
-    return /(((http|https|ftp|ftps):\/\/){1}([A-Za-zА-Яа-я0-9_-]+(\.)*(\/)*(\@)*(\#)*(\:)*(\?)*(\=)*(\&)*)+)/g;
+    //++ 1-2-2-014 27/04/2022
+    //*-
+    //return /(((http|https|ftp|ftps):\/\/){1}([A-Za-zА-Яа-я0-9_-]+(\.)*(\/)*(\@)*(\#)*(\:)*(\?)*(\=)*(\&)*)+)/g;
+    //*+
+    return /(((http|https|ftp|ftps):\/\/){1}([A-Za-zА-Яа-я0-9_-]+(\.)*(\/)*(\@)*(\#)*(\:)*(\?)*(\=)*(\&)*(\%)*)+)/g;
+    //-- 1-2-2-014 27/04/2022
 }
 //-- 1-2-2-012 24/04/2022

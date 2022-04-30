@@ -68,6 +68,9 @@ class AppAsset extends AssetBundle
         if ((\yii::$app->request->url == '/goal/note') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/note/')) {
             $this->js[] = 'js/goal/note-pos-ready.js';
             $this->js[] = 'js/texts.js';
+            //++ 1-2-2-014 27/04/2022
+            $this->js[] = 'js/dates.js';
+            //-- 1-2-2-014 27/04/2022
         }
         if ((\yii::$app->request->url == '/goal/priority') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/priority')) {
             $this->js[] = 'js/ajax.js';

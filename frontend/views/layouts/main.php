@@ -166,7 +166,7 @@ $this->registerLinkTag([
 <footer class="footer">
     <div class="container">
         <!-- //++ 1-2-2-007 05/04/2022 -->
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.2.13)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.2.14)</p>
         <!-- //-- 1-2-2-007 05/04/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>

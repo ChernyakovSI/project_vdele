@@ -880,7 +880,12 @@ class GoalController extends Controller
             $AllPriority = Semester::getNearestPriorityForDayAndUser($user_id, $curDate, $next, $option);
         } else {
 
-            $curDate =  strtotime('now');
+            //++ 1-2-2-014 27/04/2022
+            //*-
+            //$curDate =  strtotime('now');
+            //*+
+            $curDate =  strtotime('today');
+            //-- 1-2-2-014 27/04/2022
             $option['level'] = 4;
 
             $AllPriority = Ambition::getPriorityForDayAndUser($user_id, $curDate, $option);

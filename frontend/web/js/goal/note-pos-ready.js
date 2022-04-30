@@ -16,9 +16,11 @@ let divParamID = document.getElementById('paramID');
 let divParamIDSphere = document.getElementById('paramIDSphere');
 let divParamNum = document.getElementById('paramNum');
 
-let nowServer = new Date();
-let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
-nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
+//++ 1-2-2-014 27/04/2022
+//let nowServer = new Date();
+//let currentTimeZoneOffset = nowServer.getTimezoneOffset()/60;
+//nowServer.setHours(nowServer.getHours() - currentTimeZoneOffset);
+//-- 1-2-2-014 27/04/2022
 
 let thisData = {
     'id' : 0,
@@ -28,6 +30,16 @@ let thisData = {
     'text' : '',
     'num' : 0,
 };
+
+//++ 1-2-2-014 27/04/2022
+let IsModified = false;
+let thisDataBefore = {
+    'date' : 0,
+    'id_sphere' : 0,
+    'title' : '',
+    'text' : '',
+};
+//-- 1-2-2-014 27/04/2022
 
 $(document).ready( function() {
     let strDate = convertTimeStampWithTime(divParamDate.innerText);
@@ -51,14 +63,27 @@ $(document).ready( function() {
     DetectURLs(valueText);
     generatorURLs();
 
+    //++ 1-2-2-014 27/04/2022
+    thisDataBefore['date'] = getTimeStampFromElement(valueDate);
+    thisDataBefore['id_sphere'] = thisData['id_sphere'];
+    thisDataBefore['title'] = thisData['title'];
+    thisDataBefore['text'] = divParamText.innerText;
+    //-- 1-2-2-014 27/04/2022
 })
 
 //Events
 
 valueDate.onchange = function(event){
-    let curDate = new Date(this.value);
-    thisData['date'] = String(curDate.getTime()).substr(0, 10);
-    curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+    //++ 1-2-2-014 27/04/2022
+    //*-
+    //let curDate = new Date(this.value);
+    //thisData['date'] = String(curDate.getTime()).substr(0, 10);
+    //curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+    //*+
+    thisData['date'] = getTimeStampFromElement(this);
+
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueSphere.onchange = function(event){
@@ -78,16 +103,27 @@ valueSphere.onchange = function(event){
         this.value = '';
     }
 
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 btnClearSphere.onclick = function(e) {
     valueSphere.value = '';
 
     thisData['id_sphere'] = 0;
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueTitle.onchange = function(event){
     thisData['title'] = this.value.trim();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 };
 
 valueText.onblur = function (event){
@@ -95,10 +131,25 @@ valueText.onblur = function (event){
     convertNewLinesToBr(this);
     DetectURLs(this);
     generatorURLs();
+
+    //++ 1-2-2-014 27/04/2022
+    WasModified();
+    //-- 1-2-2-014 27/04/2022
 }
 
 btnCancel.onclick = function(e) {
-    window.location.href = '/goal/notes';
+    //++ 1-2-2-014 27/04/2022
+    if (IsModified === false) {
+    //-- 1-2-2-014 27/04/2022
+        window.location.href = '/goal/notes';
+    //++ 1-2-2-014 27/04/2022
+    } else {
+        let ans = confirm('Не сохранять изменения?');
+        if(ans === true) {
+            window.location.href = '/goal/notes';
+        }
+    }
+    //-- 1-2-2-014 27/04/2022
 };
 
 btnSave.onclick = function(e) {
@@ -156,3 +207,33 @@ function convertTimeStampWithTime(timestamp) {
 
     return strDate+strTime;
 }
+
+//++ 1-2-2-014 27/04/2022
+function WasModified() {
+    IsModified = false;
+
+    rebuildURL();
+    let thisText = getBrToNewLines(valueText);
+    generatorURLs();
+
+    if ((thisDataBefore['date'] == thisData['date']
+        && thisDataBefore['id_sphere'] == thisData['id_sphere']
+        && thisDataBefore['title'] == thisData['title']
+        && thisDataBefore['text'] == thisText
+         ) == false
+        ) {
+        IsModified = true;
+    }
+
+    if(IsModified === true) {
+        if (btnCancel.classList.contains('col-back-rea-light') === false) {
+            btnCancel.classList.add('col-back-rea-light');
+        }
+    } else {
+        if (btnCancel.classList.contains('col-back-rea-light') === true) {
+            btnCancel.classList.remove('col-back-rea-light');
+        }
+    }
+
+}
+//-- 1-2-2-014 27/04/2022
