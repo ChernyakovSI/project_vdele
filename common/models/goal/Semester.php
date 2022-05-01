@@ -42,8 +42,14 @@ class Semester extends ActiveRecord
         $newRec->id_user = $id_user;
         $newRec->updated_at = time();
 
-        $newRec->date = (integer)$params['date'];
-        $newRec->dateFinish = (integer)$params['dateFinish'];
+        //++ 1-2-3-001 01/05/2022
+        //*-
+        //$newRec->date = (integer)$params['date'];
+        //$newRec->dateFinish = (integer)$params['dateFinish'];
+        //*+
+        $newRec->date = strtotime(date('d.m.Y', (integer)$params['date']));
+        $newRec->dateFinish = strtotime(date('d.m.Y 23:59:59', (integer)$params['dateFinish']));
+        //-- 1-2-3-001 01/05/2022
 
         $newRec->name = strip_tags($params['name']);
 
@@ -62,8 +68,14 @@ class Semester extends ActiveRecord
 
         $rec->updated_at = time();
 
-        $rec->date = (integer)$params['date'];
-        $rec->dateFinish = (integer)$params['dateFinish'];
+        //++ 1-2-3-001 01/05/2022
+        //*-
+        //$rec->date = (integer)$params['date'];
+        //$rec->dateFinish = (integer)$params['dateFinish'];
+        //*+
+        $rec->date = strtotime(date('d.m.Y', (integer)$params['date']));
+        $rec->dateFinish = strtotime(date('d.m.Y 23:59:59', (integer)$params['dateFinish']));
+        //-- 1-2-3-001 01/05/2022
 
         $rec->name = strip_tags($params['name']);
 
