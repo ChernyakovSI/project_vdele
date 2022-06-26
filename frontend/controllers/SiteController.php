@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Dialog;
 use common\models\DialogUsers;
+use common\models\MailUser;
 use common\models\Message;
 use common\models\Tag;
 use Yii;
@@ -25,6 +26,10 @@ use yii\filters\Cors;
 //++ 1-2-2-005 30/03/2022
 use common\models\Mailer;
 //-- 1-2-2-005 30/03/2022
+//++ 1-2-3-002 11/05/2022
+use common\models\Settings;
+use common\models\MailMessage;
+//-- 1-2-3-002 11/05/2022
 
 /**
  * Site controller
@@ -111,6 +116,12 @@ class SiteController extends Controller
                                     'error-user',
                                     'show-error',
                                     //-- 1-2-2-004 18/03/2022
+                                    //++ 1-2-3-002 11/05/2022
+                                    'settings',
+                                    'settings-save',
+                                    'sender-panel',
+                                    'sender-panel-post',
+                                    //-- 1-2-3-002 11/05/2022
                                     ],
                         'controllers' => ['site'],
                         'allow' => true,
@@ -1093,4 +1104,64 @@ class SiteController extends Controller
     }
     //-- 1-2-2-004 18/03/2022
 
+    //++ 1-2-3-002 11/05/2022
+    public function actionSettings() {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $Settings = Settings::getUsersSettings($user_id);
+        $tab = 1;
+
+        return $this->render('settings',
+            compact('Settings', 'tab', 'user_id')
+        );
+    }
+
+    public function actionSettingsSave() {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $Settings = $_POST;
+
+            if((integer)$user_id !== 0) {
+                $sem = Settings::editSet($user_id, $Settings);
+            }
+
+            return [
+                "data" => $sem,
+                "error" => "",
+            ];
+        }
+    }
+
+    public function actionSenderPanel() {
+        $user_id = Yii::$app->user->identity->getId();
+        $isAdmin = User::isAdmin($user_id);
+        if($isAdmin == false) {
+            return $this->render('errorUser');
+        }
+
+        return $this->render('senderPanel');
+    }
+
+    public function actionSenderPanelPost() {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $Settings = $_POST;
+
+            if((integer)$user_id !== 0) {
+                $rec = MailMessage::addRecord($Settings, $user_id);
+            }
+
+            return [
+                "data" => $rec,
+                "error" => "",
+            ];
+        }
+    }
+    //-- 1-2-3-002 11/05/2022
+
 }
+

@@ -48,7 +48,7 @@ $this->registerLinkTag([
         ],
     ]);
     $menuItems = [
-        //['label' => 'Главная', 'url' => ['/']]
+        ['label' => 'Это тестовый сайт!!!', 'url' => ['/']]
     ];
 
     if (Yii::$app->user->isGuest) {
@@ -58,6 +58,9 @@ $this->registerLinkTag([
 
         $id = Yii::$app->user->id;
         $curUser = User::findIdentity($id);
+        //++ 1-2-3-002 11/05/2022
+        $isAdmin = User::isAdmin($id);
+        //-- 1-2-3-002 11/05/2022
         if (!User::activated($curUser->email))
         {
             $menuItems[] = ['label' => '(!) Выслать ссылку активации', 'url' => ['/site/send-confirm-letter']];
@@ -99,9 +102,27 @@ $this->registerLinkTag([
             ['label' => 'Мои команды', 'url' => ['/team']],
         ];*/
         $ac = new Ac();
-        $menuItems[] = ['label' => $ac->getFIO(Yii::$app->user->identity->getId(), true), 'items' => [
-            ['label' => 'Выйти', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']],
-        ]];
+        //++ 1-2-3-002 11/05/2022
+        $lastItems = [];
+        if($isAdmin === true) {
+            $lastItems[] = ['label' => 'Рассылка', 'url' => ['/sender-panel']];
+        }
+
+        if (User::activated($curUser->email))
+        {
+            $lastItems[] =  ['label' => 'Настройки', 'url' => ['/settings']];
+        }
+        $lastItems[] =  ['label' => 'Выйти', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']];
+        //-- 1-2-3-002 11/05/2022
+
+        //++ 1-2-3-002 11/05/2022
+        //*-
+        //$menuItems[] = ['label' => $ac->getFIO(Yii::$app->user->identity->getId(), true), 'items' => [
+        //    ['label' => 'Выйти', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']],
+        //]];
+        //*+
+        $menuItems[] = ['label' => $ac->getFIO(Yii::$app->user->identity->getId(), true), 'items' => $lastItems];
+        //-- 1-2-3-002 11/05/2022
 
             /*['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];*/
             /*'<li>'
@@ -166,7 +187,7 @@ $this->registerLinkTag([
 <footer class="footer">
     <div class="container">
         <!-- //++ 1-2-2-007 05/04/2022 -->
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.3.1)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.3.2)</p>
         <!-- //-- 1-2-2-007 05/04/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>

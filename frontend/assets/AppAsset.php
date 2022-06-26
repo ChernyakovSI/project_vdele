@@ -140,6 +140,16 @@ class AppAsset extends AssetBundle
         if (\yii::$app->request->url == '/login') {
             $this->js[] = 'js/site/logIn.js';
         }
+        //++ 1-2-3-002 11/05/2022
+        if (\yii::$app->request->url == '/sender-panel') {
+            $this->js[] = 'js/site/senderPanel.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        if (\yii::$app->request->url == '/settings') {
+            $this->js[] = 'js/site/settings.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        //-- 1-2-3-002 11/05/2022
         if (\yii::$app->request->url == '/signup') {
             $this->js[] = 'js/site/signUp.js';
         }

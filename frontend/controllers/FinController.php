@@ -15,6 +15,9 @@ use common\models\fin\Reports;
 use yii\web\Controller;
 use Yii;
 use yii\filters\AccessControl;
+//++ 1-2-3-002 11/05/2022
+use common\models\Settings;
+//-- 1-2-3-002 11/05/2022
 
 class FinController extends Controller
 {
@@ -981,6 +984,9 @@ class FinController extends Controller
 
             $subs = [];
 
+            //++ 1-2-3-002 11/05/2022
+            $Settings = Settings::getUsersSettings($id_user);
+            //-- 1-2-3-002 11/05/2022
 
             return $this->render('register', [
                 'id_user' => $id_user,
@@ -994,6 +1000,9 @@ class FinController extends Controller
                 'subs' => $subs,
                 'periodFrom' => $periodFrom,
                 'periodTo' => $periodTo
+                //++ 1-2-3-002 11/05/2022
+                , 'Settings' => $Settings,
+                //-- 1-2-3-002 11/05/2022
             ]);
         }
 

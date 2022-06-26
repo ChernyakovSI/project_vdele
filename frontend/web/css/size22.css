@@ -99,6 +99,16 @@
     clear:both;
 }
 
+/* ++ 1-2-3-002 11/05/2022 */
+.container-wrap-rw-62px {
+    height: 100%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: auto;
+    grid-template-rows: 62px auto;
+}
+/* -- 1-2-3-002 11/05/2022 */
+
 .content-hide {
     position: relative;
     overflow-y: hidden;
@@ -344,6 +354,12 @@
 .h-46px {
     height: 46px;
 }
+
+/* ++ 1-2-3-002 11/05/2022 */
+.h-68px {
+    height: 68px;
+}
+/* -- 1-2-3-002 11/05/2022 */
 
 .h-70px {
     height: 70px;

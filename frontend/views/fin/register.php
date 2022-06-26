@@ -86,7 +86,13 @@ $this->title = 'Финансы: Движения';
                         <div class="window-button-in-panel window-border gap-v-13" id="selClearAcc">х</div>
                         <!-- //++ 1-2-2-009 15/04/2022 -->
                         <div class="float-left m-t-17px" id="valuColorOnWrap">
+                            <!-- ++ 1-2-3-002 11/05/2022
+                            //*-
                             <input type="checkbox" id="setColorOn" class="custom-checkbox" checked="true">
+                            //*+
+                            -->
+                            <input type="checkbox" id="setColorOn" class="custom-checkbox" <?= (isset($Settings['b_fin_UserColor']))?(($Settings['b_fin_UserColor'] === '1')?'checked':''):'' ?>>
+                            <!-- -- 1-2-3-002 11/05/2022 -->
                             <label for="setColorOn" class="interactive-only">Использовать пользовательские цвета</label>
                         </div>
                         <!-- //-- 1-2-2-009 15/04/2022 -->

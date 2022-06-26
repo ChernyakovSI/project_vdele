@@ -707,6 +707,19 @@ class User extends ActiveRecord implements IdentityInterface
 
     }
 
+    //++ 1-2-3-002 11/05/2022
+    public static function isAdmin($id){
+        $thisUser = User::find()->where(['id' => (int)$id])->one();
+        if (isset($thisUser)) {
+            return ($thisUser->id_role === 3 ? true : false);
+        }
+        else {
+            return false;
+        }
+
+    }
+    //-- 1-2-3-002 11/05/2022
+
     public static function wrapURL($url, $insreadAt = ''){
 
         if($insreadAt != '' && stripos($url, '@') === 0){
