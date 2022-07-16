@@ -267,6 +267,9 @@ class User extends ActiveRecord implements IdentityInterface
                 'user.name as name',
                 'user.middlename as middlename',
                 'user.email as email',
+                //++ 1-2-3-003 28/06/2022
+                'user.username as username',
+                //-- 1-2-3-003 28/06/2022
             ];
 
             $query = User::find()->select($columns_array);
@@ -293,9 +296,20 @@ class User extends ActiveRecord implements IdentityInterface
                     $userFIO = $userFIO." ".$model->middlename;
             }
 
-            if ($userFIO == "") {
+            //++ 1-2-3-003 28/06/2022
+            //*-
+            //if ($userFIO == "") {
+            //+
+            if (trim($userFIO) == "") {
+            //-- 1-2-3-003 28/06/2022
                 $userFIO = $model->email;
             }
+
+            //++ 1-2-3-003 28/06/2022
+            if (trim($userFIO) == "") {
+                $userFIO = $model->username;
+            }
+            //-- 1-2-3-003 28/06/2022
 
             return trim($userFIO);
 

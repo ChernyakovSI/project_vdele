@@ -106,6 +106,9 @@ $this->registerLinkTag([
         $lastItems = [];
         if($isAdmin === true) {
             $lastItems[] = ['label' => 'Рассылка', 'url' => ['/sender-panel']];
+            //++ 1-2-3-003 28/06/2022
+            $lastItems[] = ['label' => 'Логи', 'url' => ['/logs']];
+            //-- 1-2-3-003 28/06/2022
         }
 
         if (User::activated($curUser->email))
@@ -187,7 +190,7 @@ $this->registerLinkTag([
 <footer class="footer">
     <div class="container">
         <!-- //++ 1-2-2-007 05/04/2022 -->
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.3.2)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.3.3)</p>
         <!-- //-- 1-2-2-007 05/04/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>

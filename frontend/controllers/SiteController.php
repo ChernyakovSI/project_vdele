@@ -30,6 +30,9 @@ use common\models\Mailer;
 use common\models\Settings;
 use common\models\MailMessage;
 //-- 1-2-3-002 11/05/2022
+//++ 1-2-3-003 28/06/2022
+use common\models\Log;
+//-- 1-2-3-003 28/06/2022
 
 /**
  * Site controller
@@ -122,6 +125,9 @@ class SiteController extends Controller
                                     'sender-panel',
                                     'sender-panel-post',
                                     //-- 1-2-3-002 11/05/2022
+                                    //++ 1-2-3-003 28/06/2022
+                                    'logs',
+                                    //-- 1-2-3-003 28/06/2022
                                     ],
                         'controllers' => ['site'],
                         'allow' => true,
@@ -1162,6 +1168,66 @@ class SiteController extends Controller
         }
     }
     //-- 1-2-3-002 11/05/2022
+
+    //++ 1-2-3-003 28/06/2022
+    public function actionLogs() {
+        $user_id = Yii::$app->user->identity->getId();
+        $isAdmin = User::isAdmin($user_id);
+        if($isAdmin == false) {
+            return $this->render('errorUser');
+        }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $data = Yii::$app->request->post();
+
+            $startDate =  $data['dateFrom'];
+            $finishDate =  $data['dateTo'];
+
+            $option = [];
+            if($data['user'] > 0) {
+                $option['user'] = $data['user'];
+            }
+            if($data['status'] !== '') {
+                $option['status'] = $data['status'];
+            }
+
+            $Logs = Log::getLogs($startDate, $finishDate, $option);
+
+            $dates = [];
+
+            foreach ($Logs as $log) {
+                $dates[$log['id']] = date("d.m.Y H:i:s", $log['created_at']);
+            }
+
+            $users = Log::getUsers($startDate, $finishDate);
+            $statuses = Log::getStatuses($periodFrom, $periodTo);
+
+            return [
+                'error' => '',
+                "data" => $Logs,
+                'dates' => $dates,
+                'pathNotes' => 'log/',
+                'users' => $users,
+                'statuses' => $statuses
+            ];
+
+        } else {
+
+            $periodFrom = strtotime(date('Y-m-d 00:00:00'));
+            $periodTo = strtotime(date('Y-m-d 23:59:59'));
+
+            $users = Log::getUsers($periodFrom, $periodTo);
+            $statuses = Log::getStatuses($periodFrom, $periodTo);
+            $logs = Log::getLogs($periodFrom, $periodTo);
+
+            return $this->render('logs',
+                compact('users', 'statuses', 'logs', 'periodFrom', 'periodTo'));
+
+        }
+    }
+    //-- 1-2-3-003 28/06/2022
 
 }
 
