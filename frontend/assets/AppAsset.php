@@ -82,6 +82,7 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/dates.js';
             $this->js[] = 'js/goal/results-pos-ready.js';
         }
+        //++ 1-2-3-004 26/07/2022
         if ((\yii::$app->request->url == '/goal/task') || (mb_substr(\yii::$app->request->url, 0, 11) == '/goal/task/')) {
             $this->js[] = 'js/dates.js';
             $this->js[] = 'js/texts.js';
@@ -91,6 +92,7 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/dates.js';
             $this->js[] = 'js/goal/tasks-pos-ready.js';
         }
+        //-- 1-2-3-004 26/07/2022
         if (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/wishes') {
             $this->js[] = 'js/goal/amb-dreams-pos-ready.js';
             $this->js[] = 'js/dates.js';
@@ -148,6 +150,12 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/ajax.js';
         }
         //-- 1-2-3-003 28/06/2022
+        //++ 1-2-3-005 27/07/2022
+        if (mb_substr(\yii::$app->request->url, 0, 8) == '/public/') {
+            $this->js[] = 'js/site/public.js';
+            $this->js[] = 'js/texts.js';
+        }
+        //-- 1-2-3-005 27/07/2022
         //++ 1-2-3-002 11/05/2022
         if (\yii::$app->request->url == '/sender-panel') {
             $this->js[] = 'js/site/senderPanel.js';

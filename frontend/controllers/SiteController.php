@@ -33,6 +33,9 @@ use common\models\MailMessage;
 //++ 1-2-3-003 28/06/2022
 use common\models\Log;
 //-- 1-2-3-003 28/06/2022
+//++ 1-2-3-005 27/07/2022
+use common\models\goal\Note;
+//-- 1-2-3-005 27/07/2022
 
 /**
  * Site controller
@@ -85,6 +88,9 @@ class SiteController extends Controller
                                     'error-user',
                                     'show-error',
                                     //-- 1-2-2-004 18/03/2022
+                                    //++ 1-2-3-005 27/07/2022
+                                    'public',
+                                    //-- 1-2-3-005 27/07/2022
                                     ],
                         'controllers' => ['site'],
                         'allow' => true,
@@ -1228,6 +1234,27 @@ class SiteController extends Controller
         }
     }
     //-- 1-2-3-003 28/06/2022
+
+    //++ 1-2-3-005 27/07/2022
+    public function actionPublic()
+    {
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $data = Note::getNoteById($params->get('n'));
+            if ($data->isPublic == false) {
+                return $this->render('errorUser');
+            }
+        }
+        else {
+            return $this->render('errorUser');
+        }
+
+        return $this->render('public', [
+            "data" => $data,
+        ]);
+
+    }
+    //-- 1-2-3-005 27/07/2022
 
 }
 
