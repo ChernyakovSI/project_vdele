@@ -57,6 +57,9 @@ class Note extends ActiveRecord
         } else {
             $id_sphere = 0;
         }
+        //++ 1-2-3-006 28/07/2022
+        $isPublic = (integer)$option['isPublic'];
+        //-- 1-2-3-006 28/07/2022
 
         $query = new Query();
         $body = $query->Select(['Note.`id` as id',
@@ -74,6 +77,11 @@ class Note extends ActiveRecord
         if ($id_sphere > 0) {
             $strWhere = $strWhere.' AND Note.`id_sphere` = '.$id_sphere;
         }
+        //++ 1-2-3-006 28/07/2022
+        if ($isPublic > 0) {
+            $strWhere = $strWhere.' AND Note.`isPublic` = 1';
+        }
+        //-- 1-2-3-006 28/07/2022
 
         if($sortDate === true) {
             $body = $body->where($strWhere)->orderBy('Note.`date`');
@@ -108,6 +116,10 @@ class Note extends ActiveRecord
 
         $newRec->title = strip_tags($params['title']);
         $newRec->text = strip_tags($params['text']);
+
+        //++ 1-2-3-006 28/07/2022
+        $newRec->isPublic = (integer)$params['isPublic'];
+        //-- 1-2-3-006 28/07/2022
 
         $newRec->num = self::getNumByUser($id_user);
 
@@ -144,6 +156,10 @@ class Note extends ActiveRecord
 
         $rec->title = strip_tags($params['title']);
         $rec->text = strip_tags($params['text']);
+
+        //++ 1-2-3-006 28/07/2022
+        $rec->isPublic = (integer)$params['isPublic'];
+        //-- 1-2-3-006 28/07/2022
 
         $rec->save();
 

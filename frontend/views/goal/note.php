@@ -11,6 +11,10 @@ $this->title = 'Заметка';
 <div id="paramNum" hidden="hidden"><?= $data->num ?></div>
 <div id="paramID" hidden="hidden"><?= $data->id ?></div>
 <div id="paramIDSphere" hidden="hidden"><?= $data->id_sphere ?></div>
+<!-- ++ 1-2-3-006 28/07/2022 -->
+<div id="paramPublic" hidden="hidden"><?= $data->isPublic ?></div>
+<div id="paramDomain" hidden="hidden"><?= Yii::$app->params['doman'] ?></div>
+<!-- -- 1-2-3-006 28/07/2022 -->
 
 <div class="window window-border window-caption window-h-35">
     <div class="caption-begin window-m-t--9">
@@ -55,6 +59,21 @@ $this->title = 'Заметка';
                 </div>
                 <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">х</div>
             </div>
+
+            <!-- ++ 1-2-3-006 28/07/2022 -->
+            <div class="clearfix"></div>
+            <div class="half_width">
+                <div class="w-100 m-t-20px">
+                    <div class="caption-line-half-20"></div>
+                    <div class="">
+                        <input type="checkbox" id="setPublic" class="custom-checkbox">
+                        <label for="setPublic" id="setPublicLink" class="interactive-only">Опубликовать</label>
+                    </div>
+                    <div class="caption-line-half-20 visible-not" id="PublicURLgap"></div>
+                    <div class="" id="PublicURL"></div>
+                </div>
+            </div>
+            <!-- -- 1-2-3-006 28/07/2022 -->
 
             <div class="clearfix"></div>
             <div class="caption-line-10">Заголовок:</div><div class="message-wrapper-line window-border" id="valueTitleWrap">

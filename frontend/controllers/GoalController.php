@@ -23,7 +23,9 @@ use common\models\fin\Reports;
 use common\models\fin\Account;
 use common\models\goal\Ambition;
 use common\models\goal\Semester;
+//++ 1-2-3-004 26/07/2022
 use common\models\goal\Task;
+//-- 1-2-3-004 26/07/2022
 
 class GoalController extends Controller
 {
@@ -65,9 +67,12 @@ class GoalController extends Controller
                                         'semester-save',
                                         'semester-del',
                                         'results',
+                                        //++ 1-2-3-004 26/07/2022
                                         'tasks',
                                         'tasks-all',
-                                        'task',],
+                                        'task',
+                                        //-- 1-2-3-004 26/07/2022
+                                        ],
                         'controllers' => ['goal'],
                         'allow' => true,
                         'roles' => ['@','ws://'],
@@ -189,6 +194,10 @@ class GoalController extends Controller
             $finishDate = $_POST['dateTo'];
 
             $option['id_sphere'] = $_POST['id_sphere'];
+
+            //++ 1-2-3-006 28/07/2022
+            $option['isPublic'] = $_POST['isPublic'];
+            //-- 1-2-3-006 28/07/2022
 
             $allNotes = Note::getAllNotesByFilter($user_id, $startDate, $finishDate, false, $option);
 
@@ -1049,6 +1058,7 @@ class GoalController extends Controller
         ]);
     }
 
+    //++ 1-2-3-004 26/07/2022
     public function actionTasks()
     {
         $getData = Yii::$app->request->get();
@@ -1084,13 +1094,15 @@ class GoalController extends Controller
         $startDate =  strtotime("-1 month 00:00");
         $finishDate =  strtotime("+1 month 23:59:59");
 
-        $status = [0];
+        /*$status = [0];
         $option = [
             'status' => $status
-        ];
+        ];*/
+        $option = [];
 
         $AllTasks = Task::getTasksForPeriodAndUser($user_id, $startDate, $finishDate, $option);
 
+        $statuses = Task::getStatuses();
         $spheres = Sphere::getAllSpheresByUser($user_id);
         $types = Task::getTypes();
 
@@ -1100,6 +1112,7 @@ class GoalController extends Controller
             "periodTo" => $finishDate,
             "spheres" => $spheres,
             "types" => $types,
+            "statuses" => $statuses,
         ]);
     }
 
@@ -1146,11 +1159,13 @@ class GoalController extends Controller
             $id_task = 0;
         }
 
+        $statuses = Task::getStatuses();
+
         $spheres = Sphere::getAllSpheresByUser($user_id);
         $types = Task::getTypes();
 
         $goals = Ambition::getActualGoalsForUser($user_id);
-        $tasks = [];
+        $tasks = Task::getActualTasksForUser($user_id);
 
         return $this->render('task', [
             "data" => $data,
@@ -1165,9 +1180,11 @@ class GoalController extends Controller
             "tasks" => $tasks,
             "id_sphere" => $id_sphere,
             "id_goal" => $id_goal,
-            "id_task" => $id_task
+            "id_task" => $id_task,
+            "statuses" => $statuses
         ]);
     }
+    //-- 1-2-3-004 26/07/2022
 
 }
 

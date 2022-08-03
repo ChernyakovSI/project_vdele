@@ -10,6 +10,10 @@ let valueSphere = document.getElementById('selValueSphere');
 let list_sphere = document.getElementById('list_sphere_sel');
 let btnClearSphere = document.getElementById('ClearSphere');
 
+//++ 1-2-3-006 28/07/2022
+let setIsPublic = document.getElementById('setIsPublic');
+//-- 1-2-3-006 28/07/2022
+
 let clickTime;
 let modeColored = 0;
 let arrDeleting = [];
@@ -23,6 +27,9 @@ let thisData = {
     'dateFrom' : 0,
     'dateTo' : 0,
     'id_sphere' : 0,
+    //++ 1-2-3-006 28/07/2022
+    'isPublic' : 0,
+    //-- 1-2-3-006 28/07/2022
 };
 
 $(document).ready( function() {
@@ -79,6 +86,14 @@ btnClearSphere.onclick = function(e) {
 
     RenewPeriod();
 };
+
+//++ 1-2-3-006 28/07/2022
+setIsPublic.onchange = function(event){
+    thisData['isPublic'] = Number(setIsPublic.checked);
+
+    RenewPeriod();
+};
+//-- 1-2-3-006 28/07/2022
 
 //------------------------------------------------------------------------------Helpers
 

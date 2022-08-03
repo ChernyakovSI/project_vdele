@@ -61,6 +61,19 @@ $this->title = 'Заметки';
                         </div>
                         <div class="window-button-in-panel window-border gap-v-13" id="ClearSphere">х</div>
                     </div>
+
+                    <!-- ++ 1-2-3-006 28/07/2022 -->
+                    <div class="column-33">
+                        <div class="w-100 m-t-20px">
+                            <div class="caption-line-half-20"></div>
+                            <div class="">
+                                <input type="checkbox" id="setIsPublic" class="custom-checkbox">
+                                <label for="setIsPublic" id="setPublicLink" class="interactive-only">Только опубликованные</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- -- 1-2-3-006 28/07/2022 -->
+
                 </div>
             </div>
 

@@ -1,10 +1,21 @@
 let valueDate = document.getElementById('valueDate');
 let divParamDate = document.getElementById('paramDate');
 let divParamText = document.getElementById('paramText');
+//++ 1-2-3-006 28/07/2022
+let divParamPublic = document.getElementById('paramPublic');
+let paramDomain = document.getElementById('paramDomain');
+//-- 1-2-3-006 28/07/2022
 
 let valueSphere = document.getElementById('valueSphere');
 let list_sphere = document.getElementById('list_sphere');
 let btnClearSphere = document.getElementById('ClearSphere');
+
+//++ 1-2-3-006 28/07/2022
+let setPublic = document.getElementById('setPublic');
+let setPublicLink = document.getElementById('setPublicLink');
+let PublicURL = document.getElementById('PublicURL');
+let PublicURLGap = document.getElementById('PublicURLgap');
+//-- 1-2-3-006 28/07/2022
 
 let valueTitle = document.getElementById('valueTitle');
 let valueText = document.getElementById('valueText');
@@ -29,6 +40,9 @@ let thisData = {
     'title' : '',
     'text' : '',
     'num' : 0,
+    //++ 1-2-3-006 28/07/2022
+    'isPublic' : 0,
+    //-- 1-2-3-006 28/07/2022
 };
 
 //++ 1-2-2-014 27/04/2022
@@ -38,6 +52,9 @@ let thisDataBefore = {
     'id_sphere' : 0,
     'title' : '',
     'text' : '',
+    //++ 1-2-3-006 28/07/2022
+    'isPublic' : 0,
+    //-- 1-2-3-006 28/07/2022
 };
 //-- 1-2-2-014 27/04/2022
 
@@ -55,6 +72,9 @@ $(document).ready( function() {
         thisData['title'] = valueTitle.value;
         thisData['text'] = valueText.value;
         thisData['num'] = divParamNum.innerText;
+        //++ 1-2-3-006 28/07/2022
+        thisData['isPublic'] = Number(divParamPublic.innerText);
+        //-- 1-2-3-006 28/07/2022
     }
 
     valueText.innerHTML = getNewLinesToBr(divParamText);
@@ -69,6 +89,11 @@ $(document).ready( function() {
     thisDataBefore['title'] = thisData['title'];
     thisDataBefore['text'] = divParamText.innerText;
     //-- 1-2-2-014 27/04/2022
+    //++ 1-2-3-006 28/07/2022
+    thisDataBefore['isPublic'] = Number(divParamPublic.innerText);
+
+    renewPublic(true);
+    //-- 1-2-3-006 28/07/2022
 })
 
 //Events
@@ -160,7 +185,37 @@ btnSave.onclick = function(e) {
     runAjax('/goal/note-save', thisData);
 };
 
+//++ 1-2-3-006 28/07/2022
+setPublic.onchange = function(e) {
+    renewPublic();
+};
+//-- 1-2-3-006 28/07/2022
+
 //Helpers
+
+//++ 1-2-3-006 28/07/2022
+function renewPublic(fromDB = false) {
+    if(fromDB == false) {
+        thisData['isPublic'] = Number(setPublic.checked);
+    } else {
+        setPublic.checked = thisData['isPublic']
+    }
+
+    if (thisData['isPublic'] == 1 && thisData['id'] > 0) {
+        setPublicLink.innerText = 'Снять публикацию';
+        PublicURL.innerText = 'Опубликовано по ссылке: ' + paramDomain.innerText + 'public/' + thisData['id'];
+        if(PublicURLGap.classList.contains('visible-not') == true) {
+            PublicURLGap.classList.remove('visible-not');
+        }
+    } else {
+        setPublicLink.innerText = 'Опубликовать';
+        PublicURL.innerText = '';
+        if(PublicURLGap.classList.contains('visible-not') == false) {
+            PublicURLGap.classList.add('visible-not');
+        }
+    }
+};
+//-- 1-2-3-006 28/07/2022
 
 function runAjax(url, value, typeReq = 'post'){
     floatingCirclesGMain.hidden = false;
@@ -220,6 +275,9 @@ function WasModified() {
         && thisDataBefore['id_sphere'] == thisData['id_sphere']
         && thisDataBefore['title'] == thisData['title']
         && thisDataBefore['text'] == thisText
+        //++ 1-2-3-006 28/07/2022
+        && thisDataBefore['isPublic'] == thisData['isPublic']
+        //-- 1-2-3-006 28/07/2022
          ) == false
         ) {
         IsModified = true;
