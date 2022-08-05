@@ -64,7 +64,13 @@ class Log extends ActiveRecord
                                             'IFNULL(usr.`username`, "") as user'
         ])
             ->from(self::tableName().' as Log')
-            ->join('INNER JOIN', User::tableName().' as usr', 'usr.`id` = Log.`id_user`')
+            //++ 1-2-3-007 05/08/2022
+            //*-
+            //->join('INNER JOIN', User::tableName().' as usr', 'usr.`id` = Log.`id_user`')
+            //*+
+            ->join('LEFT JOIN', User::tableName().' as usr', 'usr.`id` = Log.`id_user`')
+            ->limit(30)
+            //-- 1-2-3-007 05/08/2022
 
             ->where(['Log.`is_deleted`' => 0]);
 
@@ -84,6 +90,11 @@ class Log extends ActiveRecord
         if(isset($option['status'])){
             $body = $body->andWhere('Log.`status` = "'.$option['status'].'"');
         }
+        //++ 1-2-3-007 05/08/2022
+        if(isset($option['URL'])){
+            $body = $body->andWhere('Log.`url` LIKE "%'.$option['URL'].'%"');
+        }
+        //-- 1-2-3-007 05/08/2022
 
         $result = $body->orderBy('Log.`created_at` DESC')->all();
 
@@ -137,4 +148,31 @@ class Log extends ActiveRecord
 
         return $result;
     }
+
+    //++ 1-2-3-007 05/08/2022
+    public static function getURLs($beginDate = 0, $endDate = 0){
+        $query = new Query();
+        $body = $query->Select([
+            'Log.`url` as URL',
+        ])->distinct()
+            ->from(self::tableName().' as Log')
+
+            ->where(['Log.`is_deleted`' => 0]);
+
+        if ($beginDate > 0 || $endDate > 0){
+            if ($beginDate > $endDate){
+                $temp = $beginDate;
+                $beginDate = $endDate;
+                $endDate = $temp;
+            }
+            $body = $body->andWhere('Log.`created_at` >= '.$beginDate)
+                ->andWhere('Log.`created_at` <= '.$endDate);
+        }
+
+        $result = $body->orderBy('Log.`URL`')->all();
+
+        return $result;
+    }
+    //-- 1-2-3-007 05/08/2022
+
 }

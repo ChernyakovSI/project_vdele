@@ -68,7 +68,17 @@ $colNameDate = 'Дата';
                     <div class="window-button-in-panel window-border gap-v-13" id="ClearStatus">х</div>
                 </div>
                 <div class="half_third">
-
+                    <!-- ++ 1-2-3-007 05/08/2022 -->
+                    <div class="caption-line-simple-28">URL:</div><div class="message-wrapper-line-half window-border" id="valueURLWrap">
+                        <input type="text" class="message-text-line" list="list_URL" id="valueURL" value=""/>
+                        <datalist id="list_URL">
+                            <?php foreach ($URLs as $URL): ?>
+                                <option data-id=<?= $URL['URL'] ?>><?= $URL['URL'] ?></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                    </div>
+                    <div class="window-button-in-panel window-border gap-v-13" id="ClearURL">х</div>
+                    <!-- -- 1-2-3-007 05/08/2022 -->
                 </div>
             </div>
         </div>

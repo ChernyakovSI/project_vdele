@@ -5,19 +5,34 @@ let valuePeriodFrom = document.getElementById('valuePeriodFrom');
 let valuePeriodTo = document.getElementById('valuePeriodTo');
 let valueUser = document.getElementById('valueUser');
 let valueStatus = document.getElementById('valueStatus');
+//++ 1-2-3-007 05/08/2022
+let valueURL = document.getElementById('valueURL');
+//-- 1-2-3-007 05/08/2022
 
 let list_user = document.getElementById('list_user');
 let list_status = document.getElementById('list_status');
+//++ 1-2-3-007 05/08/2022
+let list_URL = document.getElementById('list_URL');
+//-- 1-2-3-007 05/08/2022
 
 let btnClearUser = document.getElementById('ClearUser');
 let btnClearStatus = document.getElementById('ClearStatus');
+//++ 1-2-3-007 05/08/2022
+let btnClearURL = document.getElementById('ClearURL');
+//-- 1-2-3-007 05/08/2022
 
 let dListLogs = document.getElementById('list-logs');
 
 let thisData = {
     'dateFrom' : 0,
     'dateTo' : 0,
-    'user' : 0,
+    //++ 1-2-3-007 05/08/2022
+    //*-
+    //'user' : 0,
+    //*+
+    'user' : -1,
+    'URL' : '',
+    //-- 1-2-3-007 05/08/2022
     'status' : ''
 };
 
@@ -57,20 +72,41 @@ valuePeriodTo.onchange = function(event){
 
 valueUser.onchange = function(event){
     let curUser = this.value.trim();
-    let idUser = 0;
+    //++ 1-2-3-007 05/08/2022
+    //*-
+    //let idUser = 0;
+    //*+
+    let idUser = -1;
+    //-- 1-2-3-007 05/08/2022
 
     let children = list_user.childNodes;
     for(child in children){
-        if(children[child].nodeName === 'OPTION' && children[child].innerText === curUser) {
+        //++ 1-2-3-007 05/08/2022
+        //*-
+        //if(children[child].nodeName === 'OPTION' && children[child].innerText === curUser) {
+        //*+
+        if(children[child].nodeName === 'OPTION' && children[child].innerText.trim() === curUser) {
+        //-- 1-2-3-007 05/08/2022
             idUser = children[child].getAttribute('data-id');
             thisData['user'] = idUser;
             break;
         }
     }
 
-    if (idUser === 0) {
+    //++ 1-2-3-007 05/08/2022
+    //*-
+    //if (idUser === 0) {
+    //*+
+    if (idUser === -1) {
+    //-- 1-2-3-007 05/08/2022
         this.value = '';
     }
+
+    //++ 1-2-3-007 05/08/2022
+    if (idUser == 0) {
+        this.value = '< не авторизован >';
+    }
+    //-- 1-2-3-007 05/08/2022
 
     runAjax('/logs', thisData);
 };
@@ -78,7 +114,12 @@ valueUser.onchange = function(event){
 btnClearUser.onclick = function(e) {
     valueUser.value = '';
 
-    thisData['user'] = 0;
+    //++ 1-2-3-007 05/08/2022
+    //*-
+    //thisData['user'] = 0;
+    //*+
+    thisData['user'] = -1;
+    //-- 1-2-3-007 05/08/2022
 
     runAjax('/logs', thisData);
 };
@@ -110,6 +151,36 @@ btnClearStatus.onclick = function(e) {
 
     runAjax('/logs', thisData);
 };
+
+//++ 1-2-3-007 05/08/2022
+valueURL.onchange = function(event){
+    let curURL = this.value.trim();
+    let idURL = '';
+
+    let children = list_URL.childNodes;
+    for(child in children){
+        if(children[child].nodeName === 'OPTION' && children[child].innerText.trim() === curURL) {
+            idURL = children[child].getAttribute('data-id');
+            thisData['URL'] = idURL;
+            break;
+        }
+    }
+
+    if (idURL === '') {
+        this.value = '';
+    }
+
+    runAjax('/logs', thisData);
+};
+
+btnClearURL.onclick = function(e) {
+    valueURL.value = '';
+
+    thisData['URL'] = '';
+
+    runAjax('/logs', thisData);
+};
+//-- 1-2-3-007 05/08/2022
 
 //Helpers
 

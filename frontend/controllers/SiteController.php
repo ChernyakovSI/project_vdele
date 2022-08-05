@@ -1192,12 +1192,22 @@ class SiteController extends Controller
             $finishDate =  $data['dateTo'];
 
             $option = [];
-            if($data['user'] > 0) {
-                $option['user'] = $data['user'];
+            //++ 1-2-3-007 05/08/2022
+            //*-
+            //if($data['user'] > 0) {
+            //*+
+            if((integer)$data['user'] >= 0) {
+            //-- 1-2-3-007 05/08/2022
+                $option['user'] = (integer)$data['user'];
             }
             if($data['status'] !== '') {
                 $option['status'] = $data['status'];
             }
+            //++ 1-2-3-007 05/08/2022
+            if($data['URL'] !== '') {
+                $option['URL'] = $data['URL'];
+            }
+            //-- 1-2-3-007 05/08/2022
 
             $Logs = Log::getLogs($startDate, $finishDate, $option);
 
@@ -1208,7 +1218,13 @@ class SiteController extends Controller
             }
 
             $users = Log::getUsers($startDate, $finishDate);
-            $statuses = Log::getStatuses($periodFrom, $periodTo);
+            //++ 1-2-3-007 05/08/2022
+            //*-
+            //$statuses = Log::getStatuses($periodFrom, $periodTo);
+            //*+
+            $statuses = Log::getStatuses($startDate, $finishDate);
+            $URLs = Log::getURLs($startDate, $finishDate);
+            //-- 1-2-3-007 05/08/2022
 
             return [
                 'error' => '',
@@ -1217,6 +1233,9 @@ class SiteController extends Controller
                 'pathNotes' => 'log/',
                 'users' => $users,
                 'statuses' => $statuses
+                //++ 1-2-3-007 05/08/2022
+                , 'URLs' => $URLs
+                //-- 1-2-3-007 05/08/2022
             ];
 
         } else {
@@ -1227,9 +1246,17 @@ class SiteController extends Controller
             $users = Log::getUsers($periodFrom, $periodTo);
             $statuses = Log::getStatuses($periodFrom, $periodTo);
             $logs = Log::getLogs($periodFrom, $periodTo);
+            //++ 1-2-3-007 05/08/2022
+            $URLs = Log::getURLs($periodFrom, $periodTo);
+            //-- 1-2-3-007 05/08/2022
 
             return $this->render('logs',
-                compact('users', 'statuses', 'logs', 'periodFrom', 'periodTo'));
+                //++ 1-2-3-007 05/08/2022
+                //*-
+                //compact('users', 'statuses', 'logs', 'periodFrom', 'periodTo'));
+                //*+
+                compact('users', 'statuses', 'logs', 'periodFrom', 'periodTo', 'URLs'));
+                //-- 1-2-3-007 05/08/2022
 
         }
     }
