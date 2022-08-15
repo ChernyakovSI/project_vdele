@@ -44,7 +44,16 @@ class Category extends ActiveRecord
         $newCat->name = strip_tags($data['name']);
 
         //++ 1-2-2-009 15/04/2022
-        $newCat->color = $data['color'];
+        //++ 1-2-3-008 15/08/2022
+        if(isset($data['color'])) {
+        //-- 1-2-3-008 15/08/2022
+            $newCat->color = $data['color'];
+        //++ 1-2-3-008 15/08/2022
+        } else {
+            $newCat->color = '';
+        }
+        //-- 1-2-3-008 15/08/2022
+
         if($data['isColored'] === 'true') {
             $newCat->isColored = 1;
         } else {

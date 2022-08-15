@@ -594,7 +594,12 @@ function runAjax(url, value, mode = 1, loader = 0, typeReq = 'post'){
                 deleteForm();
             }
             if(mode === 0 || mode === 1){
-                rerender(data);
+                //++ 1-2-3-008 15/08/2022
+                //*-
+                //rerender(data);
+                //*+
+                render(data);
+                //-- 1-2-3-008 15/08/2022
             }
             if(mode === 2){
                 rerenderListCats(data.categories);
@@ -1421,7 +1426,12 @@ function rerenderListCats(dataSet) {
     }
 }
 
-function rerender(dataSet) {
+//++ 1-2-3-008 15/08/2022
+//*-
+//function rerender(dataSet) {
+//*+
+function render(dataSet) {
+//-- 1-2-3-008 15/08/2022
     let listReg = document.getElementById('list-register');
     listReg.innerHTML = '';
 
