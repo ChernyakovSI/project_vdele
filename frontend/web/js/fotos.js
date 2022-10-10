@@ -357,7 +357,12 @@ function showFormNew(callback) {
 
     floatingCirclesG.hidden = true;
 
-    thisData = {
+    //++ 1-2-4-001 31/08/2022
+    //*-
+    //thisData = {
+    //*+
+    thisDataFotos = {
+    //-- 1-2-4-001 31/08/2022
         'files' : allFiles,
     };
 
@@ -368,8 +373,14 @@ function showFormNew(callback) {
     };
 
     function initBtnConfirm() {
-        thisData.files = allFiles;
-        complete(thisData);
+        //++ 1-2-4-001 31/08/2022
+        //*-
+        //thisData.files = allFiles;
+        //complete(thisData);
+        //*+
+        thisDataFotos.files = allFiles;
+        complete(thisDataFotos);
+        //-- 1-2-4-001 31/08/2022
     }
 
     function complete(value) {

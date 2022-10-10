@@ -13,6 +13,9 @@ use yii\db\Query;
 use Yii;
 use common\models\User;
 
+//album 1 - фото в альбоме профиля
+//album 2 - карточки запоминания
+
 class Image extends ActiveRecord
 {
     public $imageFile;
@@ -95,6 +98,10 @@ class Image extends ActiveRecord
         $image->created_at = time();
         $image->updated_at = time();
         $image->save();
+
+        //++ 1-2-4-001 31/08/2022
+        return $image->id;
+        //-- 1-2-4-001 31/08/2022
     }
 
     public function getPathAvatarForUser($id_user)
@@ -148,6 +155,10 @@ class Image extends ActiveRecord
         $id_user = Yii::$app->user->identity->getId();
         $num = $this->getNextNumForUser($id_user, $id_album);
 
+        //++ 1-2-4-001 31/08/2022
+        $id = 0;
+        //-- 1-2-4-001 31/08/2022
+
         if(isset($this->imageFile)) {
             $extension = $this->getExtension($this->imageFile['name']);
             $src = ''.$id_user.'_'.$id_album.'_'.$num. '.' . $extension;
@@ -160,7 +171,13 @@ class Image extends ActiveRecord
 
             if (move_uploaded_file($this->imageFile['tmp_name'], $fullPath)) {
                 // Далее можно сохранить название файла в БД и т.п.
-                $this->addImage($id_user, $id_album, $num, $src);
+
+                //++ 1-2-4-001 31/08/2022
+                //!-
+                //$this->addImage($id_user, $id_album, $num, $src);
+                //!+
+                $id = $this->addImage($id_user, $id_album, $num, $src);
+                //-- 1-2-4-001 31/08/2022
             }
         }
         else
@@ -168,7 +185,12 @@ class Image extends ActiveRecord
             $fullPath = '';
         }
 
-        return [$fullPath, $this->imageFile['tmp_name']];
+        //++ 1-2-4-001 31/08/2022
+        //!-
+        //return [$fullPath, $this->imageFile['tmp_name']];
+        //!+
+        return [$fullPath, $this->imageFile['tmp_name'], $id];
+        //-- 1-2-4-001 31/08/2022
 
     }
 
@@ -290,6 +312,11 @@ class Image extends ActiveRecord
         elseif ($id_album === 1) {
             return 'main/';
         }
+        //++ 1-2-4-001 31/08/2022
+        elseif ($id_album === 2) {
+            return 'cards/';
+        }
+        //-- 1-2-4-001 31/08/2022
         else {
             return 'error/';
         }

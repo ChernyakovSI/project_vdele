@@ -229,3 +229,48 @@
 .foto-input .label:hover i,.foto-input .label:hover .title {
     color:#000
 }
+
+/* ++ 1-2-4-001 31/08/2022 */
+/*Строчный Элемент загрузки фотографий input file*/
+
+.foto-input-string .form-group {
+    padding:0em;
+    margin:0em
+}
+
+.foto-input-string input[type=file] {
+    outline:0;
+    opacity:0;
+    pointer-events:none;
+    user-select:none
+}
+
+.foto-input-string .label {
+    border:2px dashed grey;
+    border-radius:5px;
+    display:block;
+    /*padding:1.2em;*/
+    transition:border 300ms ease;
+    cursor:pointer;
+    text-align:center
+}
+
+.foto-input-string .label i {
+    display:block;
+    font-size:42px;
+    padding-bottom:16px
+}
+
+.foto-input-string .label i,.foto-input-string .label .title {
+    color:grey;
+    transition:200ms color
+}
+
+.foto-input-string .label:hover {
+    border:2px solid #000
+}
+
+.foto-input-string .label:hover i,.foto-input-string .label:hover .title {
+    color:#000
+}
+/* -- 1-2-4-001 31/08/2022 */

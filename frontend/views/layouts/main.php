@@ -98,6 +98,11 @@ $this->registerLinkTag([
                     ['label' => ''],['label' => ''],
                     ['label' => 'Написать в поддержку', 'url' => ['/dialog?id=1']],
             ]];
+            //++ 1-2-4-001 31/08/2022
+            $menuItems[] = ['label' => 'Обучение', 'items' => [
+                ['label' => 'Карточки памяти', 'url' => ['/edu/cards']],
+            ]];
+            //-- 1-2-4-001 31/08/2022
         }
         /*$menuItems = [
             ['label' => 'Мои задачи', 'url' => ['/task']],
@@ -192,7 +197,7 @@ $this->registerLinkTag([
 <footer class="footer">
     <div class="container">
         <!-- //++ 1-2-2-007 05/04/2022 -->
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.3.8)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.2.4.1)</p>
         <!-- //-- 1-2-2-007 05/04/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>

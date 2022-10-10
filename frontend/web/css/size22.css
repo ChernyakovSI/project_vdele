@@ -354,6 +354,12 @@
     height: 30px;
 }
 
+/* ++ 1-2-4-001 31/08/2022 */
+.h-37px {
+    height: 37px;
+}
+/* -- 1-2-4-001 31/08/2022 */
+
 .h-40px {
     height: 40px;
 }
@@ -430,6 +436,12 @@
 .like-table {
     display: table;
 }
+
+/* ++ 1-2-4-001 31/08/2022 */
+.m-0 {
+    margin: 0;
+}
+/* -- 1-2-4-001 31/08/2022 */
 
 .m-l-3px {
     margin-left: 3px;
@@ -644,6 +656,16 @@
     margin-top: 10px;
 }
 
+/* ++ 1-2-4-001 31/08/2022 */
+.p-0 {
+    padding: 0;
+}
+
+.p-8px {
+    padding: 8px;
+}
+/* -- 1-2-4-001 31/08/2022 */
+
 .p-10px {
     padding: 10px;
 }
@@ -843,6 +865,15 @@
 
     margin-top: 10px;
 }
+
+/* ++ 1-2-4-001 31/08/2022 */
+.wrapper-line {
+    width: 100%;
+    padding: 6px; /* the container will keep the padding untouched */
+    max-height: 145px; /* added padding to the height of the .message-text */
+    float: left;
+}
+/* -- 1-2-4-001 31/08/2022 */
 
 
 

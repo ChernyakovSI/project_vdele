@@ -52,6 +52,13 @@
     max-width: 250px;
 }
 
+/* ++ 1-2-4-001 31/08/2022 */
+.img-wrap-33 {
+    max-height: 33px;
+    max-width: 60px;
+}
+/* -- 1-2-4-001 31/08/2022 */
+
 .preview-remove {
     opacity: 0;
     width: 20px;

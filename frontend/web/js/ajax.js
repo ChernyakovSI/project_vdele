@@ -4,11 +4,20 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
         floatingCirclesGMain.hidden = false;
     }
 
+    //++ 1-2-4-001 31/08/2022
+    if(value.hasOwnProperty('files') == true) {
+        delete value.files;
+        restartAjax();
+        return false;
+    }
+    //-- 1-2-4-001 31/08/2022
+
     $.ajax({
         type : typeReq,
         url : url,
         data : value
     }).done(function(data) {
+        //console.log(data);
         if (data.error === null || data.error === undefined || data.error === '') {
 
             render(data);
@@ -30,7 +39,8 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
             floatingCirclesGMain.hidden = true;
         }
     }).fail(function() {
-        //console.log(value);
+        console.log('JError');
+        console.log(data);
         if(floatingCirclesGMain != undefined) {
             floatingCirclesGMain.hidden = true;
         }

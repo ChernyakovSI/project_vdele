@@ -47,6 +47,21 @@ class AppAsset extends AssetBundle
 
     public function init()
     {
+        //++ 1-2-4-001 31/08/2022
+        if ((\yii::$app->request->url == '/edu/card') || (mb_substr(\yii::$app->request->url, 0, 10) == '/edu/card/')) {
+            $this->js[] = 'js/edu/card.js';
+            $this->js[] = 'js/texts.js';
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/ajax.js';
+            $this->js[] = 'js/table.js';
+            $this->js[] = 'js/files.js';
+        }
+        if ((\yii::$app->request->url == '/edu/cards') || (mb_substr(\yii::$app->request->url, 0, 11) == '/edu/cards/')) {
+            $this->js[] = 'js/edu/cards.js';
+            $this->js[] = 'js/texts.js';
+            $this->js[] = 'js/dates.js';
+        }
+        //-- 1-2-4-001 31/08/2022
         if ((\yii::$app->request->url == '/goal/dream') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream/')
             || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream?')){
             $this->js[] = 'js/dates.js';
