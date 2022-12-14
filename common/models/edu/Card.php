@@ -71,8 +71,18 @@ class Card extends ActiveRecord
 
         $strWhere = ' Grp.`id_user` = '.(integer)$id_user;
         $strWhere = $strWhere.' AND Grp.`is_deleted` = 0';
-        $strWhere = $strWhere.' AND Grp.`date` >= '.(integer)$startDate;
-        $strWhere = $strWhere.' AND Grp.`date` <= '.(integer)$finishDate;
+        //++ 1-2-4-002 10/10/2022
+        if((integer)$startDate !== 0) {
+        //-- 1-2-4-002 10/10/2022
+            $strWhere = $strWhere.' AND Grp.`date` >= '.(integer)$startDate;
+        //++ 1-2-4-002 10/10/2022
+        }
+        if((integer)$finishDate !== 0) {
+        //-- 1-2-4-002 10/10/2022
+            $strWhere = $strWhere.' AND Grp.`date` <= '.(integer)$finishDate;
+        //++ 1-2-4-002 10/10/2022
+        }
+        //-- 1-2-4-002 10/10/2022
         $strWhere = $strWhere.' AND Grp.`parent` = '.$parent;
         if ($id_sphere > 0) {
             $strWhere = $strWhere.' AND Grp.`id_sphere` = '.$id_sphere;
@@ -155,6 +165,133 @@ class Card extends ActiveRecord
 
         return $result;
     }
+
+    //++ 1-2-4-002 10/10/2022
+    public static function getGroupByUserAndNumWithIerarchElements($id_user, $num, $option = []){
+        $result = [];
+
+        if($num !== 0) {
+            $head = self::find()->where(['id_user' => $id_user, 'num' => $num])->one();
+        } else {
+            if(isset($option['id']) == true) {
+                $head = self::getCardById($option['id']);
+            } else {
+                $result['head'] = [];
+                $result['cards'] = [];
+                return $result;
+            }
+        }
+
+        $result['head'] = $head;
+
+        if (!(isset($head['id']) && $head['id'] > 0)) {
+            $result['cards'] = [];
+            return $result;
+        }
+
+        if(isset($option['is_active'])) {
+            $is_active = (integer)$option['is_active'];
+        } else {
+            $is_active = -1;
+        }
+
+        if(isset($option['except'])) {
+            $except = $option['except'];
+        } else {
+            $except = [];
+        }
+
+        $arrIdGroup = [];
+        array_push($arrIdGroup, $head['id']);
+
+        $wasNewElement = true;
+        $i=0;
+        while ($wasNewElement == true and $i<4) {
+            $wasNewElement = false;
+            $i=$i+1;
+
+            $query = new Query();
+            $body = $query->Select(['`Group`.`id` as id'
+            ])
+                ->from('edu_member_group as `Group`');
+
+            $strWhere = ' `Group`.`id_user` = '.(integer)$id_user;
+            $strWhere = $strWhere.' AND `Group`.`is_deleted` = 0';
+            $strWhere = $strWhere.' AND `Group`.`parent` IN('.implode(",", $arrIdGroup).')';
+            if ($is_active > -1) {
+                $strWhere = $strWhere.' AND `Group`.`is_active` = '.$is_active;
+            }
+            if (count($except) > 0) {
+                $strWhere = $strWhere.' AND NOT `Group`.`id` IN ('.implode(",", $except).')';
+            }
+            $body = $body->where($strWhere);
+            $allID = $body->all();
+
+            foreach ($allID as $tID) {
+                if(array_search($tID['id'], $arrIdGroup) == false) {
+                    $wasNewElement = true;
+                    array_push($arrIdGroup, $tID['id']);
+                }
+            }
+        }
+
+        $query = new Query();
+        $body = $query->Select(['Card.`id` as id',
+            'Card.`is_active` as is_active',
+            'Card.`value1` as value1',
+            'Card.`value2` as value2',
+            'Card.`image1` as image1',
+            'Card.`image2` as image2',
+            'Card.`id_image1` as image1_id',
+            'Card.`id_image2` as image2_id',
+            'Img1.`src` as image1_src',
+            'Img2.`src` as image2_src',
+        ])
+            ->from('edu_member_card as Card')
+            ->join('LEFT JOIN', Image::tableName().' as Img1', 'Img1.`id` = Card.`id_image1`')
+            ->join('LEFT JOIN', Image::tableName().' as Img2', 'Img2.`id` = Card.`id_image2`');
+
+        $strWhere = ' Card.`id_user` = '.(integer)$id_user;
+        $strWhere = $strWhere.' AND Card.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND Card.`parent` IN ('.implode(",", $arrIdGroup).')';
+        if ($is_active > -1) {
+            $strWhere = $strWhere.' AND Card.`is_active` = '.$is_active;
+        }
+        if (count($except) > 0) {
+            $strWhere = $strWhere.' AND NOT Card.`id` IN ('.implode(",", $except).')';
+        }
+
+        $body = $body
+            ->where($strWhere)
+            ->orderBy('Card.`id`');
+
+
+        $cards = $body->all();
+        $result['cards'] = $cards;
+
+        return $result;
+    }
+
+    public static function getAllActiveGroup($id_user) {
+        $query = new Query();
+        $body = $query->Select(['`Group`.`id` as id',
+            '`Group`.`title` as title',
+            '`Group`.`num` as num'
+        ])
+            ->from('edu_member_group as Group');
+
+        $strWhere = ' `Group`.`id_user` = '.(integer)$id_user;
+        $strWhere = $strWhere.' AND `Group`.`is_deleted` = 0';
+        $strWhere = $strWhere.' AND `Group`.`is_active` = 1';
+
+        $body = $body
+            ->where($strWhere)
+            ->orderBy('`Group`.`title`');
+        $result = $body->all();
+
+        return $result;
+    }
+    //-- 1-2-4-002 10/10/2022
 
     public static function addRecord($params, $cards, $id_user) {
         $newRec = new Card();

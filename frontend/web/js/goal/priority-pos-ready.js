@@ -243,7 +243,12 @@ function resizeTable(children, mode = 0) {
     }
 }
 
-function render(data) {
+//++ 1-2-4-002 10/10/2022
+//*-
+//function render(data) {
+//*+
+function render(data, Parameters) {
+//-- 1-2-4-002 10/10/2022
     window.location.href = '/goal/priority?date=' + thisData['dateFinish'] + '&next=1';
 }
 

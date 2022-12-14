@@ -184,7 +184,12 @@ btnClearURL.onclick = function(e) {
 
 //Helpers
 
-function render(dataSet) {
+//++ 1-2-4-002 10/10/2022
+//*-
+//function render(dataSet) {
+//*+
+function render(dataSet, Parameters) {
+//-- 1-2-4-002 10/10/2022
 
     dListLogs.innerHTML = '';
 

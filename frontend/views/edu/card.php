@@ -41,6 +41,9 @@ $this->title = 'Карточка запоминания';
         <div id="panel-colored" class="window window-border window-caption-full window-button-panel FIO-foto h-46px">
             <div class="window-button-in-panel window-border" id="button-save">Сохранить</div>
             <div class="window-button-in-panel window-border" id="button-cancel">Отменить</div>
+            <!-- ++ 1-2-4-002 10/10/2022 -->
+            <div class="window-button-in-panel window-border" id="button-trainer">Настроить тренажер</div>
+            <!-- -- 1-2-4-002 10/10/2022 -->
         </div>
 
         <div class="window window-border main-info-foto">

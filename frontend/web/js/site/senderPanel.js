@@ -21,7 +21,12 @@ btnSave.onclick = function(e) {
 
 //Helpers
 
-function render(data){
+//++ 1-2-4-002 10/10/2022
+//*-
+//function render(data){
+//*+
+function render(data, Parameters) {
+//-- 1-2-4-002 10/10/2022
     console.log(data)
     alert( "Письмо принято в очередь на отправку" );
     valueTitle.value = '';

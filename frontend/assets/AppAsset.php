@@ -56,6 +56,13 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/table.js';
             $this->js[] = 'js/files.js';
         }
+        //++ 1-2-4-002 10/10/2022
+        if ((\yii::$app->request->url == '/edu/card-practice') || (mb_substr(\yii::$app->request->url, 0, 19) == '/edu/card-practice/')) {
+            $this->js[] = 'js/edu/cardPractice.js';
+            $this->js[] = 'js/ajax.js';
+            $this->js[] = 'js/table.js';
+        }
+        //-- 1-2-4-002 10/10/2022
         if ((\yii::$app->request->url == '/edu/cards') || (mb_substr(\yii::$app->request->url, 0, 11) == '/edu/cards/')) {
             $this->js[] = 'js/edu/cards.js';
             $this->js[] = 'js/texts.js';

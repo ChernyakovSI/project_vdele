@@ -12,6 +12,8 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
     }
     //-- 1-2-4-001 31/08/2022
 
+    //console.log(value)
+
     $.ajax({
         type : typeReq,
         url : url,
@@ -20,7 +22,15 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
         //console.log(data);
         if (data.error === null || data.error === undefined || data.error === '') {
 
-            render(data);
+            //++ 1-2-4-002 10/10/2022
+            //*-
+            //render(data);
+            //*+
+            addParameters = {};
+            addParameters.url = url;
+
+            render(data, addParameters);
+            //-- 1-2-4-002 10/10/2022
 
         } else {
             if (data.error !== '' || data.error !== null || data.error !== undefined){
@@ -28,9 +38,16 @@ function runAjax(url, value, floatingCirclesGMain = undefined, typeReq = 'post')
                 if(data.data['error'] !== null) {
                     showError(data.data);
                 } else {
-                    //showError(data);
-                    //console.log(data);
-                    render(data);
+
+                    //++ 1-2-4-002 10/10/2022
+                    //*-
+                    //render(data);
+                    //*+
+                    addParameters = {};
+                    addParameters.url = url;
+
+                    render(data, addParameters);
+                    //-- 1-2-4-002 10/10/2022
                 }
             }
         }

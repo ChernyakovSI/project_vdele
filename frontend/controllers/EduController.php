@@ -24,6 +24,11 @@ class EduController extends Controller
                             'card',
                             'card-save',
                             'foto-card-load',
+                            //++ 1-2-4-002 10/10/2022
+                            'card-practice',
+                            'card-get-groups',
+                            'card-get-cards',
+                            //-- 1-2-4-002 10/10/2022
                             ],
                         'controllers' => ['edu'],
                         'allow' => true,
@@ -140,4 +145,92 @@ class EduController extends Controller
             'error' => 'error'
         ];
     }
+
+    //++ 1-2-4-002 10/10/2022
+    public function actionCardPractice()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $option = [];
+            $option['is_active'] = 1;
+
+            $data = Card::getGroupByUserAndNumWithIerarchElements($user_id, $params->get('n'), $option);
+            $sphere = Sphere::getSphereById($data['head']['id_sphere']);
+        }
+        else {
+            $head = new Card();
+            $data['head'] = $head;
+            $data['cards'] = [];
+            $sphere = new Sphere();
+        }
+
+        $groups = Card::getAllActiveGroup($user_id);
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        $path = '/data/img/cards/';
+
+        return $this->render('cardPractice', [
+            "data" => $data['head'],
+            "groups" => $groups,
+            "cards" => $data['cards'],
+            "spheres" => $spheres,
+            "sphere" => $sphere,
+            "path" => $path,
+        ]);
+    }
+
+    public function actionCardGetGroups()
+    {
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+
+            $data = $_POST;
+
+            $option = [];
+            $option['is_active'] = 1;
+            if($data['sphere_id'] > 0){
+                $option['id_sphere'] = $data['sphere_id'];
+            }
+
+            $groups = Card::getAllGroupsByFilter($user_id, 0, 0, false, $option);
+
+            return [
+                "groups" => $groups,
+                "error" => "",
+            ];
+        }
+
+    }
+
+    public function actionCardGetCards()
+    {
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+
+            $data = $_POST;
+
+            $option = [];
+            $option['is_active'] = 1;
+            if($data['id'] > 0){
+                $option['id'] = $data['id'];
+            }
+
+            $cards = Card::getGroupByUserAndNumWithIerarchElements($user_id, 0, $option);
+
+            return [
+                "cards" => $cards,
+                "error" => "",
+            ];
+        }
+
+    }
+    //-- 1-2-4-002 10/10/2022
 }

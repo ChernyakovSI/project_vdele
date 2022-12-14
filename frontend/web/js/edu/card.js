@@ -14,6 +14,9 @@ let btnCancel = document.getElementById('button-cancel');
 let btnSave = document.getElementById('button-save');
 let btnClearSphere = document.getElementById('ClearSphere');
 let btnAddCard = document.getElementById('add-card');
+//++ 1-2-4-002 10/10/2022
+let btnTrainer = document.getElementById('button-trainer');
+//-- 1-2-4-002 10/10/2022
 
 let list_sphere = document.getElementById('list_sphere');
 let list_card = document.getElementById('list-cards');
@@ -162,6 +165,19 @@ btnAddCard.onclick = function(e) {
 function afterEditValue(elem) {
     loadThisCards();
 }
+
+//++ 1-2-4-002 10/10/2022
+btnTrainer.onclick = function(e) {
+    if (IsModified === false) {
+        window.location.href = '/edu/card-practice/' + thisData['id'];
+    } else {
+        let ans = confirm('Не сохранять изменения?');
+        if(ans === true) {
+            window.location.href = '/edu/card-practice/' + hisData['id'];
+        }
+    }
+}
+//-- 1-2-4-002 10/10/2022
 
 //Helpers --------------------------------------------------------------------------------------------------------------
 
@@ -315,7 +331,7 @@ function loadThisCards() {
 
     }
 
-    console.log(thisCards)
+    //console.log(thisCards)
     /*for (str in thisCards) {
         console.log('value1 = ' + thisCards[str]['value1'])
     }*/
@@ -358,7 +374,12 @@ function WasModified() {
 
 }
 
-function render(data) {
+//++ 1-2-4-002 10/10/2022
+//*-
+//function render(data) {
+//*+
+function render(data, Parameters) {
+//-- 1-2-4-002 10/10/2022
     IsModified = false;
 
     closeForm()

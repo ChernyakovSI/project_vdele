@@ -167,7 +167,12 @@ function WasModified() {
     }
 }
 
-function render(data){
+//++ 1-2-4-002 10/10/2022
+//*-
+//function render(data){
+//*+
+function render(data, Parameters) {
+//-- 1-2-4-002 10/10/2022
     let urlString = '/';
 
     window.location.href = urlString;
