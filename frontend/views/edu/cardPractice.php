@@ -214,9 +214,21 @@ $tab = 1;
 
         <div class="window window-border main-info-foto">
             <div class="trainer-content" id="fisrtString">
+
+                <!-- //++ 1-2-4-003 20/12/2022
+                //*-
                 <div class="text-full-center text-bold">Укажите корректное соответствие для <span id="questionText"></span>:</div>
+                //*+ -->
+                <div class="text-full-center text-bold">Укажите корректное соответствие для <span id="questionText" class="text-color-blue-underlined"></span>:</div>
+                <!-- //-- 1-2-4-003 20/12/2022 -->
                 <div class="clearfix"></div>
+
+                <!-- //++ 1-2-4-003 20/12/2022
+                //*-
                 <div class="text-full-center m-t-20px">Вопрос <span id="questionNum"></span> из 6</div>
+                //*+ -->
+                <div class="text-full-center m-t-20px">Вопрос <span id="questionNum"></span> из <span id="questionTotal"></span></div>
+                <!-- //-- 1-2-4-003 20/12/2022 -->
 
                 <div id="answer_list" class="column-33 m-l-33 m-t-20px">
                     <div>

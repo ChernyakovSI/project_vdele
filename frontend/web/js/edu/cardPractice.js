@@ -33,6 +33,9 @@ let questionText = document.getElementById('questionText');
 let questionNum = document.getElementById('questionNum');
 let answerList = document.getElementById('answer_list');
 let btnTestNext = document.getElementById('TestNext');
+//++ 1-2-4-003 20/12/2022
+let questionTotal = document.getElementById('questionTotal');
+//-- 1-2-4-003 20/12/2022
 
 let thisData = {
     'id' : 0,
@@ -167,11 +170,20 @@ btnClearVariant.onclick = function(e) {
 valueAnswer.onchange = function(event){
     this.value = Number(this.value);
 
-    if (this.value < this.getAttribute('min')) {
-        this.value = this.getAttribute('min');
-    } else if(this.value > this.getAttribute('max')) {
-        this.value = this.getAttribute('max');
+    //++ 1-2-4-003 20/12/2022
+    //*-
+    //if (this.value < this.getAttribute('min')) {
+    //    this.value = this.getAttribute('min');
+    //} else if(this.value > this.getAttribute('max')) {
+    //    this.value = this.getAttribute('max');
+    //}
+    //*+
+    if (this.value < Number(this.getAttribute('min'))) {
+        this.value = Number(this.getAttribute('min'));
+    } else if(this.value > Number(this.getAttribute('max'))) {
+        this.value = Number(this.getAttribute('max'));
     }
+    //-- 1-2-4-003 20/12/2022
 
     thisData['answers'] = this.value;
 };
@@ -179,11 +191,20 @@ valueAnswer.onchange = function(event){
 valueQuestion.onchange = function(event){
     this.value = Number(this.value);
 
-    if (this.value < this.getAttribute('min')) {
-        this.value = this.getAttribute('min');
-    } else if(this.value > this.getAttribute('max')) {
-        this.value = this.getAttribute('max');
+    //++ 1-2-4-003 20/12/2022
+    //*-
+    //if (this.value < this.getAttribute('min')) {
+    //    this.value = this.getAttribute('min');
+    //} else if(this.value > this.getAttribute('max')) {
+    //    this.value = this.getAttribute('max');
+    //}
+    //*+
+    if (this.value < Number(this.getAttribute('min'))) {
+        this.value = Number(this.getAttribute('min'));
+    } else if(this.value > Number(this.getAttribute('max'))) {
+        this.value = Number(this.getAttribute('max'));
     }
+    //-- 1-2-4-003 20/12/2022
 
     thisData['questions'] = this.value;
 };
@@ -708,6 +729,10 @@ function initialTest() {
     }
     //console.log(questions);
 
+    //++ 1-2-4-003 20/12/2022
+    questionTotal.innerText = questions;
+    //-- 1-2-4-003 20/12/2022
+
     testCards = [];
     for (let i = 0 ; (i < questions) && (i < variantCards.length) ; i++) {
         let r = Math.floor(Math.random() * (variantCards.length - i)) + i;
@@ -1047,8 +1072,14 @@ function generateResults() {
 
         divQuestion = document.createElement('div');
         divQuestion.className = 'text-full-center m-t-20px';
-        divQuestion.innerText = String(numQuestion+1) + '. Укажите корректное соответствие для '
-            + testCards[numQuestion]['QuestionText'] + ':';
+        //++ 1-2-4-003 20/12/2022
+        //*-
+        //divQuestion.innerText = String(numQuestion+1) + '. Укажите корректное соответствие для '
+        //    + testCards[numQuestion]['QuestionText'] + ':';
+        //*+
+        divQuestion.innerHTML = String(numQuestion+1) + '. Укажите корректное соответствие для '
+            + '<span class=\"text-color-blue-underlined\">' + testCards[numQuestion]['QuestionText'] + '</span></span>:';
+        //-- 1-2-4-003 20/12/2022
 
         divAnsList = document.createElement('div');
         divAnsList.className = 'column-33 m-l-33 m-t-20px';

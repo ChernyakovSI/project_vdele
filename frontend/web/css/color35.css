@@ -599,6 +599,13 @@ a:hover {
     color: #000000;
 }
 
+/* //++ 1-2-4-003 20/12/2022 */
+.text-color-blue-underlined {
+    color: #5882FA;
+    text-decoration: underline;
+}
+/* //-- 1-2-4-003 20/12/2022 */
+
 .text-color-red {
     color: #BE2E2E;
 }
@@ -671,5 +678,7 @@ a:hover {
     color: #000000;
     background-color: rgba(50, 200, 100, 0.7);
 }
+
+
 
 /* - */
