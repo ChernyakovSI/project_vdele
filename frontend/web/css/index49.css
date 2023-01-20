@@ -102,6 +102,33 @@
     transform: translateY(-1px);
 }
 
+/* //++ 1-3-1-001 10/01/2023 */
+.window-button-in-panel-percent {
+    background: linear-gradient(to bottom, #f8f8fa 0%,#c8c8c7 100%);
+    /*display: block;*/
+    padding: 6px 12px;
+    text-align: center;
+    color: #7e7e7e;
+    border-top: 1px solid #b4b5b9;
+    border-bottom: 1px solid #b4b5b9;
+    border-right: 1px solid #b4b5b9;
+    border-left: 1px solid #b4b5b9;
+
+    width: fit-content;
+    float: left;
+}
+
+.window-button-in-panel-percent:hover {
+    background: linear-gradient(to bottom, #54423a 0%,#63271d 100%);
+    color: #fff;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 16px 0 rgba(0,0,0,.3);
+    transform: translateY(-1px);
+}
+/* //-- 1-3-1-001 10/01/2023 */
+
 .window-h-50 { /*Панель кнопок*/
      height: 50px;
  }
