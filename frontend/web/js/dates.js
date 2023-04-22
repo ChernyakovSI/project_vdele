@@ -43,6 +43,24 @@ function endDay_timestamp(timestamp) {
     return endTimeStamp;
 }
 
+//++ 1-2-3-004 26/07/2022
+function beginMinute (date) {
+
+    date.setSeconds(0);
+
+    return date;
+}
+
+function beginMinute_timestamp(timestamp) {
+    let strDate = convertTimeStampWithTime(timestamp);
+    let curDate = new Date(strDate);
+    curDate = beginMinute(curDate);
+    let endTimeStamp = Math.floor(curDate.getTime()/1000);
+
+    return endTimeStamp;
+}
+//-- 1-2-3-004 26/07/2022
+
 function NowTimeStamp_Sec() {
     return Math.round(new Date().getTime()/1000)
 }
@@ -103,6 +121,46 @@ function getTimeStampFromElement(element) {
     return String(curDate.getTime()).substr(0, 10);
 }
 
+//++ 1-3-1-003 21/02/2023
+function getTimeStampFromElementTime(element) {
+    let timest = Number(element.value.substring(0, 2))*60 +  Number(element.value.substring(3, 5));
+    return String(timest);
+}
+
+function convertMinutesToTime(Minutes) {
+    let hour = Math.floor(Number(Minutes)/60)
+    let minute = Number(Minutes) % 60
+
+    strTime = [
+        ('0' + hour).slice(-2),
+        ('0' + minute).slice(-2)
+    ].join(':');
+
+    return strTime;
+}
+
+function convertSecondsToTime(Seconds) {
+    let hour = Math.floor(Number(Seconds)/3600)
+    let SecondsInHour = Number(Seconds) % 3600
+    let minute = Math.floor(Number(SecondsInHour)/60)
+
+    strTime = [
+        ('0' + hour).slice(-2),
+        ('0' + minute).slice(-2)
+    ].join(':');
+
+    return strTime;
+}
+
+function getNowTimeStampWithoutDate() {
+    timestamp = NowTimeStamp_Sec()
+    timestamp = timestamp - (60*60*currentTimeZoneOffset)
+    timestampTime = timestamp % (24*60*60)
+
+    return convertSecondsToTime(timestampTime);
+}
+//-- 1-3-1-003 21/02/2023
+
 function convertTimeStampWithTime(timestamp) {
     let condate;
 
@@ -126,5 +184,23 @@ function convertTimeStampWithTime(timestamp) {
     ].join(':');
 
     return strDate+strTime;
+}
+
+//Получить представление времени hh:mm
+function getStringTimeFromTimeStamp(timestamp) {
+    let condate;
+
+    if (timestamp == '') {
+        condate = new Date();
+    } else {
+        condate = new Date(timestamp*1000);
+    }
+
+    strTime = [
+        ('0' + (condate.getHours())).slice(-2),
+        ('0' + condate.getMinutes()).slice(-2)
+    ].join(':');
+
+    return strTime;
 }
 

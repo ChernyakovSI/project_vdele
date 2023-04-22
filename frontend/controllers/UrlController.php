@@ -31,6 +31,9 @@ class UrlController extends Controller
                                     'cat-add',
                                     'cat-edit',
                                     'cat-delete',
+                                    //++ 1-3-1-003 21/02/2023
+                                    'gotodo',
+                                    //-- 1-3-1-003 21/02/2023
                             ],
                         'controllers' => ['url'],
                         'allow' => true,
@@ -466,5 +469,12 @@ class UrlController extends Controller
         }
 
     }
+
+    //++ 1-3-1-003 21/02/2023
+    public function actionGotodo()
+    {
+        Yii::$app->response->redirect('https://gotodo.ru/');
+    }
+    //-- 1-3-1-003 21/02/2023
 
 }

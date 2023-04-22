@@ -26,6 +26,11 @@ use common\models\goal\Semester;
 //++ 1-2-3-004 26/07/2022
 use common\models\goal\Task;
 //-- 1-2-3-004 26/07/2022
+//++ 1-3-1-003 21/02/2023
+use common\models\goal\Diary;
+use common\models\goal\DiaryRecord;
+use common\models\goal\DiarySettings;
+//-- 1-3-1-003 21/02/2023
 
 class GoalController extends Controller
 {
@@ -72,6 +77,17 @@ class GoalController extends Controller
                                         'tasks-all',
                                         'task',
                                         //-- 1-2-3-004 26/07/2022
+                                        //++ 1-3-1-003 21/02/2023
+                                        'diaries',
+                                        'diary',
+                                        'diary_record',
+                                        'diary-save',
+                                        'diary-record-save',
+                                        'diary-record-delete',
+                                        'diary-settings',
+                                        'diary-settings-save',
+                                        'diary-record-fields',
+                                        //-- 1-3-1-003 21/02/2023
                                         ],
                         'controllers' => ['goal'],
                         'allow' => true,
@@ -1186,6 +1202,325 @@ class GoalController extends Controller
     }
     //-- 1-2-3-004 26/07/2022
 
+    //++ 1-3-1-003 21/02/2023
+    public function actionDiaries()
+    {
+        $params = Yii::$app->request;
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        if($params->get('show')) {
+            $showFirst =  $params->get('show');
+        } else {
+            $showFirst =  19;
+        }
+        $option = [];
+
+        $AllDiaries = Diary::getDiariesForUser($user_id, $showFirst, $option);
+
+        $spheres = Sphere::getAllSpheresByUser($user_id);
+
+        return $this->render('diaries', [
+            "AllDiaries" => $AllDiaries,
+            "showFirst" => $showFirst,
+            "spheres" => $spheres,
+        ]);
+    }
+
+    public function actionDiary()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+        $isGuest = 0;
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $id_dia = (integer)$_POST['id_diary'];
+            $startDate = (integer)$_POST['dateFrom'];
+            $finishDate = (integer)$_POST['dateTo'];
+
+            $showFirst = 0;
+            $option = [
+                'dateFrom' => $startDate,
+                'dateTo' => $finishDate,
+                'opt' => $_POST
+            ];
+
+            $diariesRec = DiaryRecord::getRecordsForDiary($id_dia, $showFirst, $option);
+
+            $data = $diariesRec['records'];
+            $userFields = $diariesRec['userFields'];
+            $dataTable = $diariesRec['dataTable'];
+            $dataRecords = $diariesRec['dataRecords'];
+
+            $dates = [];
+
+            foreach ($data as $record) {
+                $dates[$record['id']] = date("d.m.Y", $record['date']);
+            }
+
+            return [
+                "data" => $data,
+                "userFields" => $userFields,
+                "id_dia" => $id_dia,
+                "option" => $option,
+                "error" => "",
+                "dates" => $dates,
+                "pathDiaryRecords" => '/goal/diary-record/',
+                "dataTable" => $dataTable,
+                "dataRecords" => $dataRecords,
+            ];
+        } else {
+
+            $user_id = Yii::$app->user->identity->getId();
+
+            $startDate = strtotime("-1 month 00:00");
+            $finishDate = strtotime("+1 day 23:59:59");
+
+            $params = Yii::$app->request;
+            if ($params->get('n')) {
+                $data = Diary::getDiaryById($params->get('n'));
+
+                if($data->id_user != $user_id && $data->is_public == 0) {
+                    return $this->render('/site/errorUser');
+                } elseif ($data->id_user != $user_id && $data->is_public == 1) {
+                    $isGuest = 1;
+                } else {
+                    $isGuest = 0;
+                }
+
+                $sphere = Sphere::getSphereById($data['id_sphere']);
+
+                if ($params->get('show')) {
+                    $showFirst = $params->get('show');
+                } else {
+                    $showFirst = 25;
+                }
+                $option = [
+                    'dateFrom' => $startDate,
+                    'dateTo' => $finishDate,
+                ];
+                $diariesRec = DiaryRecord::getRecordsForDiary($params->get('n'), $showFirst, $option);
+
+                $records = $diariesRec['records'];
+                $userFields = $diariesRec['userFields'];
+                $setFields = $diariesRec['setFields'];
+                $dataTable = $diariesRec['dataTable'];
+                $dataRecords = $diariesRec['dataRecords'];
+
+            } else {
+                $data = new Diary();
+                $sphere = new Sphere();
+                $records = [];
+                $userFields = [];
+                $dataTable = [];
+                $dataRecords = [];
+            }
+
+            $spheres = Sphere::getAllSpheresByUser($user_id);
+
+            return $this->render('diary', [
+                "data" => $data,
+                "spheres" => $spheres,
+                "sphere" => $sphere,
+                "records" => $records,
+                "userFields" => $userFields,
+                "dateFrom" => $startDate,
+                "dateTo" => $finishDate,
+                "isGuest" => $isGuest,
+                "dataTable" => $dataTable,
+                "dataRecords" => $dataRecords
+            ]);
+        }
+
+    }
+
+    public function actionDiaryRecord()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $data = DiaryRecord::getDiaryRecordById($params->get('n'));
+            $date = $data['date'];
+            $id_diary = $data['id_diary'];
+            $diary_data = []; //Получить доп инфо
+        }
+        else {
+            $id_diary = (integer)$params->get('dia');
+
+            $data = new DiaryRecord();
+            $date = time();
+            $diary_data = [];
+            $data['id_diary'] = $id_diary;
+        }
+
+        $diary = Diary::getDiaryById($id_diary);
+        if($diary->id_user != $user_id && $diary->is_public == 0) {
+            return $this->render('/site/errorUser');
+        } elseif ($diary->id_user != $user_id && $diary->is_public == 1) {
+            $isGuest = 1;
+        } else {
+            $isGuest = 0;
+        }
+
+        return $this->render('diary_record', [
+            "data" => $data,
+            "id_diary" => $id_diary,
+            "date" => $date,
+            "diary_data" => $diary_data,
+            "isGuest" => $isGuest
+        ]);
+
+    }
+
+    public function actionDiarySave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_dia = (integer)$_POST['id'];
+
+            if((integer)$id_dia == 0) {
+                $data = Diary::addRecord($_POST, $user_id);
+            }
+            else {
+                $data = Diary::editRecord($_POST);
+            }
+
+            return [
+                "data" => $data,
+                "error" => "",
+            ];
+        }
+    }
+
+    public function actionDiaryRecordSave()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_rec = (integer)$_POST['id'];
+
+            $fields = json_decode($_POST['fields']);
+
+            if((integer)$id_rec == 0) {
+                $data = DiaryRecord::addRecord($_POST, $user_id, $fields);
+            }
+            else {
+                $data = DiaryRecord::editRecord($_POST, $fields);
+            }
+
+            return [
+                "data" => $data,
+                "error" => "",
+            ];
+        }
+    }
+
+    public function actionDiaryRecordDelete()
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $data = DiaryRecord::deleteRecord($_POST);
+
+            return [
+                "data" => $data,
+                "error" => "",
+            ];
+        }
+    }
+
+    public function actionDiarySettings()
+    {
+        $user_id = Yii::$app->user->identity->getId();
+
+        $params = Yii::$app->request;
+        if($params->get('n')) {
+            $diary = Diary::getDiaryById($params->get('n'));
+
+            if($diary->id_user != $user_id) {
+                return $this->render('/site/errorUser');
+            } else {
+                $isGuest = 0;
+            }
+
+            $data = DiarySettings::getDiarySettingsById($params->get('n'));
+            $types = [];
+            $types[0]['id'] = 1;
+            $types[0]['name'] = "Строка";
+            $types[1]['id'] = 2;
+            $types[1]['name'] = "Число";
+            $types[2]['id'] = 3;
+            $types[2]['name'] = "Флаг";
+            $types[3]['id'] = 4;
+            $types[3]['name'] = "Текст";
+            $types[4]['id'] = 5;
+            $types[4]['name'] = "Время";
+        }
+        else {
+            return $this->render('/site/errorUser');
+        }
+
+        return $this->render('diary-settings', [
+            "data" => $data,
+            "diary" => $diary,
+            "types" => $types,
+        ]);
+
+    }
+
+    public function actionDiarySettingsSave()
+    {
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_diary = $_POST['id'];
+
+            $fields = json_decode($_POST['fields']);
+
+            if((integer)$id_diary !== 0) {
+                DiarySettings::renewFields($id_diary, $fields, $user_id);
+            }
+
+            return [
+                "data" => $fields,
+                "error" => "",
+            ];
+        }
+
+    }
+
+    public function actionDiaryRecordFields()
+    {
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $user_id = Yii::$app->user->identity->getId();
+            $id_dia = (integer)$_POST['id_diary'];
+            $id_rec = (integer)$_POST['id'];
+
+            if((integer)$id_dia == 0) {
+                $data = [];
+            }
+            else {
+                $data = DiarySettings::getFieldsValueByRecord($id_rec, $id_dia);
+            }
+
+            return [
+                "data" => $data,
+                "error" => "",
+            ];
+        }
+
+    }
+    //-- 1-3-1-003 21/02/2023
 }
 
 //-

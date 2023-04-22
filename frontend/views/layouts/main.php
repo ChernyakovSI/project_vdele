@@ -80,9 +80,17 @@ $this->registerLinkTag([
                 ['label' => 'Желания', 'url' => ['/goal/wishes']],
                 ['label' => 'Мечты', 'url' => ['/goal/dreams']],
                 ['label' => ''],['label' => ''],
+                //++ 1-3-1-003 21/02/2023
+                //*-
+                //['label' => 'Веб-ссылки', 'url' => ['/url/all']],
+                //['label' => ''],['label' => ''],
+                //['label' => 'Заметки', 'url' => ['/goal/notes']],
+                //*+
+                ['label' => 'Заметки', 'url' => ['/goal/notes']],
+                ['label' => 'Дневники', 'url' => ['/goal/diaries']],
                 ['label' => 'Веб-ссылки', 'url' => ['/url/all']],
                 ['label' => ''],['label' => ''],
-                ['label' => 'Заметки', 'url' => ['/goal/notes']],
+                //-- 1-3-1-003 21/02/2023
                 ['label' => 'Сферы жизни', 'url' => ['/goal/spheres']],
             ]];
             $menuItems[] = ['label' => 'Финансы', 'items' => [
@@ -92,7 +100,9 @@ $this->registerLinkTag([
                 ['label' => 'Отчеты', 'url' => ['/fin/reports']],
             ]];
             $menuItems[] = ['label' => 'Контакты'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'items' => [
-                    ['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
+                    //++ 1-3-1-003 21/02/2023
+                    //['label' => 'Моя страница', 'url' => [Yii::$app->homeUrl]],
+                    //-- 1-3-1-003 21/02/2023
                     ['label' => 'Пользователи', 'url' => ['/users']],
                     ['label' => 'Диалоги'.(($QUnreadMessages != 0)?(' ('.$QUnreadMessages.')'):('')), 'url' => ['/dialog']],
                     ['label' => ''],['label' => ''],
@@ -101,6 +111,10 @@ $this->registerLinkTag([
             //++ 1-2-4-001 31/08/2022
             $menuItems[] = ['label' => 'Обучение', 'items' => [
                 ['label' => 'Карточки памяти', 'url' => ['/edu/cards']],
+                //++ 1-3-1-003 21/02/2023
+                ['label' => ''],['label' => ''],
+                ['label' => 'gotodo.ru', 'url' => ['/url/gotodo']],
+                //-- 1-3-1-003 21/02/2023
             ]];
             //-- 1-2-4-001 31/08/2022
         }
@@ -111,6 +125,9 @@ $this->registerLinkTag([
         $ac = new Ac();
         //++ 1-2-3-002 11/05/2022
         $lastItems = [];
+        //++ 1-3-1-003 21/02/2023
+        $lastItems[] = ['label' => 'Мой профиль', 'url' => [Yii::$app->homeUrl]];
+        //-- 1-3-1-003 21/02/2023
         if($isAdmin === true) {
             $lastItems[] = ['label' => 'Рассылка', 'url' => ['/sender-panel']];
             //++ 1-2-3-003 28/06/2022
@@ -122,6 +139,10 @@ $this->registerLinkTag([
         {
             $lastItems[] =  ['label' => 'Настройки', 'url' => ['/settings']];
         }
+        //++ 1-3-1-003 21/02/2023
+        $lastItems[] = ['label' => ''];
+        $lastItems[] = ['label' => ''];
+        //-- 1-3-1-003 21/02/2023
         $lastItems[] =  ['label' => 'Выйти', 'url' => '/site/logout', 'linkOptions' => ['data-method' => 'post']];
         //-- 1-2-3-002 11/05/2022
 
@@ -197,7 +218,7 @@ $this->registerLinkTag([
 <footer class="footer">
     <div class="container">
         <!-- //++ 1-2-2-007 05/04/2022 -->
-        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.3.1.1)</p>
+        <p class="pull-left footer-text">&copy; <?= Html::encode(Yii::$app->name) ?> 2020-<?= date('Y') ?> (v.1.3.1.3)</p>
         <!-- //-- 1-2-2-007 05/04/2022 -->
 
         <p class="pull-right footer-text"><?= Yii::powered() ?></p>

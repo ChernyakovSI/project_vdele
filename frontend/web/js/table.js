@@ -22,7 +22,6 @@ function resize() {
 
         for (child in children) {
             divRow = children[child].childNodes;
-
             for (column in divRow) {
                 if (divRow[column].nodeName === 'DIV' & (' ' + divRow[column].className + ' ').indexOf('colResize') > -1) {
                     arrCols[i] = divRow[column];
@@ -31,6 +30,24 @@ function resize() {
                         maxHeight = divRow[column].clientHeight;
                     }
                 }
+                //++ 1-3-1-003 21/02/2023
+                else if(divRow[column].nodeName === 'A') {
+
+                    children2 = divRow[column].childNodes;
+                    for (child2 in children2) {
+                        divRow2 = children2[child2].childNodes;
+                        for (column2 in divRow2) {
+                            if (divRow2[column2].nodeName === 'DIV' & (' ' + divRow2[column2].className + ' ').indexOf('colResize') > -1) {
+                                arrCols[i] = divRow2[column2];
+                                i = i + 1;
+                                if (divRow2[column2].clientHeight > maxHeight) {
+                                    maxHeight = divRow2[column2].clientHeight;
+                                }
+                            }
+                        }
+                    }
+                }
+                //-- 1-3-1-003 21/02/2023
             }
 
             for (column in arrCols) {

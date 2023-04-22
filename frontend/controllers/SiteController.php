@@ -497,7 +497,12 @@ class SiteController extends Controller
 
     public function actionUsers() {
 
-        $query = User::find();
+        //++ 1-3-1-003 21/02/2023
+        //*-
+        //$query = User::find();
+        //*+
+        $query = User::find()->where(['email_status' => 1]);
+        //-- 1-3-1-003 21/02/2023
         $gFind = false;
         $findTag = '';
         $findFIO = '';
@@ -1088,6 +1093,7 @@ class SiteController extends Controller
         }
         //-- 1-2-2-007 05/04/2022
 
+        $is_block = false;
         if ($is_block) {
             header('HTTP/1.0 502 Bad Gateway');
             echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
@@ -1109,9 +1115,9 @@ class SiteController extends Controller
         }
         //-- 1-2-2-005 28/03/2022
 
-        header('HTTP/1.1 301 Moved Permanently');
-        header('Location: '.Yii::$app->params['doman'].'show-error');
-        exit();
+        //header('HTTP/1.1 301 Moved Permanently');
+        //header('Location: '.Yii::$app->params['doman'].'show-error');
+        //exit();
 
     }
     //-- 1-2-2-004 18/03/2022

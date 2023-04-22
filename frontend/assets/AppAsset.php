@@ -67,8 +67,32 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/edu/cards.js';
             $this->js[] = 'js/texts.js';
             $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/table.js';
         }
         //-- 1-2-4-001 31/08/2022
+        //++ 1-3-1-003 21/02/2023
+        if ((\yii::$app->request->url == '/goal/diary') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/diary/')
+            || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/diary?')){
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/goal/diary.js';
+            $this->js[] = 'js/texts.js';
+            $this->js[] = 'js/table.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        if ((\yii::$app->request->url == '/goal/diary-record') || (mb_substr(\yii::$app->request->url, 0, 19) == '/goal/diary-record/')
+            || (mb_substr(\yii::$app->request->url, 0, 19) == '/goal/diary-record?')){
+            $this->js[] = 'js/dates.js';
+            $this->js[] = 'js/goal/diary-record.js';
+            $this->js[] = 'js/texts.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        if ((\yii::$app->request->url == '/goal/diary-settings') || (mb_substr(\yii::$app->request->url, 0, 21) == '/goal/diary-settings/')
+            || (mb_substr(\yii::$app->request->url, 0, 21) == '/goal/diary-settings?')){
+            $this->js[] = 'js/goal/diary-settings.js';
+            $this->js[] = 'js/table.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        //-- 1-3-1-003 21/02/2023
         if ((\yii::$app->request->url == '/goal/dream') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream/')
             || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/dream?')){
             $this->js[] = 'js/dates.js';
