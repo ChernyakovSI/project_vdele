@@ -88,6 +88,9 @@ class GoalController extends Controller
                                         'diary-settings-save',
                                         'diary-record-fields',
                                         //-- 1-3-1-003 21/02/2023
+                                        //++ 1-3-1-004 24/04/2023
+                                        'diary-delete'
+                                        //-- 1-3-1-004 24/04/2023
                                         ],
                         'controllers' => ['goal'],
                         'allow' => true,
@@ -1209,22 +1212,67 @@ class GoalController extends Controller
 
         $user_id = Yii::$app->user->identity->getId();
 
-        if($params->get('show')) {
-            $showFirst =  $params->get('show');
+        //++ 1-3-1-004 24/04/2023
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            if(isset($_POST['showFirst'])) {
+                $showFirst =  $_POST['showFirst'];
+            } else {
+                $showFirst =  30;
+            }
+            $option['id_sphere'] = $_POST['id_sphere'];
+            $option['isPublic'] = $_POST['isPublic'];
+
+            $AllDiaries = Diary::getDiariesForUser($user_id, $showFirst, $option);
+
+            $pathNotes = 'diary/';
+            $colors = [];
+            for($i=1; $i<=8; $i++){
+                $colors[$i] = Sphere::getColorForId($i, 1, 1);
+            }
+
+            $dates = [];
+            $datesColor = [];
+            foreach ($AllDiaries as $note) {
+                $dates[$note['id']] = date("d.m.Y H:i:s", $note['RecordDate']);
+                $datesColor[$note['id']] = Note::getColorForDate($note['RecordDate']);
+            }
+
+            return [
+                'error' => '',
+                'AllDiaries' => $AllDiaries,
+                'pathNotes' => $pathNotes,
+                'colorStyle' => $colors,
+                'dates' => $dates,
+                'datesColor' => $datesColor
+            ];
         } else {
-            $showFirst =  19;
+        //-- 1-3-1-004 24/04/2023
+            if($params->get('show')) {
+                $showFirst =  $params->get('show');
+            } else {
+                //++ 1-3-1-004 24/04/2023
+                //*-
+                //$showFirst =  19;
+                //*+
+                $showFirst =  30;
+                //-- 1-3-1-004 24/04/2023
+            }
+            $option = [];
+
+            $AllDiaries = Diary::getDiariesForUser($user_id, $showFirst, $option);
+
+            $spheres = Sphere::getAllSpheresByUser($user_id);
+
+            return $this->render('diaries', [
+                "AllDiaries" => $AllDiaries,
+                "showFirst" => $showFirst,
+                "spheres" => $spheres,
+            ]);
+        //++ 1-3-1-004 24/04/2023
         }
-        $option = [];
-
-        $AllDiaries = Diary::getDiariesForUser($user_id, $showFirst, $option);
-
-        $spheres = Sphere::getAllSpheresByUser($user_id);
-
-        return $this->render('diaries', [
-            "AllDiaries" => $AllDiaries,
-            "showFirst" => $showFirst,
-            "spheres" => $spheres,
-        ]);
+        //-- 1-3-1-004 24/04/2023
     }
 
     public function actionDiary()
@@ -1521,6 +1569,66 @@ class GoalController extends Controller
 
     }
     //-- 1-3-1-003 21/02/2023
+
+    //++ 1-3-1-004 24/04/2023
+    public function actionDiaryDelete()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+
+            if (isset(Yii::$app->user->identity)) {
+
+                $data = Yii::$app->request->post();
+                $user_id = Yii::$app->user->identity->getId();
+
+                foreach ($data['sources'] as $item) {
+                    if ($item !== '') {
+                        Diary::deleteRecord($item);
+                    }
+                }
+
+                if(isset($_POST['showFirst'])) {
+                    $showFirst =  $_POST['showFirst'];
+                } else {
+                    $showFirst =  30;
+                }
+                $option['id_sphere'] = $_POST['id_sphere'];
+                $option['isPublic'] = $_POST['isPublic'];
+
+                $AllDiaries = Diary::getDiariesForUser($user_id, $showFirst, $option);
+
+                $pathNotes = 'diary/';
+                $colors = [];
+                for($i=1; $i<=8; $i++){
+                    $colors[$i] = Sphere::getColorForId($i, 1, 1);
+                }
+
+                $dates = [];
+                $datesColor = [];
+                foreach ($AllDiaries as $note) {
+                    $dates[$note['id']] = date("d.m.Y H:i:s", $note['RecordDate']);
+                    $datesColor[$note['id']] = Note::getColorForDate($note['RecordDate']);
+                }
+
+                return [
+                    'error' => '',
+                    'AllDiaries' => $AllDiaries,
+                    'pathNotes' => $pathNotes,
+                    'colorStyle' => $colors,
+                    'dates' => $dates,
+                    'datesColor' => $datesColor
+                ];
+            }
+
+        }
+
+        return [
+            'error' => ''
+        ];
+    }
+    //-- 1-3-1-004 24/04/2023
+
 }
 
 //-

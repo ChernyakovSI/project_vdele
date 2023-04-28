@@ -44,7 +44,7 @@ $this->title = 'Дневники';
                         <div class="message-caption-line w-20 w-m-75px">Первые:</div>
                         <div class="float-left w-3">&nbsp</div>
                         <div class="message-wrapper-line w-47 window-border w-m-43px">
-                            <input type="number" class="message-text-line" id="valuePriority" value="<?= $showFirst ?>">
+                            <input type="number" class="message-text-line" id="valueShowFirst" value="<?= $showFirst ?>">
                         </div>
                     </div>
                     <div class="column-33 float-left">
@@ -113,7 +113,7 @@ $this->title = 'Дневники';
                                     </div>
                                 </div>
                                 <div class="subwindow h-20 like-table w-100 content-hide">
-                                    <p class="text-right like-cell text-s-20px <?= Note::getColorForDate($diary['updated_at']) ?>"><?= date("d.m.Y H:i:s", $diary['updated_at']) ?></p>
+                                    <p class="text-right like-cell text-s-20px <?= Note::getColorForDate($diary['RecordDate']) ?>"><?= date("d.m.Y H:i:s", $diary['RecordDate']) ?></p>
                                 </div>
                             </div>
                         </a></div>

@@ -70,6 +70,12 @@ class AppAsset extends AssetBundle
             $this->js[] = 'js/table.js';
         }
         //-- 1-2-4-001 31/08/2022
+        //++ 1-3-1-004 24/04/2023
+        if ((\yii::$app->request->url == '/goal/diaries') || (mb_substr(\yii::$app->request->url, 0, 14) == '/goal/diaries?')) {
+            $this->js[] = 'js/goal/diaries.js';
+            $this->js[] = 'js/ajax.js';
+        }
+        //-- 1-3-1-004 24/04/2023
         //++ 1-3-1-003 21/02/2023
         if ((\yii::$app->request->url == '/goal/diary') || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/diary/')
             || (mb_substr(\yii::$app->request->url, 0, 12) == '/goal/diary?')){
