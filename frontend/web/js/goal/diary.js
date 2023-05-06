@@ -414,7 +414,15 @@ function createRow(curData, numRow, pathDiaryRecords, date, dataTable, dataRecor
             } else {
                 if (numRow > 0) {
                     try {
-                        divWrap3.innerText = dataRecords[curData['id']][column['param_id']];
+                        //++ 1-3-2-001 06/05/2023
+                        if(dataRecords[curData['id']][column['param_id']].indexOf('\n') < 0) {
+                        //-- 1-3-2-001 06/05/2023
+                            divWrap3.innerText = dataRecords[curData['id']][column['param_id']];
+                        //++ 1-3-2-001 06/05/2023
+                        } else {
+                            divWrap3.innerText = dataRecords[curData['id']][column['param_id']].slice(0, dataRecords[curData['id']][column['param_id']].indexOf('\n'));
+                        }
+                        //-- 1-3-2-001 06/05/2023
                     } catch {
                         divWrap3.innerText = '';
                     }

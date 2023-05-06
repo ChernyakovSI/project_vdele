@@ -292,7 +292,15 @@ class DiaryRecord extends ActiveRecord
                 if($field['width'] == 18) {
                     $field['widthClass'] = 'column-18';
                 } elseif ($field['width'] == 22.5) {
-                    $field['widthClass'] = 'column-22';
+                    //++ 1-3-2-001 06/05/2023
+                    if($i % 2 > 0) {
+                    //-- 1-3-2-001 06/05/2023
+                        $field['widthClass'] = 'column-22';
+                    //++ 1-3-2-001 06/05/2023
+                    } else {
+                        $field['widthClass'] = 'column-23';
+                    }
+                    //-- 1-3-2-001 06/05/2023
                 } elseif ($field['width'] == 30) {
                     $field['widthClass'] = 'column-30';
                 } elseif ($field['width'] == 45) {
