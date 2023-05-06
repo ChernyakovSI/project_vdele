@@ -107,6 +107,13 @@ class DiaryRecord extends ActiveRecord
         } else {
             $dateTo = -1;
         }
+        //++ 1-3-1-005 28/04/2023
+        if(isset($option['minElem'])) {
+            $minElem = (integer)$option['minElem'];
+        } else {
+            $minElem = 0;
+        }
+        //-- 1-3-1-005 28/04/2023
 
         //Основные значения записей
         $query = new Query();
@@ -133,6 +140,44 @@ class DiaryRecord extends ActiveRecord
 
 
         $records = $body->all();
+
+        //++ 1-3-1-005 28/04/2023
+        if($minElem == 1) {
+            $query = new Query();
+            $body = $query->Select(['diary_record.`id` as id',
+                'diary_record.`updated_at` as updated_at',
+                'diary_record.`id_diary` as id_diary',
+                'diary_record.`date` as date',
+                'diary_record.`text` as text',
+            ])
+                ->from('diary_record as diary_record');
+
+            $strWhere = ' diary_record.`id_diary` = '.(integer)$id_diary;
+            $strWhere = $strWhere.' AND diary_record.`is_deleted` = 0';
+
+            $body = $body
+                ->where($strWhere)
+                ->limit(30)
+                ->orderBy('diary_record.`date` DESC');
+
+
+            $records2 = $body->all();
+
+            if(count($records2) > count($records)) {
+                $records = $records2;
+
+                $minDate = $dateFrom;
+                foreach ($records as $record) {
+                    if($record->date < $minDate) {
+                        $minDate = $record->date;
+                    }
+                }
+                if($minDate < $dateFrom) {
+                    $dateFrom = $minDate;
+                }
+            }
+        }
+        //-- 1-3-1-005 28/04/2023
 
         //Данные пользовательских полей
         $query = new Query();
@@ -208,10 +253,15 @@ class DiaryRecord extends ActiveRecord
         $data = [];
 
         $usedFields = 0;
+        //++ 1-3-1-005 28/04/2023
+        $i = 0;
+        //-- 1-3-1-005 28/04/2023
         foreach ($setFields as $field) {
-            if($usedFields >= 5) {
-                break;
-            }
+            //++ 1-3-1-005 28/04/2023
+            //if($usedFields >= 5) {
+            //    break;
+            //}
+            //-- 1-3-1-005 28/04/2023
 
             if($field['param_is_show'] == '1') {
                 $newRec = [];
@@ -219,24 +269,40 @@ class DiaryRecord extends ActiveRecord
                 $newRec['param_title'] = $field['param_title'];
                 $newRec['param_type'] = (integer)$field['param_type'];
 
-                $data[$usedFields] = $newRec;
-                $usedFields = $usedFields + 1;
+                //++ 1-3-1-005 28/04/2023
+                $data[$i] = $newRec;
+                //-- 1-3-1-005 28/04/2023
+
+                //++ 1-3-1-005 28/04/2023
+                if($usedFields < 5) {
+                //-- 1-3-1-005 28/04/2023
+                    $usedFields = $usedFields + 1;
+                //++ 1-3-1-005 28/04/2023
+                }
+                $i = $i + 1;
+                //-- 1-3-1-005 28/04/2023
             }
         }
         $i = 0;
         foreach ($data as $field) {
-            $field['width'] = 90/$usedFields;
-            if($field['width'] == 18) {
-                $field['widthClass'] = 'column-18';
-            } elseif ($field['width'] == 22.5) {
-                $field['widthClass'] = 'column-22';
-            } elseif ($field['width'] == 30) {
-                $field['widthClass'] = 'column-30';
-            } elseif ($field['width'] == 45) {
-                $field['widthClass'] = 'column-45';
-            } elseif ($field['width'] == 90) {
-                $field['widthClass'] = 'column-90';
+            //++ 1-3-1-005 28/04/2023
+            if($i < 5) {
+            //-- 1-3-1-005 28/04/2023
+                $field['width'] = 90/$usedFields;
+                if($field['width'] == 18) {
+                    $field['widthClass'] = 'column-18';
+                } elseif ($field['width'] == 22.5) {
+                    $field['widthClass'] = 'column-22';
+                } elseif ($field['width'] == 30) {
+                    $field['widthClass'] = 'column-30';
+                } elseif ($field['width'] == 45) {
+                    $field['widthClass'] = 'column-45';
+                } elseif ($field['width'] == 90) {
+                    $field['widthClass'] = 'column-90';
+                }
+            //++ 1-3-1-005 28/04/2023
             }
+            //-- 1-3-1-005 28/04/2023
             $data[$i] = $field;
             $i = $i + 1;
         }
@@ -301,7 +367,8 @@ class DiaryRecord extends ActiveRecord
                         }
                         $sumRec[(integer)$field['param_id']]['sum_val'] = $sumRec[(integer)$field['param_id']]['sum_val'] + $field['value_int'];
 
-                        $arrParts = explode('.', $newRec[(integer)$field['param_id']]);
+                        $thisStr = rtrim(rtrim($field['value_int'], '0'), '.');
+                        $arrParts = explode('.', $thisStr);
                         if(count($arrParts) > 1 && $sumRec[(integer)$field['param_id']]['accuracy'] < strlen($arrParts[1])) {
                             $sumRec[(integer)$field['param_id']]['accuracy'] = strlen($arrParts[1]);
                         }
@@ -368,7 +435,7 @@ class DiaryRecord extends ActiveRecord
                 } else {
                     $arrParts = explode('.', $sumRec[(integer)$column['param_id']]['average']);
                     if(count($arrParts) > 1 && strlen($arrParts[1]) > 1) {
-                        $sumRec[(integer)$column['param_id']]['average'] = $arrParts[0] . '.' . mb_substr($arrParts[1], 0, strlen($arrParts[1]), 'UTF-8');
+                        $sumRec[(integer)$column['param_id']]['average'] = $arrParts[0] . '.' . mb_substr($arrParts[1], 0, $sumRec[(integer)$column['param_id']]['accuracy'], 'UTF-8');
                     }
                 }
             } else if((integer)$column['param_type'] == 5) {

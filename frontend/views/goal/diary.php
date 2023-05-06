@@ -139,7 +139,12 @@ $this->title = 'Дневник';
 
             <div class="Rollup">
                 <input class="hide" id="hd-2" type="checkbox">
+                <!-- //++ 1-3-1-005 28/04/2023
+                //*-
                 <label for="hd-2">Настройки дневника</label>
+                //*+ -->
+                <label for="hd-2">Настройки и итоги дневника</label>
+                <!-- //++ 1-3-1-005 28/04/2023 -->
                 <div>
                     <div class="w-25 float-left w-m-255px">
                         <div class="w-20 float-left">
@@ -164,7 +169,10 @@ $this->title = 'Дневник';
                         </div>
                     </div>
 
-
+                    <!-- //++ 1-3-1-005 28/04/2023 -->
+                    <div class="clearfix"></div>
+                    <div id="finalValues" class="m-t-20px"></div>
+                    <!-- //-- 1-3-1-005 28/04/2023 -->
                 </div>
             </div>
 
@@ -184,15 +192,27 @@ $this->title = 'Дневник';
             <?php } ?>
 
             <div class="clearfix"></div>
-            <div id="header1">
+            <div id="header1" class="tableResize">
                 <div class="interactive-only">
-                    <div class="<?= count($dataTable)==0?'column-100':'column-10' ?> colDate border-1px-all">
+                    <div class="<?= count($dataTable)==0?'column-100':'column-10' ?> colDate border-1px-all colResize">
                         <div class="message-wrapper-title">
                             <div class="message-text-line table-caption"><?= 'Дата' ?></div>
                         </div>
                     </div>
-                    <?php foreach ($dataTable as $record): ?>
-                        <div class="<?= $record['widthClass'] ?> colDate border-1px-all">
+                    <!-- //++ 1-3-1-005 28/04/2023
+                    //*-
+                    <php foreach ($dataTable as $record): ?>
+                    //*+  -->
+                    <?php
+                    $num = 0;
+                    foreach ($dataTable as $record):
+                        $num = $num + 1;
+                        if($num > 5) {
+                            break;
+                        }
+                        ?>
+                        <!-- //-- 1-3-1-005 28/04/2023 -->
+                        <div class="<?= $record['widthClass'] ?> colDate border-1px-all colResize">
                             <div class="message-wrapper-title">
                                 <div class="message-text-line table-caption"><?= $record['param_title'] ?></div>
                             </div>
@@ -200,6 +220,7 @@ $this->title = 'Дневник';
                     <?php endforeach; ?>
                 </div>
             </div>
+
 
             <div class="clearfix"></div>
             <div id="list-cards" class="tableResize">

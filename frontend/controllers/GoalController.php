@@ -1286,11 +1286,17 @@ class GoalController extends Controller
             $id_dia = (integer)$_POST['id_diary'];
             $startDate = (integer)$_POST['dateFrom'];
             $finishDate = (integer)$_POST['dateTo'];
+            //++ 1-3-1-005 28/04/2023
+            $minElem = (integer)$_POST['minElem'];
+            //-- 1-3-1-005 28/04/2023
 
             $showFirst = 0;
             $option = [
                 'dateFrom' => $startDate,
                 'dateTo' => $finishDate,
+                //++ 1-3-1-005 28/04/2023
+                'minElem' => $minElem,
+                //-- 1-3-1-005 28/04/2023
                 'opt' => $_POST
             ];
 

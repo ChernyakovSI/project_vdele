@@ -20,6 +20,9 @@ let btnClearSphere = document.getElementById('ClearSphere');
 
 let list_sphere = document.getElementById('list_sphere');
 let list_cards = document.getElementById('list-cards');
+//++ 1-3-1-005 28/04/2023
+let finalValues = document.getElementById('finalValues');
+//-- 1-3-1-005 28/04/2023
 
 let IsModified = false;
 
@@ -75,7 +78,12 @@ $(document).ready( function() {
     DetectURLs(valueText);
     generatorURLs();
 
-    refreshRecords();
+    //++ 1-3-1-005 28/04/2023
+    //*-
+    //refreshRecords();
+    //*+
+    refreshRecords(1);
+    //-- 1-3-1-005 28/04/2023
     resize();
 })
 
@@ -194,7 +202,12 @@ valueDateTo.onchange = function(event){
 
 //Helpers --------------------------------------------------------------------------------------------------------------
 
-function refreshRecords() {
+//++ 1-3-1-005 28/04/2023
+//*-
+//function refreshRecords() {
+//*+
+function refreshRecords(minElem = 0) {
+//-- 1-3-1-005 28/04/2023
 
     if(thisData.id > 0) {
         let dateFrom = getTimeStampFromElement(valueDateFrom);
@@ -204,6 +217,9 @@ function refreshRecords() {
         optData['dateFrom'] = Number(dateFrom);
         optData['dateTo'] = Number(dateTo);
         optData['id_diary'] = thisData.id;
+        //++ 1-3-1-005 28/04/2023
+        optData['minElem'] = minElem;
+        //-- 1-3-1-005 28/04/2023
 
         runAjax('/goal/diary', optData);
     }
@@ -276,6 +292,11 @@ function renewRecords(dataSet) {
         let divRowSum;
         let arrSum = [];
         arrSum['id'] = 0
+
+        //++ 1-3-1-005 28/04/2023
+        renewFinalValues(dataSet.dataRecords, dataSet.dataTable, dataSet.data.length);
+        //-- 1-3-1-005 28/04/2023
+
         divRowSum = createRow(arrSum, 0, '', dataSet.data.length, dataSet.dataTable, dataSet.dataRecords);
         list_cards.append(divRowSum);
 
@@ -283,6 +304,14 @@ function renewRecords(dataSet) {
             if(curData['id'] > 0) {
                 numRow = numRow + 1;
                 divRow = createRow(curData, numRow, dataSet.pathDiaryRecords, dataSet.dates[curData['id']], dataSet.dataTable, dataSet.dataRecords);
+
+                //++ 1-3-1-005 28/04/2023
+                let strDate = convertTimeStampWithTime(curData['date']);
+                let curDate = new Date(strDate);
+                curDate.setHours(curDate.getHours() - currentTimeZoneOffset);
+
+                valueDateFrom.value = curDate.toISOString().substring(0, 10);
+                //-- 1-3-1-005 28/04/2023
 
                 list_cards.append(divRow);
             }
@@ -336,67 +365,130 @@ function createRow(curData, numRow, pathDiaryRecords, date, dataTable, dataRecor
     divWrapDate.append(divWrap2);
     aRecord.append(divWrapDate);
 
+    //++ 1-3-1-005 28/04/2023
+    let numColumn = 0;
+    //-- 1-3-1-005 28/04/2023
+
     dataTable.forEach((column) => {
-        divWrap = document.createElement('div');
-        divWrap.className = column['widthClass'] + ' border-1px-all colResize';
+        //++ 1-3-1-005 28/04/2023
+        numColumn = numColumn + 1;
+        if (numColumn <= 5) {
+        //-- 1-3-1-005 28/04/2023
 
-        divWrap2 = document.createElement('div');
-        divWrap2.className = 'message-wrapper-title';
+            divWrap = document.createElement('div');
+            divWrap.className = column['widthClass'] + ' border-1px-all colResize';
 
-        divWrap3 = document.createElement('div');
-        divWrap3.className = 'message-text-line text-center';
-        if(Number(column['param_type']) == 5) {
-            //time
-            if(numRow > 0) {
-                try {
-                    divWrap3.innerText = convertMinutesToTime(dataRecords[curData['id']][column['param_id']]);
-                } catch {
-                    divWrap3.innerText = '';
-                }
-            } else {
-                divWrap3.innerHTML = 'мин.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['min_val']) + '</b>' +
-                    '<br>сред.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['average_val']) + '</b>' +
-                    '<br>макс.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['max_val']) + '</b>';
-            }
-        } else if(Number(column['param_type']) == 3) {
-            try {
-                if(Number(dataRecords[curData['id']][column['param_id']]) == 1) {
-                    divWrap3.innerHTML = '<i class="fa fa-check-circle symbol_style text-center text-color-green" aria-hidden="true"></i>';
-                } else if (Number(dataRecords[curData['id']][column['param_id']]) >= 1) {
-                   divWrap3.innerHTML = '<span>' + dataRecords[curData['id']][column['param_id']] +
-                        ' <i class="fa fa-check-circle symbol_style text-center text-color-green" style="display: inline" aria-hidden="true"></i>' +
-                        ' / ' + date + '</span>';
+            divWrap2 = document.createElement('div');
+            divWrap2.className = 'message-wrapper-title';
+
+            divWrap3 = document.createElement('div');
+            divWrap3.className = 'message-text-line text-center';
+            if (Number(column['param_type']) == 5) {
+                //time
+                if (numRow > 0) {
+                    try {
+                        divWrap3.innerText = convertMinutesToTime(dataRecords[curData['id']][column['param_id']]);
+                    } catch {
+                        divWrap3.innerText = '';
+                    }
                 } else {
-                    divWrap3.innerHTML = '<i class="fa fa-ban symbol_style text-center text-color-red" aria-hidden="true"></i>';
+                    divWrap3.innerHTML = 'мин.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['min_val']) + '</b>' +
+                        '<br>сред.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['average_val']) + '</b>' +
+                        '<br>макс.: <b>' + convertMinutesToTime(dataRecords[curData['id']][column['param_id']]['max_val']) + '</b>';
                 }
-            } catch {
-                divWrap3.innerHTML = '';
-            }
-
-        } else {
-            if(numRow > 0) {
+            } else if (Number(column['param_type']) == 3) {
                 try {
-                    divWrap3.innerText = dataRecords[curData['id']][column['param_id']];
+                    if (Number(dataRecords[curData['id']][column['param_id']]) == 1) {
+                        divWrap3.innerHTML = '<i class="fa fa-check-circle symbol_style text-center text-color-green" aria-hidden="true"></i>';
+                    } else if (Number(dataRecords[curData['id']][column['param_id']]) >= 1) {
+                        divWrap3.innerHTML = '<span>' + dataRecords[curData['id']][column['param_id']] +
+                            ' <i class="fa fa-check-circle symbol_style text-center text-color-green" style="display: inline" aria-hidden="true"></i>' +
+                            ' / ' + date + '</span>';
+                    } else {
+                        divWrap3.innerHTML = '<i class="fa fa-ban symbol_style text-center text-color-red" aria-hidden="true"></i>';
+                    }
                 } catch {
-                    divWrap3.innerText = '';
+                    divWrap3.innerHTML = '';
                 }
+
             } else {
-                if(Number(column['param_type']) == 2) {
-                    //Number
-                    divWrap3.innerHTML = 'мин.: <b>' + dataRecords[curData['id']][column['param_id']]['min'] + '</b>' +
-                        '<br>сред.: <b>' + dataRecords[curData['id']][column['param_id']]['average'] + '</b>' +
-                        '<br>макс.: <b>' + dataRecords[curData['id']][column['param_id']]['max'] + '</b>' +
-                        '<br>сум.: <b>' + dataRecords[curData['id']][column['param_id']]['sum'] + '</b>';
+                if (numRow > 0) {
+                    try {
+                        divWrap3.innerText = dataRecords[curData['id']][column['param_id']];
+                    } catch {
+                        divWrap3.innerText = '';
+                    }
+                } else {
+                    if (Number(column['param_type']) == 2) {
+                        //Number
+                        divWrap3.innerHTML = 'мин.: <b>' + dataRecords[curData['id']][column['param_id']]['min'] + '</b>' +
+                            '<br>сред.: <b>' + dataRecords[curData['id']][column['param_id']]['average'] + '</b>' +
+                            '<br>макс.: <b>' + dataRecords[curData['id']][column['param_id']]['max'] + '</b>' +
+                            '<br>сум.: <b>' + dataRecords[curData['id']][column['param_id']]['sum'] + '</b>';
+                    }
                 }
             }
-        }
 
-        divWrap2.append(divWrap3);
-        divWrap.append(divWrap2);
-        aRecord.append(divWrap);
+            divWrap2.append(divWrap3);
+            divWrap.append(divWrap2);
+            aRecord.append(divWrap);
+
+        //++ 1-3-1-005 28/04/2023
+        }
+        //-- 1-3-1-005 28/04/2023
     });
 
     divRow.append(aRecord);
 
     return divRow;
 }
+
+//++ 1-3-1-005 28/04/2023
+function renewFinalValues(dataRecordsAll, dataTable, total) {
+    dataRecords = dataRecordsAll[0]
+    finalValues.innerHTML = '';
+
+    for(idField in dataRecords){
+
+        let NameField = ''
+        let param_type = 0
+        for(idRec in dataTable){
+            if(dataTable[idRec]['param_id'] === Number(idField)) {
+                NameField = dataTable[idRec]['param_title']
+                param_type = dataTable[idRec]['param_type']
+                break
+            }
+        }
+
+        if (NameField !== '') {
+            let divBlock = document.createElement('div');
+            divBlock.classList.add('clear')
+            let divWrap = document.createElement('div');
+            divWrap.innerHTML = '<div class="w-152px float-left"><b>' + NameField + '</b></div> '
+
+            if (param_type === 5) {
+                //time
+                divWrap.innerHTML = divWrap.innerHTML + '<div class="w-152px float-left">мин.: <b>' + convertMinutesToTime(dataRecords[idField]['min_val']) + '</b></div>' +
+                        '<div class="w-152px float-left">, сред.: <b>' + convertMinutesToTime(dataRecords[idField]['average_val']) + '</b></div>' +
+                        '<div class="w-152px float-left">, макс.: <b>' + convertMinutesToTime(dataRecords[idField]['max_val']) + '</b></div>';
+            } else if (param_type === 3) {
+                divWrap.innerHTML = divWrap.innerHTML +'<span>' + dataRecords[idField] +
+                    ' <i class="fa fa-check-circle symbol_style text-center text-color-green" style="display: inline" aria-hidden="true"></i>' +
+                    ' / ' + total + '</span>';
+            } else if (param_type === 2) {
+                //Number
+                console.log(dataRecords[idField])
+                divWrap.innerHTML = divWrap.innerHTML + '<div class="w-152px float-left">мин.: <b>' + dataRecords[idField]['min'] + '</b></div>' +
+                    '<div class="w-152px float-left">, сред.: <b>' + dataRecords[idField]['average'] + '</b></div>' +
+                    '<div class="w-152px float-left">, макс.: <b>' + dataRecords[idField]['max'] + '</b></div>' +
+                    '<div class="w-152px float-left">, сум.: <b>' + dataRecords[idField]['sum'] + '</b></div>';
+            }
+
+            divBlock.append(divWrap)
+            finalValues.append(divBlock)
+        }
+
+    }
+
+}
+//-- 1-3-1-005 28/04/2023
