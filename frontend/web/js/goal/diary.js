@@ -297,9 +297,11 @@ function renewRecords(dataSet) {
         renewFinalValues(dataSet.dataRecords, dataSet.dataTable, dataSet.data.length);
         //-- 1-3-1-005 28/04/2023
 
+        console.log(dataSet)
         divRowSum = createRow(arrSum, 0, '', dataSet.data.length, dataSet.dataTable, dataSet.dataRecords);
         list_cards.append(divRowSum);
 
+        //data = records
         dataSet.data.forEach((curData) => {
             if(curData['id'] > 0) {
                 numRow = numRow + 1;
@@ -485,7 +487,6 @@ function renewFinalValues(dataRecordsAll, dataTable, total) {
                     ' / ' + total + '</span>';
             } else if (param_type === 2) {
                 //Number
-                console.log(dataRecords[idField])
                 divWrap.innerHTML = divWrap.innerHTML + '<div class="w-152px float-left">мин.: <b>' + dataRecords[idField]['min'] + '</b></div>' +
                     '<div class="w-152px float-left">, сред.: <b>' + dataRecords[idField]['average'] + '</b></div>' +
                     '<div class="w-152px float-left">, макс.: <b>' + dataRecords[idField]['max'] + '</b></div>' +

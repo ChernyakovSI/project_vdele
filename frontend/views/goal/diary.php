@@ -205,6 +205,7 @@ $this->title = 'Дневник';
                     //*+  -->
                     <?php
                     $num = 0;
+                    //var_dump($dataTable);
                     foreach ($dataTable as $record):
                         $num = $num + 1;
                         if($num > 5) {

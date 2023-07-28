@@ -212,7 +212,14 @@ function renewUserFields(){
     let curDate;
 
     for (numRow in thisFields) {
+
         thisRow = thisFields[numRow];
+
+        //++ 1-3-2-005 25/07/2023
+        if(thisRow['is_active'] == '0') {
+            continue
+        }
+        //-- 1-3-2-005 25/07/2023
 
         //string
         if(thisRow['type'] == '1'){

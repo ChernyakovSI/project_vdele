@@ -1,30 +1,54 @@
+/*++ 1-3-2-005 25/07/2023 */
+.breadcrumb {
+    background-color: #e9e9e9;
+}
+/*-- 1-3-2-005 25/07/2023 */
+
+/*++ 1-3-2-003-2 05/07/2023 */
+.wrap {
+    background-color: #e9e9e9;
+}
+/*-- 1-3-2-003-2 05/07/2023 */
+
 .footer {
-    background-color: #54423a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #292929;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .navbar-default {
-    background-color: #54423a;
-    border-color: #63271d;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #292929;
+    border-color: #191919;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 @media (min-width: 768px) {
     .navbar-nav > li > form {
-        background-color: #54423a;
+        /*++ 1-3-2-003-2 05/07/2023 */
+        background-color: #292929;
+        /*-- 1-3-2-003-2 05/07/2023 */
     }
 }
 
 .navbar-default .navbar-nav > .active > a{
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .navbar-nav > li > .dropdown-menu {
-    background-color: #54423a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #292929;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .navbar-nav > li > .dropdown-menu > li > a:focus {
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .dropdown-menu > li > a {
@@ -33,18 +57,24 @@
 
 .dropdown-menu > li > a:hover {
      color: #dddddd;
-     background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+     background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
  }
 
 .dropdown-menu:focus {
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 
 .navbar-default .navbar-nav > .dropdown > a {
     color: #cccccc;
-    background-color: #54423a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #292929;
+    /*-- 1-3-2-003-2 05/07/2023 */
     height: 48px;
     margin-top: -20px;
     padding-top: 23px;
@@ -52,12 +82,16 @@
 
 .navbar-default .navbar-nav > .open > a:focus {
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .navbar-default .navbar-nav > .dropdown > a:hover {
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
     height: 48px;
     margin-top: -20px;
     padding-top: 23px;
@@ -70,7 +104,9 @@
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
     color: #dddddd;
-    background-color: #64524a;
+    /*++ 1-3-2-003-2 05/07/2023 */
+    background-color: #393939;
+    /*-- 1-3-2-003-2 05/07/2023 */
 }
 
 .btn-primary {

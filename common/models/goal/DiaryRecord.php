@@ -154,6 +154,9 @@ class DiaryRecord extends ActiveRecord
 
             $strWhere = ' diary_record.`id_diary` = '.(integer)$id_diary;
             $strWhere = $strWhere.' AND diary_record.`is_deleted` = 0';
+            if($dateTo > -1) {
+                $strWhere = $strWhere.' AND diary_record.`date` <= '.$dateTo;
+            }
 
             $body = $body
                 ->where($strWhere)
@@ -204,15 +207,14 @@ class DiaryRecord extends ActiveRecord
         if($dateFrom > -1) {
             $strWhere = $strWhere.' AND diary_record.`date` >= '.$dateFrom;
         }
-        if($dateTo > -1) {
+        /*if($dateTo > -1) {
             $strWhere = $strWhere.' AND diary_record.`date` <= '.$dateTo;
-        }
+        }*/
         $strWhere = $strWhere.' AND diary_settings.`is_active` = 1';
 
         $body = $body
             ->where($strWhere)
             ->orderBy('diary_record.`date` DESC, diary_settings.`show_priority` DESC, diary_settings.`num`');
-
 
         $userFields = $body->all();
 
@@ -325,9 +327,16 @@ class DiaryRecord extends ActiveRecord
         $thisIdRec = 0;
         $isSave = false;
         foreach ($userFields as $field) {
+            //++ 1-3-2-003 13/06/2023
+            $WasQuantity = 0;
+            //-- 1-3-2-003 13/06/2023
+
             if ($thisIdRec == 0) {
                 $thisIdRec = $field['id'];
                 $quantity = $quantity + 1;
+                //++ 1-3-2-003 13/06/2023
+                $WasQuantity = 1;
+                //-- 1-3-2-003 13/06/2023
             }
             if ($thisIdRec != $field['id']) {
                 $data[$thisIdRec] = $newRec;
@@ -335,12 +344,34 @@ class DiaryRecord extends ActiveRecord
                 $newRec = [];
                 $isSave = false;
                 $quantity = $quantity + 1;
+                //++ 1-3-2-003 13/06/2023
+                $WasQuantity = 1;
+                //-- 1-3-2-003 13/06/2023
             }
 
             foreach ($diaries['dataTable'] as $column) {
                 if((integer)$field['param_id'] == (integer)$column['param_id']) {
+
+                    //++ 1-3-2-003 13/06/2023
+                    $isNeed = 0;
+                    foreach ($records as $RecordForShow) {
+                        if((integer)$field['id'] == (integer)$RecordForShow['id']) {
+                            $isNeed = 1;
+                            break;
+                        }
+                    }
+                    if($isNeed === 0) {
+                        if($WasQuantity === 1) {
+                            $quantity = $quantity - 1;
+                        }
+                        continue;
+                    }
+                    //-- 1-3-2-003 13/06/2023
+
                     if((integer)$column['param_type'] == 1) {
-                        $newRec[(integer)$field['param_id']] = mb_substr($field['value_str'], 0, 20, 'UTF-8').($field['value_str'] != mb_substr($field['value_str'], 0, 20, 'UTF-8')?'...':'');
+                        //++ 1-3-2-003 13/06/2023
+                        $newRec[(integer)$field['param_id']] = mb_substr($field['value_str'], 0, 40, 'UTF-8').($field['value_str'] != mb_substr($field['value_str'], 0, 40, 'UTF-8')?'...':'');
+                        //-- 1-3-2-003 13/06/2023
                         $isSave = true;
                     } elseif ((integer)$column['param_type'] == 2) {
                         //integer
@@ -391,7 +422,9 @@ class DiaryRecord extends ActiveRecord
                             $sumRec[(integer)$field['param_id']] = $sumRec[(integer)$field['param_id']] + 1;
                         }
                     } elseif ((integer)$column['param_type'] == 4) {
-                        $newRec[(integer)$field['param_id']] = mb_substr($field['value_txt'], 0, 20, 'UTF-8').($field['value_txt'] != mb_substr($field['value_txt'], 0, 20, 'UTF-8')?'...':'');
+                        //++ 1-3-2-003 13/06/2023
+                        $newRec[(integer)$field['param_id']] = mb_substr($field['value_txt'], 0, 40, 'UTF-8').($field['value_txt'] != mb_substr($field['value_txt'], 0, 40, 'UTF-8')?'...':'');
+                        //-- 1-3-2-003 13/06/2023
                         $isSave = true;
                     } elseif ((integer)$column['param_type'] == 5) {
                         //time
@@ -432,7 +465,17 @@ class DiaryRecord extends ActiveRecord
         //Итоги
         foreach ($diaries['dataTable'] as $column) {
             if ((integer)$column['param_type'] == 2) {
-                $sumRec[(integer)$column['param_id']]['sum'] = rtrim(rtrim($sumRec[(integer)$column['param_id']]['sum_val'], '0'), '.');
+                //++ 1-3-2-003 13/06/2023
+                $arrParts = explode('.', $sumRec[(integer)$column['param_id']]['sum_val']);
+                if(count($arrParts) > 1) {
+                //++ 1-3-2-003 13/06/2023
+                    $sumRec[(integer)$column['param_id']]['sum'] = rtrim(rtrim($sumRec[(integer)$column['param_id']]['sum_val'], '0'), '.');
+                //-- 1-3-2-003 13/06/2023
+                } else {
+                    $sumRec[(integer)$column['param_id']]['sum'] = $sumRec[(integer)$column['param_id']]['sum_val'];
+                }
+                //-- 1-3-2-003 13/06/2023
+
                 $sumRec[(integer)$column['param_id']]['average_val'] = $sumRec[(integer)$column['param_id']]['sum_val'] / $quantity;
                 $sumRec[(integer)$column['param_id']]['average'] = rtrim(rtrim($sumRec[(integer)$column['param_id']]['average_val'], '0'), '.');
                 if($sumRec[(integer)$column['param_id']]['accuracy'] <= 1) {

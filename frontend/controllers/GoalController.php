@@ -89,8 +89,12 @@ class GoalController extends Controller
                                         'diary-record-fields',
                                         //-- 1-3-1-003 21/02/2023
                                         //++ 1-3-1-004 24/04/2023
-                                        'diary-delete'
+                                        'diary-delete',
                                         //-- 1-3-1-004 24/04/2023
+                                        //++ 1-3-2-002 19/05/2023
+                                        'reminders',
+                                        'reminder',
+                                        //-- 1-3-2-002 19/05/2023
                                         ],
                         'controllers' => ['goal'],
                         'allow' => true,
@@ -1329,7 +1333,7 @@ class GoalController extends Controller
             $user_id = Yii::$app->user->identity->getId();
 
             $startDate = strtotime("-1 month 00:00");
-            $finishDate = strtotime("+1 day 23:59:59");
+            $finishDate = strtotime("+3 month 23:59:59");
 
             $params = Yii::$app->request;
             if ($params->get('n')) {
@@ -1353,6 +1357,9 @@ class GoalController extends Controller
                 $option = [
                     'dateFrom' => $startDate,
                     'dateTo' => $finishDate,
+                    //++ 1-3-2-005 25/07/2023
+                    'minElem' => 1,
+                    //-- 1-3-2-005 25/07/2023
                 ];
                 $diariesRec = DiaryRecord::getRecordsForDiary($params->get('n'), $showFirst, $option);
 
@@ -1635,6 +1642,54 @@ class GoalController extends Controller
     }
     //-- 1-3-1-004 24/04/2023
 
+    //++ 1-3-2-002 19/05/2023
+    public function actionReminders()
+    {
+        $params = Yii::$app->request;
+
+        $user_id = Yii::$app->user->identity->getId();
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $option['id_sphere'] = $_POST['id_sphere'];
+
+            $AllReminders = [];
+
+            $pathNotes = 'reminder/';
+            $colors = [];
+            for($i=1; $i<=8; $i++){
+                $colors[$i] = Sphere::getColorForId($i, 1, 1);
+            }
+
+            $dates = [];
+            foreach ($AllReminders as $reminder) {
+                $dates[$reminder['id']] = date("d.m.Y H:i:s", $reminder['nextDate']);
+            }
+
+            return [
+                'error' => '',
+                'AllReminders' => $AllReminders,
+                'pathNotes' => $pathNotes,
+                'colorStyle' => $colors,
+                'dates' => $dates
+            ];
+        } else {
+            $option = [];
+
+            $AllReminders = [];//Diary::getDiariesForUser($user_id, $showFirst, $option);
+
+            $spheres = Sphere::getAllSpheresByUser($user_id);
+            $ObjectTypes = [];
+
+            return $this->render('reminders', [
+                "AllReminders" => $AllReminders,
+                "spheres" => $spheres,
+                "ObjectTypes" => $ObjectTypes,
+            ]);
+        }
+    }
+    //-- 1-3-2-002 19/05/2023
 }
 
 //-
